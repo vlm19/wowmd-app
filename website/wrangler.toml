@@ -1,0 +1,8 @@
+name = "wowmd"
+compatibility_date = "2026-05-19"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wowmd-feedback"
+database_id = "1b79c79d-a81b-4e1a-a20e-f5d3c21a0c01"

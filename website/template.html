@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="{{lang}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="meta.title">wowMD - Make long Markdown easy to read</title>
+    <meta
+      name="description"
+      content="wowMD is a lightweight Chrome extension that makes long GitHub Markdown pages easier to navigate, scan, and read."
+      data-i18n-content="meta.description"
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="{{canonicalUrl}}">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/">
+    <link rel="icon" href="{{base}}assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="{{metaTitle}}">
+    <meta
+      property="og:description"
+      content="{{metaDescription}}"
+    >
+    <meta property="og:url" content="{{canonicalUrl}}">
+    <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{metaTitle}}">
+    <meta
+      name="twitter:description"
+      content="{{metaDescription}}"
+    >
+    <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome",
+        "description": "{{jsonDescription}}",
+        "url": "{{canonicalUrl}}",
+        "image": "https://wowmd.app/assets/hero-demo-poster.jpg",
+        "softwareVersion": "0.1.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Document outline",
+          "Section folding",
+          "Code rendering",
+          "Table scrolling",
+          "Local full-screen reader",
+          "Privacy-first local reading"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="{{base}}styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="logo-link" href="{{homeUrl}}" aria-label="wowMD home">
+        <img src="{{base}}assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#demo" data-i18n="nav.demo">product</a>
+        <a href="#features" data-i18n="nav.features">features</a>
+        <a href="#scope" data-i18n="nav.scope">boundary</a>
+        <a href="#privacy" data-i18n="nav.privacy">privacy</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button
+          class="language-trigger"
+          type="button"
+          id="language-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-label="Language selector"
+        >
+          <img class="flag" data-current-flag src="{{currentFlag}}" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="{{localeUrlEn}}">
+            <img class="flag" src="{{base}}assets/flags/gb.svg" alt="">
+          </a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="{{localeUrlZh}}">
+            <img class="flag" src="{{base}}assets/flags/cn.svg" alt="">
+          </a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="{{localeUrlJa}}">
+            <img class="flag" src="{{base}}assets/flags/jp.svg" alt="">
+          </a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="{{localeUrlKo}}">
+            <img class="flag" src="{{base}}assets/flags/kr.svg" alt="">
+          </a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="{{localeUrlDe}}">
+            <img class="flag" src="{{base}}assets/flags/de.svg" alt="">
+          </a>
+          <a role="option" data-language-option="fr" aria-label="French" href="{{localeUrlFr}}">
+            <img class="flag" src="{{base}}assets/flags/fr.svg" alt="">
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title" data-i18n="hero.title">Even long Markdown docs can be read with ease.</h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            wowMD is a lightweight Chrome extension that turns long, complex GitHub Markdown pages into
+            structured documents with an outline, section folding, and clean rendering. It appears only
+            when you really need it, focused entirely on improving your reading experience.
+          </p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="https://chrome.google.com/webstore" target="_blank" rel="noreferrer">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg>
+              </span>
+              <span data-i18n="hero.primaryCta">Add to Chrome</span>
+            </a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span data-i18n="hero.badgeVersion">Beta v0.1.0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section reveal" id="demo" aria-labelledby="demo-title">
+        <div class="section-heading">
+          <p class="section-label" data-i18n="demo.label">Product</p>
+          <h2 id="demo-title" data-i18n="demo.title">See how wowMD gets to work.</h2>
+        </div>
+        <div class="video-shell" aria-label="wowMD product demo video">
+          <div class="browser-bar">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-amber"></span>
+            <span class="dot dot-green"></span>
+            <span class="address">github.com/openclaw/openclaw</span>
+          </div>
+          <video class="demo-video" poster="{{base}}assets/hero-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="{{base}}assets/hero-demo.webm" type="video/webm">
+            <source src="{{base}}assets/hero-demo.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="demo-notes" aria-label="Demo moments">
+          <span data-i18n="demo.noteOne">Better view appears</span>
+          <span data-i18n="demo.noteTwo">Outline opens first</span>
+          <span data-i18n="demo.noteThree">Full reader takes over</span>
+        </div>
+      </section>
+
+      <section class="section reveal" id="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="section-label" data-i18n="features.label">Features</p>
+          <h2 id="features-title" data-i18n="features.title">Every feature exists to improve your reading experience.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+            </span>
+            <h3 data-i18n="features.outlineTitle">Outline first</h3>
+            <p data-i18n="features.outlineBody">Open with document structure before jumping into the full text.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-amber" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <h3 data-i18n="features.foldingTitle">Section folding</h3>
+            <p data-i18n="features.foldingBody">Collapse large H2 sections independently when a document gets long.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-purple" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
+            </span>
+            <h3 data-i18n="features.codeTitle">Code rendering</h3>
+            <p data-i18n="features.codeBody">Keep code blocks readable with clean spacing and highlighting.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-coral" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
+            </span>
+            <h3 data-i18n="features.tableTitle">Table scrolling</h3>
+            <p data-i18n="features.tableBody">Wide tables scroll sideways instead of breaking the reader layout.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-green" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <h3 data-i18n="features.smartTitle">Smart appearance</h3>
+            <p data-i18n="features.smartBody">Stay out of the way on short README files and simple pages.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            </span>
+            <h3 data-i18n="features.cleanTitle">Clean rendering</h3>
+            <p data-i18n="features.cleanBody">Fix common relative image paths and sanitize rendered Markdown.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="scope" aria-labelledby="scope-title">
+        <div class="section-heading">
+          <p class="section-label" data-i18n="scope.label">Boundary</p>
+          <h2 id="scope-title" data-i18n="scope.title">A tool with boundaries is a focused tool.</h2>
+        </div>
+        <div class="scope-grid">
+          <article class="scope-card supported">
+            <h3 data-i18n="scope.supportedTitle">Supported</h3>
+            <ul>
+              <li><span class="check" aria-hidden="true"></span><span data-i18n="scope.supportedOne">Public GitHub repository README pages</span></li>
+              <li><span class="check" aria-hidden="true"></span><span data-i18n="scope.supportedTwo">Public GitHub .md file pages</span></li>
+              <li><span class="check" aria-hidden="true"></span><span data-i18n="scope.supportedThree">Public GitHub .markdown file pages</span></li>
+              <li><span class="check" aria-hidden="true"></span><span data-i18n="scope.supportedFour">Right-side panel and full-screen reader</span></li>
+            </ul>
+          </article>
+          <article class="scope-card not-supported">
+            <h3 data-i18n="scope.notSupportedTitle">Not supported yet</h3>
+            <ul>
+              <li><span class="xmark" aria-hidden="true"></span><span data-i18n="scope.notSupportedOne">Private repositories</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span data-i18n="scope.notSupportedTwo">Non-GitHub websites</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span data-i18n="scope.notSupportedThree">Issues, pull requests, or wiki pages</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span data-i18n="scope.notSupportedFour">AI summaries, translation, or cloud sync</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="privacy" aria-labelledby="privacy-title">
+        <div class="section-heading">
+          <p class="section-label" data-i18n="privacy.label">Privacy protection</p>
+          <h2 id="privacy-title" data-i18n="privacy.title">A tool that protects privacy can become a good tool.</h2>
+        </div>
+        <div class="privacy-card">
+          <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.one">No personal information collection.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.two">No document upload to third-party services.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.three">No AI summaries, cloud analysis, or remote configuration.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.four">No browsing history, cookies, account information, or local file access.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.five">No Raw Markdown or GitHub API request before you click Better view.</span></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="{{base}}assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p data-i18n="footer.status">Beta v0.1.0 - Chrome extension - Free</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="{{privacyUrl}}" data-i18n="footer.privacy">Privacy Policy</a>
+        <a class="feedback-link" href="{{feedbackUrl}}" data-i18n="footer.feedback">Send feedback</a>
+      </nav>
+    </footer>
+    <script src="{{base}}script.js"></script>
+  </body>
+</html>

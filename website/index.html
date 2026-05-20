@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMD - A better way to read long Markdown</title>
+    <meta
+      name="description"
+      content="wowMD is a lightweight Chrome extension that turns long GitHub READMEs and Markdown pages into structured, focused reading views."
+     
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/">
+    <link rel="icon" href="assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMD - A better way to read long Markdown">
+    <meta
+      property="og:description"
+      content="wowMD is a lightweight Chrome extension that turns long GitHub READMEs and Markdown pages into structured, focused reading views."
+    >
+    <meta property="og:url" content="https://wowmd.app/">
+    <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMD - A better way to read long Markdown">
+    <meta
+      name="twitter:description"
+      content="wowMD is a lightweight Chrome extension that turns long GitHub READMEs and Markdown pages into structured, focused reading views."
+    >
+    <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome",
+        "description": "wowMD is a lightweight Chrome extension that turns long GitHub READMEs and Markdown pages into structured, focused reading views.",
+        "url": "https://wowmd.app/",
+        "image": "https://wowmd.app/assets/hero-demo-poster.jpg",
+        "softwareVersion": "0.1.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Document outline",
+          "Section folding",
+          "Code rendering",
+          "Table scrolling",
+          "Local full-screen reader",
+          "Privacy-first local reading"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="logo-link" href="index.html" aria-label="wowMD home">
+        <img src="assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#demo">Demo</a>
+        <a href="#features">Features</a>
+        <a href="#scope">Scope</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button
+          class="language-trigger"
+          type="button"
+          id="language-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-label="Language selector"
+        >
+          <img class="flag" data-current-flag src="assets/flags/gb.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="index.html" aria-selected="true">
+            <img class="flag" src="assets/flags/gb.svg" alt="">
+          </a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="zh/index.html">
+            <img class="flag" src="assets/flags/cn.svg" alt="">
+          </a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="ja/index.html">
+            <img class="flag" src="assets/flags/jp.svg" alt="">
+          </a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="ko/index.html">
+            <img class="flag" src="assets/flags/kr.svg" alt="">
+          </a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="de/index.html">
+            <img class="flag" src="assets/flags/de.svg" alt="">
+          </a>
+          <a role="option" data-language-option="fr" aria-label="French" href="fr/index.html">
+            <img class="flag" src="assets/flags/fr.svg" alt="">
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">Long Markdown, made readable.</h1>
+          <p class="hero-subtitle">wowMD adds an outline, collapsible sections, and a calmer reader to long GitHub READMEs and Markdown files. It appears only when the page is complex enough to help.</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="https://chrome.google.com/webstore" target="_blank" rel="noreferrer">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg>
+              </span>
+              <span>Add to Chrome</span>
+            </a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span>Beta v0.1.0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section reveal" id="demo" aria-labelledby="demo-title">
+        <div class="section-heading">
+          <p class="section-label">Demo</p>
+          <h2 id="demo-title">See a long README become a focused reader.</h2>
+        </div>
+        <div class="video-shell" aria-label="wowMD product demo video">
+          <div class="browser-bar">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-amber"></span>
+            <span class="dot dot-green"></span>
+            <span class="address">github.com/openclaw/openclaw</span>
+          </div>
+          <video class="demo-video" poster="assets/hero-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="assets/hero-demo.webm" type="video/webm">
+            <source src="assets/hero-demo.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="demo-notes" aria-label="Demo moments">
+          <span>Better View appears</span>
+          <span>Outline opens first</span>
+          <span>Full-screen reader opens</span>
+        </div>
+      </section>
+
+      <section class="section reveal" id="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="section-label">Features</p>
+          <h2 id="features-title">Everything here has one job: better reading.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+            </span>
+            <h3>Outline first</h3>
+            <p>See the document structure before jumping into the full text.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-amber" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <h3>Section folding</h3>
+            <p>Collapse large H2 sections independently when a document gets long.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-purple" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
+            </span>
+            <h3>Code display</h3>
+            <p>Keep code blocks readable with clean spacing and highlighting.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-coral" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
+            </span>
+            <h3>Horizontal table scrolling</h3>
+            <p>Wide tables scroll sideways instead of breaking the reader layout.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-green" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <h3>Appears when useful</h3>
+            <p>Stays out of the way on short READMEs and simple pages.</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            </span>
+            <h3>Clean rendering</h3>
+            <p>Fixes common relative image paths and safely sanitizes rendered Markdown.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="scope" aria-labelledby="scope-title">
+        <div class="section-heading">
+          <p class="section-label">Scope</p>
+          <h2 id="scope-title">Focused on GitHub Markdown, clear about the rest.</h2>
+        </div>
+        <div class="scope-grid">
+          <article class="scope-card supported">
+            <h3>Supported</h3>
+            <ul>
+              <li><span class="check" aria-hidden="true"></span><span>Public GitHub repository README pages</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>Public GitHub .md file pages</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>Public GitHub .markdown file pages</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>Right-side panel and full-screen reader</span></li>
+            </ul>
+          </article>
+          <article class="scope-card not-supported">
+            <h3>Not supported yet</h3>
+            <ul>
+              <li><span class="xmark" aria-hidden="true"></span><span>Private repositories</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span>Websites outside GitHub</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span>Issues, pull requests, or wiki pages</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span>AI summaries, translation, or cloud sync</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="privacy" aria-labelledby="privacy-title">
+        <div class="section-heading">
+          <p class="section-label">Privacy</p>
+          <h2 id="privacy-title">A reader should not need your data.</h2>
+        </div>
+        <div class="privacy-card">
+          <p><span class="check" aria-hidden="true"></span><span>No personal information collection.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>No document uploads to third-party services.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>No AI summaries, cloud analysis, or remote configuration.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>No access to browsing history, cookies, account information, or local files.</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>No Raw Markdown or GitHub API request until you click Better View.</span></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p>Beta v0.1.0 - Chrome extension</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Privacy Policy</a>
+        <a class="feedback-link" href="feedback.html">Send feedback</a>
+      </nav>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

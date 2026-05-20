@@ -1,0 +1,7 @@
+<svg width="190" height="48" viewBox="0 0 190 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">wowMD wordmark</title>
+  <desc id="desc">The wowMD wordmark with violet wow and light MD.</desc>
+  <text x="0" y="34" font-family="Space Grotesk, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" font-weight="700" letter-spacing="0">
+    <tspan fill="#5B4DFF">wow</tspan><tspan fill="#F4F2EA" font-weight="500">MD</tspan>
+  </text>
+</svg>

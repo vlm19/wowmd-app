@@ -1,0 +1,45 @@
+# wowMD
+
+wowMD is a lightweight Chrome extension for reading long public GitHub Markdown pages.
+
+Official site: https://wowmd.app/
+
+## What wowMD does
+
+- Adds a Better view entry point to complex public GitHub README and Markdown pages.
+- Opens with an outline so readers can understand document structure first.
+- Provides section folding, code rendering, table scrolling, and cleaner Markdown rendering.
+- Offers a local full-screen reader for focused reading.
+- Appears only when a page is complex enough to benefit from structured reading.
+
+## Current scope
+
+Supported:
+
+- Public GitHub repository README pages.
+- Public GitHub `.md` file pages.
+- Public GitHub `.markdown` file pages.
+- Right-side reader panel and local full-screen reader.
+
+Not currently supported:
+
+- Private repositories.
+- Non-GitHub websites.
+- GitHub Issues, Pull Requests, Wiki pages, or other GitHub surfaces.
+- AI summaries, translation, cloud sync, accounts, or settings.
+
+## Privacy
+
+wowMD is privacy-first:
+
+- No personal information collection.
+- No document upload to third-party services.
+- No AI or cloud analysis in the current beta.
+- No Raw Markdown or GitHub API request before the user clicks Better view.
+- Local reading remains available without an account.
+
+## Status
+
+Current version: Beta v0.1.0
+
+Pricing: free during beta.

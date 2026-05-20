@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMD - 再冗长的 MD 文档，也能轻松细读</title>
+    <meta
+      name="description"
+      content="wowMD 是一款轻量 Chrome 扩展，轻松把冗长复杂的 GitHub Markdown 页面变成结构化文档。"
+     
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/zh/">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/">
+    <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMD - 再冗长的 MD 文档，也能轻松细读">
+    <meta
+      property="og:description"
+      content="wowMD 是一款轻量 Chrome 扩展，轻松把冗长复杂的 GitHub Markdown 页面变成结构化文档。"
+    >
+    <meta property="og:url" content="https://wowmd.app/zh/">
+    <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMD - 再冗长的 MD 文档，也能轻松细读">
+    <meta
+      name="twitter:description"
+      content="wowMD 是一款轻量 Chrome 扩展，轻松把冗长复杂的 GitHub Markdown 页面变成结构化文档。"
+    >
+    <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome",
+        "description": "wowMD 是一款轻量 Chrome 扩展，轻松把冗长复杂的 GitHub Markdown 页面变成结构化文档。",
+        "url": "https://wowmd.app/zh/",
+        "image": "https://wowmd.app/assets/hero-demo-poster.jpg",
+        "softwareVersion": "0.1.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Document outline",
+          "Section folding",
+          "Code rendering",
+          "Table scrolling",
+          "Local full-screen reader",
+          "Privacy-first local reading"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="logo-link" href="index.html" aria-label="wowMD home">
+        <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#demo">产品</a>
+        <a href="#features">功能</a>
+        <a href="#scope">边界</a>
+        <a href="#privacy">隐私保护</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button
+          class="language-trigger"
+          type="button"
+          id="language-trigger"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-label="Language selector"
+        >
+          <img class="flag" data-current-flag src="../assets/flags/cn.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="../index.html">
+            <img class="flag" src="../assets/flags/gb.svg" alt="">
+          </a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/index.html" aria-selected="true">
+            <img class="flag" src="../assets/flags/cn.svg" alt="">
+          </a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/index.html">
+            <img class="flag" src="../assets/flags/jp.svg" alt="">
+          </a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/index.html">
+            <img class="flag" src="../assets/flags/kr.svg" alt="">
+          </a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/index.html">
+            <img class="flag" src="../assets/flags/de.svg" alt="">
+          </a>
+          <a role="option" data-language-option="fr" aria-label="French" href="../fr/index.html">
+            <img class="flag" src="../assets/flags/fr.svg" alt="">
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">再冗长的 MD 文档，也能轻松细读。</h1>
+          <p class="hero-subtitle">wowMD 是一款轻量 Chrome 扩展，轻松把冗长复杂的 GitHub Markdown 页面变成带目录、章节折叠和清爽渲染的结构化文档，并且只在真正需要时出现，只为提升你的阅读体验。</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="https://chrome.google.com/webstore" target="_blank" rel="noreferrer">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg>
+              </span>
+              <span>添加到 Chrome</span>
+            </a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span>Beta v0.1.0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section reveal" id="demo" aria-labelledby="demo-title">
+        <div class="section-heading">
+          <p class="section-label">产品</p>
+          <h2 id="demo-title">来看看 wowMD 是怎么干活的。</h2>
+        </div>
+        <div class="video-shell" aria-label="wowMD product demo video">
+          <div class="browser-bar">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-amber"></span>
+            <span class="dot dot-green"></span>
+            <span class="address">github.com/openclaw/openclaw</span>
+          </div>
+          <video class="demo-video" poster="../assets/hero-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="../assets/hero-demo.webm" type="video/webm">
+            <source src="../assets/hero-demo.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="demo-notes" aria-label="Demo moments">
+          <span>Better view 出现</span>
+          <span>优先打开目录</span>
+          <span>进入全屏阅读器</span>
+        </div>
+      </section>
+
+      <section class="section reveal" id="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="section-label">功能</p>
+          <h2 id="features-title">所有的功能，都只为提升你的阅读体验。</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+            </span>
+            <h3>目录优先</h3>
+            <p>先看到文档结构，再进入完整正文。</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-amber" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <h3>章节折叠</h3>
+            <p>文档变长时，可独立折叠大型 H2 章节。</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-purple" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
+            </span>
+            <h3>代码渲染</h3>
+            <p>用清晰间距和高亮保持代码块可读。</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-coral" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
+            </span>
+            <h3>表格滚动</h3>
+            <p>宽表格横向滚动，不破坏阅读布局。</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-green" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <h3>智能出现</h3>
+            <p>短 README 和简单页面保持安静，不打扰。</p>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon icon-teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            </span>
+            <h3>清爽渲染</h3>
+            <p>修复常见相对图片路径，并清理渲染后的 Markdown。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="scope" aria-labelledby="scope-title">
+        <div class="section-heading">
+          <p class="section-label">边界</p>
+          <h2 id="scope-title">有边界的工具才是一个专注的工具。</h2>
+        </div>
+        <div class="scope-grid">
+          <article class="scope-card supported">
+            <h3>已支持</h3>
+            <ul>
+              <li><span class="check" aria-hidden="true"></span><span>公开 GitHub 仓库 README 页面</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>公开 GitHub .md 文件页面</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>公开 GitHub .markdown 文件页面</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>右侧面板和全屏阅读器</span></li>
+            </ul>
+          </article>
+          <article class="scope-card not-supported">
+            <h3>暂不支持</h3>
+            <ul>
+              <li><span class="xmark" aria-hidden="true"></span><span>私有仓库</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span>非 GitHub 网站</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span>Issue、Pull Request 或 Wiki 页面</span></li>
+              <li><span class="xmark" aria-hidden="true"></span><span>AI 总结、翻译或云同步</span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="privacy" aria-labelledby="privacy-title">
+        <div class="section-heading">
+          <p class="section-label">隐私保护</p>
+          <h2 id="privacy-title">一个保护隐私的工具，才可能是一个好工具。</h2>
+        </div>
+        <div class="privacy-card">
+          <p><span class="check" aria-hidden="true"></span><span>不收集个人信息。</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>不把文档上传到第三方服务。</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>不做 AI 总结、云分析或远程配置。</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>不读取浏览历史、Cookie、账号信息或本地文件。</span></p>
+          <p><span class="check" aria-hidden="true"></span><span>点击 Better view 前，不请求 Raw Markdown 或 GitHub API。</span></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p>Beta v0.1.0 - Chrome 扩展</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">隐私政策</a>
+        <a class="feedback-link" href="feedback.html">提交反馈</a>
+      </nav>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>
