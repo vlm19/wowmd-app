@@ -128,5 +128,10 @@
   "feedback.statusEmptyWaiting": "先选一个功能，或写下你的想法。",
   "feedback.statusSending": "正在发送...",
   "feedback.statusSuccess": "收到啦，谢谢你。",
-  "feedback.statusError": "暂时没发出去，请稍后再试。"
+  "feedback.statusError": "暂时没发出去，请稍后再试。",
+  "hero.githubCta": "查看 GitHub 开源代码",
+  "hero.upgradeLabel": "付费升级",
+  "hero.upgradeTitle": "需要本地文件、备注、HTML 或 EPUB？",
+  "hero.upgradeBody": "wowMD Pro 支持本地 Markdown 处理、高亮、备注、纯净 HTML 导出，以及适用于 Kindle、Apple Books 和 Kobo 的 EPUB 导出。",
+  "hero.upgradeCta": "打开 wowMD Pro"
 }

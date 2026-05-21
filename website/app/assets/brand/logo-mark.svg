@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">wowMD logo mark</title>
+  <desc id="desc">A violet rounded square with three minimal reading lines.</desc>
+  <rect width="64" height="64" rx="16" fill="#5B4DFF"/>
+  <rect x="21" y="20" width="22" height="3" rx="1.5" fill="#F3F0FF"/>
+  <rect x="21" y="30" width="22" height="3" rx="1.5" fill="#F3F0FF"/>
+  <rect x="21" y="40" width="14" height="3" rx="1.5" fill="#F3F0FF"/>
+</svg>

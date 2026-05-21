@@ -150,6 +150,20 @@ svg {
   outline: none;
 }
 
+.site-nav .nav-app {
+  border: 0.5px solid color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
+  background: var(--color-primary-soft);
+  color: var(--color-primary-strong);
+  font-weight: 700;
+}
+
+.site-nav .nav-app:hover,
+.site-nav .nav-app:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
 .language-picker {
   position: relative;
   flex: none;
@@ -416,6 +430,43 @@ h3 {
   font-weight: 700;
 }
 
+.hero-upgrade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  max-width: 840px;
+  margin-top: 28px;
+  border: 0.5px solid color-mix(in srgb, var(--color-primary) 32%, var(--color-border));
+  border-radius: var(--radius-md);
+  padding: 18px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-primary-soft) 54%, transparent), transparent 62%),
+    color-mix(in srgb, var(--color-surface-raised) 88%, transparent);
+}
+
+.hero-upgrade .section-label {
+  margin-bottom: 6px;
+}
+
+.hero-upgrade h2 {
+  max-width: 560px;
+  margin-bottom: 7px;
+  font-size: 18px;
+}
+
+.hero-upgrade p:not(.section-label) {
+  max-width: 660px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.hero-upgrade-button {
+  min-width: 168px;
+  white-space: nowrap;
+}
+
 .demo-section,
 .section {
   padding: 44px 0 0;
@@ -426,6 +477,13 @@ h3 {
   gap: 0;
   max-width: 700px;
   margin-bottom: 16px;
+}
+
+.section-subtitle {
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
 }
 
 .section-heading::after {
@@ -526,6 +584,91 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+}
+
+.pro-section {
+  scroll-margin-top: 92px;
+}
+
+.pro-heading {
+  max-width: 760px;
+}
+
+.pro-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.86fr) minmax(0, 1.14fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.pro-copy,
+.pro-feature {
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface-raised) 88%, transparent);
+}
+
+.pro-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px;
+}
+
+.pro-price {
+  display: grid;
+  gap: 4px;
+}
+
+.pro-price span {
+  color: var(--color-teal);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pro-price strong {
+  color: var(--color-text);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.pro-price small {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.pro-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.button-large {
+  min-height: 44px;
+  width: 100%;
+}
+
+.pro-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pro-feature {
+  min-height: 118px;
+  padding: 16px;
+}
+
+.pro-feature h3 {
+  margin-bottom: 8px;
+}
+
+.pro-feature p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
 }
 
 .feature-card,
@@ -1256,8 +1399,21 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .pro-layout,
+  .pro-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
   .feature-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-upgrade {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-upgrade-button {
+    width: 100%;
   }
 
   .site-footer {
