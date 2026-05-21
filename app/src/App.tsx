@@ -588,7 +588,7 @@ function App() {
             <button
               type="button"
               className={view === 'exports' ? 'active' : ''}
-              onClick={() => openExport('html')}
+              onClick={openExport}
             >
               {t('navExports')}
             </button>
@@ -1247,20 +1247,6 @@ function LanguagePicker(props: {
       </div>
     </div>
   )
-}
-
-type RenderedDocument = {
-  html: string
-  baseHtml: string
-  exportHtml: string
-  toc: TocItem[]
-  stats: {
-    imageCount: number
-    remoteImageCount: number
-    tableCount: number
-    codeBlockCount: number
-  }
-  searchCount: number
 }
 
 type ExportWorkspaceProps = {
