@@ -1266,13 +1266,8 @@ type RenderedDocument = {
 type ExportWorkspaceProps = {
   t: (key: string) => string
   document: OpenDocument | null
-  rendered: RenderedDocument
   theme: ThemeName
   setTheme: (theme: ThemeName) => void
-  exportFormat: ExportFormat
-  setExportFormat: (format: ExportFormat) => void
-  exportView: ExportView
-  setExportView: (view: ExportView) => void
   exportPreviewScale: number
   setExportPreviewScale: (value: number | ((value: number) => number)) => void
   htmlPreview: string
@@ -1284,24 +1279,11 @@ type ExportWorkspaceProps = {
   setIncludeHighlights: (value: boolean) => void
   includeExportMetadata: boolean
   setIncludeExportMetadata: (value: boolean) => void
-  embedImages: boolean
-  setEmbedImages: (value: boolean) => void
-  exportTitle: string
-  setExportTitle: (value: string) => void
-  exportAuthor: string
-  setExportAuthor: (value: string) => void
-  exportLanguage: string
-  setExportLanguage: (value: string) => void
   htmlFilename: string
   setHtmlFilename: (value: string) => void
-  epubFilename: string
-  setEpubFilename: (value: string) => void
   estimatedHtmlSize: string
-  estimatedEpubSize: string
   canExport: boolean
   downloadHtmlExport: () => void
-  downloadEpubExport: () => void
-  printHtmlPreview: () => void
 }
 
 function ExportWorkspace(props: ExportWorkspaceProps) {
@@ -1357,49 +1339,20 @@ function ExportWorkspace(props: ExportWorkspaceProps) {
 
       <div className="export-layout">
         <div className="export-preview-pane">
-          {props.exportFormat === 'html' ? (
-            props.exportView === 'document' ? (
-              <div
-                className="html-preview-viewport"
-                style={{ '--export-preview-scale': props.exportPreviewScale / 100 } as CSSProperties}
-              >
+          <div
+            className="html-preview-viewport"
+            style={{ '--export-preview-scale': props.exportPreviewScale / 100 } as CSSProperties}
+          >
               <iframe
                 className="html-preview-frame"
                 title="HTML export preview"
                 srcDoc={props.htmlPreview}
               />
-              </div>
-            ) : (
-              <pre className="source-preview">{props.htmlPreview}</pre>
-            )
-          ) : (
-            <div className="epub-device-preview">
-              <div className="device-shell">
-                <div className="device-progress">
-                  <span style={{ width: `${Math.min(72, 18 + props.rendered.toc.length * 8)}%` }} />
-                </div>
-                <h2>{props.exportTitle || props.document.name}</h2>
-                <p>
-                  {props.document.markdown
-                    .replace(/[#*_`>\-[\]()]/g, '')
-                    .split(/\s+/)
-                    .slice(0, 42)
-                    .join(' ')}
-                </p>
-              </div>
-              <p className="compatibility-copy">
-                {props.t('compatibleWith')}: Apple Books / Kindle / Kobo
-              </p>
-            </div>
-          )}
+          </div>
         </div>
 
         <aside className="export-options-panel">
-          {props.exportFormat === 'html' ? (
-            <HtmlExportOptions {...props} />
-          ) : (
-            <EpubExportOptions {...props} />
-          )}
+          <HtmlExportOptions {...props} />
         </aside>
       </div>
     </section>
@@ -1444,69 +1397,6 @@ function HtmlExportOptions(props: ExportWorkspaceProps) {
         <button type="button" disabled={!props.canExport} onClick={props.downloadHtmlExport}>
           {props.t('downloadHtml')}
         </button>
-      </div>
-    </>
-  )
-}
-
-function EpubExportOptions(props: ExportWorkspaceProps) {
-  return (
-    <>
-      <p className="panel-label">{props.t('metadata')}</p>
-      <label className="export-field">
-        <span>{props.t('title')}</span>
-        <input
-          value={props.exportTitle}
-          onChange={(event) => props.setExportTitle(event.target.value)}
-        />
-      </label>
-      <label className="export-field">
-        <span>{props.t('authorOptional')}</span>
-        <input
-          placeholder={props.t('leaveBlank')}
-          value={props.exportAuthor}
-          onChange={(event) => props.setExportAuthor(event.target.value)}
-        />
-      </label>
-      <label className="export-field">
-        <span>{props.t('language')}</span>
-        <input
-          value={props.exportLanguage}
-          onChange={(event) => props.setExportLanguage(event.target.value)}
-        />
-      </label>
-      <p className="panel-label">{props.t('include')}</p>
-      <ToggleRow
-        label={props.t('tableOfContents')}
-        checked={props.includeToc}
-        onChange={props.setIncludeToc}
-      />
-      <ToggleRow
-        label={props.t('highlights')}
-        checked={props.includeHighlights}
-        onChange={props.setIncludeHighlights}
-      />
-      <ToggleRow
-        label={props.t('embedImages')}
-        checked={props.embedImages}
-        onChange={props.setEmbedImages}
-        disabled
-      />
-      <label className="export-field">
-        <span>{props.t('filename')}</span>
-        <input
-          value={props.epubFilename}
-          onChange={(event) => props.setEpubFilename(event.target.value)}
-        />
-      </label>
-      <div className="export-download-box">
-        <small>
-          {props.t('estimatedSize')}: {props.estimatedEpubSize}
-        </small>
-        <button type="button" disabled={!props.canExport} onClick={props.downloadEpubExport}>
-          {props.t('downloadEpub')}
-        </button>
-        <p>{props.t('imageNotice')}</p>
       </div>
     </>
   )
