@@ -6,6 +6,7 @@ import {
   type CSSProperties,
   type ChangeEvent,
   type DragEvent,
+  type MouseEvent,
 } from 'react'
 import './App.css'
 import {
@@ -145,9 +146,10 @@ function App() {
     const baseHtml = renderMarkdown(document.markdown)
     const highlighted = applyAnnotationHighlights(baseHtml, annotations)
     const searched = applySearchHighlights(highlighted, searchQuery, searchIndex)
+    const readerHtml = addCodeCopyButtonsToHtml(searched.html)
 
     return {
-      html: searched.html,
+      html: readerHtml,
       baseHtml,
       exportHtml: highlighted,
       toc: buildToc(baseHtml),
@@ -361,6 +363,40 @@ function App() {
       x: rect.left + rect.width / 2,
       y: Math.max(92, rect.top - 14),
     })
+  }
+
+  async function handleMarkdownBodyClick(event: MouseEvent<HTMLDivElement>) {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
+      '.code-copy-button',
+    )
+    if (!button) return
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    const code = button.parentElement?.querySelector('code')
+    const codeText = code?.textContent || ''
+    if (!codeText) return
+
+    let copied = false
+    try {
+      await navigator.clipboard.writeText(codeText)
+      copied = true
+    } catch {
+      copied = copyTextWithFallback(codeText)
+    }
+
+    if (copied) {
+      button.textContent = 'Copied'
+      window.setTimeout(() => {
+        button.textContent = 'Copy'
+      }, 1200)
+    } else {
+      button.textContent = 'Failed'
+      window.setTimeout(() => {
+        button.textContent = 'Copy'
+      }, 1200)
+    }
   }
 
   function addAnnotation(color: AnnotationColor, note = '') {
@@ -920,6 +956,7 @@ function App() {
                       <div
                         ref={markdownBodyRef}
                         className="markdown-body"
+                        onClick={handleMarkdownBodyClick}
                         onMouseUp={captureSelection}
                         onKeyUp={captureSelection}
                         dangerouslySetInnerHTML={{ __html: rendered.html }}
@@ -1426,6 +1463,48 @@ function truncateText(text: string, maxLength: number) {
   const normalized = text.replace(/\s+/g, ' ').trim()
   if (normalized.length <= maxLength) return normalized
   return `${normalized.slice(0, maxLength)}...`
+}
+
+function addCodeCopyButtonsToHtml(html: string) {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, 'text/html')
+
+  doc.querySelectorAll<HTMLPreElement>('pre').forEach((pre) => {
+    const code = pre.querySelector('code')
+    if (!code || pre.querySelector('.code-copy-button')) return
+
+    const button = doc.createElement('button')
+    button.className = 'code-copy-button'
+    button.type = 'button'
+    button.textContent = 'Copy'
+    button.setAttribute('aria-label', 'Copy code')
+
+    pre.append(button)
+  })
+
+  return doc.body.innerHTML
+}
+
+function copyTextWithFallback(text: string) {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.setAttribute('readonly', 'true')
+  textarea.style.position = 'fixed'
+  textarea.style.left = '-9999px'
+  textarea.style.top = '0'
+  textarea.style.opacity = '0'
+  document.body.append(textarea)
+  textarea.focus()
+  textarea.select()
+  textarea.setSelectionRange(0, textarea.value.length)
+
+  try {
+    return document.execCommand('copy')
+  } catch {
+    return false
+  } finally {
+    textarea.remove()
+  }
 }
 
 function escapeCssIdentifier(value: string) {

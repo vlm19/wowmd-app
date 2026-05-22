@@ -1738,17 +1738,45 @@ p {
 }
 
 .markdown-body pre {
+  position: relative;
   overflow-x: auto;
   margin-bottom: 12px;
   border: 0.5px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 12px 14px;
+  padding: 36px 14px 12px;
   background: var(--bg-card);
   color: var(--text-2);
   font-family: var(--font-mono);
   font-size: var(--reader-code-font-size);
   line-height: 1.6;
   letter-spacing: 0.04em;
+}
+
+.code-copy-button {
+  position: sticky;
+  left: calc(100% - 54px);
+  top: 8px;
+  z-index: 1;
+  display: flex;
+  width: 46px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--border);
+  border-radius: var(--r-sm);
+  margin: -28px 0 6px auto;
+  padding: 0;
+  background: var(--bg-card);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  transition: opacity 0.15s ease;
+}
+
+.code-copy-button:hover {
+  opacity: 0.88;
 }
 
 .markdown-body code {
@@ -1944,6 +1972,12 @@ p {
   color: #241f1a;
 }
 
+.theme-light .markdown-body pre .code-copy-button {
+  border-color: #bfb4a2;
+  background: #eee8dc;
+  color: #302d28;
+}
+
 .theme-light .markdown-body pre code {
   background: transparent;
   color: #241f1a;
@@ -2046,6 +2080,12 @@ p {
   border-color: #464640;
   background: #1e1e1c;
   color: #c8c4b8;
+}
+
+.theme-dark .markdown-body pre .code-copy-button {
+  border-color: #464640;
+  background: #242421;
+  color: #f4f2ea;
 }
 
 .theme-dark .markdown-body pre code {

@@ -37,7 +37,10 @@ const themeVars = {
     text: '#302d28',
     muted: '#746d62',
     accent: '#5b4dff',
-    code: '#ece6da',
+    code: '#d8cfbf',
+    codeCopyBg: '#eee8dc',
+    codeCopyText: '#302d28',
+    codeCopyBorder: '#bfb4a2',
   },
   dark: {
     bg: '#1e1e1c',
@@ -55,6 +58,9 @@ const themeVars = {
     muted: '#c5c0b4',
     accent: '#8f86ff',
     code: '#1d1d1a',
+    codeCopyBg: '#242421',
+    codeCopyText: '#f4f2ea',
+    codeCopyBorder: '#464640',
   },
 }
 
@@ -62,7 +68,7 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
   const vars = themeVars[input.theme]
   const includeToc = input.includeToc ?? true
   const includeMetadata = input.includeMetadata ?? true
-  const bodyHtml = addAnnotationAnchors(input.bodyHtml)
+  const bodyHtml = addCodeCopyButtons(addAnnotationAnchors(input.bodyHtml))
   const exportedAnnotations = input.bodyHtml.includes('data-annotation-id')
     ? input.annotations || []
     : []
@@ -125,6 +131,9 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         --muted: ${vars.muted};
         --accent: ${vars.accent};
         --code: ${vars.code};
+        --code-copy-bg: ${vars.codeCopyBg};
+        --code-copy-text: ${vars.codeCopyText};
+        --code-copy-border: ${vars.codeCopyBorder};
       }
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
@@ -335,14 +344,36 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         color: var(--muted);
       }
       pre {
+        position: relative;
         overflow: auto;
         border: 1px solid var(--border);
         border-radius: 8px;
-        padding: 14px;
+        padding: 38px 14px 14px;
         background: var(--code);
         font-size: 13px;
         line-height: 1.55;
       }
+      .code-copy-button {
+        position: sticky;
+        left: calc(100% - 54px);
+        top: 8px;
+        z-index: 1;
+        display: flex;
+        width: 46px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        border: 0.5px solid var(--code-copy-border);
+        border-radius: 6px;
+        margin: -30px 0 8px auto;
+        padding: 0;
+        background: var(--code-copy-bg);
+        color: var(--code-copy-text);
+        font: 600 10px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Arial, sans-serif;
+        letter-spacing: 0;
+        transition: opacity 0.15s ease;
+      }
+      .code-copy-button:hover { opacity: 0.88; }
       code {
         border-radius: 5px;
         padding: 2px 5px;
@@ -434,7 +465,64 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
       ${notes}
     </main>
     <script>
+      function copyTextWithFallback(text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'true');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+
+        try {
+          return document.execCommand('copy');
+        } catch (error) {
+          return false;
+        } finally {
+          textarea.remove();
+        }
+      }
+
       document.addEventListener('click', function (event) {
+        var copyButton = event.target.closest('.code-copy-button');
+        if (copyButton) {
+          var code = copyButton.parentElement && copyButton.parentElement.querySelector('code');
+          var codeText = code ? code.textContent || '' : '';
+          var copied = false;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (!codeText) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(codeText).then(function () {
+              copyButton.textContent = 'Copied';
+              window.setTimeout(function () {
+                copyButton.textContent = 'Copy';
+              }, 1200);
+            }).catch(function () {
+              copied = copyTextWithFallback(codeText);
+              copyButton.textContent = copied ? 'Copied' : 'Failed';
+              window.setTimeout(function () {
+                copyButton.textContent = 'Copy';
+              }, 1200);
+            });
+            return;
+          }
+
+          copied = copyTextWithFallback(codeText);
+          copyButton.textContent = copied ? 'Copied' : 'Failed';
+          window.setTimeout(function () {
+            copyButton.textContent = 'Copy';
+          }, 1200);
+          return;
+        }
+
         var link = event.target.closest('a[href^="#"]');
         if (!link) return;
         var id = decodeURIComponent(link.getAttribute('href').slice(1));
@@ -503,6 +591,25 @@ function addAnnotationAnchors(html: string) {
     const id = element.dataset.annotationId
     if (id) element.id = `annotation-${id}`
   })
+  return doc.body.innerHTML
+}
+
+function addCodeCopyButtons(html: string) {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, 'text/html')
+
+  doc.querySelectorAll<HTMLPreElement>('pre').forEach((pre) => {
+    const code = pre.querySelector('code')
+    if (!code || pre.querySelector('.code-copy-button')) return
+
+    const button = doc.createElement('button')
+    button.className = 'code-copy-button'
+    button.type = 'button'
+    button.textContent = 'Copy'
+    button.setAttribute('aria-label', 'Copy code')
+    pre.append(button)
+  })
+
   return doc.body.innerHTML
 }
 
