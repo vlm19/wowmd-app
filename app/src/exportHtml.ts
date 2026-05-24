@@ -33,6 +33,8 @@ const themeVars = {
     panelBorder: '#d8d1c4',
     scrollTrack: '#eee8dc',
     scrollThumb: '#b7ad9d',
+    pageScrollTrack: '#1e1e1c',
+    pageScrollThumb: '#8f8a7f',
     border: '#d8d1c4',
     text: '#302d28',
     muted: '#746d62',
@@ -53,6 +55,8 @@ const themeVars = {
     panelBorder: '#464640',
     scrollTrack: '#242421',
     scrollThumb: '#65645b',
+    pageScrollTrack: '#242421',
+    pageScrollThumb: '#65645b',
     border: '#45443d',
     text: '#f3f0e7',
     muted: '#c5c0b4',
@@ -79,11 +83,12 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
           ${exportedAnnotations
             .map(
               (annotation) => `<li class="note note-${annotation.color}">
-                <a href="#annotation-${escapeAttr(annotation.id)}" aria-label="${escapeAttr(input.labels.jumpToHighlight)}">
+                <a class="note-locate" href="#annotation-${escapeAttr(annotation.id)}" aria-label="${escapeAttr(input.labels.jumpToHighlight)}"><span></span></a>
+                <a class="note-body" href="#annotation-${escapeAttr(annotation.id)}" aria-label="${escapeAttr(input.labels.jumpToHighlight)}">
                   <span class="note-kind">${escapeHtml(annotation.note ? input.labels.note : input.labels.highlight)}</span>
                   <span class="note-preview">${escapeHtml(shortText(annotation.note || annotation.quote, 42))}</span>
+                  ${annotation.note ? `<span class="note-quote">${escapeHtml(shortText(annotation.quote, 88))}</span>` : ''}
                 </a>
-                ${annotation.note ? `<p>${escapeHtml(shortText(annotation.quote, 88))}</p>` : ''}
               </li>`,
             )
             .join('\n')}
@@ -126,6 +131,8 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         --panel-border: ${vars.panelBorder};
         --scroll-track: ${vars.scrollTrack};
         --scroll-thumb: ${vars.scrollThumb};
+        --page-scroll-track: ${vars.pageScrollTrack};
+        --page-scroll-thumb: ${vars.pageScrollThumb};
         --border: ${vars.border};
         --text: ${vars.text};
         --muted: ${vars.muted};
@@ -148,26 +155,26 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
       }
       .page {
         display: grid;
-        grid-template-columns: minmax(190px, 260px) minmax(0, 760px) minmax(190px, 260px);
+        grid-template-columns: minmax(190px, 260px) minmax(0, 720px) minmax(190px, 260px);
         grid-template-areas: "toc document notes";
         gap: 24px;
-        width: min(1240px, calc(100% - 40px));
+        width: min(1288px, calc(100% - 40px));
         margin: 0 auto;
         padding: 28px 0 56px;
       }
       .page:not(.has-toc) {
-        grid-template-columns: minmax(0, 820px) minmax(190px, 260px);
+        grid-template-columns: minmax(0, 720px) minmax(190px, 260px);
         grid-template-areas: "document notes";
-        width: min(1120px, calc(100% - 40px));
+        width: min(1004px, calc(100% - 40px));
       }
       .page:not(.has-notes) {
-        grid-template-columns: minmax(180px, 240px) minmax(0, 780px);
+        grid-template-columns: minmax(180px, 260px) minmax(0, 720px);
         grid-template-areas: "toc document";
-        width: min(1060px, calc(100% - 40px));
+        width: min(1004px, calc(100% - 40px));
       }
       .page:not(.has-toc):not(.has-notes) {
         display: block;
-        width: min(820px, calc(100% - 40px));
+        width: min(720px, calc(100% - 40px));
       }
       .toc,
       .notes {
@@ -223,36 +230,64 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
       .toc a {
         display: block;
         min-width: 0;
-        overflow: hidden;
         border-radius: 6px;
         padding: 5px 6px;
         color: var(--panel-text);
         font-size: 13px;
+        line-height: 1.45;
         text-decoration: none;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
       }
       .toc a:hover { color: var(--panel-strong); background: var(--panel-hover); }
       .note {
         display: grid;
-        gap: 3px;
+        grid-template-columns: 26px minmax(0, 1fr);
+        align-items: start;
+        gap: 8px;
         border: 0.5px solid var(--panel-border);
         border-left: 3px solid var(--accent);
         border-radius: 6px;
-        padding: 7px 8px;
+        padding: 7px;
         background: var(--panel-subtle);
       }
       .note-yellow { border-left-color: #b28a00; }
       .note-blue { border-left-color: #4c82c3; }
       .note-green { border-left-color: #4a9365; }
       .note-rose { border-left-color: #c45a72; }
+      .note-violet { border-left-color: #8664d8; }
+      .note-amber { border-left-color: #b97820; }
       .note a {
-        display: grid;
-        gap: 2px;
-        overflow: hidden;
         color: var(--panel-strong);
         text-decoration: none;
       }
+      .note-locate {
+        display: inline-flex;
+        width: 26px;
+        height: 26px;
+        align-items: center;
+        justify-content: center;
+        border: 0.5px solid var(--panel-border);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--panel-text);
+      }
+      .note-locate span {
+        display: block;
+        width: 16px;
+        height: 16px;
+        background: currentColor;
+        opacity: 0.92;
+        mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+        -webkit-mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+      }
+      .note-body {
+        display: grid;
+        gap: 2px;
+        overflow: hidden;
+      }
+      .note-locate:hover,
+      .note-body:hover { opacity: 0.88; }
       .note-kind {
         color: var(--muted);
         font-size: 9px;
@@ -268,7 +303,7 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      .note p {
+      .note-quote {
         overflow: hidden;
         margin: 0;
         color: var(--panel-text);
@@ -354,26 +389,39 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         line-height: 1.55;
       }
       .code-copy-button {
-        position: sticky;
-        left: calc(100% - 54px);
+        position: absolute;
         top: 8px;
+        right: 8px;
         z-index: 1;
         display: flex;
-        width: 46px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         align-items: center;
         justify-content: center;
         border: 0.5px solid var(--code-copy-border);
         border-radius: 6px;
-        margin: -30px 0 8px auto;
+        margin: 0;
         padding: 0;
         background: var(--code-copy-bg);
         color: var(--code-copy-text);
-        font: 600 10px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Arial, sans-serif;
-        letter-spacing: 0;
-        transition: opacity 0.15s ease;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
       }
-      .code-copy-button:hover { opacity: 0.88; }
+      pre:hover .code-copy-button,
+      pre:focus-within .code-copy-button,
+      .code-copy-button[data-state] {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .code-copy-button:hover { background: var(--surface); }
+      .code-copy-button[data-state="copied"] { color: var(--accent); }
+      .code-copy-button[data-state="failed"] { color: #c45a72; }
+      .code-copy-button svg {
+        display: block;
+        width: 16px;
+        height: 16px;
+      }
       code {
         border-radius: 5px;
         padding: 2px 5px;
@@ -381,6 +429,11 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         font-size: 0.9em;
       }
       pre code { padding: 0; background: transparent; }
+      [data-annotation-id].wowmd-highlight-located {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        transition: outline-color 0.18s ease;
+      }
       img { max-width: 100%; height: auto; }
       .md-table-wrap { overflow-x: auto; margin-bottom: 1em; }
       table {
@@ -395,7 +448,7 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
       th { text-align: left; background: var(--code); }
       .md-fold-btn { display: none; }
       :root {
-        scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+        scrollbar-color: var(--page-scroll-thumb) var(--page-scroll-track);
         scrollbar-width: thin;
       }
       ::-webkit-scrollbar {
@@ -403,21 +456,23 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: var(--scroll-track);
+        background: var(--page-scroll-track);
       }
       ::-webkit-scrollbar-thumb {
-        border: 2px solid var(--scroll-track);
+        border: 2px solid var(--page-scroll-track);
         border-radius: 99px;
-        background: var(--scroll-thumb);
+        background: var(--page-scroll-thumb);
       }
       .wowmd-highlight {
         border-radius: 2px;
         padding: 0 1px;
       }
-      .wowmd-highlight-yellow { background: ${input.theme === 'dark' ? 'rgba(255, 210, 82, 0.34)' : '#fff0a8'}; }
-      .wowmd-highlight-blue { background: ${input.theme === 'dark' ? 'rgba(111, 169, 255, 0.32)' : '#cfe5ff'}; }
-      .wowmd-highlight-green { background: ${input.theme === 'dark' ? 'rgba(98, 205, 147, 0.3)' : '#ccebd4'}; }
-      .wowmd-highlight-rose { background: ${input.theme === 'dark' ? 'rgba(255, 134, 162, 0.32)' : '#ffd4dc'}; }
+      .wowmd-highlight-yellow { background: ${input.theme === 'dark' ? 'rgba(255, 214, 84, 0.48)' : '#ffe27a'}; }
+      .wowmd-highlight-blue { background: ${input.theme === 'dark' ? 'rgba(91, 160, 255, 0.46)' : '#a9d6ff'}; }
+      .wowmd-highlight-green { background: ${input.theme === 'dark' ? 'rgba(76, 198, 132, 0.44)' : '#b2e3bd'}; }
+      .wowmd-highlight-rose { background: ${input.theme === 'dark' ? 'rgba(255, 111, 148, 0.46)' : '#ffbac7'}; }
+      .wowmd-highlight-violet { background: ${input.theme === 'dark' ? 'rgba(178, 139, 255, 0.46)' : '#d2bdff'}; }
+      .wowmd-highlight-amber { background: ${input.theme === 'dark' ? 'rgba(242, 163, 66, 0.48)' : '#f3b760'}; }
       .wowmd-highlight:target {
         outline: 2px solid var(--accent);
         outline-offset: 2px;
@@ -501,24 +556,30 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
 
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(codeText).then(function () {
-              copyButton.textContent = 'Copied';
+              copyButton.dataset.state = 'copied';
+              copyButton.setAttribute('aria-label', 'Code copied');
               window.setTimeout(function () {
-                copyButton.textContent = 'Copy';
+                delete copyButton.dataset.state;
+                copyButton.setAttribute('aria-label', 'Copy code');
               }, 1200);
             }).catch(function () {
               copied = copyTextWithFallback(codeText);
-              copyButton.textContent = copied ? 'Copied' : 'Failed';
+              copyButton.dataset.state = copied ? 'copied' : 'failed';
+              copyButton.setAttribute('aria-label', copied ? 'Code copied' : 'Copy failed');
               window.setTimeout(function () {
-                copyButton.textContent = 'Copy';
+                delete copyButton.dataset.state;
+                copyButton.setAttribute('aria-label', 'Copy code');
               }, 1200);
             });
             return;
           }
 
           copied = copyTextWithFallback(codeText);
-          copyButton.textContent = copied ? 'Copied' : 'Failed';
+          copyButton.dataset.state = copied ? 'copied' : 'failed';
+          copyButton.setAttribute('aria-label', copied ? 'Code copied' : 'Copy failed');
           window.setTimeout(function () {
-            copyButton.textContent = 'Copy';
+            delete copyButton.dataset.state;
+            copyButton.setAttribute('aria-label', 'Copy code');
           }, 1200);
           return;
         }
@@ -529,7 +590,11 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         var target = document.getElementById(id);
         if (!target) return;
         event.preventDefault();
-        target.scrollIntoView({ block: 'start' });
+        target.scrollIntoView({ block: 'center' });
+        target.classList.add('wowmd-highlight-located');
+        window.setTimeout(function () {
+          target.classList.remove('wowmd-highlight-located');
+        }, 900);
         history.replaceState(null, '', '#' + encodeURIComponent(id));
       });
     </script>
@@ -605,12 +670,21 @@ function addCodeCopyButtons(html: string) {
     const button = doc.createElement('button')
     button.className = 'code-copy-button'
     button.type = 'button'
-    button.textContent = 'Copy'
+    button.innerHTML = copyIconSvg()
     button.setAttribute('aria-label', 'Copy code')
     pre.append(button)
   })
 
   return doc.body.innerHTML
+}
+
+function copyIconSvg() {
+  return `
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <rect x="8" y="8" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.8" />
+      <path d="M6 16H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </svg>
+  `
 }
 
 function shortText(value: string, length: number) {

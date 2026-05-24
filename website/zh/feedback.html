@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD 反馈</title>
-    <meta name="description" content="告诉 wowMD 下一步该做什么，提交反馈，或订阅你关心的新功能进展。">
+    <meta name="description" content="向 wowMD 提交反馈，告诉我们哪里好用、哪里困惑，也可以留下邮箱接收上线折扣券。">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/zh/feedback.html">
@@ -62,8 +62,8 @@
         <div class="feedback-hero-row">
           <div class="feedback-hero">
             <p class="section-label">反馈</p>
-            <h1 id="feedback-title">告诉我们，下一步该做什么。</h1>
-            <p>选你真的会用的功能。有想法，也可以直接说。</p>
+            <h1 id="feedback-title">把你的使用感受告诉我们。</h1>
+            <p>哪里顺手、哪里困惑、哪里还差一点，都可以直接写下来。</p>
           </div>
           <a class="button button-secondary feedback-home-button" href="index.html">返回首页</a>
         </div>
@@ -79,97 +79,54 @@
             <span hidden data-feedback-status="error">暂时没发出去，请稍后再试。</span>
             <h2>有什么想法？</h2>
             <p class="feedback-card-copy">
-              <span>哪里好用？哪里缺了？哪里让你烦？</span>
-              <span>不用邮箱，不用账号，写下来就行。</span>
+              <span>一个粗糙边角、一次顺手体验、一个缺失细节，都有帮助。</span>
+              <span>邮箱可选，反馈本身最重要。</span>
             </p>
             <label class="field">
               <span>你的反馈</span>
-              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="The side panel feels great, but I wish..."></textarea>
+              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="侧边栏挺顺手的，但我希望..."></textarea>
               <small class="field-counter" data-field-counter>0 / 500</small>
             </label>
-            <button class="button button-primary" type="submit">发给我们</button>
-            <p class="form-status" data-form-status aria-live="polite"></p>
-          </form>
-
-          <form class="feedback-card feedback-card-secondary" data-feedback-form data-feedback-type="waiting_list">
-            <input type="hidden" name="type" value="waiting_list">
-            <input type="hidden" name="source" value="website_feedback_page">
-            <input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
-            <span hidden data-feedback-status="emptyWaiting">先选一个功能，或写下你的想法。</span>
-            <span hidden data-feedback-status="sending">正在发送...</span>
-            <span hidden data-feedback-status="success">收到啦，谢谢你。</span>
-            <span hidden data-feedback-status="error">暂时没发出去，请稍后再试。</span>
-            <h2>你希望我们接下来做什么？</h2>
-            <p class="feedback-card-copy">
-              <span>选你真的会用的功能。</span>
-              <span>呼声最高的会优先做，做好后也会第一时间告诉你。</span>
-            </p>
-
-            <div class="feature-choice-grid" aria-label="Feature choices">
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="local_md">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <span>
-                  <strong>打开本地 MD 文件</strong>
-                  <small>不用离开当前流程，直接拖入本地 Markdown 阅读。</small>
-                </span>
+            <div class="feedback-form-footer">
+              <label class="field feedback-email-field">
+                <span>邮箱（可选）</span>
+                <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+                <small class="field-note">项目正式上线后，提供反馈的用户，将通过邮箱发送折扣券。</small>
               </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="shareable_html">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h10a2 2 0 0 1 2 2v10M5 21h10a2 2 0 0 0 2-2V9"/></svg>
-                </span>
-                <span>
-                  <strong>生成可分享文档</strong>
-                  <small>把零散的 Markdown 变成一份干净的 HTML，发给别人也能看。</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="highlight_annotate">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16l9-9 3 3-9 9H7z"/><path d="M14 7l3 3"/></svg>
-                </span>
-                <span>
-                  <strong>阅读时标注重点</strong>
-                  <small>边读边标记重点、写简短备注，再分享给别人。</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="export_pdf">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>
-                </span>
-                <span>
-                  <strong>导出 PDF</strong>
-                  <small>留一份整洁的离线版本，交付、归档、稍后阅读都方便。</small>
-                </span>
-              </label>
-            </div>
-
-            <div class="waiting-fields">
-              <label class="field waiting-custom-field">
-                <span>还有别的想法？</span>
-                <input type="text" name="customFeature" maxlength="150" data-counted-field data-count-max="150" placeholder="Support Mermaid diagrams, maybe?">
-                <small class="field-counter" data-field-counter>0 / 150</small>
-              </label>
-            </div>
-
-            <div class="waiting-submit-row">
-              <label class="field">
-                <span>抢先收到进展</span>
-                <input type="email" name="email" autocomplete="email" maxlength="120" data-waiting-email placeholder="you@example.com">
-              </label>
-              <button class="button button-primary" type="submit" data-waiting-submit disabled>第一时间通知我</button>
+              <button class="button button-primary" type="submit">发给我们</button>
             </div>
 
             <p class="feedback-consent">
-              <span>你选的功能准备好时，我们会联系你。</span>
-              <span>不发 newsletter。每个功能最多一封邮件，就这样。</span>
+              <span>如果只想提交反馈，可以不填邮箱。</span>
+              <span>邮箱仅用于上线折扣券或与你的反馈相关的必要跟进。</span>
             </p>
             <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
+
+          <aside class="feedback-note-panel" aria-labelledby="feedback-note-title">
+            <p class="section-label">为什么需要反馈</p>
+            <h2 id="feedback-note-title">我们会认真看每一条。</h2>
+            <div class="feedback-note-list">
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </span>
+                <p>具体问题会帮助我们决定优先修复什么。</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <p>顺手的体验会提醒我们保持简单。</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 8l8 6 8-6"/></svg>
+                </span>
+                <p>留下邮箱后，正式上线时可收到折扣券。</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>

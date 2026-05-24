@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD フィードバック</title>
-    <meta name="description" content="wowMD に次に作ってほしいものを伝えたり、気になる新機能の案内を受け取ったりできます。">
+    <meta name="description" content="wowMD へのフィードバックを送信できます。任意でメールを残すと、正式公開後に割引クーポンを受け取れます。">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/ja/feedback.html">
@@ -62,8 +62,8 @@
         <div class="feedback-hero-row">
           <div class="feedback-hero">
             <p class="section-label">フィードバック</p>
-            <h1 id="feedback-title">次に作るものを教えてください。</h1>
-            <p>実際に使いたい機能を選んでください。思いついたことがあれば、そのまま書いてください。</p>
+            <h1 id="feedback-title">wowMD への感想をお聞かせください。</h1>
+            <p>便利だった点、分かりにくい点、もう少し磨いてほしい点をそのまま書いてください。</p>
           </div>
           <a class="button button-secondary feedback-home-button" href="index.html">ホームへ戻る</a>
         </div>
@@ -79,97 +79,54 @@
             <span hidden data-feedback-status="error">まだ送信できませんでした。少し時間をおいてもう一度お試しください。</span>
             <h2>気になっていることはありますか？</h2>
             <p class="feedback-card-copy">
-              <span>便利なところ、不足しているところ、ちょっと面倒なところは？</span>
-              <span>メールもアカウントも不要です。書くだけで大丈夫。</span>
+              <span>小さな違和感、便利だった瞬間、足りない細部も役に立ちます。</span>
+              <span>メールは任意です。大事なのはメッセージです。</span>
             </p>
             <label class="field">
               <span>フィードバック</span>
-              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="The side panel feels great, but I wish..."></textarea>
+              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="サイドパネルはいい感じですが、できれば..."></textarea>
               <small class="field-counter" data-field-counter>0 / 500</small>
             </label>
-            <button class="button button-primary" type="submit">送信する</button>
-            <p class="form-status" data-form-status aria-live="polite"></p>
-          </form>
-
-          <form class="feedback-card feedback-card-secondary" data-feedback-form data-feedback-type="waiting_list">
-            <input type="hidden" name="type" value="waiting_list">
-            <input type="hidden" name="source" value="website_feedback_page">
-            <input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
-            <span hidden data-feedback-status="emptyWaiting">機能を選ぶか、ほしいものを書いてください。</span>
-            <span hidden data-feedback-status="sending">送信しています...</span>
-            <span hidden data-feedback-status="success">受け取りました。ありがとうございます。</span>
-            <span hidden data-feedback-status="error">まだ送信できませんでした。少し時間をおいてもう一度お試しください。</span>
-            <h2>次に何を作るべきですか？</h2>
-            <p class="feedback-card-copy">
-              <span>実際に使いたい機能を選んでください。</span>
-              <span>要望の多いものから作ります。準備できたら、いち早くお知らせします。</span>
-            </p>
-
-            <div class="feature-choice-grid" aria-label="Feature choices">
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="local_md">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <span>
-                  <strong>ローカルの MD を開く</strong>
-                  <small>ローカルの Markdown を、そのまま読みやすく表示できます。</small>
-                </span>
+            <div class="feedback-form-footer">
+              <label class="field feedback-email-field">
+                <span>メール（任意）</span>
+                <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+                <small class="field-note">プロジェクトの正式公開後、フィードバックを送ってくださった方にはメールで割引クーポンをお送りします。</small>
               </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="shareable_html">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h10a2 2 0 0 1 2 2v10M5 21h10a2 2 0 0 0 2-2V9"/></svg>
-                </span>
-                <span>
-                  <strong>共有しやすい HTML にする</strong>
-                  <small>Markdown を 1 つの整った HTML ページにして、そのまま共有できます。</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="highlight_annotate">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16l9-9 3 3-9 9H7z"/><path d="M14 7l3 3"/></svg>
-                </span>
-                <span>
-                  <strong>読みながらハイライトとメモ</strong>
-                  <small>大事な部分をマークし、短いメモを添えて共有できます。</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="export_pdf">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>
-                </span>
-                <span>
-                  <strong>PDF に書き出す</strong>
-                  <small>ドキュメントや共有用に、きれいなオフライン版を残せます。</small>
-                </span>
-              </label>
-            </div>
-
-            <div class="waiting-fields">
-              <label class="field waiting-custom-field">
-                <span>他にほしいものは？</span>
-                <input type="text" name="customFeature" maxlength="150" data-counted-field data-count-max="150" placeholder="Support Mermaid diagrams, maybe?">
-                <small class="field-counter" data-field-counter>0 / 150</small>
-              </label>
-            </div>
-
-            <div class="waiting-submit-row">
-              <label class="field">
-                <span>先行案内を受け取る</span>
-                <input type="email" name="email" autocomplete="email" maxlength="120" data-waiting-email placeholder="you@example.com">
-              </label>
-              <button class="button button-primary" type="submit" data-waiting-submit disabled>最初に知らせて</button>
+              <button class="button button-primary" type="submit">送信する</button>
             </div>
 
             <p class="feedback-consent">
-              <span>選んだ機能が使えるようになったらご連絡します。</span>
-              <span>ニュースレターは送りません。機能ごとに 1 通だけです。</span>
+              <span>メッセージだけ送りたい場合は、メール欄は空のままでかまいません。</span>
+              <span>メールは公開時のクーポン、またはフィードバックに関する必要な連絡にだけ使います。</span>
             </p>
             <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
+
+          <aside class="feedback-note-panel" aria-labelledby="feedback-note-title">
+            <p class="section-label">フィードバックについて</p>
+            <h2 id="feedback-note-title">すべてのメッセージに目を通します。</h2>
+            <div class="feedback-note-list">
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </span>
+                <p>具体的な問題は、何を先に直すべきかを決める助けになります。</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <p>使いやすかった点は、シンプルに保つべき部分を教えてくれます。</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 8l8 6 8-6"/></svg>
+                </span>
+                <p>メールを残すと、正式公開時に割引クーポンを受け取れます。</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>

@@ -7,6 +7,7 @@ import {
   type ChangeEvent,
   type DragEvent,
   type MouseEvent,
+  type PointerEvent,
 } from 'react'
 import './App.css'
 import {
@@ -46,6 +47,7 @@ import { applySearchHighlights } from './search'
 
 type ThemeName = 'light' | 'dark'
 type WorkspaceView = 'reader' | 'exports' | 'license'
+type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
 
 type OpenDocument = {
@@ -91,11 +93,16 @@ function App() {
   const [selectionToolbar, setSelectionToolbar] = useState<SelectionToolbar | null>(null)
   const [annotationDraft, setAnnotationDraft] = useState<AnnotationDraft | null>(null)
   const [activeAnnotation, setActiveAnnotation] = useState<Annotation | null>(null)
+  const [pendingClearAnnotations, setPendingClearAnnotations] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchIndex, setSearchIndex] = useState(0)
   const [readerFontSize, setReaderFontSize] = useState(12)
   const [outlineFontSize, setOutlineFontSize] = useState(11)
+  const [outlineWidth, setOutlineWidth] = useState(300)
   const [exportPreviewScale, setExportPreviewScale] = useState(100)
+  const [exportViewMode, setExportViewMode] = useState<ExportViewMode>('preview')
+  const [exportSearchQuery, setExportSearchQuery] = useState('')
+  const [exportSearchIndex, setExportSearchIndex] = useState(0)
   const [trialState, setTrialState] = useState(() => createTrialState())
   const [showTrialConfirm, setShowTrialConfirm] = useState(false)
   const [pendingTrialFile, setPendingTrialFile] = useState<File | null>(null)
@@ -111,11 +118,11 @@ function App() {
   const [exportTitle, setExportTitle] = useState('wowMD')
   const [htmlFilename, setHtmlFilename] = useState('wowmd-export.html')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const fileMenuRef = useRef<HTMLDetailsElement | null>(null)
   const markdownBodyRef = useRef<HTMLDivElement | null>(null)
   const trialFilePickerConfirmedRef = useRef(false)
 
   const t = useMemo(() => createTranslator(locale), [locale])
+  const feedbackHref = locale === 'en' ? '../feedback.html' : `../${locale}/feedback.html`
 
   const licenseSummary = useMemo(
     () => getLicenseSummary(trialState, t),
@@ -198,6 +205,12 @@ function App() {
   ])
 
   const estimatedHtmlSize = formatBytes(new Blob([htmlPreview || '']).size)
+
+  useEffect(() => {
+    setHtmlFilename((filename) =>
+      withThemeSuffix(filename || safeExportFilename(document?.name || 'wowmd-export', 'html'), theme),
+    )
+  }, [document?.name, theme])
 
   useEffect(() => {
     if (!markdownBodyRef.current) return
@@ -285,31 +298,41 @@ function App() {
     setShowNotes(true)
   }
 
-  function closeFileMenu() {
-    if (fileMenuRef.current) {
-      fileMenuRef.current.open = false
-    }
-  }
-
   function openAnotherFromFileMenu() {
-    closeFileMenu()
     requestLocalFile()
   }
 
   function openSampleFromFileMenu() {
-    closeFileMenu()
     void openSample()
   }
 
   function clearFileFromFileMenu() {
-    closeFileMenu()
     clearCurrentFile()
+  }
+
+  function startOutlineResize(event: PointerEvent<HTMLButtonElement>) {
+    event.preventDefault()
+    const startX = event.clientX
+    const startWidth = outlineWidth
+    const resize = (pointerEvent: globalThis.PointerEvent) => {
+      const nextWidth = startWidth + pointerEvent.clientX - startX
+      setOutlineWidth(Math.min(440, Math.max(240, nextWidth)))
+    }
+    const stop = () => {
+      window.removeEventListener('pointermove', resize)
+      window.removeEventListener('pointerup', stop)
+      globalThis.document.body.classList.remove('is-resizing-outline')
+    }
+
+    globalThis.document.body.classList.add('is-resizing-outline')
+    window.addEventListener('pointermove', resize)
+    window.addEventListener('pointerup', stop, { once: true })
   }
 
   function setExportDefaults(name: string) {
     const baseName = name.replace(/\.(md|markdown)$/i, '') || 'wowMD'
     setExportTitle(baseName)
-    setHtmlFilename(safeExportFilename(name, 'html'))
+    setHtmlFilename(withThemeSuffix(safeExportFilename(name, 'html'), theme))
   }
 
   function requestLocalFile() {
@@ -386,17 +409,12 @@ function App() {
       copied = copyTextWithFallback(codeText)
     }
 
-    if (copied) {
-      button.textContent = 'Copied'
-      window.setTimeout(() => {
-        button.textContent = 'Copy'
-      }, 1200)
-    } else {
-      button.textContent = 'Failed'
-      window.setTimeout(() => {
-        button.textContent = 'Copy'
-      }, 1200)
-    }
+    button.dataset.state = copied ? 'copied' : 'failed'
+    button.setAttribute('aria-label', copied ? 'Code copied' : 'Copy failed')
+    window.setTimeout(() => {
+      delete button.dataset.state
+      button.setAttribute('aria-label', 'Copy code')
+    }, 1200)
   }
 
   function addAnnotation(color: AnnotationColor, note = '') {
@@ -522,10 +540,9 @@ function App() {
 
   function clearDocumentAnnotations() {
     if (!document) return
-    const confirmed = window.confirm(t('deleteAllNotesConfirm'))
-    if (!confirmed) return
     setAnnotations([])
     void saveAnnotationsToDb(document.fingerprint, [])
+    setPendingClearAnnotations(false)
   }
 
   function openExport() {
@@ -612,64 +629,31 @@ function App() {
         <a className="brand" href="/" aria-label="wowMD home">
           <img src="assets/brand/logo-lockup-outlined.svg" alt="wowMD" />
         </a>
-        {document ? (
-          <nav className="topbar-nav" aria-label="App navigation">
-            <button
-              type="button"
-              className={view === 'reader' ? 'active' : ''}
-              onClick={() => setView('reader')}
-            >
-              {t('navReader')}
-            </button>
-            <button
-              type="button"
-              className={view === 'exports' ? 'active' : ''}
-              onClick={openExport}
-            >
-              {t('navExports')}
-            </button>
-            <button
-              type="button"
-              className={view === 'license' ? 'active' : ''}
-              onClick={() => setView('license')}
-            >
-              {t('navLicense')}
-            </button>
-          </nav>
-        ) : null}
         <div className="topbar-right">
+          {document ? (
+            <nav className="topbar-nav" aria-label="App navigation">
+              <button
+                type="button"
+                className={view === 'reader' ? 'active' : ''}
+                onClick={() => setView('reader')}
+              >
+                {t('navReader')}
+              </button>
+              <button
+                type="button"
+                className={view === 'exports' ? 'active' : ''}
+                onClick={openExport}
+              >
+                {t('navExports')}
+              </button>
+            </nav>
+          ) : null}
           <LanguagePicker
             locale={locale}
             isOpen={languageMenuOpen}
             setIsOpen={setLanguageMenuOpen}
             changeLocale={changeLocale}
           />
-          {document ? (
-            <details className="file-menu" ref={fileMenuRef}>
-              <summary>{document.name}</summary>
-              <button type="button" onClick={openAnotherFromFileMenu}>
-                {t('openAnother')}
-              </button>
-              <button type="button" onClick={openSampleFromFileMenu}>
-                {t('openSample')}
-              </button>
-              <button type="button" onClick={clearFileFromFileMenu}>
-                {t('clearFile')}
-              </button>
-            </details>
-          ) : null}
-          <button
-            className={`license-pill ${trialState.isExpired ? 'expired' : ''}`}
-            id="license"
-            type="button"
-            onClick={() => setView('license')}
-          >
-            <span>{licenseSummary.label}</span>
-            <strong>{licenseSummary.detail}</strong>
-          </button>
-          <button className="buy-pill" type="button" onClick={() => setView('license')}>
-            {t('buyLicense')}
-          </button>
         </div>
       </header>
 
@@ -768,11 +752,23 @@ function App() {
               theme={theme}
               setTheme={setTheme}
               showOutline={showOutline}
+              outlineWidth={outlineWidth}
               setShowOutline={setShowOutline}
               showNotes={showNotes}
               toggleNotes={toggleNotes}
               documentOpen={Boolean(document)}
+              documentName={document?.name || ''}
               openExport={openExport}
+              readerFontSize={readerFontSize}
+              setReaderFontSize={setReaderFontSize}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              searchIndex={searchIndex}
+              setSearchIndex={setSearchIndex}
+              searchCount={rendered.searchCount}
+              openAnother={openAnotherFromFileMenu}
+              openSample={openSampleFromFileMenu}
+              clearFile={clearFileFromFileMenu}
             />
 
             {selectionToolbar && selectionQuote ? (
@@ -813,6 +809,22 @@ function App() {
                   type="button"
                   aria-label="Rose highlight"
                   onClick={() => addAnnotation('rose')}
+                >
+                  <span />
+                </button>
+                <button
+                  className="mark-violet"
+                  type="button"
+                  aria-label="Violet highlight"
+                  onClick={() => addAnnotation('violet')}
+                >
+                  <span />
+                </button>
+                <button
+                  className="mark-amber"
+                  type="button"
+                  aria-label="Amber highlight"
+                  onClick={() => addAnnotation('amber')}
                 >
                   <span />
                 </button>
@@ -883,6 +895,7 @@ function App() {
                 {
                   '--reader-font-size': `${readerFontSize}px`,
                   '--outline-font-size': `${outlineFontSize}px`,
+                  '--outline-width': `${outlineWidth}px`,
                 } as CSSProperties
               }
             >
@@ -922,6 +935,12 @@ function App() {
                   ) : (
                     <p className="empty-outline">{t('readerEmptyBody')}</p>
                   )}
+                  <button
+                    className="outline-resize-handle"
+                    type="button"
+                    aria-label="Resize outline"
+                    onPointerDown={startOutlineResize}
+                  />
                 </aside>
               ) : null}
 
@@ -929,23 +948,6 @@ function App() {
                 {document ? (
                   <>
                     <div className="reader-document">
-                      <div className="scale-controls reader-scale-controls" aria-label="Reader text size">
-                        <button
-                          type="button"
-                          aria-label="Decrease reader text size"
-                          onClick={() => setReaderFontSize((size) => Math.max(11, size - 1))}
-                        >
-                          -
-                        </button>
-                        <span>{readerFontSize}</span>
-                        <button
-                          type="button"
-                          aria-label="Increase reader text size"
-                          onClick={() => setReaderFontSize((size) => Math.min(18, size + 1))}
-                        >
-                          +
-                        </button>
-                      </div>
                       <header className="document-header">
                         <div>
                           <p className="eyebrow">{t('currentDocument')}</p>
@@ -962,6 +964,7 @@ function App() {
                         dangerouslySetInnerHTML={{ __html: rendered.html }}
                       />
                     </div>
+                    <FeedbackLink href={feedbackHref} label={t('feedback')} />
                   </>
                 ) : trialState.isExpired ? (
                   <div className="empty-reader expired-reader">
@@ -1000,7 +1003,7 @@ function App() {
                   ) : null}
                   {annotations.length ? (
                     <div className="note-actions">
-                      <button type="button" onClick={clearDocumentAnnotations}>
+                      <button type="button" onClick={() => setPendingClearAnnotations(true)}>
                         {t('clear')}
                       </button>
                     </div>
@@ -1097,6 +1100,45 @@ function App() {
           </div>
         ) : null}
 
+        {pendingClearAnnotations ? (
+          <div className="annotation-modal-layer" role="presentation">
+            <section
+              className="annotation-modal confirm-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('deleteAllNotesConfirm')}
+            >
+              <button
+                className="modal-close"
+                type="button"
+                aria-label="Close"
+                onClick={() => setPendingClearAnnotations(false)}
+              >
+                <span className="icon-mask icon-x" aria-hidden="true" />
+              </button>
+              <p className="eyebrow">{t('notes')}</p>
+              <h2>{t('clear')}</h2>
+              <p>{t('deleteAllNotesConfirm')}</p>
+              <div className="modal-actions">
+                <button
+                  className="ghost-action"
+                  type="button"
+                  onClick={() => setPendingClearAnnotations(false)}
+                >
+                  {t('cancel')}
+                </button>
+                <button
+                  className="primary-action danger-action"
+                  type="button"
+                  onClick={clearDocumentAnnotations}
+                >
+                  {t('clear')}
+                </button>
+              </div>
+            </section>
+          </div>
+        ) : null}
+
         {view === 'exports' ? (
           <ExportWorkspace
             t={t}
@@ -1105,7 +1147,15 @@ function App() {
             setTheme={setTheme}
             exportPreviewScale={exportPreviewScale}
             setExportPreviewScale={setExportPreviewScale}
+            exportViewMode={exportViewMode}
+            setExportViewMode={setExportViewMode}
+            exportSearchQuery={exportSearchQuery}
+            setExportSearchQuery={setExportSearchQuery}
+            exportSearchIndex={exportSearchIndex}
+            setExportSearchIndex={setExportSearchIndex}
             htmlPreview={htmlPreview}
+            toc={rendered.toc}
+            annotations={annotations}
             includeToc={includeToc}
             setIncludeToc={setIncludeToc}
             includeHeadingAnchors={includeHeadingAnchors}
@@ -1119,6 +1169,7 @@ function App() {
             estimatedHtmlSize={estimatedHtmlSize}
             canExport={licenseSummary.canExport}
             downloadHtmlExport={downloadHtmlExport}
+            feedbackHref={feedbackHref}
           />
         ) : null}
 
@@ -1163,7 +1214,97 @@ function App() {
             </p>
           </section>
         ) : null}
+
       </main>
+    </div>
+  )
+}
+
+function FeedbackLink(props: { href: string; label: string }) {
+  return (
+    <a
+      className="reader-feedback-link"
+      href={props.href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={props.label}
+    >
+      <span className="feedback-bubble-icon" aria-hidden="true" />
+      <span>{props.label}</span>
+    </a>
+  )
+}
+
+function FileMenu(props: {
+  documentName: string
+  openAnother: () => void
+  openSample: () => void
+  clearFile: () => void
+  t: (key: string) => string
+}) {
+  const closeThen = (event: MouseEvent<HTMLButtonElement>, action: () => void) => {
+    const menu = event.currentTarget.closest('details')
+    if (menu) menu.open = false
+    action()
+  }
+
+  return (
+    <details className="file-menu">
+      <summary>{props.documentName}</summary>
+      <button type="button" onClick={(event) => closeThen(event, props.openAnother)}>
+        {props.t('openAnother')}
+      </button>
+      <button type="button" onClick={(event) => closeThen(event, props.openSample)}>
+        {props.t('openSample')}
+      </button>
+      <button type="button" onClick={(event) => closeThen(event, props.clearFile)}>
+        {props.t('clearFile')}
+      </button>
+    </details>
+  )
+}
+
+function SearchControl(props: {
+  t: (key: string) => string
+  value: string
+  onChange: (value: string) => void
+  index: number
+  count: number
+  previous: () => void
+  next: () => void
+  disabled?: boolean
+}) {
+  const hasResults = props.count > 0
+
+  return (
+    <div className="search-control" role="search">
+      <input
+        type="search"
+        value={props.value}
+        disabled={props.disabled}
+        placeholder={props.t('search')}
+        aria-label={props.t('search')}
+        onChange={(event) => props.onChange(event.target.value)}
+      />
+      <span className="search-count">
+        {props.value.trim() ? (hasResults ? `${props.index + 1}/${props.count}` : `0/0`) : props.t('search')}
+      </span>
+      <button
+        type="button"
+        disabled={props.disabled || !hasResults}
+        aria-label={props.t('prev')}
+        onClick={props.previous}
+      >
+        -
+      </button>
+      <button
+        type="button"
+        disabled={props.disabled || !hasResults}
+        aria-label={props.t('next')}
+        onClick={props.next}
+      >
+        +
+      </button>
     </div>
   )
 }
@@ -1173,16 +1314,32 @@ type ReaderToolbarProps = {
   theme: ThemeName
   setTheme: (theme: ThemeName) => void
   showOutline: boolean
+  outlineWidth: number
   setShowOutline: (updater: (value: boolean) => boolean) => void
   showNotes: boolean
   toggleNotes: () => void
   documentOpen: boolean
+  documentName: string
   openExport: () => void
+  readerFontSize: number
+  setReaderFontSize: (value: number | ((value: number) => number)) => void
+  searchQuery: string
+  setSearchQuery: (value: string) => void
+  searchIndex: number
+  setSearchIndex: (value: number | ((value: number) => number)) => void
+  searchCount: number
+  openAnother: () => void
+  openSample: () => void
+  clearFile: () => void
 }
 
 function ReaderToolbar(props: ReaderToolbarProps) {
   return (
-    <section className="tool-row" aria-label="Reader controls">
+    <section
+      className={`tool-row reader-tool-row ${props.showOutline ? 'has-outline' : 'no-outline'} ${props.showNotes ? 'has-notes' : 'no-notes'}`}
+      style={{ '--outline-width': `${props.outlineWidth}px` } as CSSProperties}
+      aria-label="Reader controls"
+    >
       <div className="toolbar-left">
         <div className="segmented">
           {themeNames.map((name) => (
@@ -1213,6 +1370,55 @@ function ReaderToolbar(props: ReaderToolbarProps) {
             {props.t('notes')}
           </button>
         </div>
+      </div>
+      <div className="toolbar-center toolbar-center-control">
+        {props.documentOpen ? (
+          <FileMenu
+            documentName={props.documentName}
+            openAnother={props.openAnother}
+            openSample={props.openSample}
+            clearFile={props.clearFile}
+            t={props.t}
+          />
+        ) : null}
+        <div className="scale-controls" aria-label="Reader text size">
+          <button
+            type="button"
+            aria-label="Decrease reader text size"
+            onClick={() => props.setReaderFontSize((size) => Math.max(11, size - 1))}
+          >
+            -
+          </button>
+          <span>{props.readerFontSize}</span>
+          <button
+            type="button"
+            aria-label="Increase reader text size"
+            onClick={() => props.setReaderFontSize((size) => Math.min(18, size + 1))}
+          >
+            +
+          </button>
+        </div>
+        <SearchControl
+          t={props.t}
+          value={props.searchQuery}
+          onChange={(value) => {
+            props.setSearchQuery(value)
+            props.setSearchIndex(0)
+          }}
+          index={props.searchIndex}
+          count={props.searchCount}
+          disabled={!props.documentOpen}
+          previous={() =>
+            props.setSearchIndex((index) =>
+              props.searchCount ? (index - 1 + props.searchCount) % props.searchCount : 0,
+            )
+          }
+          next={() =>
+            props.setSearchIndex((index) =>
+              props.searchCount ? (index + 1) % props.searchCount : 0,
+            )
+          }
+        />
       </div>
       <div className="toolbar-right" id="exports">
         <div className="export-actions">
@@ -1293,7 +1499,15 @@ type ExportWorkspaceProps = {
   setTheme: (theme: ThemeName) => void
   exportPreviewScale: number
   setExportPreviewScale: (value: number | ((value: number) => number)) => void
+  exportViewMode: ExportViewMode
+  setExportViewMode: (mode: ExportViewMode) => void
+  exportSearchQuery: string
+  setExportSearchQuery: (value: string) => void
+  exportSearchIndex: number
+  setExportSearchIndex: (value: number | ((value: number) => number)) => void
   htmlPreview: string
+  toc: TocItem[]
+  annotations: Annotation[]
   includeToc: boolean
   setIncludeToc: (value: boolean) => void
   includeHeadingAnchors: boolean
@@ -1307,9 +1521,43 @@ type ExportWorkspaceProps = {
   estimatedHtmlSize: string
   canExport: boolean
   downloadHtmlExport: () => void
+  feedbackHref: string
 }
 
 function ExportWorkspace(props: ExportWorkspaceProps) {
+  const previewFrameRef = useRef<HTMLIFrameElement | null>(null)
+  const sourcePreviewRef = useRef<HTMLPreElement | null>(null)
+  const previewSearch = useMemo(
+    () => applySearchHighlights(props.htmlPreview, props.exportSearchQuery, props.exportSearchIndex),
+    [props.exportSearchIndex, props.exportSearchQuery, props.htmlPreview],
+  )
+  const sourceSearch = useMemo(
+    () => highlightPlainText(props.htmlPreview, props.exportSearchQuery, props.exportSearchIndex),
+    [props.exportSearchIndex, props.exportSearchQuery, props.htmlPreview],
+  )
+  const activeSearchCount =
+    props.exportViewMode === 'source' ? sourceSearch.count : previewSearch.count
+
+  useEffect(() => {
+    if (props.exportViewMode === 'source') {
+      sourcePreviewRef.current
+        ?.querySelector('.source-search-hit.active')
+        ?.scrollIntoView({ block: 'center' })
+      return
+    }
+
+    const frame = previewFrameRef.current
+    const scrollActiveHit = () => {
+      frame?.contentDocument
+        ?.querySelector('.wowmd-search-hit.active')
+        ?.scrollIntoView({ block: 'center' })
+    }
+
+    scrollActiveHit()
+    const timeout = window.setTimeout(scrollActiveHit, 80)
+    return () => window.clearTimeout(timeout)
+  }, [previewSearch.html, props.exportViewMode, sourceSearch.html])
+
   if (!props.document) {
     return (
       <section className="center-panel">
@@ -1320,58 +1568,107 @@ function ExportWorkspace(props: ExportWorkspaceProps) {
     )
   }
 
+  const hasExportToc = props.includeToc && props.toc.length > 0
+  const hasExportNotes = props.includeHighlights && props.annotations.length > 0
+
   return (
     <section className="export-workspace">
-      <section className="tool-row export-tool-row" aria-label="Export controls">
+      <section
+        className={`tool-row export-tool-row ${hasExportToc ? 'has-toc' : 'no-toc'} ${hasExportNotes ? 'has-notes' : 'no-notes'}`}
+        aria-label="Export controls"
+      >
         <div className="toolbar-left">
           <div className="segmented">
             {themeNames.map((name) => (
               <button
                 key={name}
                 type="button"
-              className={props.theme === name ? 'active' : ''}
-              onClick={() => props.setTheme(name)}
-            >
-              {props.t(name)}
+                className={props.theme === name ? 'active' : ''}
+                onClick={() => props.setTheme(name)}
+              >
+                {props.t(name)}
               </button>
             ))}
           </div>
         </div>
-        <div className="toolbar-center export-preview-status">
-          <span>{props.t('preview')}</span>
-          <div className="scale-controls" aria-label="Export preview scale">
-            <button
-              type="button"
-              aria-label="Decrease export preview scale"
-              onClick={() => props.setExportPreviewScale((scale) => Math.max(70, scale - 10))}
-            >
-              -
-            </button>
-            <span>{props.exportPreviewScale}%</span>
-            <button
-              type="button"
-              aria-label="Increase export preview scale"
-              onClick={() => props.setExportPreviewScale((scale) => Math.min(130, scale + 10))}
-            >
-              +
-            </button>
+        <div className="toolbar-center toolbar-center-control">
+          <div className="segmented export-mode-tabs">
+            {(['preview', 'source'] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                className={props.exportViewMode === mode ? 'active' : ''}
+                onClick={() => props.setExportViewMode(mode)}
+              >
+                {props.t(mode === 'preview' ? 'preview' : 'sourceTab')}
+              </button>
+            ))}
           </div>
+          {props.exportViewMode === 'preview' ? (
+            <div className="scale-controls" aria-label="Export preview scale">
+              <button
+                type="button"
+                aria-label="Decrease export preview scale"
+                onClick={() => props.setExportPreviewScale((scale) => Math.max(70, scale - 10))}
+              >
+                -
+              </button>
+              <span>{props.exportPreviewScale}%</span>
+              <button
+                type="button"
+                aria-label="Increase export preview scale"
+                onClick={() => props.setExportPreviewScale((scale) => Math.min(130, scale + 10))}
+              >
+                +
+              </button>
+            </div>
+          ) : null}
+          <SearchControl
+            t={props.t}
+            value={props.exportSearchQuery}
+            onChange={(value) => {
+              props.setExportSearchQuery(value)
+              props.setExportSearchIndex(0)
+            }}
+            index={props.exportSearchIndex}
+            count={activeSearchCount}
+            previous={() =>
+              props.setExportSearchIndex((index) =>
+                activeSearchCount ? (index - 1 + activeSearchCount) % activeSearchCount : 0,
+              )
+            }
+            next={() =>
+              props.setExportSearchIndex((index) =>
+                activeSearchCount ? (index + 1) % activeSearchCount : 0,
+              )
+            }
+          />
         </div>
         <div className="toolbar-right" />
       </section>
 
       <div className="export-layout">
         <div className="export-preview-pane">
-          <div
-            className="html-preview-viewport"
-            style={{ '--export-preview-scale': props.exportPreviewScale / 100 } as CSSProperties}
-          >
+          {props.exportViewMode === 'preview' ? (
+            <div
+              className="html-preview-viewport"
+              style={{ '--export-preview-scale': props.exportPreviewScale / 100 } as CSSProperties}
+            >
               <iframe
+                ref={previewFrameRef}
                 className="html-preview-frame"
                 title="HTML export preview"
-                srcDoc={props.htmlPreview}
+                srcDoc={previewSearch.html}
               />
-          </div>
+            </div>
+          ) : (
+            <pre
+              ref={sourcePreviewRef}
+              className="source-preview"
+              dangerouslySetInnerHTML={{ __html: sourceSearch.html }}
+            />
+          )}
+          <FeedbackLink href={props.feedbackHref} label={props.t('feedback')} />
         </div>
 
         <aside className="export-options-panel">
@@ -1386,32 +1683,35 @@ function HtmlExportOptions(props: ExportWorkspaceProps) {
   return (
     <>
       <p className="panel-label">{props.t('include')}</p>
-      <ToggleRow
-        label={props.t('tableOfContents')}
-        checked={props.includeToc}
-        onChange={props.setIncludeToc}
-      />
-      <ToggleRow
-        label={props.t('headingAnchors')}
-        checked={props.includeHeadingAnchors}
-        onChange={props.setIncludeHeadingAnchors}
-      />
-      <ToggleRow
-        label={props.t('highlights')}
-        checked={props.includeHighlights}
-        onChange={props.setIncludeHighlights}
-      />
-      <ToggleRow
-        label={props.t('exportMetadata')}
-        checked={props.includeExportMetadata}
-        onChange={props.setIncludeExportMetadata}
-      />
+      <div className="export-option-group">
+        <ToggleRow
+          label={props.t('tableOfContents')}
+          checked={props.includeToc}
+          onChange={props.setIncludeToc}
+        />
+        <ToggleRow
+          label={props.t('headingAnchors')}
+          checked={props.includeHeadingAnchors}
+          onChange={props.setIncludeHeadingAnchors}
+        />
+        <ToggleRow
+          label={props.t('highlights')}
+          checked={props.includeHighlights}
+          onChange={props.setIncludeHighlights}
+        />
+        <ToggleRow
+          label={props.t('exportMetadata')}
+          checked={props.includeExportMetadata}
+          onChange={props.setIncludeExportMetadata}
+        />
+      </div>
       <label className="export-field">
         <span>{props.t('filename')}</span>
         <input
           value={props.htmlFilename}
           onChange={(event) => props.setHtmlFilename(event.target.value)}
         />
+        <small>{props.t('exportThemeFilenameHint')}</small>
       </label>
       <div className="export-download-box">
         <small>
@@ -1459,10 +1759,67 @@ function formatBytes(bytes: number) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`
 }
 
+function withThemeSuffix(filename: string, theme: ThemeName) {
+  const normalized = filename.trim() || 'wowmd-export.html'
+  const withoutExtension = normalized.replace(/\.html?$/i, '')
+  const base = withoutExtension.replace(/-(light|dark)$/i, '')
+  return `${base}-${theme}.html`
+}
+
+function highlightPlainText(text: string, query: string, activeIndex: number) {
+  const needle = query.trim()
+  if (!needle) return { html: escapeHtml(text), count: 0 }
+
+  const lowerText = text.toLowerCase()
+  const lowerNeedle = needle.toLowerCase()
+  const parts: string[] = []
+  let cursor = 0
+  let count = 0
+
+  while (cursor < text.length) {
+    const index = lowerText.indexOf(lowerNeedle, cursor)
+    if (index < 0) break
+
+    parts.push(escapeHtml(text.slice(cursor, index)))
+    parts.push(
+      `<mark class="source-search-hit ${count === activeIndex ? 'active' : ''}">${escapeHtml(
+        text.slice(index, index + needle.length),
+      )}</mark>`,
+    )
+    count += 1
+    cursor = index + needle.length
+  }
+
+  parts.push(escapeHtml(text.slice(cursor)))
+  return { html: parts.join(''), count }
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (char) => {
+    const entities: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }
+    return entities[char]
+  })
+}
+
 function truncateText(text: string, maxLength: number) {
   const normalized = text.replace(/\s+/g, ' ').trim()
   if (normalized.length <= maxLength) return normalized
   return `${normalized.slice(0, maxLength)}...`
+}
+
+function copyIconSvg() {
+  return `
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <rect x="8" y="8" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.8" />
+      <path d="M6 16H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </svg>
+  `
 }
 
 function addCodeCopyButtonsToHtml(html: string) {
@@ -1476,7 +1833,7 @@ function addCodeCopyButtonsToHtml(html: string) {
     const button = doc.createElement('button')
     button.className = 'code-copy-button'
     button.type = 'button'
-    button.textContent = 'Copy'
+    button.innerHTML = copyIconSvg()
     button.setAttribute('aria-label', 'Copy code')
 
     pre.append(button)

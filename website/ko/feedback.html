@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD 피드백</title>
-    <meta name="description" content="wowMD가 다음에 무엇을 만들면 좋을지 알려주고, 관심 있는 새 기능 소식을 먼저 받아보세요.">
+    <meta name="description" content="wowMD에 피드백을 보내고, 원한다면 공식 출시 후 할인 쿠폰을 받을 이메일을 남겨 주세요.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/ko/feedback.html">
@@ -62,8 +62,8 @@
         <div class="feedback-hero-row">
           <div class="feedback-hero">
             <p class="section-label">피드백</p>
-            <h1 id="feedback-title">다음에 무엇을 만들면 좋을지 알려주세요.</h1>
-            <p>실제로 쓸 기능을 골라 주세요. 생각나는 점이 있으면 편하게 남겨 주세요.</p>
+            <h1 id="feedback-title">wowMD 사용감을 알려주세요.</h1>
+            <p>편했던 점, 헷갈렸던 점, 조금 더 다듬었으면 하는 부분을 편하게 남겨 주세요.</p>
           </div>
           <a class="button button-secondary feedback-home-button" href="index.html">홈으로 돌아가기</a>
         </div>
@@ -79,97 +79,54 @@
             <span hidden data-feedback-status="error">아직 보내지 못했습니다. 잠시 후 다시 시도해 주세요.</span>
             <h2>불편하거나 아쉬운 점이 있나요?</h2>
             <p class="feedback-card-copy">
-              <span>잘 되는 점, 빠진 점, 거슬리는 점이 무엇인가요?</span>
-              <span>이메일도 계정도 필요 없어요. 그냥 적어 주세요.</span>
+              <span>작은 불편, 유용했던 순간, 빠진 세부 사항 모두 도움이 됩니다.</span>
+              <span>이메일은 선택 사항입니다. 가장 중요한 건 메시지예요.</span>
             </p>
             <label class="field">
               <span>피드백</span>
-              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="The side panel feels great, but I wish..."></textarea>
+              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="사이드 패널은 좋은데, 이런 점이 있으면 좋겠어요..."></textarea>
               <small class="field-counter" data-field-counter>0 / 500</small>
             </label>
-            <button class="button button-primary" type="submit">보내기</button>
-            <p class="form-status" data-form-status aria-live="polite"></p>
-          </form>
-
-          <form class="feedback-card feedback-card-secondary" data-feedback-form data-feedback-type="waiting_list">
-            <input type="hidden" name="type" value="waiting_list">
-            <input type="hidden" name="source" value="website_feedback_page">
-            <input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
-            <span hidden data-feedback-status="emptyWaiting">기능을 고르거나 원하는 기능을 적어 주세요.</span>
-            <span hidden data-feedback-status="sending">보내는 중...</span>
-            <span hidden data-feedback-status="success">접수됐어요. 감사합니다.</span>
-            <span hidden data-feedback-status="error">아직 보내지 못했습니다. 잠시 후 다시 시도해 주세요.</span>
-            <h2>다음에는 무엇을 만들까요?</h2>
-            <p class="feedback-card-copy">
-              <span>실제로 쓸 기능을 골라 주세요.</span>
-              <span>가장 많이 선택된 기능부터 만들고, 준비되면 가장 먼저 알려드릴게요.</span>
-            </p>
-
-            <div class="feature-choice-grid" aria-label="Feature choices">
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="local_md">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <span>
-                  <strong>로컬 MD 파일 열기</strong>
-                  <small>작업 흐름을 벗어나지 않고 로컬 Markdown을 바로 읽을 수 있어요.</small>
-                </span>
+            <div class="feedback-form-footer">
+              <label class="field feedback-email-field">
+                <span>이메일(선택)</span>
+                <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+                <small class="field-note">프로젝트가 공식 출시되면 피드백을 남겨 주신 분께 이메일로 할인 쿠폰을 보내드립니다.</small>
               </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="shareable_html">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h10a2 2 0 0 1 2 2v10M5 21h10a2 2 0 0 0 2-2V9"/></svg>
-                </span>
-                <span>
-                  <strong>공유하기 쉬운 문서 만들기</strong>
-                  <small>Markdown을 깔끔한 단일 HTML 문서로 바꿔 누구에게나 보낼 수 있어요.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="highlight_annotate">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16l9-9 3 3-9 9H7z"/><path d="M14 7l3 3"/></svg>
-                </span>
-                <span>
-                  <strong>읽으면서 표시하고 메모하기</strong>
-                  <small>중요한 부분을 표시하고 짧은 메모를 남겨 함께 공유할 수 있어요.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="export_pdf">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>
-                </span>
-                <span>
-                  <strong>PDF로 내보내기</strong>
-                  <small>문서 전달, 보관, 나중에 읽기에 좋은 깔끔한 오프라인 파일로 저장해요.</small>
-                </span>
-              </label>
-            </div>
-
-            <div class="waiting-fields">
-              <label class="field waiting-custom-field">
-                <span>또 필요한 기능이 있나요?</span>
-                <input type="text" name="customFeature" maxlength="150" data-counted-field data-count-max="150" placeholder="Support Mermaid diagrams, maybe?">
-                <small class="field-counter" data-field-counter>0 / 150</small>
-              </label>
-            </div>
-
-            <div class="waiting-submit-row">
-              <label class="field">
-                <span>먼저 받아보기</span>
-                <input type="email" name="email" autocomplete="email" maxlength="120" data-waiting-email placeholder="you@example.com">
-              </label>
-              <button class="button button-primary" type="submit" data-waiting-submit disabled>먼저 알려줘요</button>
+              <button class="button button-primary" type="submit">보내기</button>
             </div>
 
             <p class="feedback-consent">
-              <span>선택한 기능이 준비되면 연락드릴게요.</span>
-              <span>뉴스레터는 보내지 않습니다. 기능 하나당 이메일 한 통이면 끝입니다.</span>
+              <span>메시지만 보내고 싶다면 이메일은 비워 두셔도 됩니다.</span>
+              <span>이메일은 출시 쿠폰 또는 피드백 관련 필요한 후속 연락에만 사용합니다.</span>
             </p>
             <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
+
+          <aside class="feedback-note-panel" aria-labelledby="feedback-note-title">
+            <p class="section-label">피드백이 필요한 이유</p>
+            <h2 id="feedback-note-title">남겨 주신 내용은 모두 꼼꼼히 읽습니다.</h2>
+            <div class="feedback-note-list">
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </span>
+                <p>구체적인 문제는 무엇을 먼저 고칠지 정하는 데 도움이 됩니다.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <p>좋았던 경험은 계속 단순하게 유지할 부분을 알려 줍니다.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 8l8 6 8-6"/></svg>
+                </span>
+                <p>이메일을 남기면 공식 출시 때 할인 쿠폰을 받을 수 있습니다.</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>

@@ -62,8 +62,8 @@
         <div class="feedback-hero-row">
           <div class="feedback-hero">
             <p class="section-label" data-i18n="feedback.label">Feedback</p>
-            <h1 id="feedback-title" data-i18n="feedback.title">Tell us what to build next.</h1>
-            <p data-i18n="feedback.subtitle">Pick what you'd actually use. Leave a thought if you have one.</p>
+            <h1 id="feedback-title" data-i18n="feedback.title">Send feedback to wowMD.</h1>
+            <p data-i18n="feedback.subtitle">Tell us what feels helpful, confusing, missing, or worth polishing next.</p>
           </div>
           <a class="button button-secondary feedback-home-button" href="{{homeUrl}}" data-i18n="feedback.backHome">Back home</a>
         </div>
@@ -79,97 +79,54 @@
             <span hidden data-feedback-status="error" data-i18n="feedback.statusError">Could not send yet. Please try again later.</span>
             <h2 data-i18n="feedback.quickTitle">Something on your mind?</h2>
             <p class="feedback-card-copy">
-              <span data-i18n="feedback.quickLineOne">What's working? What's missing? What's just annoying?</span>
-              <span data-i18n="feedback.quickLineTwo">No email, no account. Just type.</span>
+              <span data-i18n="feedback.quickLineOne">A rough edge, a useful moment, a missing detail: all of it helps.</span>
+              <span data-i18n="feedback.quickLineTwo">Email is optional. Your message is the important part.</span>
             </p>
             <label class="field">
               <span data-i18n="feedback.messageLabel">Your feedback</span>
               <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" data-i18n-placeholder="feedback.messagePlaceholder" placeholder="The side panel feels great, but I wish..."></textarea>
               <small class="field-counter" data-field-counter>0 / 500</small>
             </label>
-            <button class="button button-primary" type="submit" data-i18n="feedback.submitButton">Send it</button>
-            <p class="form-status" data-form-status aria-live="polite"></p>
-          </form>
-
-          <form class="feedback-card feedback-card-secondary" data-feedback-form data-feedback-type="waiting_list">
-            <input type="hidden" name="type" value="waiting_list">
-            <input type="hidden" name="source" value="website_feedback_page">
-            <input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
-            <span hidden data-feedback-status="emptyWaiting" data-i18n="feedback.statusEmptyWaiting">Pick a feature or add your own idea first.</span>
-            <span hidden data-feedback-status="sending" data-i18n="feedback.statusSending">Sending...</span>
-            <span hidden data-feedback-status="success" data-i18n="feedback.statusSuccess">Received. Thank you.</span>
-            <span hidden data-feedback-status="error" data-i18n="feedback.statusError">Could not send yet. Please try again later.</span>
-            <h2 data-i18n="feedback.waitTitle">What should we build next?</h2>
-            <p class="feedback-card-copy">
-              <span data-i18n="feedback.waitSubtitleOne">Pick the features you'd actually use.</span>
-              <span data-i18n="feedback.waitSubtitleTwo">The most-wanted ones get built first — and you'll hear about it first.</span>
-            </p>
-
-            <div class="feature-choice-grid" aria-label="Feature choices">
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="local_md">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <span>
-                  <strong data-i18n="feedback.featureLocalTitle">Open local MD files</strong>
-                  <small data-i18n="feedback.featureLocalBody">Drop in a local Markdown file and read it without leaving your flow.</small>
-                </span>
+            <div class="feedback-form-footer">
+              <label class="field feedback-email-field">
+                <span data-i18n="feedback.emailLabel">Email (optional)</span>
+                <input type="email" name="email" autocomplete="email" maxlength="120" data-i18n-placeholder="feedback.emailPlaceholder" placeholder="you@example.com">
+                <small class="field-note" data-i18n="feedback.emailNote">After the project officially launches, users who provided feedback will receive a discount coupon by email.</small>
               </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="shareable_html">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h10a2 2 0 0 1 2 2v10M5 21h10a2 2 0 0 0 2-2V9"/></svg>
-                </span>
-                <span>
-                  <strong data-i18n="feedback.featureShareTitle">Make it easy to share</strong>
-                  <small data-i18n="feedback.featureShareBody">Turn messy Markdown into one clean HTML page you can send to anyone.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="highlight_annotate">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16l9-9 3 3-9 9H7z"/><path d="M14 7l3 3"/></svg>
-                </span>
-                <span>
-                  <strong data-i18n="feedback.featureAnnotateTitle">Highlight and annotate</strong>
-                  <small data-i18n="feedback.featureAnnotateBody">Mark the bits that matter and leave quick notes while you read.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="export_pdf">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>
-                </span>
-                <span>
-                  <strong data-i18n="feedback.featurePdfTitle">Export to PDF</strong>
-                  <small data-i18n="feedback.featurePdfBody">Save a clean offline copy for docs, handoff, or later reading.</small>
-                </span>
-              </label>
-            </div>
-
-            <div class="waiting-fields">
-              <label class="field waiting-custom-field">
-                <span data-i18n="feedback.customLabel">Anything else?</span>
-                <input type="text" name="customFeature" maxlength="150" data-counted-field data-count-max="150" data-i18n-placeholder="feedback.customPlaceholder" placeholder="Support Mermaid diagrams, maybe?">
-                <small class="field-counter" data-field-counter>0 / 150</small>
-              </label>
-            </div>
-
-            <div class="waiting-submit-row">
-              <label class="field">
-                <span data-i18n="feedback.emailLabel">GET EARLY ACCESS</span>
-                <input type="email" name="email" autocomplete="email" maxlength="120" data-waiting-email data-i18n-placeholder="feedback.emailPlaceholder" placeholder="you@example.com">
-              </label>
-              <button class="button button-primary" type="submit" data-waiting-submit disabled data-i18n="feedback.waitingDisabled">Notify me first</button>
+              <button class="button button-primary" type="submit" data-i18n="feedback.submitButton">Send it</button>
             </div>
 
             <p class="feedback-consent">
-              <span data-i18n="feedback.consentOne">We'll reach out when your top picks are ready.</span>
-              <span data-i18n="feedback.consentTwo">No newsletters. One email per feature, that's it.</span>
+              <span data-i18n="feedback.consentOne">Leave the email field blank if you only want to send the note.</span>
+              <span data-i18n="feedback.consentTwo">We only use it for launch coupons or direct follow-up about your feedback.</span>
             </p>
             <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
+
+          <aside class="feedback-note-panel" aria-labelledby="feedback-note-title">
+            <p class="section-label" data-i18n="feedback.noteLabel">Why feedback matters</p>
+            <h2 id="feedback-note-title" data-i18n="feedback.noteTitle">We read every note carefully.</h2>
+            <div class="feedback-note-list">
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </span>
+                <p data-i18n="feedback.noteOne">Specific issues help us decide what to fix first.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <p data-i18n="feedback.noteTwo">Useful moments tell us what should stay simple.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 8l8 6 8-6"/></svg>
+                </span>
+                <p data-i18n="feedback.noteThree">Optional email lets us send a launch discount coupon later.</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>

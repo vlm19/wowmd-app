@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Feedback wowMD</title>
-    <meta name="description" content="Dites ? wowMD quoi ajouter ensuite, envoyez une remarque rapide ou recevez les premi?res nouvelles sur les prochaines fonctions de lecture Markdown.">
+    <meta name="description" content="Envoyez un retour à wowMD et laissez éventuellement un e-mail pour recevoir un coupon de réduction après le lancement officiel.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/fr/feedback.html">
@@ -62,8 +62,8 @@
         <div class="feedback-hero-row">
           <div class="feedback-hero">
             <p class="section-label">Feedback</p>
-            <h1 id="feedback-title">Dites-nous quoi construire ensuite.</h1>
-            <p>Cochez ce que vous utiliseriez vraiment. Une id?e en t?te ? ?crivez-la simplement.</p>
+            <h1 id="feedback-title">Envoyez votre retour à wowMD.</h1>
+            <p>Dites-nous ce qui aide, ce qui prête à confusion, ce qui manque ou ce qui mérite d'être peaufiné.</p>
           </div>
           <a class="button button-secondary feedback-home-button" href="index.html">Retour ? l?accueil</a>
         </div>
@@ -79,97 +79,54 @@
             <span hidden data-feedback-status="error">L?envoi n?a pas abouti. R?essayez un peu plus tard.</span>
             <h2>Une remarque ? partager ?</h2>
             <p class="feedback-card-copy">
-              <span>Qu?est-ce qui marche bien ? Qu?est-ce qui manque ? Qu?est-ce qui agace ?</span>
-              <span>Pas d?e-mail, pas de compte. ?crivez, c?est tout.</span>
+              <span>Un détail rugueux, un moment utile, une chose qui manque : tout nous aide.</span>
+              <span>L'e-mail est facultatif. Le message est le plus important.</span>
             </p>
             <label class="field">
               <span>Votre retour</span>
-              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="The side panel feels great, but I wish..."></textarea>
+              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="Le panneau lat?ral est pratique, mais j?aimerais..."></textarea>
               <small class="field-counter" data-field-counter>0 / 500</small>
             </label>
-            <button class="button button-primary" type="submit">Envoyer</button>
-            <p class="form-status" data-form-status aria-live="polite"></p>
-          </form>
-
-          <form class="feedback-card feedback-card-secondary" data-feedback-form data-feedback-type="waiting_list">
-            <input type="hidden" name="type" value="waiting_list">
-            <input type="hidden" name="source" value="website_feedback_page">
-            <input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
-            <span hidden data-feedback-status="emptyWaiting">Choisissez une fonction ou ajoutez votre id?e.</span>
-            <span hidden data-feedback-status="sending">Envoi en cours...</span>
-            <span hidden data-feedback-status="success">Bien re?u. Merci.</span>
-            <span hidden data-feedback-status="error">L?envoi n?a pas abouti. R?essayez un peu plus tard.</span>
-            <h2>Que devrait-on ajouter ensuite ?</h2>
-            <p class="feedback-card-copy">
-              <span>Choisissez les fonctions que vous utiliseriez vraiment.</span>
-              <span>Les plus demand?es passent en priorit?, et vous serez pr?venu en premier.</span>
-            </p>
-
-            <div class="feature-choice-grid" aria-label="Feature choices">
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="local_md">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <span>
-                  <strong>Ouvrir des fichiers MD locaux</strong>
-                  <small>Lisez un Markdown local sans sortir de votre flux de travail.</small>
-                </span>
+            <div class="feedback-form-footer">
+              <label class="field feedback-email-field">
+                <span>E-mail (facultatif)</span>
+                <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+                <small class="field-note">Après le lancement officiel du projet, les personnes ayant envoyé un retour recevront un coupon de réduction par e-mail.</small>
               </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="shareable_html">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h10a2 2 0 0 1 2 2v10M5 21h10a2 2 0 0 0 2-2V9"/></svg>
-                </span>
-                <span>
-                  <strong>Cr?er un document facile ? partager</strong>
-                  <small>Transformez un Markdown brouillon en une page HTML propre ? envoyer.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="highlight_annotate">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16l9-9 3 3-9 9H7z"/><path d="M14 7l3 3"/></svg>
-                </span>
-                <span>
-                  <strong>Surligner et annoter pendant la lecture</strong>
-                  <small>Marquez les passages importants, ajoutez de courtes notes et partagez le tout.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="export_pdf">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>
-                </span>
-                <span>
-                  <strong>Exporter en PDF</strong>
-                  <small>Gardez une version hors ligne propre pour transmettre, archiver ou relire plus tard.</small>
-                </span>
-              </label>
-            </div>
-
-            <div class="waiting-fields">
-              <label class="field waiting-custom-field">
-                <span>Une autre id?e ?</span>
-                <input type="text" name="customFeature" maxlength="150" data-counted-field data-count-max="150" placeholder="Support Mermaid diagrams, maybe?">
-                <small class="field-counter" data-field-counter>0 / 150</small>
-              </label>
-            </div>
-
-            <div class="waiting-submit-row">
-              <label class="field">
-                <span>Acc?s en avant-premi?re</span>
-                <input type="email" name="email" autocomplete="email" maxlength="120" data-waiting-email placeholder="you@example.com">
-              </label>
-              <button class="button button-primary" type="submit" data-waiting-submit disabled>Me pr?venir en premier</button>
+              <button class="button button-primary" type="submit">Envoyer</button>
             </div>
 
             <p class="feedback-consent">
-              <span>Nous vous contacterons quand vos choix seront pr?ts.</span>
-              <span>Pas de newsletter. Un e-mail par fonction, pas plus.</span>
+              <span>Laissez le champ e-mail vide si vous voulez seulement envoyer votre message.</span>
+              <span>Nous l'utilisons uniquement pour les coupons de lancement ou un suivi direct lié à votre retour.</span>
             </p>
             <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
+
+          <aside class="feedback-note-panel" aria-labelledby="feedback-note-title">
+            <p class="section-label">Pourquoi vos retours comptent</p>
+            <h2 id="feedback-note-title">Nous lisons chaque message avec attention.</h2>
+            <div class="feedback-note-list">
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </span>
+                <p>Les problèmes précis nous aident à choisir quoi corriger en premier.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <p>Les moments utiles nous disent ce qui doit rester simple.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 8l8 6 8-6"/></svg>
+                </span>
+                <p>L'e-mail facultatif nous permet d'envoyer plus tard un coupon de lancement.</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>

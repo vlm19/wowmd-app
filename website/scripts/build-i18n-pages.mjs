@@ -45,7 +45,7 @@ const replaceContentAttr = (html, key, value) => {
 
 const replacePlaceholderAttr = (html, key, value) => {
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pattern = new RegExp(`(<(?:input|textarea)\\b[^>]*placeholder=")[^"]*("[^>]*data-i18n-placeholder="${escapedKey}"[^>]*>)`, "gi");
+  const pattern = new RegExp(`(<(?:input|textarea)\\b(?=[^>]*data-i18n-placeholder="${escapedKey}")[^>]*placeholder=")[^"]*(")`, "gi");
   return html.replace(pattern, `$1${escapeAttr(value)}$2`);
 };
 

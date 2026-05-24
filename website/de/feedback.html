@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD Feedback</title>
-    <meta name="description" content="Sag wowMD, was als N?chstes entstehen soll, gib kurzes Feedback oder erhalte fr?he Updates zu neuen Markdown-Lesefunktionen.">
+    <meta name="description" content="Sende Feedback zu wowMD und hinterlasse optional eine E-Mail, um nach dem offiziellen Start einen Rabattcoupon zu erhalten.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/de/feedback.html">
@@ -62,8 +62,8 @@
         <div class="feedback-hero-row">
           <div class="feedback-hero">
             <p class="section-label">Feedback</p>
-            <h1 id="feedback-title">Sag uns, was wir als N?chstes bauen sollen.</h1>
-            <p>W?hle, was du wirklich nutzen w?rdest. Wenn dir etwas einf?llt, schreib es einfach dazu.</p>
+            <h1 id="feedback-title">Sende Feedback zu wowMD.</h1>
+            <p>Sag uns, was hilfreich, verwirrend, fehlend oder noch nicht rund ist.</p>
           </div>
           <a class="button button-secondary feedback-home-button" href="index.html">Zur Startseite</a>
         </div>
@@ -79,97 +79,54 @@
             <span hidden data-feedback-status="error">Das hat gerade nicht geklappt. Bitte versuch es sp?ter noch einmal.</span>
             <h2>Liegt dir etwas auf der Zunge?</h2>
             <p class="feedback-card-copy">
-              <span>Was funktioniert gut? Was fehlt? Was nervt?</span>
-              <span>Keine E-Mail, kein Konto. Einfach schreiben.</span>
+              <span>Eine raue Stelle, ein guter Moment, ein fehlendes Detail: alles hilft.</span>
+              <span>E-Mail ist optional. Deine Nachricht ist das Wichtigste.</span>
             </p>
             <label class="field">
               <span>Dein Feedback</span>
-              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="The side panel feels great, but I wish..."></textarea>
+              <textarea name="message" rows="8" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="Das Seitenpanel f?hlt sich gut an, aber ich w?rde mir w?nschen..."></textarea>
               <small class="field-counter" data-field-counter>0 / 500</small>
             </label>
-            <button class="button button-primary" type="submit">Abschicken</button>
-            <p class="form-status" data-form-status aria-live="polite"></p>
-          </form>
-
-          <form class="feedback-card feedback-card-secondary" data-feedback-form data-feedback-type="waiting_list">
-            <input type="hidden" name="type" value="waiting_list">
-            <input type="hidden" name="source" value="website_feedback_page">
-            <input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
-            <span hidden data-feedback-status="emptyWaiting">W?hle eine Funktion aus oder schreib deine Idee dazu.</span>
-            <span hidden data-feedback-status="sending">Wird gesendet...</span>
-            <span hidden data-feedback-status="success">Erhalten. Vielen Dank.</span>
-            <span hidden data-feedback-status="error">Das hat gerade nicht geklappt. Bitte versuch es sp?ter noch einmal.</span>
-            <h2>Was sollen wir als N?chstes bauen?</h2>
-            <p class="feedback-card-copy">
-              <span>W?hle die Funktionen, die du wirklich nutzen w?rdest.</span>
-              <span>Was am h?ufigsten gew?nscht wird, bauen wir zuerst. Du erf?hrst es als Erste:r.</span>
-            </p>
-
-            <div class="feature-choice-grid" aria-label="Feature choices">
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="local_md">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <span>
-                  <strong>Lokale MD-Dateien ?ffnen</strong>
-                  <small>Lokale Markdown-Dateien direkt lesen, ohne aus deinem Flow zu fallen.</small>
-                </span>
+            <div class="feedback-form-footer">
+              <label class="field feedback-email-field">
+                <span>E-Mail (optional)</span>
+                <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+                <small class="field-note">Nach dem offiziellen Projektstart erhalten Nutzer:innen, die Feedback gegeben haben, einen Rabattcoupon per E-Mail.</small>
               </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="shareable_html">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M9 3h10a2 2 0 0 1 2 2v10M5 21h10a2 2 0 0 0 2-2V9"/></svg>
-                </span>
-                <span>
-                  <strong>Einfach teilbare Dokumente</strong>
-                  <small>Aus Markdown wird eine saubere einzelne HTML-Seite, die du direkt weitergeben kannst.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="highlight_annotate">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16l9-9 3 3-9 9H7z"/><path d="M14 7l3 3"/></svg>
-                </span>
-                <span>
-                  <strong>Beim Lesen markieren und kommentieren</strong>
-                  <small>Wichtige Stellen markieren, kurze Notizen hinterlassen und mit anderen teilen.</small>
-                </span>
-              </label>
-              <label class="feature-choice">
-                <input type="checkbox" name="features" value="export_pdf">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9 15h6M9 18h4"/></svg>
-                </span>
-                <span>
-                  <strong>Als PDF exportieren</strong>
-                  <small>Eine saubere Offline-Version f?r ?bergabe, Archiv oder sp?teres Lesen speichern.</small>
-                </span>
-              </label>
-            </div>
-
-            <div class="waiting-fields">
-              <label class="field waiting-custom-field">
-                <span>Sonst noch etwas?</span>
-                <input type="text" name="customFeature" maxlength="150" data-counted-field data-count-max="150" placeholder="Support Mermaid diagrams, maybe?">
-                <small class="field-counter" data-field-counter>0 / 150</small>
-              </label>
-            </div>
-
-            <div class="waiting-submit-row">
-              <label class="field">
-                <span>Fr?her Bescheid bekommen</span>
-                <input type="email" name="email" autocomplete="email" maxlength="120" data-waiting-email placeholder="you@example.com">
-              </label>
-              <button class="button button-primary" type="submit" data-waiting-submit disabled>Als Erste:r informieren</button>
+              <button class="button button-primary" type="submit">Abschicken</button>
             </div>
 
             <p class="feedback-consent">
-              <span>Wir melden uns, wenn deine wichtigsten W?nsche bereit sind.</span>
-              <span>Keine Newsletter. Pro Funktion h?chstens eine E-Mail.</span>
+              <span>Lass das E-Mail-Feld leer, wenn du nur die Nachricht senden möchtest.</span>
+              <span>Wir nutzen sie nur für Start-Coupons oder direkte Rückfragen zu deinem Feedback.</span>
             </p>
             <p class="form-status" data-form-status aria-live="polite"></p>
           </form>
+
+          <aside class="feedback-note-panel" aria-labelledby="feedback-note-title">
+            <p class="section-label">Warum Feedback hilft</p>
+            <h2 id="feedback-note-title">Wir lesen jede Nachricht sorgfältig.</h2>
+            <div class="feedback-note-list">
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </span>
+                <p>Konkrete Probleme helfen uns zu entscheiden, was zuerst behoben wird.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </span>
+                <p>Nützliche Momente zeigen uns, was einfach bleiben sollte.</p>
+              </div>
+              <div class="feedback-note-item">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M4 8l8 6 8-6"/></svg>
+                </span>
+                <p>Mit optionaler E-Mail können wir später einen Start-Rabattcoupon senden.</p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>
