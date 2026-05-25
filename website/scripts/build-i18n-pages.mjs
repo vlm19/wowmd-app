@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const templatePath = path.join(root, "template.html");
 const privacyTemplatePath = path.join(root, "privacy-template.html");
+const termsTemplatePath = path.join(root, "terms-template.html");
 const feedbackTemplatePath = path.join(root, "feedback-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
@@ -20,6 +21,7 @@ const languages = [
 
 const template = fs.readFileSync(templatePath, "utf8");
 const privacyTemplate = fs.readFileSync(privacyTemplatePath, "utf8");
+const termsTemplate = fs.readFileSync(termsTemplatePath, "utf8");
 const feedbackTemplate = fs.readFileSync(feedbackTemplatePath, "utf8");
 
 const escapeHtml = (value) =>
@@ -85,15 +87,24 @@ const writePage = ({ code, dir, flag }, fileName = "index.html") => {
   const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
   const base = dir ? "../" : "";
   const isPrivacyPage = fileName === "privacy.html";
-  const canonicalUrl = isPrivacyPage
-    ? `${siteUrl}/${pagePath(dir, "privacy.html")}`
+  const isTermsPage = fileName === "terms.html";
+  const canonicalUrl = isPrivacyPage || isTermsPage
+    ? `${siteUrl}/${pagePath(dir, fileName)}`
     : dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`;
   const outputDir = dir ? path.join(root, dir) : root;
   const outputPath = path.join(outputDir, fileName);
-  const metaTitle = isPrivacyPage ? data["privacyPage.metaTitle"] : data["meta.title"];
-  const metaDescription = isPrivacyPage ? data["privacyPage.metaDescription"] : data["meta.description"];
+  const metaTitle = isPrivacyPage
+    ? data["privacyPage.metaTitle"]
+    : isTermsPage
+      ? data["termsPage.metaTitle"]
+      : data["meta.title"];
+  const metaDescription = isPrivacyPage
+    ? data["privacyPage.metaDescription"]
+    : isTermsPage
+      ? data["termsPage.metaDescription"]
+      : data["meta.description"];
 
-  let html = isPrivacyPage ? privacyTemplate : template;
+  let html = isPrivacyPage ? privacyTemplate : isTermsPage ? termsTemplate : template;
   for (const [key, value] of Object.entries(data)) {
     html = replaceElementText(html, key, value);
     html = replaceContentAttr(html, key, value);
@@ -106,6 +117,7 @@ const writePage = ({ code, dir, flag }, fileName = "index.html") => {
     canonicalUrl,
     homeUrl: "index.html",
     privacyUrl: "privacy.html",
+    termsUrl: "terms.html",
     feedbackUrl: feedbackUrl(dir),
     currentFlag: `${base}assets/flags/${flag}`,
     localeUrlEn: localeUrl(dir, ""),
@@ -118,6 +130,8 @@ const writePage = ({ code, dir, flag }, fileName = "index.html") => {
     metaDescription: escapeAttr(metaDescription),
     privacyMetaTitle: escapeAttr(metaTitle),
     privacyMetaDescription: escapeAttr(metaDescription),
+    termsMetaTitle: escapeAttr(metaTitle),
+    termsMetaDescription: escapeAttr(metaDescription),
     jsonDescription: String(metaDescription).replaceAll("\\", "\\\\").replaceAll('"', '\\"')
   });
   html = setSelectedLanguage(html, code);
@@ -151,6 +165,7 @@ const writeFeedbackPage = ({ code, dir, flag }) => {
     canonicalUrl,
     homeUrl: "index.html",
     privacyUrl: "privacy.html",
+    termsUrl: "terms.html",
     currentFlag: `${base}assets/flags/${flag}`,
     localeFeedbackUrlEn: localeFileUrl(dir, "", "feedback.html"),
     localeFeedbackUrlZh: localeFileUrl(dir, "zh", "feedback.html"),
@@ -172,6 +187,7 @@ const writeFeedbackPage = ({ code, dir, flag }) => {
 for (const language of languages) {
   writePage(language);
   writePage(language, "privacy.html");
+  writePage(language, "terms.html");
   writeFeedbackPage(language);
 }
 
@@ -181,12 +197,13 @@ ${languages
   .flatMap(({ dir }) => [
     { loc: dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`, priority: dir ? "0.8" : "1.0" },
     { loc: `${siteUrl}/${pagePath(dir, "privacy.html")}`, priority: "0.6" },
+    { loc: `${siteUrl}/${pagePath(dir, "terms.html")}`, priority: "0.6" },
     { loc: `${siteUrl}/${pagePath(dir, "feedback.html")}`, priority: "0.7" }
   ])
   .map(({ loc, priority }) => {
     return `  <url>
     <loc>${loc}</loc>
-    <lastmod>2026-05-18</lastmod>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>
   </url>`;
@@ -197,4 +214,4 @@ ${languages
 
 fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap, "utf8");
 
-console.log(`Generated ${languages.length * 3} localized pages.`);
+console.log(`Generated ${languages.length * 4} localized pages.`);
