@@ -95,7 +95,7 @@ const localeOptions: Array<{
 
 function App() {
   const [document, setDocument] = useState<OpenDocument | null>(null)
-  const [theme, setTheme] = useState<ThemeName>('light')
+  const [theme, setTheme] = useState<ThemeName>('dark')
   const [error, setError] = useState('')
   const [importStatus, setImportStatus] = useState<ImportStatus>('idle')
   const [importSourceUrl, setImportSourceUrl] = useState('')
