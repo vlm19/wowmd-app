@@ -406,17 +406,70 @@ export function buildCleanHtmlExport(input: HtmlExportInput) {
         color: var(--code-copy-text);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+        transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+        transform: translateY(2px) scale(0.96);
+      }
+      .code-copy-button::after {
+        content: "";
+        position: absolute;
+        top: calc(100% + 7px);
+        right: 0;
+        display: block;
+        border: 0.5px solid var(--code-copy-border);
+        border-radius: 6px;
+        padding: 4px 7px;
+        background: var(--code-copy-bg);
+        color: var(--text);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+        font: 600 10px/1 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Arial, sans-serif;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-3px);
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        white-space: nowrap;
       }
       pre:hover .code-copy-button,
       pre:focus-within .code-copy-button,
       .code-copy-button[data-state] {
         opacity: 1;
         pointer-events: auto;
+        transform: translateY(0) scale(1);
       }
-      .code-copy-button:hover { background: var(--surface); }
-      .code-copy-button[data-state="copied"] { color: var(--accent); }
-      .code-copy-button[data-state="failed"] { color: #c45a72; }
+      .code-copy-button:hover,
+      .code-copy-button:focus-visible {
+        border-color: var(--accent);
+        background: var(--surface);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        color: var(--accent);
+        outline: none;
+        transform: translateY(-1px) scale(1.04);
+      }
+      .code-copy-button:active {
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.22);
+        transform: translateY(0) scale(0.94);
+      }
+      .code-copy-button[data-state="copied"] {
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 12%, var(--code-copy-bg));
+        color: var(--accent);
+      }
+      .code-copy-button[data-state="copied"]::after {
+        content: attr(data-copied-label);
+        border-color: var(--accent);
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .code-copy-button[data-state="failed"] {
+        border-color: #c45a72;
+        background: color-mix(in srgb, #c45a72 14%, var(--code-copy-bg));
+        color: #c45a72;
+      }
+      .code-copy-button[data-state="failed"]::after {
+        content: attr(data-failed-label);
+        border-color: #c45a72;
+        opacity: 1;
+        transform: translateY(0);
+      }
       .code-copy-button svg {
         display: block;
         width: 16px;
@@ -672,6 +725,8 @@ function addCodeCopyButtons(html: string) {
     button.type = 'button'
     button.innerHTML = copyIconSvg()
     button.setAttribute('aria-label', 'Copy code')
+    button.dataset.copiedLabel = 'Copied'
+    button.dataset.failedLabel = 'Failed'
     pre.append(button)
   })
 

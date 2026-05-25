@@ -31,10 +31,16 @@ import {
   type Locale,
 } from './i18n'
 import {
+  importGitHubMarkdown,
+  ImportError,
+  type ImportErrorCode,
+} from './importService'
+import {
   activateLocalLicense,
   createTrialState,
   getLicenseSummary,
 } from './license'
+import { loadLocalDocument, type LocalDocument } from './localDocuments'
 import {
   buildToc,
   computeDocumentFingerprint,
@@ -49,11 +55,18 @@ type ThemeName = 'light' | 'dark'
 type WorkspaceView = 'reader' | 'exports' | 'license'
 type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
+type ImportStatus = 'idle' | 'loading' | 'failed'
 
 type OpenDocument = {
   name: string
   markdown: string
   fingerprint: string
+  source?: {
+    sourceType: 'github'
+    sourceUrl: string
+    rawUrl: string
+    label: string
+  }
 }
 
 type SelectionToolbar = {
@@ -84,6 +97,8 @@ function App() {
   const [document, setDocument] = useState<OpenDocument | null>(null)
   const [theme, setTheme] = useState<ThemeName>('light')
   const [error, setError] = useState('')
+  const [importStatus, setImportStatus] = useState<ImportStatus>('idle')
+  const [importSourceUrl, setImportSourceUrl] = useState('')
   const [view, setView] = useState<WorkspaceView>('reader')
   const [showOutline, setShowOutline] = useState(true)
   const [showNotes, setShowNotes] = useState(true)
@@ -128,6 +143,12 @@ function App() {
     () => getLicenseSummary(trialState, t),
     [t, trialState],
   )
+
+  useEffect(() => {
+    void handleInitialRoute()
+    // Initial route import/restore should run once on page load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const trialNeedsConfirmation = Boolean(
     !trialState.startedAt && !trialState.isLicensed,
@@ -207,9 +228,13 @@ function App() {
   const estimatedHtmlSize = formatBytes(new Blob([htmlPreview || '']).size)
 
   useEffect(() => {
-    setHtmlFilename((filename) =>
-      withThemeSuffix(filename || safeExportFilename(document?.name || 'wowmd-export', 'html'), theme),
-    )
+    const timer = window.setTimeout(() => {
+      setHtmlFilename((filename) =>
+        withThemeSuffix(filename || safeExportFilename(document?.name || 'wowmd-export', 'html'), theme),
+      )
+    }, 0)
+
+    return () => window.clearTimeout(timer)
   }, [document?.name, theme])
 
   useEffect(() => {
@@ -235,6 +260,7 @@ function App() {
 
   async function openFile(file: File) {
     setError('')
+    setImportStatus('idle')
 
     if (!/\.(md|markdown)$/i.test(file.name)) {
       setError(t('typeError'))
@@ -265,8 +291,90 @@ function App() {
     setShowNotes(!isNarrowLayout)
   }
 
+  async function handleInitialRoute() {
+    const { pathname, search } = window.location
+    const appBasePath = pathname.startsWith('/app/') ? '/app' : ''
+    const routePath = appBasePath ? pathname.slice(appBasePath.length) : pathname
+
+    if (routePath === '/import') {
+      await importFromUrl(new URLSearchParams(search), appBasePath)
+      return
+    }
+
+    const readerMatch = routePath.match(/^\/reader\/([^/]+)$/)
+    if (readerMatch) {
+      await restoreImportedDocument(decodeURIComponent(readerMatch[1]))
+    }
+  }
+
+  async function importFromUrl(searchParams: URLSearchParams, appBasePath = '') {
+    setImportStatus('loading')
+    setImportSourceUrl(searchParams.get('pageUrl') || '')
+    setError('')
+
+    try {
+      const localDocument = await importGitHubMarkdown(searchParams)
+      await openLocalDocument(localDocument)
+      window.history.replaceState(
+        null,
+        '',
+        `${appBasePath}/reader/${encodeURIComponent(localDocument.id)}`,
+      )
+      setImportStatus('idle')
+    } catch (importError) {
+      setImportStatus('failed')
+      setError(importErrorMessage(importError))
+      console.warn('wowMD import failed', importError)
+    }
+  }
+
+  async function restoreImportedDocument(id: string) {
+    setImportStatus('loading')
+    setError('')
+
+    try {
+      const localDocument = await loadLocalDocument(id)
+      if (!localDocument) {
+        setImportStatus('failed')
+        setError('We could not find this local document. Please import it from GitHub again.')
+        return
+      }
+
+      await openLocalDocument(localDocument)
+      setImportStatus('idle')
+    } catch (importError) {
+      setImportStatus('failed')
+      setError('We could not open this local document. Please import it from GitHub again.')
+      console.warn('wowMD local document restore failed', importError)
+    }
+  }
+
+  async function openLocalDocument(localDocument: LocalDocument) {
+    setDocument({
+      name: localDocument.title,
+      markdown: localDocument.markdownSnapshot,
+      fingerprint: localDocument.fingerprint,
+      source: {
+        sourceType: localDocument.sourceType,
+        sourceUrl: localDocument.sourceUrl,
+        rawUrl: localDocument.rawUrl,
+        label: sourceLabel(localDocument),
+      },
+    })
+    setExportDefaults(localDocument.title)
+    setAnnotations(await loadAnnotationsFromDb(localDocument.fingerprint))
+    setSelectionQuote('')
+    setSelectionToolbar(null)
+    setSearchQuery('')
+    setSearchIndex(0)
+    setView('reader')
+    setShowOutline(!isNarrowLayout)
+    setShowNotes(!isNarrowLayout)
+  }
+
   async function openSample() {
     setError('')
+    setImportStatus('idle')
     setShowTrialConfirm(false)
     setPendingTrialFile(null)
     setDocument({
@@ -293,6 +401,8 @@ function App() {
     setSearchQuery('')
     setSearchIndex(0)
     setError('')
+    setImportStatus('idle')
+    setImportSourceUrl('')
     setView('reader')
     setShowOutline(true)
     setShowNotes(true)
@@ -401,7 +511,7 @@ function App() {
     const codeText = code?.textContent || ''
     if (!codeText) return
 
-    let copied = false
+    let copied: boolean
     try {
       await navigator.clipboard.writeText(codeText)
       copied = true
@@ -670,36 +780,65 @@ function App() {
           <>
             {!document ? (
               <section className="import-panel empty-import" aria-labelledby="import-title">
-                <div
-                  className="drop-zone"
-                  onDragOver={(event) => event.preventDefault()}
-                  onDrop={handleDrop}
-                >
-                  <div className="drop-icon" aria-hidden="true">
-                    <img src="assets/brand/logo-mark.svg" alt="" />
+                {importStatus === 'loading' ? (
+                  <div className="drop-zone import-status-zone">
+                    <div className="drop-icon" aria-hidden="true">
+                      <img src="assets/brand/logo-mark.svg" alt="" />
+                    </div>
+                    <h1 id="import-title">Opening GitHub Markdown...</h1>
+                    <p className="intro">
+                      wowMD is creating a local reading copy in this browser.
+                    </p>
                   </div>
-                  <h1 id="import-title">{t('importTitle')}</h1>
-                  <p className="intro">{t('importIntro')}</p>
-                  <button
-                    className="primary-action"
-                    type="button"
-                    onClick={requestLocalFile}
+                ) : (
+                  <div
+                    className="drop-zone"
+                    onDragOver={(event) => event.preventDefault()}
+                    onDrop={handleDrop}
                   >
-                    <span className="button-icon" aria-hidden="true">
-                      <i className="ti ti-folder-open" />
-                    </span>
-                    {t('chooseMarkdown')}
-                  </button>
-                  <button className="ghost-action" type="button" onClick={() => void openSample()}>
-                    <span className="button-icon" aria-hidden="true">
-                      <i className="ti ti-eye" />
-                    </span>
-                    {t('openSample')}
-                  </button>
-                </div>
+                    <div className="drop-icon" aria-hidden="true">
+                      <img src="assets/brand/logo-mark.svg" alt="" />
+                    </div>
+                    <h1 id="import-title">
+                      {importStatus === 'failed' ? 'Could not open this Markdown file' : t('importTitle')}
+                    </h1>
+                    <p className="intro">
+                      {importStatus === 'failed'
+                        ? error || 'Currently wowMD only imports public GitHub Markdown files.'
+                        : t('importIntro')}
+                    </p>
+                    {importStatus === 'failed' && importSourceUrl ? (
+                      <a
+                        className="primary-action"
+                        href={importSourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Open original GitHub page
+                      </a>
+                    ) : (
+                      <button
+                        className="primary-action"
+                        type="button"
+                        onClick={requestLocalFile}
+                      >
+                        <span className="button-icon" aria-hidden="true">
+                          <i className="ti ti-folder-open" />
+                        </span>
+                        {t('chooseMarkdown')}
+                      </button>
+                    )}
+                    <button className="ghost-action" type="button" onClick={() => void openSample()}>
+                      <span className="button-icon" aria-hidden="true">
+                        <i className="ti ti-eye" />
+                      </span>
+                      {t('openSample')}
+                    </button>
+                  </div>
+                )}
 
-                <p className="privacy-hint">{t('privacyHint')}</p>
-                <p className="trial-hint">{t('trialHint')}</p>
+                {importStatus !== 'loading' ? <p className="privacy-hint">{t('privacyHint')}</p> : null}
+                {importStatus !== 'loading' ? <p className="trial-hint">{t('trialHint')}</p> : null}
                 {showTrialConfirm ? (
                   <div className="trial-confirm-layer">
                     <div
@@ -743,7 +882,7 @@ function App() {
                     </div>
                   </div>
                 ) : null}
-                {error ? <p className="error-message">{error}</p> : null}
+                {error && importStatus !== 'failed' ? <p className="error-message">{error}</p> : null}
               </section>
             ) : null}
 
@@ -952,6 +1091,16 @@ function App() {
                         <div>
                           <p className="eyebrow">{t('currentDocument')}</p>
                           <h2>{document.name}</h2>
+                          {document.source?.sourceUrl ? (
+                            <a
+                              className="document-source-link"
+                              href={document.source.sourceUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {document.source.label}
+                            </a>
+                          ) : null}
                         </div>
                         <code>{document.fingerprint.slice(0, 12)}</code>
                       </header>
@@ -1835,6 +1984,8 @@ function addCodeCopyButtonsToHtml(html: string) {
     button.type = 'button'
     button.innerHTML = copyIconSvg()
     button.setAttribute('aria-label', 'Copy code')
+    button.dataset.copiedLabel = 'Copied'
+    button.dataset.failedLabel = 'Failed'
 
     pre.append(button)
   })
@@ -1867,6 +2018,40 @@ function copyTextWithFallback(text: string) {
 function escapeCssIdentifier(value: string) {
   if (typeof CSS !== 'undefined' && CSS.escape) return CSS.escape(value)
   return value.replace(/["\\]/g, '\\$&')
+}
+
+function importErrorMessage(error: unknown) {
+  if (error instanceof ImportError) {
+    return importErrorMessageByCode(error.code)
+  }
+
+  return importErrorMessageByCode('UNKNOWN')
+}
+
+function importErrorMessageByCode(code: ImportErrorCode) {
+  if (code === 'DISALLOWED_RAW_URL' || code === 'INVALID_SOURCE') {
+    return 'This link is not supported yet. Currently wowMD only imports public GitHub Markdown files.'
+  }
+
+  if (code === 'EMPTY_MARKDOWN') {
+    return 'This Markdown file seems to be empty.'
+  }
+
+  if (code === 'FETCH_TIMEOUT') {
+    return "GitHub didn't respond in time. Please check your connection and try again."
+  }
+
+  if (code === 'FETCH_FAILED') {
+    return "We couldn't open this Markdown file. You can try again, or open the original GitHub page."
+  }
+
+  return "We couldn't open this Markdown file. You can try again, or open the original GitHub page."
+}
+
+function sourceLabel(document: LocalDocument) {
+  const repo = document.owner && document.repo ? `${document.owner}/${document.repo}` : 'GitHub'
+  const path = document.path || document.title
+  return `Source: GitHub · ${repo} · ${path}`
 }
 
 export default App
