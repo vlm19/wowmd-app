@@ -43,6 +43,38 @@
   font-family: var(--font);
 }
 
+.app,
+.app :where(
+  .topbar,
+  .tool-row,
+  .reader-shell,
+  .reader-card,
+  .outline,
+  .notes-panel,
+  .markdown-body,
+  .document-header,
+  .export-workspace,
+  .export-layout,
+  .export-preview-pane,
+  .export-options-panel,
+  .html-preview-frame,
+  .source-preview,
+  .note-sticker,
+  .annotation-modal,
+  .segmented,
+  .scale-controls,
+  .search-control,
+  button,
+  input,
+  textarea
+) {
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -1446,6 +1478,18 @@ p {
   border-radius: var(--r-md);
   padding: 8px;
   background: #242421;
+  animation: note-enter 0.18s ease both;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.note-sticker:hover,
+.note-sticker:focus-within {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
 }
 
 .note-blue {
@@ -1911,7 +1955,7 @@ p {
 }
 
 .markdown-body ::selection {
-  background: rgba(91, 77, 255, 0.25);
+  background: var(--selection-preview-bg, rgba(91, 77, 255, 0.25));
   color: inherit;
 }
 
@@ -1989,11 +2033,20 @@ p {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   box-shadow: inset 0 -0.08em 0 rgba(0, 0, 0, 0.08);
+  animation: highlight-settle 0.22s ease both;
 }
 
 .wowmd-highlight-located {
   outline: 1.5px solid #5b4dff;
   outline-offset: 2px;
+  animation: highlight-locate-pulse 0.9s ease both;
+}
+
+.wowmd-preview-highlight {
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease;
 }
 
 .wowmd-highlight-yellow {
@@ -2434,7 +2487,7 @@ p {
 }
 
 .theme-light .markdown-body ::selection {
-  background: rgba(91, 77, 255, 0.24);
+  background: var(--selection-preview-bg, rgba(91, 77, 255, 0.24));
   color: inherit;
 }
 
@@ -2505,7 +2558,7 @@ p {
 }
 
 .theme-dark .markdown-body ::selection {
-  background: rgba(199, 193, 255, 0.32);
+  background: var(--selection-preview-bg, rgba(199, 193, 255, 0.32));
   color: inherit;
 }
 
@@ -2850,6 +2903,10 @@ p {
   transform-origin: top center;
 }
 
+.export-view-stage {
+  animation: export-view-in 0.5s ease both;
+}
+
 .html-preview-viewport:has(.html-preview-frame) {
   min-height: calc((100vh - 92px) / var(--export-preview-scale, 1));
 }
@@ -2869,13 +2926,41 @@ p {
 }
 
 .source-preview {
+  position: relative;
   overflow: auto;
-  padding: 28px 32px;
+  padding: 48px 32px 28px;
   color: var(--text-2);
   font-family: var(--font-mono);
   font-size: 10px;
+  line-height: 1.6;
   letter-spacing: 0.04em;
   white-space: pre-wrap;
+}
+
+.source-preview code {
+  display: block;
+  min-width: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: pre-wrap;
+}
+
+.source-preview .source-copy-button {
+  top: 12px;
+  right: 12px;
+}
+
+.source-preview:hover .code-copy-button,
+.source-preview:focus-within .code-copy-button,
+.source-preview .code-copy-button[data-state] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.source-copy-button > span {
+  display: inline-flex;
 }
 
 .export-preview-pane > .source-preview {
@@ -2887,9 +2972,17 @@ p {
   scrollbar-color: #b7ad9d #eee8dc;
 }
 
+.theme-light .source-preview {
+  border-color: #bfb4a2;
+  background: #f5f1e8;
+  color: #302d28;
+  scrollbar-color: #b7ad9d #eee8dc;
+}
+
+.theme-dark .source-preview,
 .theme-dark .export-preview-pane > .source-preview {
   border-color: #464640;
-  background: #242421;
+  background: #1e1e1c;
   color: #c8c4b8;
   scrollbar-color: #65645b #242421;
 }
@@ -2920,6 +3013,57 @@ p {
 
 .source-search-hit.active {
   background: var(--highlight-blue);
+}
+
+@keyframes export-view-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(var(--export-preview-scale, 1));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(var(--export-preview-scale, 1));
+  }
+}
+
+@keyframes note-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes highlight-settle {
+  from {
+    filter: saturate(1.35) brightness(1.08);
+  }
+
+  to {
+    filter: saturate(1) brightness(1);
+  }
+}
+
+@keyframes highlight-locate-pulse {
+  0% {
+    outline-color: rgba(91, 77, 255, 0);
+    outline-offset: 0;
+  }
+
+  35% {
+    outline-color: #5b4dff;
+    outline-offset: 4px;
+  }
+
+  100% {
+    outline-color: rgba(91, 77, 255, 0.88);
+    outline-offset: 2px;
+  }
 }
 
 .epub-device-preview {
@@ -3365,6 +3509,18 @@ p {
 
   .app:has(.empty-import) .drop-zone h1 {
     font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app,
+  .app *,
+  .app *::before,
+  .app *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

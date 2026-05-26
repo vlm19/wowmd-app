@@ -79,7 +79,23 @@ type AnnotationDraft = {
   note: string
 }
 
+type SelectionAnchorMetadata = {
+  prefix: string
+  suffix: string
+  headingPath: string[]
+  offset: number
+}
+
 const themeNames: ThemeName[] = ['light', 'dark']
+
+const selectionPreviewColors: Record<AnnotationColor, string> = {
+  yellow: '#ffe27a',
+  blue: '#a9d6ff',
+  green: '#b2e3bd',
+  rose: '#ffbac7',
+  violet: '#d2bdff',
+  amber: '#f3b760',
+}
 const localeOptions: Array<{
   locale: Locale
   label: string
@@ -105,6 +121,12 @@ function App() {
   const [isNarrowLayout, setIsNarrowLayout] = useState(false)
   const [annotations, setAnnotations] = useState<Annotation[]>([])
   const [selectionQuote, setSelectionQuote] = useState('')
+  const selectionRangeRef = useRef<Range | null>(null)
+  const selectionAnchorRef = useRef<SelectionAnchorMetadata | null>(null)
+  const selectionPreviewQuoteRef = useRef('')
+  const selectionPreviewColorRef = useRef<AnnotationColor | null>(null)
+  const selectionPreviewPendingRef = useRef(false)
+  const selectionPreviewRenderLockRef = useRef(false)
   const [selectionToolbar, setSelectionToolbar] = useState<SelectionToolbar | null>(null)
   const [annotationDraft, setAnnotationDraft] = useState<AnnotationDraft | null>(null)
   const [activeAnnotation, setActiveAnnotation] = useState<Annotation | null>(null)
@@ -148,6 +170,21 @@ function App() {
     void handleInitialRoute()
     // Initial route import/restore should run once on page load.
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const styleId = 'wowmd-selection-preview-highlight-styles'
+    if (globalThis.document.getElementById(styleId)) return
+
+    const style = globalThis.document.createElement('style')
+    style.id = styleId
+    style.textContent = Object.entries(selectionPreviewColors)
+      .map(
+        ([color, value]) =>
+          `::highlight(wowmd-selection-preview-${color}) { background: ${value}; color: inherit; }`,
+      )
+      .join('\n')
+    globalThis.document.head.append(style)
   }, [])
 
   const trialNeedsConfirmation = Boolean(
@@ -474,7 +511,19 @@ function App() {
     const selection = window.getSelection()
     const quote = selection?.toString().trim() || ''
     if (!quote) {
+      if (
+        selectionPreviewPendingRef.current ||
+        (selectionPreviewRenderLockRef.current &&
+          markdownBodyRef.current?.querySelector('[data-preview-highlight="true"]'))
+      ) {
+        return
+      }
+
       setSelectionQuote('')
+      selectionRangeRef.current = null
+      selectionAnchorRef.current = null
+      selectionPreviewQuoteRef.current = ''
+      clearSelectionPreview()
       setSelectionToolbar(null)
       return
     }
@@ -486,16 +535,169 @@ function App() {
 
     if (!range || !isInsideReader) {
       setSelectionQuote('')
+      selectionRangeRef.current = null
+      selectionAnchorRef.current = null
+      selectionPreviewQuoteRef.current = ''
+      clearSelectionPreview()
       setSelectionToolbar(null)
       return
     }
 
     const rect = range.getBoundingClientRect()
+    selectionRangeRef.current = range.cloneRange()
+    selectionAnchorRef.current = getSelectionAnchorMetadataFromRange(range, quote)
+    selectionPreviewQuoteRef.current = quote
     setSelectionQuote(quote.slice(0, 500))
     setSelectionToolbar({
       x: rect.left + rect.width / 2,
       y: Math.max(92, rect.top - 14),
     })
+    selectionPreviewPendingRef.current = true
+    window.setTimeout(() => {
+      selectionPreviewPendingRef.current = false
+      if (selectionRangeRef.current) previewSelectionColor('yellow')
+    }, 0)
+  }
+
+  function previewSelectionColor(color: AnnotationColor) {
+    const root = markdownBodyRef.current
+    if (!root) return
+
+    const previewMarks = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-preview-highlight="true"]'),
+    )
+    if (previewMarks.length) {
+      previewMarks.forEach((mark) => {
+        mark.classList.remove(
+          'wowmd-highlight-yellow',
+          'wowmd-highlight-blue',
+          'wowmd-highlight-green',
+          'wowmd-highlight-rose',
+          'wowmd-highlight-violet',
+          'wowmd-highlight-amber',
+        )
+        mark.classList.add(`wowmd-highlight-${color}`)
+      })
+      selectionPreviewColorRef.current = color
+      return
+    }
+
+    renderSelectionPreview(color)
+  }
+
+  function clearSelectionPreview() {
+    const highlights = (globalThis as typeof globalThis & {
+      CSS?: { highlights?: Map<string, unknown> }
+    }).CSS?.highlights
+
+    if (highlights) {
+      ;(Object.keys(selectionPreviewColors) as AnnotationColor[]).forEach((color) => {
+        highlights.delete(`wowmd-selection-preview-${color}`)
+      })
+    }
+
+    const root = markdownBodyRef.current
+    if (!root) return
+
+    root.querySelectorAll<HTMLElement>('[data-preview-highlight="true"]').forEach((mark) => {
+      mark.replaceWith(globalThis.document.createTextNode(mark.textContent || ''))
+    })
+    root.normalize()
+    selectionPreviewColorRef.current = null
+  }
+
+  function renderSelectionPreview(color: AnnotationColor) {
+    const root = markdownBodyRef.current
+    if (!root) return
+
+    const textNodes: Text[] = []
+    const walker = globalThis.document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT
+
+        const parent = node.parentElement
+        if (!parent || parent.closest('pre, button, input, textarea, select')) {
+          return NodeFilter.FILTER_REJECT
+        }
+        return NodeFilter.FILTER_ACCEPT
+      },
+    })
+
+    while (walker.nextNode()) {
+      textNodes.push(walker.currentNode as Text)
+    }
+
+    const quote = selectionPreviewQuoteRef.current.trim()
+    if (!quote) return
+
+    const fullText = textNodes.map((node) => node.textContent || '').join('')
+    let matchStart = selectionAnchorRef.current?.offset ?? -1
+    if (matchStart < 0 || fullText.slice(matchStart, matchStart + quote.length) !== quote) {
+      matchStart = fullText.indexOf(quote)
+    }
+    if (matchStart < 0) return
+
+    const matchEnd = matchStart + quote.length
+    let cursor = 0
+    const segments: Array<{ node: Text; start: number; end: number }> = []
+    textNodes.forEach((node) => {
+      const text = node.textContent || ''
+      const nodeStart = cursor
+      const nodeEnd = cursor + text.length
+      const start = Math.max(matchStart, nodeStart)
+      const end = Math.min(matchEnd, nodeEnd)
+      if (start < end) {
+        segments.push({
+          node,
+          start: start - nodeStart,
+          end: end - nodeStart,
+        })
+      }
+      cursor = nodeEnd
+    })
+
+    if (!segments.length) return
+
+    selectionPreviewRenderLockRef.current = true
+    segments.reverse().forEach(({ node, start, end }) => {
+      const text = node.textContent || ''
+      if (start >= end) return
+
+      const fragment = globalThis.document.createDocumentFragment()
+      if (start > 0) {
+        fragment.append(globalThis.document.createTextNode(text.slice(0, start)))
+      }
+
+      const mark = globalThis.document.createElement('mark')
+      mark.className = `wowmd-highlight wowmd-preview-highlight wowmd-highlight-${color}`
+      mark.dataset.previewHighlight = 'true'
+      mark.textContent = text.slice(start, end)
+      fragment.append(mark)
+
+      if (end < text.length) {
+        fragment.append(globalThis.document.createTextNode(text.slice(end)))
+      }
+      node.replaceWith(fragment)
+    })
+
+    selectionPreviewColorRef.current = color
+    window.setTimeout(() => {
+      selectionPreviewRenderLockRef.current = false
+    }, 0)
+  }
+
+  function handleMarkupPreview(
+    event: MouseEvent<HTMLDivElement> | PointerEvent<HTMLDivElement>,
+  ) {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
+      '[data-preview-color]',
+    )
+    if (!button || !event.currentTarget.contains(button)) return
+
+    const color = button.dataset.previewColor as AnnotationColor | undefined
+    if (!color || selectionPreviewColorRef.current === color) return
+
+    previewSelectionColor(color)
   }
 
   async function handleMarkdownBodyClick(event: MouseEvent<HTMLDivElement>) {
@@ -529,6 +731,7 @@ function App() {
 
   function addAnnotation(color: AnnotationColor, note = '') {
     if (!document || !selectionQuote) return
+    clearSelectionPreview()
     if (!licenseSummary.canSaveAnnotations) {
       setView('license')
       setLicenseMessage(t('activateToSave'))
@@ -539,7 +742,7 @@ function App() {
       createAnnotation({
         documentFingerprint: document.fingerprint,
         quote: selectionQuote,
-        ...getSelectionAnchorMetadata(),
+        ...(selectionAnchorRef.current ?? getSelectionAnchorMetadata()),
         note: note.trim().slice(0, 100),
         color,
       }),
@@ -551,6 +754,9 @@ function App() {
     setShowNotes(true)
     if (isNarrowLayout) setShowOutline(false)
     setSelectionQuote('')
+    selectionRangeRef.current = null
+    selectionAnchorRef.current = null
+    selectionPreviewQuoteRef.current = ''
     setSelectionToolbar(null)
     setAnnotationDraft(null)
     window.getSelection()?.removeAllRanges()
@@ -558,6 +764,7 @@ function App() {
 
   function openNoteComposer(color: AnnotationColor) {
     if (!selectionQuote) return
+    clearSelectionPreview()
     setAnnotationDraft({ color, note: '' })
   }
 
@@ -568,8 +775,18 @@ function App() {
       return { prefix: '', suffix: '', headingPath: [], offset: -1 }
     }
 
+    return getSelectionAnchorMetadataFromRange(range, selection?.toString() || '')
+  }
+
+  function getSelectionAnchorMetadataFromRange(
+    range: Range,
+    quote: string,
+  ): SelectionAnchorMetadata {
+    if (!markdownBodyRef.current) {
+      return { prefix: '', suffix: '', headingPath: [], offset: -1 }
+    }
+
     const fullText = markdownBodyRef.current.textContent || ''
-    const quote = selection?.toString() || ''
     const offset = fullText.indexOf(quote)
     const prefix = offset > 0 ? fullText.slice(Math.max(0, offset - 80), offset) : ''
     const suffix =
@@ -918,11 +1135,19 @@ function App() {
                   top: selectionToolbar.y,
                 }}
                 aria-label="Selection actions"
+                onMouseLeave={clearSelectionPreview}
+                onMouseMove={handleMarkupPreview}
+                onMouseOver={handleMarkupPreview}
+                onPointerMove={handleMarkupPreview}
+                onPointerOver={handleMarkupPreview}
               >
                 <button
                   className="mark-yellow"
                   type="button"
+                  data-preview-color="yellow"
                   aria-label="Yellow highlight"
+                  onFocus={() => previewSelectionColor('yellow')}
+                  onMouseEnter={() => previewSelectionColor('yellow')}
                   onClick={() => addAnnotation('yellow')}
                 >
                   <span />
@@ -930,7 +1155,10 @@ function App() {
                 <button
                   className="mark-blue"
                   type="button"
+                  data-preview-color="blue"
                   aria-label="Blue highlight"
+                  onFocus={() => previewSelectionColor('blue')}
+                  onMouseEnter={() => previewSelectionColor('blue')}
                   onClick={() => addAnnotation('blue')}
                 >
                   <span />
@@ -938,7 +1166,10 @@ function App() {
                 <button
                   className="mark-green"
                   type="button"
+                  data-preview-color="green"
                   aria-label="Green highlight"
+                  onFocus={() => previewSelectionColor('green')}
+                  onMouseEnter={() => previewSelectionColor('green')}
                   onClick={() => addAnnotation('green')}
                 >
                   <span />
@@ -946,7 +1177,10 @@ function App() {
                 <button
                   className="mark-rose"
                   type="button"
+                  data-preview-color="rose"
                   aria-label="Rose highlight"
+                  onFocus={() => previewSelectionColor('rose')}
+                  onMouseEnter={() => previewSelectionColor('rose')}
                   onClick={() => addAnnotation('rose')}
                 >
                   <span />
@@ -954,7 +1188,10 @@ function App() {
                 <button
                   className="mark-violet"
                   type="button"
+                  data-preview-color="violet"
                   aria-label="Violet highlight"
+                  onFocus={() => previewSelectionColor('violet')}
+                  onMouseEnter={() => previewSelectionColor('violet')}
                   onClick={() => addAnnotation('violet')}
                 >
                   <span />
@@ -962,12 +1199,22 @@ function App() {
                 <button
                   className="mark-amber"
                   type="button"
+                  data-preview-color="amber"
                   aria-label="Amber highlight"
+                  onFocus={() => previewSelectionColor('amber')}
+                  onMouseEnter={() => previewSelectionColor('amber')}
                   onClick={() => addAnnotation('amber')}
                 >
                   <span />
                 </button>
-                <button className="mark-note" type="button" onClick={() => openNoteComposer('blue')}>
+                <button
+                  className="mark-note"
+                  type="button"
+                  data-preview-color="blue"
+                  onFocus={() => previewSelectionColor('blue')}
+                  onMouseEnter={() => previewSelectionColor('blue')}
+                  onClick={() => openNoteComposer('blue')}
+                >
                   <span className="note-tool-icon" aria-hidden="true" />
                   <span>{t('note')}</span>
                 </button>
@@ -1676,6 +1923,7 @@ type ExportWorkspaceProps = {
 function ExportWorkspace(props: ExportWorkspaceProps) {
   const previewFrameRef = useRef<HTMLIFrameElement | null>(null)
   const sourcePreviewRef = useRef<HTMLPreElement | null>(null)
+  const [sourceCopyState, setSourceCopyState] = useState<'idle' | 'copied' | 'failed'>('idle')
   const previewSearch = useMemo(
     () => applySearchHighlights(props.htmlPreview, props.exportSearchQuery, props.exportSearchIndex),
     [props.exportSearchIndex, props.exportSearchQuery, props.htmlPreview],
@@ -1719,6 +1967,18 @@ function ExportWorkspace(props: ExportWorkspaceProps) {
 
   const hasExportToc = props.includeToc && props.toc.length > 0
   const hasExportNotes = props.includeHighlights && props.annotations.length > 0
+  const copySourceHtml = async () => {
+    let copied = false
+    try {
+      await navigator.clipboard.writeText(props.htmlPreview)
+      copied = true
+    } catch {
+      copied = copyTextWithFallback(props.htmlPreview)
+    }
+
+    setSourceCopyState(copied ? 'copied' : 'failed')
+    window.setTimeout(() => setSourceCopyState('idle'), 1200)
+  }
 
   return (
     <section className="export-workspace">
@@ -1800,7 +2060,8 @@ function ExportWorkspace(props: ExportWorkspaceProps) {
         <div className="export-preview-pane">
           {props.exportViewMode === 'preview' ? (
             <div
-              className="html-preview-viewport"
+              key="preview"
+              className="html-preview-viewport export-view-stage"
               style={{ '--export-preview-scale': props.exportPreviewScale / 100 } as CSSProperties}
             >
               <iframe
@@ -1812,10 +2073,23 @@ function ExportWorkspace(props: ExportWorkspaceProps) {
             </div>
           ) : (
             <pre
+              key="source"
               ref={sourcePreviewRef}
-              className="source-preview"
-              dangerouslySetInnerHTML={{ __html: sourceSearch.html }}
-            />
+              className="source-preview export-view-stage"
+            >
+              <code dangerouslySetInnerHTML={{ __html: sourceSearch.html }} />
+              <button
+                className="code-copy-button source-copy-button"
+                type="button"
+                aria-label={sourceCopyState === 'copied' ? 'Code copied' : sourceCopyState === 'failed' ? 'Copy failed' : 'Copy source'}
+                data-state={sourceCopyState === 'idle' ? undefined : sourceCopyState}
+                data-copied-label="Copied"
+                data-failed-label="Failed"
+                onClick={copySourceHtml}
+              >
+                <span dangerouslySetInnerHTML={{ __html: copyIconSvg() }} />
+              </button>
+            </pre>
           )}
           <FeedbackLink href={props.feedbackHref} label={props.t('feedback')} />
         </div>
