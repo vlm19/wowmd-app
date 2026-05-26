@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="{{lang}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="pro.metaTitle">wowMD Pro - Local Markdown reader with highlights, notes, and export</title>
+    <meta
+      name="description"
+      content="wowMD Pro is a local-first webapp for reading local Markdown files, adding highlights and notes, and exporting clean HTML or EPUB."
+      data-i18n-content="pro.metaDescription"
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="{{canonicalUrl}}">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/pro.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/pro.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/pro.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/pro.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/pro.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/pro.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/pro.html">
+    <link rel="icon" href="{{base}}assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="{{metaTitle}}">
+    <meta property="og:description" content="{{metaDescription}}">
+    <meta property="og:url" content="{{canonicalUrl}}">
+    <meta property="og:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{metaTitle}}">
+    <meta name="twitter:description" content="{{metaDescription}}">
+    <meta name="twitter:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD Pro",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Modern browser",
+        "description": "{{jsonDescription}}",
+        "url": "{{canonicalUrl}}",
+        "image": "https://wowmd.app/assets/wowmd-product-demo-poster.jpg",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Local Markdown files",
+          "Highlights and notes",
+          "HTML export",
+          "EPUB export"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260526">
+  </head>
+  <body class="pro-page">
+    <header class="site-header">
+      <a class="logo-link" href="{{homeUrl}}" aria-label="wowMD home">
+        <img src="{{base}}assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#local" data-i18n="pro.navLocal">Local files</a>
+        <a href="#notes" data-i18n="pro.navNotes">Notes</a>
+        <a href="#export" data-i18n="pro.navExport">Export</a>
+        <a href="#roadmap" data-i18n="pro.navRoadmap">Planned</a>
+        <a class="nav-app" href="{{appUrl}}" data-i18n="nav.openApp">Open app</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="{{currentFlag}}" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="{{localeUrlEn}}"><img class="flag" src="{{base}}assets/flags/gb.svg" alt=""></a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="{{localeUrlZh}}"><img class="flag" src="{{base}}assets/flags/cn.svg" alt=""></a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="{{localeUrlJa}}"><img class="flag" src="{{base}}assets/flags/jp.svg" alt=""></a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="{{localeUrlKo}}"><img class="flag" src="{{base}}assets/flags/kr.svg" alt=""></a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="{{localeUrlDe}}"><img class="flag" src="{{base}}assets/flags/de.svg" alt=""></a>
+          <a role="option" data-language-option="fr" aria-label="French" href="{{localeUrlFr}}"><img class="flag" src="{{base}}assets/flags/fr.svg" alt=""></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero pro-hero" aria-labelledby="pro-title">
+        <div class="hero-copy pro-hero-copy">
+          <p class="section-label" data-i18n="pro.label">wowMD Pro</p>
+          <h1 id="pro-title" data-i18n="pro.title">Your local Markdown reading workspace.</h1>
+          <p class="hero-subtitle" data-i18n="pro.subtitle">Open local Markdown files in the browser, highlight important passages, keep notes, and export clean reading copies without uploading your documents.</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="{{appUrl}}" data-i18n="pro.primaryCta">Open wowMD Pro</a>
+            <a class="button button-secondary" href="{{extensionUrl}}" data-i18n="pro.secondaryCta">Need the free extension?</a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span data-i18n="pro.badgeTrial">Early access may be free</span>
+            <span data-i18n="pro.badgeLicense">Lifetime license planned</span>
+            <span data-i18n="pro.badgeLocal">Local-first</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="local" aria-labelledby="local-title">
+        <div class="product-story-copy">
+          <p class="section-label" data-i18n="pro.localLabel">Local files</p>
+          <h2 id="local-title" data-i18n="pro.localTitle">Open the Markdown files already on your device.</h2>
+          <p data-i18n="pro.localBody">Drop in a `.md` or `.markdown` file and read it in a focused workspace with outline navigation, folding, readable code, and table scrolling.</p>
+          <a class="button button-secondary" href="{{appUrl}}" data-i18n="pro.localCta">Open the app</a>
+        </div>
+        <figure class="product-media-frame" aria-label="Local Markdown file preview">
+          <div class="media-browser-bar"><span></span><span></span><span></span><strong>wowMD Pro</strong></div>
+          <video class="product-media" poster="{{base}}assets/wowmd-product-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="{{base}}assets/wowmd-product-demo.webm" type="video/webm">
+            <source src="{{base}}assets/wowmd-product-demo.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <section class="product-story product-story-flipped reveal" id="notes" aria-labelledby="notes-title">
+        <div class="product-story-copy">
+          <p class="section-label" data-i18n="pro.notesLabel">Highlights and notes</p>
+          <h2 id="notes-title" data-i18n="pro.notesTitle">Keep the useful parts attached to the document.</h2>
+          <p data-i18n="pro.notesBody">Mark important passages, add short notes, and keep annotation data local. The source Markdown stays untouched unless a future write-back feature is added.</p>
+          <a class="button button-secondary" href="{{appUrl}}" data-i18n="pro.notesCta">Try annotations</a>
+        </div>
+        <div class="product-media-frame product-media-placeholder" aria-label="Highlights and notes preview">
+          <div class="mock-reader">
+            <aside>
+              <span></span>
+              <span></span>
+              <span></span>
+            </aside>
+            <article>
+              <h3 data-i18n="pro.mockNotesTitle">Reading notes</h3>
+              <p></p>
+              <p class="mock-highlight"></p>
+              <p></p>
+              <div class="mock-note" data-i18n="pro.mockNote">Important idea saved as a local note.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="export" aria-labelledby="export-title">
+        <div class="product-story-copy">
+          <p class="section-label" data-i18n="pro.exportLabel">Export</p>
+          <h2 id="export-title" data-i18n="pro.exportTitle">Turn one Markdown file into clean reading copies.</h2>
+          <p data-i18n="pro.exportBody">Create complete offline HTML for sharing or archiving, or export EPUB for Kindle via Send to Kindle, Apple Books, Kobo, and other readers.</p>
+          <a class="button button-primary" href="{{appUrl}}" data-i18n="pro.exportCta">Export from Pro</a>
+        </div>
+        <div class="export-grid" aria-label="Export formats">
+          <article class="export-card">
+            <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
+            <h3 data-i18n="pro.htmlTitle">Clean HTML</h3>
+            <p data-i18n="pro.htmlBody">Self-contained, structured, readable offline HTML without the app runtime.</p>
+          </article>
+          <article class="export-card">
+            <span class="feature-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22zM4 5.5V22"/></svg></span>
+            <h3 data-i18n="pro.epubTitle">EPUB</h3>
+            <p data-i18n="pro.epubBody">Reflowable EPUB 3 with navigation metadata for mainstream reading apps.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <p class="section-label" data-i18n="pro.roadmapLabel">Planned next</p>
+          <h2 id="roadmap-title" data-i18n="pro.roadmapTitle">Future work stays separate from today's promise.</h2>
+          <p class="section-subtitle" data-i18n="pro.roadmapBody">These ideas are planned or being explored, but current purchase decisions should be based on the features available in the app today.</p>
+        </div>
+        <div class="roadmap-list">
+          <span data-i18n="pro.roadmapOne">Library and reading history</span>
+          <span data-i18n="pro.roadmapTwo">Better annotation management</span>
+          <span data-i18n="pro.roadmapThree">Theme presets</span>
+          <span data-i18n="pro.roadmapFour">More export formats</span>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-labelledby="pro-pricing-title">
+        <div class="pricing-card pro-pricing-card">
+          <div>
+            <p class="section-label" data-i18n="pro.pricingLabel">Pricing</p>
+            <h2 id="pro-pricing-title" data-i18n="pro.pricingTitle">Simple early access, clear checkout later.</h2>
+            <p data-i18n="pro.pricingBody">The webapp may start with free early access while pricing is finalized. The planned paid model is a low-cost one-time lifetime license, with early-bird and promotional discounts possible.</p>
+          </div>
+          <a class="button button-primary" href="{{appUrl}}" data-i18n="pro.pricingCta">Open wowMD Pro</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="{{base}}assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p data-i18n="footer.statusPro">wowMD Pro - local Markdown workspace</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="{{privacyUrl}}" data-i18n="footer.privacy">Privacy Policy</a>
+        <a href="{{termsUrl}}" data-i18n="footer.terms">Terms</a>
+        <a class="feedback-link" href="{{feedbackUrl}}" data-i18n="footer.feedback">Send feedback</a>
+      </nav>
+    </footer>
+    <script src="{{base}}script.js"></script>
+  </body>
+</html>

@@ -14,7 +14,7 @@ let ticking = false;
 let feedbackRedirectTimer;
 
 const goHome = () => {
-  window.location.href = "index.html";
+  window.location.href = "./";
 };
 
 const showFeedbackModal = () => {

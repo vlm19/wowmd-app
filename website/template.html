@@ -3,22 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title data-i18n="meta.title">wowMD - Make long Markdown easy to read</title>
+    <title data-i18n="extension.metaTitle">wowMD - Free Chrome extension for readable GitHub Markdown</title>
     <meta
       name="description"
-      content="wowMD is a lightweight Chrome extension that makes long GitHub Markdown pages easier to navigate, scan, and read."
-      data-i18n-content="meta.description"
+      content="wowMD is a free Chrome extension that makes long GitHub Markdown pages easier to navigate, scan, and read."
+      data-i18n-content="extension.metaDescription"
     >
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="{{canonicalUrl}}">
-    <link rel="alternate" hreflang="en" href="https://wowmd.app/">
-    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/">
-    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/">
-    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/">
-    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/">
-    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/">
-    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/extension.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/extension.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/extension.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/extension.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/extension.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/extension.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/extension.html">
     <link rel="icon" href="{{base}}assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
@@ -64,7 +64,7 @@
         ]
       }
     </script>
-    <link rel="stylesheet" href="{{base}}styles.css">
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260526">
   </head>
   <body>
     <header class="site-header">
@@ -76,6 +76,7 @@
         <a href="#features" data-i18n="nav.features">features</a>
         <a href="#scope" data-i18n="nav.scope">boundary</a>
         <a href="#privacy" data-i18n="nav.privacy">privacy</a>
+        <a class="nav-app" href="{{proUrl}}" data-i18n="nav.pro">Pro</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button
@@ -137,14 +138,6 @@
           </div>
           <div class="hero-badges" aria-label="Product facts">
             <span data-i18n="hero.badgeVersion">Beta v0.1.0</span>
-          </div>
-          <div class="hero-upgrade" aria-labelledby="hero-upgrade-title">
-            <div>
-              <p class="section-label" data-i18n="hero.upgradeLabel">Paid upgrade</p>
-              <h2 id="hero-upgrade-title" data-i18n="hero.upgradeTitle">Need local files, notes, HTML, or EPUB?</h2>
-              <p data-i18n="hero.upgradeBody">wowMD Pro adds local Markdown processing, highlights, notes, clean HTML export, and EPUB export for Kindle, Apple Books, and Kobo.</p>
-            </div>
-            <a class="button button-primary hero-upgrade-button" href="{{base}}app/" data-i18n="hero.upgradeCta">Open wowMD Pro</a>
           </div>
         </div>
       </section>
@@ -262,6 +255,17 @@
           <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.three">No AI summaries, cloud analysis, or remote configuration.</span></p>
           <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.four">No browsing history, cookies, account information, or local file access.</span></p>
           <p><span class="check" aria-hidden="true"></span><span data-i18n="privacy.five">No Raw Markdown or GitHub API request before you click Better view.</span></p>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-labelledby="extension-pro-title">
+        <div class="extension-pro-cta">
+          <div>
+            <p class="section-label" data-i18n="extension.proLabel">Need more?</p>
+            <h2 id="extension-pro-title" data-i18n="extension.proTitle">Need local files, highlights, notes, or export?</h2>
+            <p data-i18n="extension.proBody">wowMD Pro adds a local Markdown workspace with annotations and clean HTML or EPUB export. The free extension stays focused on GitHub reading.</p>
+          </div>
+          <a class="button button-primary" href="{{proUrl}}" data-i18n="extension.proCta">Explore wowMD Pro</a>
         </div>
       </section>
     </main>

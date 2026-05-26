@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMD Pro - 하이라이트, 노트, 내보내기를 지원하는 로컬 Markdown 리더</title>
+    <meta
+      name="description"
+      content="wowMD Pro는 로컬 Markdown 파일을 읽고, 하이라이트와 노트를 추가하며, 깔끔한 HTML 또는 EPUB로 내보내는 로컬 우선 Webapp입니다."
+     
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/ko/pro.html">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/pro.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/pro.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/pro.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/pro.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/pro.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/pro.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/pro.html">
+    <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMD Pro - 하이라이트, 노트, 내보내기를 지원하는 로컬 Markdown 리더">
+    <meta property="og:description" content="wowMD Pro는 로컬 Markdown 파일을 읽고, 하이라이트와 노트를 추가하며, 깔끔한 HTML 또는 EPUB로 내보내는 로컬 우선 Webapp입니다.">
+    <meta property="og:url" content="https://wowmd.app/ko/pro.html">
+    <meta property="og:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMD Pro - 하이라이트, 노트, 내보내기를 지원하는 로컬 Markdown 리더">
+    <meta name="twitter:description" content="wowMD Pro는 로컬 Markdown 파일을 읽고, 하이라이트와 노트를 추가하며, 깔끔한 HTML 또는 EPUB로 내보내는 로컬 우선 Webapp입니다.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD Pro",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Modern browser",
+        "description": "wowMD Pro는 로컬 Markdown 파일을 읽고, 하이라이트와 노트를 추가하며, 깔끔한 HTML 또는 EPUB로 내보내는 로컬 우선 Webapp입니다.",
+        "url": "https://wowmd.app/ko/pro.html",
+        "image": "https://wowmd.app/assets/wowmd-product-demo-poster.jpg",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Local Markdown files",
+          "Highlights and notes",
+          "HTML export",
+          "EPUB export"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260526">
+  </head>
+  <body class="pro-page">
+    <header class="site-header">
+      <a class="logo-link" href="./" aria-label="wowMD home">
+        <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#local">로컬 파일</a>
+        <a href="#notes">노트</a>
+        <a href="#export">내보내기</a>
+        <a href="#roadmap">예정</a>
+        <a class="nav-app" href="../app/">앱 열기</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/kr.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/pro.html"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/pro.html"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
+          <a role="option" data-language-option="fr" aria-label="French" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero pro-hero" aria-labelledby="pro-title">
+        <div class="hero-copy pro-hero-copy">
+          <p class="section-label">wowMD Pro</p>
+          <h1 id="pro-title">로컬 Markdown 읽기 워크스페이스.</h1>
+          <p class="hero-subtitle">브라우저에서 로컬 Markdown 파일을 열고, 중요한 부분을 하이라이트하고, 노트를 남기며, 문서를 업로드하지 않고 깔끔한 읽기 사본을 내보냅니다.</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="../app/">wowMD Pro 열기</a>
+            <a class="button button-secondary" href="extension.html">무료 확장 프로그램이 필요하신가요?</a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span>초기 접근은 무료일 수 있음</span>
+            <span>평생 라이선스 예정</span>
+            <span>로컬 우선</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="local" aria-labelledby="local-title">
+        <div class="product-story-copy">
+          <p class="section-label">로컬 파일</p>
+          <h2 id="local-title">기기에 있는 Markdown 파일을 여세요.</h2>
+          <p>`.md` 또는 `.markdown` 파일을 넣고 아웃라인, 접기, 읽기 쉬운 코드, 표 스크롤이 있는 집중 워크스페이스에서 읽으세요.</p>
+          <a class="button button-secondary" href="../app/">앱 열기</a>
+        </div>
+        <figure class="product-media-frame" aria-label="Local Markdown file preview">
+          <div class="media-browser-bar"><span></span><span></span><span></span><strong>wowMD Pro</strong></div>
+          <video class="product-media" poster="../assets/wowmd-product-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="../assets/wowmd-product-demo.webm" type="video/webm">
+            <source src="../assets/wowmd-product-demo.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <section class="product-story product-story-flipped reveal" id="notes" aria-labelledby="notes-title">
+        <div class="product-story-copy">
+          <p class="section-label">하이라이트와 노트</p>
+          <h2 id="notes-title">유용한 부분을 문서 곁에 보관하세요.</h2>
+          <p>중요한 문단을 표시하고 짧은 노트를 추가하며 주석 데이터를 로컬에 보관합니다. 향후 쓰기 기능이 추가되지 않는 한 원본 Markdown은 변경되지 않습니다.</p>
+          <a class="button button-secondary" href="../app/">주석 사용해 보기</a>
+        </div>
+        <div class="product-media-frame product-media-placeholder" aria-label="Highlights and notes preview">
+          <div class="mock-reader">
+            <aside>
+              <span></span>
+              <span></span>
+              <span></span>
+            </aside>
+            <article>
+              <h3>읽기 노트</h3>
+              <p></p>
+              <p class="mock-highlight"></p>
+              <p></p>
+              <div class="mock-note">중요한 아이디어가 로컬 노트로 저장되었습니다.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="export" aria-labelledby="export-title">
+        <div class="product-story-copy">
+          <p class="section-label">내보내기</p>
+          <h2 id="export-title">Markdown 하나를 깔끔한 읽기 사본으로 바꾸세요.</h2>
+          <p>공유나 보관을 위한 완전한 오프라인 HTML 또는 Send to Kindle, Apple Books, Kobo 등에서 사용할 EPUB를 만들 수 있습니다.</p>
+          <a class="button button-primary" href="../app/">Pro에서 내보내기</a>
+        </div>
+        <div class="export-grid" aria-label="Export formats">
+          <article class="export-card">
+            <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
+            <h3>깔끔한 HTML</h3>
+            <p>앱 런타임 없이 자체 포함된 구조적 오프라인 HTML입니다.</p>
+          </article>
+          <article class="export-card">
+            <span class="feature-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22zM4 5.5V22"/></svg></span>
+            <h3>EPUB</h3>
+            <p>주요 읽기 앱을 위한 탐색 메타데이터가 포함된 리플로우 EPUB 3입니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <p class="section-label">다음 계획</p>
+          <h2 id="roadmap-title">미래 작업은 현재 약속과 분리해 표시합니다.</h2>
+          <p class="section-subtitle">이 항목들은 계획 또는 검토 중입니다. 구매 판단은 현재 앱에서 사용할 수 있는 기능을 기준으로 해주세요.</p>
+        </div>
+        <div class="roadmap-list">
+          <span>라이브러리와 읽기 기록</span>
+          <span>더 나은 주석 관리</span>
+          <span>테마 프리셋</span>
+          <span>추가 내보내기 형식</span>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-labelledby="pro-pricing-title">
+        <div class="pricing-card pro-pricing-card">
+          <div>
+            <p class="section-label">가격</p>
+            <h2 id="pro-pricing-title">초기 접근은 단순하게, 정식 결제는 명확하게.</h2>
+            <p>가격이 확정되기 전 Webapp은 무료 초기 접근으로 시작할 수 있습니다. 계획된 유료 모델은 저렴한 일회성 평생 라이선스이며, 얼리버드 및 프로모션 할인이 제공될 수 있습니다.</p>
+          </div>
+          <a class="button button-primary" href="../app/">wowMD Pro 열기</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p>wowMD Pro - 로컬 Markdown 워크스페이스</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">개인정보 처리방침</a>
+        <a href="terms.html">이용 약관</a>
+        <a class="feedback-link" href="feedback.html">피드백 보내기</a>
+      </nav>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

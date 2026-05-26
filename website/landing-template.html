@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="{{lang}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="landing.metaTitle">wowMD - Choose your Markdown reader</title>
+    <meta
+      name="description"
+      content="Choose the free wowMD Chrome extension for GitHub Markdown or wowMD Pro for local Markdown files, highlights, notes, and export."
+      data-i18n-content="landing.metaDescription"
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="{{canonicalUrl}}">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/">
+    <link rel="icon" href="{{base}}assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="{{metaTitle}}">
+    <meta property="og:description" content="{{metaDescription}}">
+    <meta property="og:url" content="{{canonicalUrl}}">
+    <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{metaTitle}}">
+    <meta name="twitter:description" content="{{metaDescription}}">
+    <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "wowMD",
+        "url": "{{canonicalUrl}}",
+        "description": "{{jsonDescription}}"
+      }
+    </script>
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260526">
+  </head>
+  <body class="landing-page">
+    <header class="site-header gateway-header">
+      <a class="logo-link" href="{{homeUrl}}" aria-label="wowMD home">
+        <img src="{{base}}assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav gateway-nav" aria-label="Primary">
+        <a href="{{extensionUrl}}" data-i18n="nav.extension">Extension</a>
+        <a href="{{proUrl}}" data-i18n="nav.pro">Pro</a>
+        <a class="nav-app" href="{{appUrl}}" data-i18n="nav.openApp">Open app</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="{{currentFlag}}" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="{{localeUrlEn}}"><img class="flag" src="{{base}}assets/flags/gb.svg" alt=""></a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="{{localeUrlZh}}"><img class="flag" src="{{base}}assets/flags/cn.svg" alt=""></a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="{{localeUrlJa}}"><img class="flag" src="{{base}}assets/flags/jp.svg" alt=""></a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="{{localeUrlKo}}"><img class="flag" src="{{base}}assets/flags/kr.svg" alt=""></a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="{{localeUrlDe}}"><img class="flag" src="{{base}}assets/flags/de.svg" alt=""></a>
+          <a role="option" data-language-option="fr" aria-label="French" href="{{localeUrlFr}}"><img class="flag" src="{{base}}assets/flags/fr.svg" alt=""></a>
+        </div>
+      </div>
+    </header>
+
+    <main class="gateway-main">
+      <section class="gateway-hero" aria-labelledby="gateway-title">
+        <p class="section-label" data-i18n="landing.label">Markdown reader gateway</p>
+        <h1 id="gateway-title" data-i18n="landing.title">Long Markdown, finally readable.</h1>
+        <p class="gateway-subtitle" data-i18n="landing.subtitle">Choose where you read: GitHub pages, or local Markdown files.</p>
+
+        <div class="gateway-actions" aria-label="Product paths">
+          <a class="gateway-choice" href="{{extensionUrl}}">
+            <span class="gateway-choice-label">
+              <span class="gateway-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 5h16v12H4zM8 21h8M12 17v4"/></svg>
+              </span>
+              <span data-i18n="landing.extensionCta">Free Chrome Extension</span>
+            </span>
+            <span class="gateway-hint" data-i18n="landing.openDetails">open details</span>
+            <span class="gateway-tags" aria-label="Extension highlights">
+              <span data-i18n="landing.extensionTagOne">GitHub reader</span>
+              <span data-i18n="landing.extensionTagTwo">Outline</span>
+              <span data-i18n="landing.extensionTagThree">Folding</span>
+              <span data-i18n="landing.extensionTagFour">Code &amp; tables</span>
+            </span>
+          </a>
+
+          <a class="gateway-choice gateway-choice-primary" href="{{proUrl}}">
+            <span class="gateway-choice-label">
+              <span class="gateway-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.2 5.6.7-4.1 4 1 5.6L12 15.8 7.1 18.5l1-5.6-4.1-4 5.6-.7z"/></svg>
+              </span>
+              <span data-i18n="landing.proCta">Pro Web App</span>
+            </span>
+            <span class="gateway-hint" data-i18n="landing.openDetails">open details</span>
+            <span class="gateway-tags" aria-label="Pro highlights">
+              <span data-i18n="landing.proTagOne">Local files</span>
+              <span data-i18n="landing.proTagTwo">Highlights</span>
+              <span data-i18n="landing.proTagThree">Notes</span>
+              <span data-i18n="landing.proTagFour">HTML &amp; EPUB</span>
+            </span>
+          </a>
+        </div>
+
+        <p class="gateway-footnote" data-i18n="landing.footnote">Free extension for GitHub. Pro workspace for local files.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer gateway-footer">
+      <div class="footer-brand">
+        <img src="{{base}}assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p data-i18n="footer.statusGateway">Two focused Markdown reading tools</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="{{privacyUrl}}" data-i18n="footer.privacy">Privacy Policy</a>
+        <a href="{{termsUrl}}" data-i18n="footer.terms">Terms</a>
+        <a class="feedback-link" href="{{feedbackUrl}}" data-i18n="footer.feedback">Send feedback</a>
+      </nav>
+    </footer>
+    <script src="{{base}}script.js"></script>
+  </body>
+</html>

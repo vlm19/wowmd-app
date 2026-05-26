@@ -1,12 +1,12 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>wowMD - 長い Markdown を読みやすく</title>
+    <title>wowMD - Markdown リーダーを選ぶ</title>
     <meta
       name="description"
-      content="wowMD は、長い GitHub README や Markdown ページを、構造が見える読みやすい表示に変える軽量 Chrome 拡張機能です。"
+      content="GitHub Markdown には無料の wowMD Chrome 拡張機能を、ローカル Markdown ファイル、ハイライト、ノート、エクスポートには wowMD Pro を選べます。"
      
     >
     <meta name="robots" content="index,follow">
@@ -22,250 +22,100 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" content="wowMD - 長い Markdown を読みやすく">
-    <meta
-      property="og:description"
-      content="wowMD は、長い GitHub README や Markdown ページを、構造が見える読みやすい表示に変える軽量 Chrome 拡張機能です。"
-    >
+    <meta property="og:title" content="wowMD - Markdown リーダーを選ぶ">
+    <meta property="og:description" content="GitHub Markdown には無料の wowMD Chrome 拡張機能を、ローカル Markdown ファイル、ハイライト、ノート、エクスポートには wowMD Pro を選べます。">
     <meta property="og:url" content="https://wowmd.app/ja/">
     <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
     <meta property="og:image:alt" content="wowMD product preview">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="wowMD - 長い Markdown を読みやすく">
-    <meta
-      name="twitter:description"
-      content="wowMD は、長い GitHub README や Markdown ページを、構造が見える読みやすい表示に変える軽量 Chrome 拡張機能です。"
-    >
+    <meta name="twitter:title" content="wowMD - Markdown リーダーを選ぶ">
+    <meta name="twitter:description" content="GitHub Markdown には無料の wowMD Chrome 拡張機能を、ローカル Markdown ファイル、ハイライト、ノート、エクスポートには wowMD Pro を選べます。">
     <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
+        "@type": "WebSite",
         "name": "wowMD",
-        "applicationCategory": "BrowserApplication",
-        "operatingSystem": "Chrome",
-        "description": "wowMD は、長い GitHub README や Markdown ページを、構造が見える読みやすい表示に変える軽量 Chrome 拡張機能です。",
         "url": "https://wowmd.app/ja/",
-        "image": "https://wowmd.app/assets/hero-demo-poster.jpg",
-        "softwareVersion": "0.1.0",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        },
-        "featureList": [
-          "Document outline",
-          "Section folding",
-          "Code rendering",
-          "Table scrolling",
-          "Local full-screen reader",
-          "Privacy-first local reading"
-        ]
+        "description": "GitHub Markdown には無料の wowMD Chrome 拡張機能を、ローカル Markdown ファイル、ハイライト、ノート、エクスポートには wowMD Pro を選べます。"
       }
     </script>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles.css?v=20260526">
   </head>
-  <body>
-    <header class="site-header">
-      <a class="logo-link" href="index.html" aria-label="wowMD home">
+  <body class="landing-page">
+    <header class="site-header gateway-header">
+      <a class="logo-link" href="./" aria-label="wowMD home">
         <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
       </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#demo">デモ</a>
-        <a href="#features">機能</a>
-        <a href="#scope">対応範囲</a>
-        <a href="#privacy">プライバシー</a>
+      <nav class="site-nav gateway-nav" aria-label="Primary">
+        <a href="extension.html">拡張機能</a>
+        <a href="pro.html">Pro</a>
+        <a class="nav-app" href="../app/">アプリを開く</a>
       </nav>
       <div class="language-picker" data-language-picker>
-        <button
-          class="language-trigger"
-          type="button"
-          id="language-trigger"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          aria-label="Language selector"
-        >
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
           <img class="flag" data-current-flag src="../assets/flags/jp.svg" alt="">
           <span class="language-arrow" aria-hidden="true"></span>
         </button>
         <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
-          <a role="option" data-language-option="en" aria-label="English" href="../index.html">
-            <img class="flag" src="../assets/flags/gb.svg" alt="">
-          </a>
-          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/index.html">
-            <img class="flag" src="../assets/flags/cn.svg" alt="">
-          </a>
-          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/index.html" aria-selected="true">
-            <img class="flag" src="../assets/flags/jp.svg" alt="">
-          </a>
-          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/index.html">
-            <img class="flag" src="../assets/flags/kr.svg" alt="">
-          </a>
-          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/index.html">
-            <img class="flag" src="../assets/flags/de.svg" alt="">
-          </a>
-          <a role="option" data-language-option="fr" aria-label="French" href="../fr/index.html">
-            <img class="flag" src="../assets/flags/fr.svg" alt="">
-          </a>
+          <a role="option" data-language-option="en" aria-label="English" href="../"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/" aria-selected="true"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
+          <a role="option" data-language-option="fr" aria-label="French" href="../fr/"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
         </div>
       </div>
     </header>
 
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <h1 id="hero-title">長い Markdown を、迷わず読める形に。</h1>
-          <p class="hero-subtitle">wowMD は、長い GitHub README や Markdown ファイルにアウトライン、折りたたみ可能なセクション、落ち着いた読み取り表示を追加します。必要なページでだけ表示されます。</p>
-          <div class="hero-actions" aria-label="Primary actions">
-            <a class="button button-primary" href="https://chrome.google.com/webstore" target="_blank" rel="noreferrer">
-              <span class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg>
+    <main class="gateway-main">
+      <section class="gateway-hero" aria-labelledby="gateway-title">
+        <p class="section-label">Markdown リーダー入口</p>
+        <h1 id="gateway-title">長い Markdown を、読みやすく。</h1>
+        <p class="gateway-subtitle">読む場所を選んでください。GitHub ページ、またはローカル Markdown ファイル。</p>
+
+        <div class="gateway-actions" aria-label="Product paths">
+          <a class="gateway-choice" href="extension.html">
+            <span class="gateway-choice-label">
+              <span class="gateway-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 5h16v12H4zM8 21h8M12 17v4"/></svg>
               </span>
-              <span>Chrome に追加</span>
-            </a>
-            <a class="button button-secondary" href="https://github.com/bg4abs/wowmd-ext" target="_blank" rel="noreferrer">
-              <span class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.1-1.5 6.1-6.7a5.2 5.2 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.1-.3-3.8 1.4a13.1 13.1 0 0 0-6.9 0C6.4.3 5.3.6 5.3.6a4.8 4.8 0 0 0-.1 3.6 5.2 5.2 0 0 0-1.4 3.6c0 5.2 3.1 6.4 6.1 6.7a3 3 0 0 0-.8 1.9V22"/></svg>
+              <span>無料 Chrome 拡張機能</span>
+            </span>
+            <span class="gateway-hint">詳細を見る</span>
+            <span class="gateway-tags" aria-label="Extension highlights">
+              <span>GitHub リーダー</span>
+              <span>アウトライン</span>
+              <span>折りたたみ</span>
+              <span>コードと表</span>
+            </span>
+          </a>
+
+          <a class="gateway-choice gateway-choice-primary" href="pro.html">
+            <span class="gateway-choice-label">
+              <span class="gateway-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.2 5.6.7-4.1 4 1 5.6L12 15.8 7.1 18.5l1-5.6-4.1-4 5.6-.7z"/></svg>
               </span>
-              <span>View on GitHub</span>
-            </a>
-          </div>
-          <div class="hero-badges" aria-label="Product facts">
-            <span>Beta v0.1.0</span>
-          </div>
-          <div class="hero-upgrade" aria-labelledby="hero-upgrade-title">
-            <div>
-              <p class="section-label">Paid upgrade</p>
-              <h2 id="hero-upgrade-title">Need local files, notes, HTML, or EPUB?</h2>
-              <p>wowMD Pro adds local Markdown processing, highlights, notes, clean HTML export, and EPUB export for Kindle, Apple Books, and Kobo.</p>
-            </div>
-            <a class="button button-primary hero-upgrade-button" href="../app/">Open wowMD Pro</a>
-          </div>
+              <span>Pro Web App</span>
+            </span>
+            <span class="gateway-hint">詳細を見る</span>
+            <span class="gateway-tags" aria-label="Pro highlights">
+              <span>ローカルファイル</span>
+              <span>ハイライト</span>
+              <span>ノート</span>
+              <span>HTML と EPUB</span>
+            </span>
+          </a>
         </div>
-      </section>
 
-      <section class="demo-section reveal" id="demo" aria-labelledby="demo-title">
-        <div class="section-heading">
-          <p class="section-label">デモ</p>
-          <h2 id="demo-title">長い README が読みやすいリーダーに変わる流れをご覧ください。</h2>
-        </div>
-        <div class="video-shell" aria-label="wowMD product demo video">
-          <div class="browser-bar">
-            <span class="dot dot-red"></span>
-            <span class="dot dot-amber"></span>
-            <span class="dot dot-green"></span>
-            <span class="address">github.com/openclaw/openclaw</span>
-          </div>
-          <video class="demo-video" poster="../assets/hero-demo-poster.jpg" autoplay muted loop playsinline controls>
-            <source src="../assets/hero-demo.webm" type="video/webm">
-            <source src="../assets/hero-demo.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="demo-notes" aria-label="Demo moments">
-          <span>Better View を表示</span>
-          <span>まずアウトラインを表示</span>
-          <span>全画面リーダーで読む</span>
-        </div>
-      </section>
-
-      <section class="section reveal" id="features" aria-labelledby="features-title">
-        <div class="section-heading">
-          <p class="section-label">機能</p>
-          <h2 id="features-title">読みやすさのために、必要な機能だけを。</h2>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-blue" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-            </span>
-            <h3>アウトラインから開始</h3>
-            <p>本文に入る前に、文書全体の構成を確認できます。</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-amber" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-            </span>
-            <h3>セクションの折りたたみ</h3>
-            <p>長い文書では、大きな H2 セクションを個別に折りたためます。</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-purple" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
-            </span>
-            <h3>コード表示</h3>
-            <p>余白とハイライトで、コードブロックを読みやすく保ちます。</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-coral" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
-            </span>
-            <h3>表の横スクロール</h3>
-            <p>幅の広い表も、レイアウトを崩さず横にスクロールできます。</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-green" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
-            </span>
-            <h3>必要なときだけ表示</h3>
-            <p>短い README やシンプルなページでは表示されず、邪魔をしません。</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-teal" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
-            </span>
-            <h3>表示の整理</h3>
-            <p>相対パスの画像をできるだけ正しく表示し、レンダリング後の Markdown を安全に整えます。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section reveal" id="scope" aria-labelledby="scope-title">
-        <div class="section-heading">
-          <p class="section-label">対応範囲</p>
-          <h2 id="scope-title">GitHub Markdown に集中し、対応範囲を明確に。</h2>
-        </div>
-        <div class="scope-grid">
-          <article class="scope-card supported">
-            <h3>対応済み</h3>
-            <ul>
-              <li><span class="check" aria-hidden="true"></span><span>公開 GitHub リポジトリの README ページ</span></li>
-              <li><span class="check" aria-hidden="true"></span><span>公開 GitHub の .md ファイルページ</span></li>
-              <li><span class="check" aria-hidden="true"></span><span>公開 GitHub の .markdown ファイルページ</span></li>
-              <li><span class="check" aria-hidden="true"></span><span>右側パネルと全画面リーダー</span></li>
-            </ul>
-          </article>
-          <article class="scope-card not-supported">
-            <h3>未対応</h3>
-            <ul>
-              <li><span class="xmark" aria-hidden="true"></span><span>プライベートリポジトリ</span></li>
-              <li><span class="xmark" aria-hidden="true"></span><span>GitHub 以外の Web サイト</span></li>
-              <li><span class="xmark" aria-hidden="true"></span><span>Issue、Pull Request、Wiki ページ</span></li>
-              <li><span class="xmark" aria-hidden="true"></span><span>AI 要約、翻訳、クラウド同期</span></li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="section reveal" id="privacy" aria-labelledby="privacy-title">
-        <div class="section-heading">
-          <p class="section-label">プライバシー</p>
-          <h2 id="privacy-title">読むためのツールに、余計なデータはいりません。</h2>
-        </div>
-        <div class="privacy-card">
-          <p><span class="check" aria-hidden="true"></span><span>個人情報は収集しません。</span></p>
-          <p><span class="check" aria-hidden="true"></span><span>文書を第三者サービスへ送信しません。</span></p>
-          <p><span class="check" aria-hidden="true"></span><span>AI 要約、クラウド解析、リモート設定は行いません。</span></p>
-          <p><span class="check" aria-hidden="true"></span><span>閲覧履歴、Cookie、アカウント情報、ローカルファイルにはアクセスしません。</span></p>
-          <p><span class="check" aria-hidden="true"></span><span>Better View をクリックするまで、Raw Markdown や GitHub API へのリクエストは行いません。</span></p>
-        </div>
+        <p class="gateway-footnote">無料拡張機能は GitHub 用。Pro ワークスペースはローカルファイル用。</p>
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer gateway-footer">
       <div class="footer-brand">
         <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>Beta v0.1.0 - Chrome 拡張機能</p>
+        <p>2 つの集中型 Markdown 読書ツール</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="privacy.html">プライバシーポリシー</a>
@@ -276,4 +126,3 @@
     <script src="../script.js"></script>
   </body>
 </html>
-

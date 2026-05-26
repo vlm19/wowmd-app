@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMD Pro - 支持高亮、笔记和导出的本地 Markdown 阅读器</title>
+    <meta
+      name="description"
+      content="wowMD Pro 是本地优先的 Webapp，用于阅读本地 Markdown 文件、添加高亮和笔记，并导出干净的 HTML 或 EPUB。"
+     
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/zh/pro.html">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/pro.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/pro.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/pro.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/pro.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/pro.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/pro.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/pro.html">
+    <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMD Pro - 支持高亮、笔记和导出的本地 Markdown 阅读器">
+    <meta property="og:description" content="wowMD Pro 是本地优先的 Webapp，用于阅读本地 Markdown 文件、添加高亮和笔记，并导出干净的 HTML 或 EPUB。">
+    <meta property="og:url" content="https://wowmd.app/zh/pro.html">
+    <meta property="og:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMD Pro - 支持高亮、笔记和导出的本地 Markdown 阅读器">
+    <meta name="twitter:description" content="wowMD Pro 是本地优先的 Webapp，用于阅读本地 Markdown 文件、添加高亮和笔记，并导出干净的 HTML 或 EPUB。">
+    <meta name="twitter:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD Pro",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Modern browser",
+        "description": "wowMD Pro 是本地优先的 Webapp，用于阅读本地 Markdown 文件、添加高亮和笔记，并导出干净的 HTML 或 EPUB。",
+        "url": "https://wowmd.app/zh/pro.html",
+        "image": "https://wowmd.app/assets/wowmd-product-demo-poster.jpg",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Local Markdown files",
+          "Highlights and notes",
+          "HTML export",
+          "EPUB export"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260526">
+  </head>
+  <body class="pro-page">
+    <header class="site-header">
+      <a class="logo-link" href="./" aria-label="wowMD home">
+        <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#local">本地文件</a>
+        <a href="#notes">笔记</a>
+        <a href="#export">导出</a>
+        <a href="#roadmap">计划中</a>
+        <a class="nav-app" href="../app/">打开应用</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/cn.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/pro.html"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/pro.html"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
+          <a role="option" data-language-option="fr" aria-label="French" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero pro-hero" aria-labelledby="pro-title">
+        <div class="hero-copy pro-hero-copy">
+          <p class="section-label">wowMD Pro</p>
+          <h1 id="pro-title">你的本地 Markdown 阅读工作区。</h1>
+          <p class="hero-subtitle">在浏览器中打开本地 Markdown 文件，高亮重要段落，保留笔记，并导出干净的阅读副本，无需上传文档。</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="../app/">打开 wowMD Pro</a>
+            <a class="button button-secondary" href="extension.html">需要免费插件？</a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span>早期访问可能免费</span>
+            <span>计划终身授权</span>
+            <span>本地优先</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="local" aria-labelledby="local-title">
+        <div class="product-story-copy">
+          <p class="section-label">本地文件</p>
+          <h2 id="local-title">打开你设备上的 Markdown 文件。</h2>
+          <p>拖入 `.md` 或 `.markdown` 文件，在专注工作区中使用大纲、折叠、代码显示和表格滚动进行阅读。</p>
+          <a class="button button-secondary" href="../app/">打开应用</a>
+        </div>
+        <figure class="product-media-frame" aria-label="Local Markdown file preview">
+          <div class="media-browser-bar"><span></span><span></span><span></span><strong>wowMD Pro</strong></div>
+          <video class="product-media" poster="../assets/wowmd-product-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="../assets/wowmd-product-demo.webm" type="video/webm">
+            <source src="../assets/wowmd-product-demo.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <section class="product-story product-story-flipped reveal" id="notes" aria-labelledby="notes-title">
+        <div class="product-story-copy">
+          <p class="section-label">高亮与笔记</p>
+          <h2 id="notes-title">把有用内容留在文档旁边。</h2>
+          <p>标记重要段落，添加简短笔记，并将标注数据保存在本地。除非未来加入写回功能，源 Markdown 不会被修改。</p>
+          <a class="button button-secondary" href="../app/">试用标注</a>
+        </div>
+        <div class="product-media-frame product-media-placeholder" aria-label="Highlights and notes preview">
+          <div class="mock-reader">
+            <aside>
+              <span></span>
+              <span></span>
+              <span></span>
+            </aside>
+            <article>
+              <h3>阅读笔记</h3>
+              <p></p>
+              <p class="mock-highlight"></p>
+              <p></p>
+              <div class="mock-note">重要想法已保存为本地笔记。</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="export" aria-labelledby="export-title">
+        <div class="product-story-copy">
+          <p class="section-label">导出</p>
+          <h2 id="export-title">把一个 Markdown 文件变成干净的阅读副本。</h2>
+          <p>导出完整离线 HTML 用于分享或归档，也可以导出 EPUB，用于 Kindle、Apple Books、Kobo 等阅读器。</p>
+          <a class="button button-primary" href="../app/">从 Pro 导出</a>
+        </div>
+        <div class="export-grid" aria-label="Export formats">
+          <article class="export-card">
+            <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
+            <h3>干净 HTML</h3>
+            <p>自包含、结构化、可离线阅读的 HTML，不包含应用运行时代码。</p>
+          </article>
+          <article class="export-card">
+            <span class="feature-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22zM4 5.5V22"/></svg></span>
+            <h3>EPUB</h3>
+            <p>带导航元数据的可重排 EPUB 3，适配主流阅读应用。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <p class="section-label">后续计划</p>
+          <h2 id="roadmap-title">未来功能和当前承诺分开说明。</h2>
+          <p class="section-subtitle">这些想法正在计划或探索中，当前购买决策应以应用已经提供的功能为准。</p>
+        </div>
+        <div class="roadmap-list">
+          <span>文档库和阅读历史</span>
+          <span>更好的标注管理</span>
+          <span>主题预设</span>
+          <span>更多导出格式</span>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-labelledby="pro-pricing-title">
+        <div class="pricing-card pro-pricing-card">
+          <div>
+            <p class="section-label">定价</p>
+            <h2 id="pro-pricing-title">早期访问简单，正式结账清晰。</h2>
+            <p>Webapp 初期可能免费开放，价格最终确定后，计划采用低价一次性终身授权，并可能提供早鸟价和优惠券。</p>
+          </div>
+          <a class="button button-primary" href="../app/">打开 wowMD Pro</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p>wowMD Pro - 本地 Markdown 工作区</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">隐私政策</a>
+        <a href="terms.html">服务条款</a>
+        <a class="feedback-link" href="feedback.html">提交反馈</a>
+      </nav>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>

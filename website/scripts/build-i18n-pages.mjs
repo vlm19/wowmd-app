@@ -3,12 +3,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const landingTemplatePath = path.join(root, "landing-template.html");
 const templatePath = path.join(root, "template.html");
+const proTemplatePath = path.join(root, "pro-template.html");
 const privacyTemplatePath = path.join(root, "privacy-template.html");
 const termsTemplatePath = path.join(root, "terms-template.html");
 const feedbackTemplatePath = path.join(root, "feedback-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
+const sitemapLastmod = "2026-05-27";
 
 const languages = [
   { code: "en", dir: "", flag: "gb.svg" },
@@ -19,7 +22,9 @@ const languages = [
   { code: "fr", dir: "fr", flag: "fr.svg" }
 ];
 
+const landingTemplate = fs.readFileSync(landingTemplatePath, "utf8");
 const template = fs.readFileSync(templatePath, "utf8");
+const proTemplate = fs.readFileSync(proTemplatePath, "utf8");
 const privacyTemplate = fs.readFileSync(privacyTemplatePath, "utf8");
 const termsTemplate = fs.readFileSync(termsTemplatePath, "utf8");
 const feedbackTemplate = fs.readFileSync(feedbackTemplatePath, "utf8");
@@ -65,9 +70,13 @@ const applyTemplateVars = (html, vars) => {
   return output;
 };
 
-const localeUrl = (currentDir, targetDir) => {
+const localeUrl = (currentDir, targetDir, fileName = "index.html") => {
   const prefix = currentDir ? "../" : "";
-  return targetDir ? `${prefix}${targetDir}/index.html` : `${prefix}index.html`;
+  if (fileName === "index.html") {
+    if (targetDir) return `${prefix}${targetDir}/`;
+    return currentDir ? "../" : "./";
+  }
+  return targetDir ? `${prefix}${targetDir}/${fileName}` : `${prefix}${fileName}`;
 };
 
 const localeFileUrl = (currentDir, targetDir, fileName) => {
@@ -82,29 +91,55 @@ const pagePath = (dir, fileName = "index.html") => {
 
 const feedbackUrl = () => "feedback.html";
 
+const marketingPages = {
+  "index.html": {
+    template: landingTemplate,
+    metaTitleKey: "landing.metaTitle",
+    metaDescriptionKey: "landing.metaDescription",
+    type: "WebSite",
+    priority: "1.0"
+  },
+  "extension.html": {
+    template,
+    metaTitleKey: "extension.metaTitle",
+    metaDescriptionKey: "extension.metaDescription",
+    type: "SoftwareApplication",
+    priority: "0.9"
+  },
+  "pro.html": {
+    template: proTemplate,
+    metaTitleKey: "pro.metaTitle",
+    metaDescriptionKey: "pro.metaDescription",
+    type: "SoftwareApplication",
+    priority: "0.9"
+  }
+};
+
 const writePage = ({ code, dir, flag }, fileName = "index.html") => {
   const dataPath = path.join(i18nDir, `${code}.json`);
   const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
   const base = dir ? "../" : "";
   const isPrivacyPage = fileName === "privacy.html";
   const isTermsPage = fileName === "terms.html";
-  const canonicalUrl = isPrivacyPage || isTermsPage
-    ? `${siteUrl}/${pagePath(dir, fileName)}`
-    : dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`;
+  const isIndexPage = fileName === "index.html";
+  const pageConfig = marketingPages[fileName];
+  const canonicalUrl = isIndexPage
+    ? dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`
+    : `${siteUrl}/${pagePath(dir, fileName)}`;
   const outputDir = dir ? path.join(root, dir) : root;
   const outputPath = path.join(outputDir, fileName);
   const metaTitle = isPrivacyPage
     ? data["privacyPage.metaTitle"]
     : isTermsPage
       ? data["termsPage.metaTitle"]
-      : data["meta.title"];
+      : data[pageConfig?.metaTitleKey] || data["meta.title"];
   const metaDescription = isPrivacyPage
     ? data["privacyPage.metaDescription"]
     : isTermsPage
       ? data["termsPage.metaDescription"]
-      : data["meta.description"];
+      : data[pageConfig?.metaDescriptionKey] || data["meta.description"];
 
-  let html = isPrivacyPage ? privacyTemplate : isTermsPage ? termsTemplate : template;
+  let html = isPrivacyPage ? privacyTemplate : isTermsPage ? termsTemplate : pageConfig.template;
   for (const [key, value] of Object.entries(data)) {
     html = replaceElementText(html, key, value);
     html = replaceContentAttr(html, key, value);
@@ -115,27 +150,31 @@ const writePage = ({ code, dir, flag }, fileName = "index.html") => {
     lang: code,
     base,
     canonicalUrl,
-    homeUrl: "index.html",
+    homeUrl: "./",
+    extensionUrl: "extension.html",
+    proUrl: "pro.html",
+    appUrl: `${base}app/`,
     privacyUrl: "privacy.html",
     termsUrl: "terms.html",
     feedbackUrl: feedbackUrl(dir),
     currentFlag: `${base}assets/flags/${flag}`,
-    localeUrlEn: localeUrl(dir, ""),
-    localeUrlZh: localeUrl(dir, "zh"),
-    localeUrlJa: localeUrl(dir, "ja"),
-    localeUrlKo: localeUrl(dir, "ko"),
-    localeUrlDe: localeUrl(dir, "de"),
-    localeUrlFr: localeUrl(dir, "fr"),
+    localeUrlEn: localeUrl(dir, "", fileName),
+    localeUrlZh: localeUrl(dir, "zh", fileName),
+    localeUrlJa: localeUrl(dir, "ja", fileName),
+    localeUrlKo: localeUrl(dir, "ko", fileName),
+    localeUrlDe: localeUrl(dir, "de", fileName),
+    localeUrlFr: localeUrl(dir, "fr", fileName),
     metaTitle: escapeAttr(metaTitle),
     metaDescription: escapeAttr(metaDescription),
     privacyMetaTitle: escapeAttr(metaTitle),
     privacyMetaDescription: escapeAttr(metaDescription),
     termsMetaTitle: escapeAttr(metaTitle),
     termsMetaDescription: escapeAttr(metaDescription),
-    jsonDescription: String(metaDescription).replaceAll("\\", "\\\\").replaceAll('"', '\\"')
+    jsonDescription: String(metaDescription).replaceAll("\\", "\\\\").replaceAll('"', '\\"'),
+    schemaType: pageConfig?.type || "WebPage"
   });
   html = setSelectedLanguage(html, code);
-  html = html.replaceAll(" data-i18n-content=\"meta.description\"", "");
+  html = html.replaceAll(/ data-i18n-content="[^"]+"/g, "");
   html = html.replaceAll(/ data-i18n-placeholder="[^"]+"/g, "");
   html = html.replaceAll(/ data-i18n="[^"]+"/g, "");
 
@@ -163,7 +202,7 @@ const writeFeedbackPage = ({ code, dir, flag }) => {
     lang: code,
     base,
     canonicalUrl,
-    homeUrl: "index.html",
+    homeUrl: "./",
     privacyUrl: "privacy.html",
     termsUrl: "terms.html",
     currentFlag: `${base}assets/flags/${flag}`,
@@ -185,7 +224,9 @@ const writeFeedbackPage = ({ code, dir, flag }) => {
 };
 
 for (const language of languages) {
-  writePage(language);
+  for (const fileName of Object.keys(marketingPages)) {
+    writePage(language, fileName);
+  }
   writePage(language, "privacy.html");
   writePage(language, "terms.html");
   writeFeedbackPage(language);
@@ -196,6 +237,8 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${languages
   .flatMap(({ dir }) => [
     { loc: dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`, priority: dir ? "0.8" : "1.0" },
+    { loc: `${siteUrl}/${pagePath(dir, "extension.html")}`, priority: "0.9" },
+    { loc: `${siteUrl}/${pagePath(dir, "pro.html")}`, priority: "0.9" },
     { loc: `${siteUrl}/${pagePath(dir, "privacy.html")}`, priority: "0.6" },
     { loc: `${siteUrl}/${pagePath(dir, "terms.html")}`, priority: "0.6" },
     { loc: `${siteUrl}/${pagePath(dir, "feedback.html")}`, priority: "0.7" }
@@ -203,7 +246,7 @@ ${languages
   .map(({ loc, priority }) => {
     return `  <url>
     <loc>${loc}</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>${sitemapLastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>
   </url>`;
@@ -214,4 +257,4 @@ ${languages
 
 fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap, "utf8");
 
-console.log(`Generated ${languages.length * 4} localized pages.`);
+console.log(`Generated ${languages.length * 6} localized pages.`);

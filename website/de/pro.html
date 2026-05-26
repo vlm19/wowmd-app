@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMD Pro - Lokaler Markdown-Reader mit Markierungen, Notizen und Export</title>
+    <meta
+      name="description"
+      content="wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufügen von Markierungen und Notizen sowie Exportieren von sauberem HTML oder EPUB."
+     
+    >
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/de/pro.html">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/pro.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/pro.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/pro.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/pro.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/pro.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/pro.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/pro.html">
+    <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMD Pro - Lokaler Markdown-Reader mit Markierungen, Notizen und Export">
+    <meta property="og:description" content="wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufügen von Markierungen und Notizen sowie Exportieren von sauberem HTML oder EPUB.">
+    <meta property="og:url" content="https://wowmd.app/de/pro.html">
+    <meta property="og:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMD Pro - Lokaler Markdown-Reader mit Markierungen, Notizen und Export">
+    <meta name="twitter:description" content="wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufügen von Markierungen und Notizen sowie Exportieren von sauberem HTML oder EPUB.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "wowMD Pro",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Modern browser",
+        "description": "wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufügen von Markierungen und Notizen sowie Exportieren von sauberem HTML oder EPUB.",
+        "url": "https://wowmd.app/de/pro.html",
+        "image": "https://wowmd.app/assets/wowmd-product-demo-poster.jpg",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Local Markdown files",
+          "Highlights and notes",
+          "HTML export",
+          "EPUB export"
+        ]
+      }
+    </script>
+    <link rel="stylesheet" href="../styles.css?v=20260526">
+  </head>
+  <body class="pro-page">
+    <header class="site-header">
+      <a class="logo-link" href="./" aria-label="wowMD home">
+        <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#local">Lokale Dateien</a>
+        <a href="#notes">Notizen</a>
+        <a href="#export">Export</a>
+        <a href="#roadmap">Geplant</a>
+        <a class="nav-app" href="../app/">App öffnen</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/de.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" aria-label="English" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
+          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/pro.html"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
+          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
+          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/pro.html"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
+          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
+          <a role="option" data-language-option="fr" aria-label="French" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero pro-hero" aria-labelledby="pro-title">
+        <div class="hero-copy pro-hero-copy">
+          <p class="section-label">wowMD Pro</p>
+          <h1 id="pro-title">Dein lokaler Markdown-Lesearbeitsbereich.</h1>
+          <p class="hero-subtitle">Öffne lokale Markdown-Dateien im Browser, markiere wichtige Stellen, behalte Notizen und exportiere saubere Lesekopien, ohne deine Dokumente hochzuladen.</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="../app/">wowMD Pro öffnen</a>
+            <a class="button button-secondary" href="extension.html">Kostenlose Erweiterung?</a>
+          </div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span>Early Access kann kostenlos sein</span>
+            <span>Lifetime-Lizenz geplant</span>
+            <span>Lokal zuerst</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="local" aria-labelledby="local-title">
+        <div class="product-story-copy">
+          <p class="section-label">Lokale Dateien</p>
+          <h2 id="local-title">Öffne Markdown-Dateien von deinem Gerät.</h2>
+          <p>Lege eine `.md`- oder `.markdown`-Datei ab und lies sie in einem fokussierten Arbeitsbereich mit Gliederung, Einklappen, lesbarem Code und Tabellenscrollen.</p>
+          <a class="button button-secondary" href="../app/">App öffnen</a>
+        </div>
+        <figure class="product-media-frame" aria-label="Local Markdown file preview">
+          <div class="media-browser-bar"><span></span><span></span><span></span><strong>wowMD Pro</strong></div>
+          <video class="product-media" poster="../assets/wowmd-product-demo-poster.jpg" autoplay muted loop playsinline controls>
+            <source src="../assets/wowmd-product-demo.webm" type="video/webm">
+            <source src="../assets/wowmd-product-demo.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <section class="product-story product-story-flipped reveal" id="notes" aria-labelledby="notes-title">
+        <div class="product-story-copy">
+          <p class="section-label">Markierungen und Notizen</p>
+          <h2 id="notes-title">Halte Nützliches direkt am Dokument fest.</h2>
+          <p>Markiere wichtige Passagen, füge kurze Notizen hinzu und speichere Annotationsdaten lokal. Das ursprüngliche Markdown bleibt unverändert, solange keine spätere Rückschreibfunktion hinzukommt.</p>
+          <a class="button button-secondary" href="../app/">Annotationen testen</a>
+        </div>
+        <div class="product-media-frame product-media-placeholder" aria-label="Highlights and notes preview">
+          <div class="mock-reader">
+            <aside>
+              <span></span>
+              <span></span>
+              <span></span>
+            </aside>
+            <article>
+              <h3>Lesenotizen</h3>
+              <p></p>
+              <p class="mock-highlight"></p>
+              <p></p>
+              <div class="mock-note">Wichtige Idee als lokale Notiz gespeichert.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-story reveal" id="export" aria-labelledby="export-title">
+        <div class="product-story-copy">
+          <p class="section-label">Export</p>
+          <h2 id="export-title">Verwandle eine Markdown-Datei in saubere Lesekopien.</h2>
+          <p>Erstelle vollständiges Offline-HTML zum Teilen oder Archivieren oder EPUB für Send to Kindle, Apple Books, Kobo und andere Reader.</p>
+          <a class="button button-primary" href="../app/">Aus Pro exportieren</a>
+        </div>
+        <div class="export-grid" aria-label="Export formats">
+          <article class="export-card">
+            <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
+            <h3>Sauberes HTML</h3>
+            <p>Eigenständiges, strukturiertes Offline-HTML ohne App-Laufzeitcode.</p>
+          </article>
+          <article class="export-card">
+            <span class="feature-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22zM4 5.5V22"/></svg></span>
+            <h3>EPUB</h3>
+            <p>Reflowable EPUB 3 mit Navigationsmetadaten für gängige Lese-Apps.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <p class="section-label">Als Nächstes geplant</p>
+          <h2 id="roadmap-title">Zukünftige Arbeit bleibt von heutigen Zusagen getrennt.</h2>
+          <p class="section-subtitle">Diese Ideen sind geplant oder werden geprüft. Kaufentscheidungen sollten sich an den heute verfügbaren Funktionen orientieren.</p>
+        </div>
+        <div class="roadmap-list">
+          <span>Bibliothek und Leseverlauf</span>
+          <span>Bessere Annotationsverwaltung</span>
+          <span>Theme-Vorlagen</span>
+          <span>Weitere Exportformate</span>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-labelledby="pro-pricing-title">
+        <div class="pricing-card pro-pricing-card">
+          <div>
+            <p class="section-label">Preise</p>
+            <h2 id="pro-pricing-title">Einfacher Early Access, später klarer Checkout.</h2>
+            <p>Die Webapp kann zunächst als kostenloser Early Access starten, während die Preise finalisiert werden. Geplant ist eine günstige einmalige Lifetime-Lizenz mit möglichen Early-Bird- und Aktionsrabatten.</p>
+          </div>
+          <a class="button button-primary" href="../app/">wowMD Pro öffnen</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+        <p>wowMD Pro - lokaler Markdown-Arbeitsbereich</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Datenschutz</a>
+        <a href="terms.html">Nutzungsbedingungen</a>
+        <a class="feedback-link" href="feedback.html">Feedback senden</a>
+      </nav>
+    </footer>
+    <script src="../script.js"></script>
+  </body>
+</html>
