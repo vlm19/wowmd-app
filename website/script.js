@@ -7,11 +7,37 @@ const feedbackForms = document.querySelectorAll("[data-feedback-form]");
 const countedFields = document.querySelectorAll("[data-counted-field]");
 const feedbackModal = document.querySelector("[data-feedback-modal]");
 const feedbackModalConfirm = document.querySelector("[data-feedback-modal-confirm]");
+const gatewayChoices = document.querySelectorAll(".gateway-choice");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let headerIsScrolled = false;
 let ticking = false;
 let feedbackRedirectTimer;
+let gatewayCloseTimer;
+
+const activateGatewayChoice = (choice) => {
+  window.clearTimeout(gatewayCloseTimer);
+  gatewayChoices.forEach((item) => {
+    item.classList.toggle("is-active", item === choice);
+  });
+};
+
+const scheduleGatewayClose = () => {
+  window.clearTimeout(gatewayCloseTimer);
+  gatewayCloseTimer = window.setTimeout(() => {
+    gatewayChoices.forEach((item) => item.classList.remove("is-active"));
+  }, 600);
+};
+
+gatewayChoices.forEach((choice) => {
+  choice.addEventListener("mouseenter", () => activateGatewayChoice(choice));
+  choice.addEventListener("focusin", () => activateGatewayChoice(choice));
+  choice.addEventListener("mouseleave", scheduleGatewayClose);
+  choice.addEventListener("focusout", (event) => {
+    if (choice.contains(event.relatedTarget)) return;
+    scheduleGatewayClose();
+  });
+});
 
 const goHome = () => {
   window.location.href = "./";
@@ -203,3 +229,12 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
 
   revealItems.forEach((item) => observer.observe(item));
 }
+
+const faqItems = document.querySelectorAll(".faq-item");
+faqItems.forEach((item) => {
+  const question = item.querySelector(".faq-question");
+  if (!question) return;
+  question.addEventListener("click", () => {
+    item.classList.toggle("is-open");
+  });
+});

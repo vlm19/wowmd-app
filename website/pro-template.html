@@ -6,7 +6,7 @@
     <title data-i18n="pro.metaTitle">wowMD Pro - Local Markdown reader with highlights, notes, and export</title>
     <meta
       name="description"
-      content="wowMD Pro is a local-first webapp for reading local Markdown files, adding highlights and notes, and exporting clean HTML or EPUB."
+      content="wowMD Pro is a local-first webapp for reading local Markdown files, adding highlights and notes, and exporting clean HTML."
       data-i18n-content="pro.metaDescription"
     >
     <meta name="robots" content="index,follow">
@@ -49,12 +49,11 @@
         "featureList": [
           "Local Markdown files",
           "Highlights and notes",
-          "HTML export",
-          "EPUB export"
+          "HTML export"
         ]
       }
     </script>
-    <link rel="stylesheet" href="{{base}}styles.css?v=20260526">
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260527-hover-tags">
   </head>
   <body class="pro-page">
     <header class="site-header">
@@ -66,7 +65,6 @@
         <a href="#notes" data-i18n="pro.navNotes">Notes</a>
         <a href="#export" data-i18n="pro.navExport">Export</a>
         <a href="#roadmap" data-i18n="pro.navRoadmap">Planned</a>
-        <a class="nav-app" href="{{appUrl}}" data-i18n="nav.openApp">Open app</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
@@ -147,7 +145,7 @@
         <div class="product-story-copy">
           <p class="section-label" data-i18n="pro.exportLabel">Export</p>
           <h2 id="export-title" data-i18n="pro.exportTitle">Turn one Markdown file into clean reading copies.</h2>
-          <p data-i18n="pro.exportBody">Create complete offline HTML for sharing or archiving, or export EPUB for Kindle via Send to Kindle, Apple Books, Kobo, and other readers.</p>
+          <p data-i18n="pro.exportBody">Create complete offline HTML for sharing, archiving, or focused reading outside the app.</p>
           <a class="button button-primary" href="{{appUrl}}" data-i18n="pro.exportCta">Export from Pro</a>
         </div>
         <div class="export-grid" aria-label="Export formats">
@@ -155,11 +153,6 @@
             <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
             <h3 data-i18n="pro.htmlTitle">Clean HTML</h3>
             <p data-i18n="pro.htmlBody">Self-contained, structured, readable offline HTML without the app runtime.</p>
-          </article>
-          <article class="export-card">
-            <span class="feature-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22zM4 5.5V22"/></svg></span>
-            <h3 data-i18n="pro.epubTitle">EPUB</h3>
-            <p data-i18n="pro.epubBody">Reflowable EPUB 3 with navigation metadata for mainstream reading apps.</p>
           </article>
         </div>
       </section>

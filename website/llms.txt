@@ -19,7 +19,7 @@ wowMD Pro Webapp:
 - Opens local `.md` and `.markdown` files in the browser.
 - Supports a focused reading workspace with outline navigation and folding.
 - Adds local highlights and notes.
-- Exports clean offline HTML and EPUB reading copies.
+- Exports clean offline HTML reading copies.
 - Keeps document processing local-first.
 
 ## Site structure
@@ -39,7 +39,7 @@ Supported:
 - Public GitHub `.markdown` file pages.
 - Right-side reader panel and local full-screen reader.
 - Local Markdown files in wowMD Pro.
-- Local annotations and HTML/EPUB export in wowMD Pro.
+- Local annotations and HTML export in wowMD Pro.
 
 Not currently supported:
 

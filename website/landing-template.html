@@ -40,7 +40,7 @@
         "description": "{{jsonDescription}}"
       }
     </script>
-    <link rel="stylesheet" href="{{base}}styles.css?v=20260526">
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260527-preview-strip">
   </head>
   <body class="landing-page">
     <header class="site-header gateway-header">
@@ -50,7 +50,6 @@
       <nav class="site-nav gateway-nav" aria-label="Primary">
         <a href="{{extensionUrl}}" data-i18n="nav.extension">Extension</a>
         <a href="{{proUrl}}" data-i18n="nav.pro">Pro</a>
-        <a class="nav-app" href="{{appUrl}}" data-i18n="nav.openApp">Open app</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
@@ -71,41 +70,124 @@
     <main class="gateway-main">
       <section class="gateway-hero" aria-labelledby="gateway-title">
         <p class="section-label" data-i18n="landing.label">Markdown reader gateway</p>
-        <h1 id="gateway-title" data-i18n="landing.title">Long Markdown, finally readable.</h1>
+        <h1 id="gateway-title">
+          <span data-i18n="landing.titleLead">Long Markdown, finally </span><span class="gateway-title-accent" data-i18n="landing.titleAccent">readable.</span>
+        </h1>
         <p class="gateway-subtitle" data-i18n="landing.subtitle">Choose where you read: GitHub pages, or local Markdown files.</p>
 
         <div class="gateway-actions" aria-label="Product paths">
           <a class="gateway-choice" href="{{extensionUrl}}">
             <span class="gateway-choice-label">
               <span class="gateway-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 5h16v12H4zM8 21h8M12 17v4"/></svg>
+                <svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
               </span>
               <span data-i18n="landing.extensionCta">Free Chrome Extension</span>
             </span>
-            <span class="gateway-hint" data-i18n="landing.openDetails">open details</span>
-            <span class="gateway-tags" aria-label="Extension highlights">
-              <span data-i18n="landing.extensionTagOne">GitHub reader</span>
-              <span data-i18n="landing.extensionTagTwo">Outline</span>
-              <span data-i18n="landing.extensionTagThree">Folding</span>
-              <span data-i18n="landing.extensionTagFour">Code &amp; tables</span>
+            <span class="gateway-hint">
+              <span class="gateway-hint-inner">
+                <svg class="gateway-mouse-icon" width="13" height="19" viewBox="0 0 13 19" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect x="0.75" y="0.75" width="11.5" height="17.5" rx="5.75" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="6.5" y1="0.75" x2="6.5" y2="8.5" stroke="currentColor" stroke-width="1"/>
+                  <line x1="0.75" y1="8.5" x2="12.25" y2="8.5" stroke="currentColor" stroke-width="1"/>
+                  <path class="gateway-mouse-button" d="M6 1.5 Q1.5 1.5 1.5 6.5 L1.5 8.5 L6 8.5 Z" fill="currentColor"/>
+                </svg>
+                <span data-i18n="landing.openDetails">click for details.</span>
+              </span>
+            </span>
+            <span class="gateway-tags gateway-feature-list" aria-label="Extension highlights">
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-blue" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+                </span>
+                <strong data-i18n="features.outlineTitle">Outline first</strong>
+                <small data-i18n="features.outlineBody">See the document structure before jumping into the full text.</small>
+              </span>
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
+                <strong data-i18n="features.foldingTitle">Section folding</strong>
+                <small data-i18n="features.foldingBody">Collapse large H2 sections independently when a document gets long.</small>
+              </span>
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-purple" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
+                </span>
+                <strong data-i18n="features.codeTitle">Code display</strong>
+                <small data-i18n="features.codeBody">Keep code blocks readable with clean spacing and highlighting.</small>
+              </span>
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-coral" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
+                </span>
+                <strong data-i18n="features.tableTitle">Horizontal table scrolling</strong>
+                <small data-i18n="features.tableBody">Wide tables scroll sideways instead of breaking the reader layout.</small>
+              </span>
             </span>
           </a>
 
           <a class="gateway-choice gateway-choice-primary" href="{{proUrl}}">
             <span class="gateway-choice-label">
               <span class="gateway-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.2 5.6.7-4.1 4 1 5.6L12 15.8 7.1 18.5l1-5.6-4.1-4 5.6-.7z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M11.5 2.3a.6.6 0 0 1 1 0l2.3 4.7a2.1 2.1 0 0 0 1.6 1.2l5.1.7a.6.6 0 0 1 .3.9l-3.7 3.6a2.1 2.1 0 0 0-.6 1.9l.9 5.1a.6.6 0 0 1-.8.6L13 18.6a2.1 2.1 0 0 0-2 0L6.4 21a.6.6 0 0 1-.8-.6l.9-5.1a2.1 2.1 0 0 0-.6-1.9L2.2 9.8a.6.6 0 0 1 .3-.9l5.1-.7A2.1 2.1 0 0 0 9.2 7z"/></svg>
               </span>
               <span data-i18n="landing.proCta">Pro Web App</span>
             </span>
-            <span class="gateway-hint" data-i18n="landing.openDetails">open details</span>
-            <span class="gateway-tags" aria-label="Pro highlights">
-              <span data-i18n="landing.proTagOne">Local files</span>
-              <span data-i18n="landing.proTagTwo">Highlights</span>
-              <span data-i18n="landing.proTagThree">Notes</span>
-              <span data-i18n="landing.proTagFour">HTML &amp; EPUB</span>
+            <span class="gateway-hint">
+              <span class="gateway-hint-inner">
+                <svg class="gateway-mouse-icon" width="13" height="19" viewBox="0 0 13 19" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect x="0.75" y="0.75" width="11.5" height="17.5" rx="5.75" stroke="currentColor" stroke-width="1.4"/>
+                  <line x1="6.5" y1="0.75" x2="6.5" y2="8.5" stroke="currentColor" stroke-width="1"/>
+                  <line x1="0.75" y1="8.5" x2="12.25" y2="8.5" stroke="currentColor" stroke-width="1"/>
+                  <path class="gateway-mouse-button" d="M6 1.5 Q1.5 1.5 1.5 6.5 L1.5 8.5 L6 8.5 Z" fill="currentColor"/>
+                </svg>
+                <span data-i18n="landing.openDetails">click for details.</span>
+              </span>
+            </span>
+            <span class="gateway-tags gateway-feature-list gateway-pro-list" aria-label="Pro highlights">
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-purple" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+                </span>
+                <strong data-i18n="landing.proLocalTitle">Local files</strong>
+                <small data-i18n="landing.proLocalBody">Open Markdown from your device in a focused reader.</small>
+              </span>
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-green" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l8.5-8.5a2.1 2.1 0 0 1 3 3L9 19l-5 1z"/></svg>
+                </span>
+                <strong data-i18n="landing.proHighlightTitle">Highlights</strong>
+                <small data-i18n="landing.proHighlightBody">Mark important passages without changing the source file.</small>
+              </span>
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-teal" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+                </span>
+                <strong data-i18n="landing.proNotesTitle">Notes</strong>
+                <small data-i18n="landing.proNotesBody">Attach reading notes to the document while staying local-first.</small>
+              </span>
+              <span class="gateway-feature-card">
+                <span class="feature-icon icon-amber" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                </span>
+                <strong data-i18n="landing.proExportTitle">Clean HTML</strong>
+                <small data-i18n="landing.proExportBody">Export clean reading copies for offline use and archiving.</small>
+              </span>
             </span>
           </a>
+        </div>
+
+        <div class="gateway-preview" aria-label="Product comparison preview">
+          <div class="gateway-preview-frame" tabindex="0">
+            <figure class="gateway-preview-pane">
+              <span data-i18n="landing.previewBefore">Before: GitHub README</span>
+              <img src="{{base}}assets/hero-demo-poster.jpg" alt="GitHub Markdown page before wowMD" loading="lazy">
+            </figure>
+            <figure class="gateway-preview-pane gateway-preview-pane-after">
+              <span data-i18n="landing.previewAfter">After: wowMD Reader</span>
+              <img src="{{base}}assets/wowmd-product-demo-poster.jpg" alt="wowMD reader with outline, highlights, notes, and export" loading="lazy">
+            </figure>
+          </div>
         </div>
 
         <p class="gateway-footnote" data-i18n="landing.footnote">Free extension for GitHub. Pro workspace for local files.</p>
@@ -123,6 +205,6 @@
         <a class="feedback-link" href="{{feedbackUrl}}" data-i18n="footer.feedback">Send feedback</a>
       </nav>
     </footer>
-    <script src="{{base}}script.js"></script>
+    <script src="{{base}}script.js?v=20260527-hover-delay-600"></script>
   </body>
 </html>

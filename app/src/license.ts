@@ -2,6 +2,8 @@ type TrialOptions = {
   startIfMissing?: boolean
 }
 
+export const LICENSE_FEATURE_ENABLED = false
+
 export type TrialState = {
   startedAt: number | null
   expiresAt: number | null
@@ -46,6 +48,16 @@ export function createTrialState(options: TrialOptions = {}): TrialState {
 type Translate = (key: string) => string
 
 export function getLicenseSummary(trial: TrialState, t: Translate = (key) => key) {
+  if (!LICENSE_FEATURE_ENABLED) {
+    return {
+      label: '',
+      detail: '',
+      canOpenUserFiles: true,
+      canExport: true,
+      canSaveAnnotations: true,
+    }
+  }
+
   if (trial.isLicensed) {
     return {
       label: t('licensed'),

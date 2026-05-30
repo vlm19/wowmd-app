@@ -20,8 +20,8 @@ const en: Messages = {
   days: 'days',
   day: 'day',
   importEyebrow: 'Local-first Markdown workspace',
-  importTitle: 'Open a Markdown file to start reading',
-  importIntro: 'Drop a .md or .markdown file here, or choose one from your computer.',
+  importTitle: 'Turn long Markdown into readable HTML artifacts',
+  importIntro: 'Read with structure, highlight what matters, add notes, and export as a single HTML file.',
   privacyHint: 'Nothing is uploaded. All reading happens in your browser.',
   trialHint: '14-day trial starts when you open your first local file. Opening the sample is free.',
   trialConfirmTitle: 'Start your 14-day trial?',
@@ -110,6 +110,15 @@ const en: Messages = {
   activated: 'Activated. Welcome to wowMD Pro.',
   activateToSave: 'Activate a license to save new highlights and notes.',
   activateToExport: 'Activate a license to export this document.',
+  typeClarify: 'Clarify needed',
+  typeDispute: 'Disputed',
+  typeImportant: 'Important',
+  typeConfirmed: 'Confirmed',
+  suggestedReplacement: 'Suggest replacement',
+  suggestedReplacementHint: 'Optionally paste a replacement. Written into the exported ticket — never into the source.',
+  exportTicketJson: 'Export ticket JSON',
+  filterByType: 'Filter by type',
+  filterAll: 'All',
 }
 
 const zh: Messages = {
@@ -220,6 +229,15 @@ const zh: Messages = {
   activated: '已激活，欢迎使用 wowMD Pro。',
   activateToSave: '激活授权后才能保存新的高亮和备注。',
   activateToExport: '激活授权后才能导出当前文档。',
+  typeClarify: '需澄清',
+  typeDispute: '存疑',
+  typeImportant: '重要',
+  typeConfirmed: '已确认',
+  suggestedReplacement: '建议替换',
+  suggestedReplacementHint: '可选粘贴替换文本。会写入导出工单——不会写入源文件。',
+  exportTicketJson: '导出工单 JSON',
+  filterByType: '按类型筛选',
+  filterAll: '全部',
 }
 
 const ja: Messages = {
@@ -328,6 +346,10 @@ const ja: Messages = {
   activated: '有効化されました。wowMD Pro へようこそ。',
   activateToSave: '新しいハイライトやメモを保存するにはライセンスの有効化が必要です。',
   activateToExport: 'この文書を書き出すにはライセンスの有効化が必要です。',
+  typeClarify: '要確認',
+  typeDispute: '疑問あり',
+  typeImportant: '重要',
+  typeConfirmed: '確認済',
 }
 
 const ko: Messages = {
@@ -436,6 +458,10 @@ const ko: Messages = {
   activated: '활성화되었습니다. wowMD Pro에 오신 것을 환영합니다.',
   activateToSave: '새 하이라이트와 메모를 저장하려면 라이선스를 활성화하세요.',
   activateToExport: '이 문서를 내보내려면 라이선스를 활성화하세요.',
+  typeClarify: '확인 필요',
+  typeDispute: '의문 있음',
+  typeImportant: '중요',
+  typeConfirmed: '확인 완료',
 }
 
 const de: Messages = {
@@ -544,6 +570,10 @@ const de: Messages = {
   activated: 'Aktiviert. Willkommen bei wowMD Pro.',
   activateToSave: 'Aktiviere eine Lizenz, um neue Markierungen und Notizen zu speichern.',
   activateToExport: 'Aktiviere eine Lizenz, um dieses Dokument zu exportieren.',
+  typeClarify: 'Zu klären',
+  typeDispute: 'Zweifelhaft',
+  typeImportant: 'Wichtig',
+  typeConfirmed: 'Bestätigt',
 }
 
 const fr: Messages = {
@@ -652,6 +682,10 @@ const fr: Messages = {
   activated: 'Activé. Bienvenue dans wowMD Pro.',
   activateToSave: 'Activez une licence pour enregistrer de nouveaux surlignages et notes.',
   activateToExport: 'Activez une licence pour exporter ce document.',
+  typeClarify: 'À clarifier',
+  typeDispute: 'Contesté',
+  typeImportant: 'Important',
+  typeConfirmed: 'Confirmé',
 }
 
 const messages: Record<Locale, Messages> = { en, zh, ja, ko, de, fr }

@@ -13,10 +13,15 @@ import './App.css'
 import {
   applyAnnotationHighlights,
   createAnnotation,
+  createTicketExport,
+  findReanchorCandidates,
   loadAnnotationsFromDb,
+  quoteMatchesText,
   saveAnnotationsToDb,
   type Annotation,
   type AnnotationColor,
+  type AnnotationType,
+  type ReanchorCandidate,
 } from './annotations'
 import {
   buildCleanHtmlExport,
@@ -40,7 +45,12 @@ import {
   createTrialState,
   getLicenseSummary,
 } from './license'
-import { loadLocalDocument, type LocalDocument } from './localDocuments'
+import {
+  loadLocalDocument,
+  createDocumentVersion,
+  getDocumentLineage,
+  type LocalDocument,
+} from './localDocuments'
 import {
   buildToc,
   computeDocumentFingerprint,
@@ -50,6 +60,11 @@ import {
   type TocItem,
 } from './markdown'
 import { applySearchHighlights } from './search'
+import SaveAsVersion from './SaveAsVersion'
+import UnderstandingMap from './UnderstandingMap'
+import SettingsPanel from './SettingsPanel'
+import VersionHistory from './VersionHistory'
+import { loadSettings, type PanelMode, type AnnotationStyle } from './settingsStore'
 
 type ThemeName = 'light' | 'dark'
 type WorkspaceView = 'reader' | 'exports' | 'license'
@@ -57,26 +72,17 @@ type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
 type ImportStatus = 'idle' | 'loading' | 'failed'
 
-type OpenDocument = {
+export type OpenDocument = {
   name: string
   markdown: string
   fingerprint: string
-  source?: {
-    sourceType: 'github'
-    sourceUrl: string
-    rawUrl: string
-    label: string
-  }
+  stableId: string
+  source?: string | { sourceType: 'github'; sourceUrl: string; rawUrl: string; label: string }
 }
 
 type SelectionToolbar = {
   x: number
   y: number
-}
-
-type AnnotationDraft = {
-  color: AnnotationColor
-  note: string
 }
 
 type SelectionAnchorMetadata = {
@@ -128,9 +134,22 @@ function App() {
   const selectionPreviewPendingRef = useRef(false)
   const selectionPreviewRenderLockRef = useRef(false)
   const [selectionToolbar, setSelectionToolbar] = useState<SelectionToolbar | null>(null)
-  const [annotationDraft, setAnnotationDraft] = useState<AnnotationDraft | null>(null)
+  const [selectedType, setSelectedType] = useState<AnnotationType | null>(null)
+  const [toolbarNote, setToolbarNote] = useState('')
+  const [toolbarReplacement, setToolbarReplacement] = useState('')
+  const [showReplacement, setShowReplacement] = useState(false)
+  const [filterType, setFilterType] = useState<AnnotationType | null>(null)
   const [activeAnnotation, setActiveAnnotation] = useState<Annotation | null>(null)
   const [pendingClearAnnotations, setPendingClearAnnotations] = useState(false)
+  const [showSaveVersion, setShowSaveVersion] = useState(false)
+  const [showMap, setShowMap] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showVersions, setShowVersions] = useState(false)
+  const [versions, setVersions] = useState<LocalDocument[]>([])
+  const [reanchorId, setReanchorId] = useState<string | null>(null)
+  const [reanchorCandidates, setReanchorCandidates] = useState<ReanchorCandidate[]>([])
+  const [panelMode, setPanelMode] = useState<PanelMode>(() => loadSettings().panelMode)
+  const [annotationStyle, setAnnotationStyle] = useState<AnnotationStyle>(() => loadSettings().annotationStyle)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchIndex, setSearchIndex] = useState(0)
   const [readerFontSize, setReaderFontSize] = useState(12)
@@ -311,14 +330,16 @@ function App() {
 
     const markdown = await file.text()
     const fingerprint = await computeDocumentFingerprint(markdown)
+    const stableId = `file:${file.name}`
     setTrialState(createTrialState({ startIfMissing: true }))
     setDocument({
       name: file.name,
       markdown,
       fingerprint,
+      stableId,
     })
     setExportDefaults(file.name)
-    setAnnotations(await loadAnnotationsFromDb(fingerprint))
+    setAnnotations(await loadAnnotationsFromDb(stableId, fingerprint))
     setSelectionQuote('')
     setSelectionToolbar(null)
     setSearchQuery('')
@@ -350,8 +371,11 @@ function App() {
     setError('')
 
     try {
-      const localDocument = await importGitHubMarkdown(searchParams)
+      const { document: localDocument, isNewVersion } = await importGitHubMarkdown(searchParams)
       await openLocalDocument(localDocument)
+      if (isNewVersion) {
+        await loadAndReanchorAnnotations(localDocument.id, localDocument.fingerprint)
+      }
       window.history.replaceState(
         null,
         '',
@@ -391,6 +415,7 @@ function App() {
       name: localDocument.title,
       markdown: localDocument.markdownSnapshot,
       fingerprint: localDocument.fingerprint,
+      stableId: localDocument.id,
       source: {
         sourceType: localDocument.sourceType,
         sourceUrl: localDocument.sourceUrl,
@@ -399,7 +424,7 @@ function App() {
       },
     })
     setExportDefaults(localDocument.title)
-    setAnnotations(await loadAnnotationsFromDb(localDocument.fingerprint))
+    setAnnotations(await loadAnnotationsFromDb(localDocument.id, localDocument.fingerprint))
     setSelectionQuote('')
     setSelectionToolbar(null)
     setSearchQuery('')
@@ -418,9 +443,10 @@ function App() {
       name: 'wowMD Pro sample.md',
       markdown: sampleMarkdown,
       fingerprint: 'sample',
+      stableId: 'sample',
     })
     setExportDefaults('wowMD Pro sample.md')
-    setAnnotations(await loadAnnotationsFromDb('sample'))
+    setAnnotations(await loadAnnotationsFromDb('sample', 'sample'))
     setSelectionQuote('')
     setSelectionToolbar(null)
     setSearchQuery('')
@@ -686,20 +712,6 @@ function App() {
     }, 0)
   }
 
-  function handleMarkupPreview(
-    event: MouseEvent<HTMLDivElement> | PointerEvent<HTMLDivElement>,
-  ) {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
-      '[data-preview-color]',
-    )
-    if (!button || !event.currentTarget.contains(button)) return
-
-    const color = button.dataset.previewColor as AnnotationColor | undefined
-    if (!color || selectionPreviewColorRef.current === color) return
-
-    previewSelectionColor(color)
-  }
-
   async function handleMarkdownBodyClick(event: MouseEvent<HTMLDivElement>) {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
       '.code-copy-button',
@@ -729,7 +741,7 @@ function App() {
     }, 1200)
   }
 
-  function addAnnotation(color: AnnotationColor, note = '') {
+  function addAnnotation(color: AnnotationColor, note = '', annotationType: AnnotationType | null = null, suggestedReplacement = '') {
     if (!document || !selectionQuote) return
     clearSelectionPreview()
     if (!licenseSummary.canSaveAnnotations) {
@@ -740,32 +752,35 @@ function App() {
 
     const next = [
       createAnnotation({
+        documentId: document.stableId,
         documentFingerprint: document.fingerprint,
         quote: selectionQuote,
         ...(selectionAnchorRef.current ?? getSelectionAnchorMetadata()),
-        note: note.trim().slice(0, 100),
+        note: note.trim().slice(0, 1000),
         color,
+        type: annotationType,
+        suggestedReplacement,
       }),
       ...annotations,
     ]
 
     setAnnotations(next)
-    void saveAnnotationsToDb(document.fingerprint, next)
+    void saveAnnotationsToDb(document.stableId, next)
     setShowNotes(true)
     if (isNarrowLayout) setShowOutline(false)
     setSelectionQuote('')
+    setSelectedType(null)
+    setToolbarNote('')
+    setToolbarReplacement('')
+    setShowReplacement(false)
+    setSelectionToolbar(null)
     selectionRangeRef.current = null
     selectionAnchorRef.current = null
-    selectionPreviewQuoteRef.current = ''
-    setSelectionToolbar(null)
-    setAnnotationDraft(null)
-    window.getSelection()?.removeAllRanges()
-  }
-
-  function openNoteComposer(color: AnnotationColor) {
-    if (!selectionQuote) return
-    clearSelectionPreview()
-    setAnnotationDraft({ color, note: '' })
+    // reselect after state updates
+    setTimeout(() => {
+      const selection = window.getSelection()
+      if (selection) selection.removeAllRanges()
+    }, 0)
   }
 
   function getSelectionAnchorMetadata() {
@@ -822,7 +837,7 @@ function App() {
     if (!document) return
     const next = annotations.filter((annotation) => annotation.id !== id)
     setAnnotations(next)
-    void saveAnnotationsToDb(document.fingerprint, next)
+    void saveAnnotationsToDb(document.stableId, next)
   }
 
   function scrollToAnnotation(id: string) {
@@ -868,8 +883,173 @@ function App() {
   function clearDocumentAnnotations() {
     if (!document) return
     setAnnotations([])
-    void saveAnnotationsToDb(document.fingerprint, [])
+    void saveAnnotationsToDb(document.stableId, [])
     setPendingClearAnnotations(false)
+  }
+
+  async function loadAndReanchorAnnotations(documentId: string, newFingerprint: string) {
+    const existing = await loadAnnotationsFromDb(documentId, newFingerprint)
+    if (!existing.length || !document) return
+
+    const renderedHtml = renderMarkdown(document.markdown)
+    const probe = new DOMParser().parseFromString(renderedHtml, 'text/html')
+    const renderedText = probe.body.textContent || ''
+
+    const updated = existing.map((annotation): Annotation => {
+      if (annotation.orphaned) return annotation
+      const quote = annotation.quote.trim()
+      if (!quote) return { ...annotation, orphaned: true, updatedAt: new Date().toISOString() }
+      const found = quoteMatchesText(renderedText, quote, annotation.offset)
+      if (!found) {
+        return { ...annotation, orphaned: true, updatedAt: new Date().toISOString() }
+      }
+      return { ...annotation, documentFingerprint: newFingerprint }
+    })
+
+    const anyChange = updated.some((a, i) => a.orphaned !== existing[i].orphaned || a.documentFingerprint !== existing[i].documentFingerprint)
+    if (anyChange) {
+      await saveAnnotationsToDb(documentId, updated)
+    }
+
+    setAnnotations(updated)
+  }
+
+  function showReanchorCandidates(annotation: Annotation) {
+    if (!document) return
+    const renderedHtml = renderMarkdown(document.markdown)
+    const probe = new DOMParser().parseFromString(renderedHtml, 'text/html')
+    const renderedText = probe.body.textContent || ''
+    const candidates = findReanchorCandidates(renderedText, annotation)
+    setReanchorId(annotation.id)
+    setReanchorCandidates(candidates)
+  }
+
+  function reanchorAnnotation(id: string, candidate: ReanchorCandidate) {
+    const next = annotations.map((a) =>
+      a.id === id
+        ? { ...a, offset: candidate.start, orphaned: false, updatedAt: new Date().toISOString() }
+        : a,
+    )
+    setAnnotations(next)
+    void saveAnnotationsToDb(document!.stableId, next)
+    setReanchorId(null)
+    setReanchorCandidates([])
+  }
+
+  // Re-anchor the current annotations against a target markdown (the saved version)
+  // using the same rendered-text surface as capture. Unmatched ones become orphans
+  // rather than being silently dropped (HR7).
+  function carryAnnotationsForward(
+    items: Annotation[],
+    targetMarkdown: string,
+    targetFingerprint: string,
+  ): Annotation[] {
+    const probe = new DOMParser().parseFromString(renderMarkdown(targetMarkdown), 'text/html')
+    const renderedText = probe.body.textContent || ''
+    const now = new Date().toISOString()
+    return items.map((a): Annotation => {
+      if (a.orphaned) return a
+      const quote = a.quote.trim()
+      const matches = quote ? quoteMatchesText(renderedText, quote, a.offset) : false
+      return matches
+        ? { ...a, documentFingerprint: targetFingerprint, updatedAt: now }
+        : { ...a, orphaned: true, documentFingerprint: targetFingerprint, updatedAt: now }
+    })
+  }
+
+  // After "Save as new version" writes the file, register the successor in the
+  // version lineage and bring the existing annotations into it (Stage E / §2.5).
+  // GitHub-sourced docs persist a successor LocalDocument with parentDocumentId;
+  // local files re-key by stable filename id. Never overwrites the source.
+  async function handleSavedNewVersion(newFilename: string) {
+    if (!document) {
+      setShowSaveVersion(false)
+      return
+    }
+
+    const markdown = document.markdown
+    const fingerprint = await computeDocumentFingerprint(markdown)
+    const carried = carryAnnotationsForward(annotations, markdown, fingerprint)
+
+    let newStableId: string
+    const isGithubSourced = !!document.source && typeof document.source !== 'string'
+
+    if (isGithubSourced) {
+      const successor = await createDocumentVersion({
+        parentDocumentId: document.stableId,
+        title: newFilename,
+        markdownSnapshot: markdown,
+        fingerprint,
+      })
+      newStableId = successor.id
+    } else {
+      newStableId = `file:${newFilename}`
+    }
+
+    await saveAnnotationsToDb(newStableId, carried)
+
+    setDocument({
+      ...document,
+      name: newFilename,
+      fingerprint,
+      stableId: newStableId,
+    })
+    setAnnotations(carried)
+    setExportDefaults(newFilename)
+    setShowSaveVersion(false)
+
+    // Refresh lineage so the version history reflects the new successor.
+    try {
+      setVersions(await getDocumentLineage(newStableId))
+    } catch {
+      /* lineage is read-only sugar; ignore failures */
+    }
+  }
+
+  async function openVersions() {
+    if (!document) return
+    try {
+      setVersions(await getDocumentLineage(document.stableId))
+    } catch {
+      setVersions([])
+    }
+    setShowVersions(true)
+  }
+
+  async function openVersion(id: string) {
+    if (id === document?.stableId) return
+    const localDocument = await loadLocalDocument(id)
+    if (!localDocument) return
+    setShowVersions(false)
+    await openLocalDocument(localDocument)
+  }
+
+  function exportAnnotationsAsJson() {
+    if (!document || !annotations.length) return
+    downloadTextFile(
+      safeExportFilename(document.name, 'json'),
+      JSON.stringify(annotations, null, 2),
+      'application/json;charset=utf-8',
+    )
+  }
+
+  function exportTicketJson() {
+    if (!document || !annotations.length) return
+    const sourceStr = typeof document.source === 'string'
+      ? document.source
+      : document.source?.label ?? ''
+    const ticket = createTicketExport(
+      document.name,
+      sourceStr,
+      document.fingerprint,
+      document.markdown,
+      annotations,
+    )
+    downloadTextFile(
+      safeExportFilename(document.name, 'tickets'),
+      JSON.stringify(ticket, null, 2),
+      'application/json;charset=utf-8',
+    )
   }
 
   function openExport() {
@@ -1115,6 +1295,10 @@ function App() {
               documentOpen={Boolean(document)}
               documentName={document?.name || ''}
               openExport={openExport}
+              openSaveVersion={() => setShowSaveVersion(true)}
+              openVersions={() => void openVersions()}
+              openMap={() => setShowMap(true)}
+              openSettings={() => setShowSettings(true)}
               readerFontSize={readerFontSize}
               setReaderFontSize={setReaderFontSize}
               searchQuery={searchQuery}
@@ -1129,148 +1313,90 @@ function App() {
 
             {selectionToolbar && selectionQuote ? (
               <div
-                className="floating-markup"
+                className="floating-markup floating-markup-v2"
                 style={{
                   left: selectionToolbar.x,
                   top: selectionToolbar.y,
                 }}
-                aria-label="Selection actions"
-                onMouseLeave={clearSelectionPreview}
-                onMouseMove={handleMarkupPreview}
-                onMouseOver={handleMarkupPreview}
-                onPointerMove={handleMarkupPreview}
-                onPointerOver={handleMarkupPreview}
+                aria-label="Annotation type picker"
+                onMouseLeave={() => {
+                  if (!selectedType) clearSelectionPreview()
+                }}
               >
-                <button
-                  className="mark-yellow"
-                  type="button"
-                  data-preview-color="yellow"
-                  aria-label="Yellow highlight"
-                  onFocus={() => previewSelectionColor('yellow')}
-                  onMouseEnter={() => previewSelectionColor('yellow')}
-                  onClick={() => addAnnotation('yellow')}
-                >
-                  <span />
-                </button>
-                <button
-                  className="mark-blue"
-                  type="button"
-                  data-preview-color="blue"
-                  aria-label="Blue highlight"
-                  onFocus={() => previewSelectionColor('blue')}
-                  onMouseEnter={() => previewSelectionColor('blue')}
-                  onClick={() => addAnnotation('blue')}
-                >
-                  <span />
-                </button>
-                <button
-                  className="mark-green"
-                  type="button"
-                  data-preview-color="green"
-                  aria-label="Green highlight"
-                  onFocus={() => previewSelectionColor('green')}
-                  onMouseEnter={() => previewSelectionColor('green')}
-                  onClick={() => addAnnotation('green')}
-                >
-                  <span />
-                </button>
-                <button
-                  className="mark-rose"
-                  type="button"
-                  data-preview-color="rose"
-                  aria-label="Rose highlight"
-                  onFocus={() => previewSelectionColor('rose')}
-                  onMouseEnter={() => previewSelectionColor('rose')}
-                  onClick={() => addAnnotation('rose')}
-                >
-                  <span />
-                </button>
-                <button
-                  className="mark-violet"
-                  type="button"
-                  data-preview-color="violet"
-                  aria-label="Violet highlight"
-                  onFocus={() => previewSelectionColor('violet')}
-                  onMouseEnter={() => previewSelectionColor('violet')}
-                  onClick={() => addAnnotation('violet')}
-                >
-                  <span />
-                </button>
-                <button
-                  className="mark-amber"
-                  type="button"
-                  data-preview-color="amber"
-                  aria-label="Amber highlight"
-                  onFocus={() => previewSelectionColor('amber')}
-                  onMouseEnter={() => previewSelectionColor('amber')}
-                  onClick={() => addAnnotation('amber')}
-                >
-                  <span />
-                </button>
-                <button
-                  className="mark-note"
-                  type="button"
-                  data-preview-color="blue"
-                  onFocus={() => previewSelectionColor('blue')}
-                  onMouseEnter={() => previewSelectionColor('blue')}
-                  onClick={() => openNoteComposer('blue')}
-                >
-                  <span className="note-tool-icon" aria-hidden="true" />
-                  <span>{t('note')}</span>
-                </button>
-              </div>
-            ) : null}
-
-            {annotationDraft && selectionQuote ? (
-              <div className="annotation-modal-layer" role="presentation">
-                <section
-                  className="annotation-modal note-composer"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label={t('addNotePrompt')}
-                >
+                <div className="type-chips">
+                  {(['clarify', 'dispute', 'important', 'confirmed'] as const).map((typeVal) => {
+                    const typeColor = { clarify: 'blue', dispute: 'rose', important: 'amber', confirmed: 'green' }[typeVal] as AnnotationColor
+                    const typeKeys: Record<string, string> = { clarify: 'typeClarify', dispute: 'typeDispute', important: 'typeImportant', confirmed: 'typeConfirmed' }
+                    return (
+                      <button
+                        key={typeVal}
+                        className={`type-chip chip-${typeVal} ${selectedType === typeVal ? 'active' : ''}`}
+                        type="button"
+                        data-preview-color={typeColor}
+                        aria-label={t(typeKeys[typeVal])}
+                        aria-pressed={selectedType === typeVal}
+                        onFocus={() => previewSelectionColor(typeColor)}
+                        onMouseEnter={() => previewSelectionColor(typeColor)}
+                        onClick={() => {
+                          setSelectedType(selectedType === typeVal ? null : typeVal)
+                          if (selectedType !== typeVal) previewSelectionColor(typeColor)
+                          else clearSelectionPreview()
+                        }}
+                      >
+                        <span className="type-chip-icon" aria-hidden="true">
+                          {typeVal === 'clarify' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/><path d="M7.6 9.5h.8v-4a.4.4 0 0 0-.4-.4H7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="8" cy="11.5" r=".7" fill="currentColor"/></svg>}
+                          {typeVal === 'dispute' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13.5V3.8a.8.8 0 0 1 .8-.8h3.5l.7 1.5h4.2a.8.8 0 0 1 .8.8V10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 13.5l1.5-3h6l1.5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><line x1="7.5" y1="13.5" x2="7.5" y2="15" stroke="currentColor" strokeWidth="1.3"/></svg>}
+                          {typeVal === 'important' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l2 4.5 5 .5-3.5 3.5 1 5L8 12.5l-4.5 2.5 1-5L1 6.5l5-.5z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/></svg>}
+                          {typeVal === 'confirmed' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                        </span>
+                        <span className="type-chip-label">{t(typeKeys[typeVal])}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="toolbar-note-row">
+                  <input
+                    className="toolbar-note-input"
+                    type="text"
+                    placeholder={t('note')}
+                    maxLength={1000}
+                    value={toolbarNote}
+                    onChange={(e) => setToolbarNote(e.target.value)}
+                  />
+                </div>
+                <div className="toolbar-replacement-row">
                   <button
-                    className="modal-close"
+                    className="toolbar-replacement-toggle"
                     type="button"
-                    aria-label="Close"
-                    onClick={() => setAnnotationDraft(null)}
+                    onClick={() => setShowReplacement(!showReplacement)}
                   >
-                    <span className="icon-mask icon-x" aria-hidden="true" />
+                    {t('suggestedReplacement')}
                   </button>
-                  <p className="eyebrow">{t('note')}</p>
-                  <h2>{t('addNotePrompt')}</h2>
-                  <blockquote>{truncateText(selectionQuote, 96)}</blockquote>
-                  <label className="note-input">
+                  {showReplacement ? (
                     <textarea
-                      value={annotationDraft.note}
-                      maxLength={100}
-                      autoFocus
-                      onChange={(event) =>
-                        setAnnotationDraft({
-                          ...annotationDraft,
-                          note: event.target.value.slice(0, 100),
-                        })
-                      }
+                      className="toolbar-replacement-input"
+                      placeholder={t('suggestedReplacementHint')}
+                      value={toolbarReplacement}
+                      onChange={(e) => setToolbarReplacement(e.target.value)}
+                      rows={3}
                     />
-                    <span>{annotationDraft.note.length}/100</span>
-                  </label>
-                  <div className="modal-actions">
-                    <button
-                      className="ghost-action"
-                      type="button"
-                      onClick={() => setAnnotationDraft(null)}
-                    >
-                      {t('cancel')}
-                    </button>
-                    <button
-                      className="primary-action"
-                      type="button"
-                      onClick={() => addAnnotation(annotationDraft.color, annotationDraft.note)}
-                    >
-                      {t('save')}
-                    </button>
-                  </div>
-                </section>
+                  ) : null}
+                </div>
+                <div className="toolbar-actions">
+                  <button
+                    className="toolbar-confirm"
+                    type="button"
+                    disabled={!selectedType && !toolbarNote.trim()}
+                    onClick={() => {
+                      const typeColor = selectedType
+                        ? ({ clarify: 'blue', dispute: 'rose', important: 'amber', confirmed: 'green' }[selectedType] as AnnotationColor)
+                        : 'yellow'
+                      addAnnotation(typeColor, toolbarNote, selectedType, toolbarReplacement)
+                    }}
+                  >
+                    {t('save')}
+                  </button>
+                </div>
               </div>
             ) : null}
 
@@ -1338,14 +1464,14 @@ function App() {
                         <div>
                           <p className="eyebrow">{t('currentDocument')}</p>
                           <h2>{document.name}</h2>
-                          {document.source?.sourceUrl ? (
+                          {typeof document.source === 'object' && document.source?.sourceUrl ? (
                             <a
                               className="document-source-link"
-                              href={document.source.sourceUrl}
+                              href={(document.source as { sourceUrl: string }).sourceUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              {document.source.label}
+                              {(document.source as { label: string }).label}
                             </a>
                           ) : null}
                         </div>
@@ -1399,52 +1525,121 @@ function App() {
                   ) : null}
                   {annotations.length ? (
                     <div className="note-actions">
+                      <select
+                        className="type-filter"
+                        value={filterType ?? ''}
+                        onChange={(e) => setFilterType((e.target.value || null) as AnnotationType | null)}
+                      >
+                        <option value="">{t('filterAll')}</option>
+                        <option value="clarify">{t('typeClarify')}</option>
+                        <option value="dispute">{t('typeDispute')}</option>
+                        <option value="important">{t('typeImportant')}</option>
+                        <option value="confirmed">{t('typeConfirmed')}</option>
+                      </select>
+                      <button type="button" onClick={exportTicketJson}>
+                        {t('exportTicketJson')}
+                      </button>
+                      <button type="button" onClick={exportAnnotationsAsJson}>
+                        {t('exportJson')}
+                      </button>
                       <button type="button" onClick={() => setPendingClearAnnotations(true)}>
                         {t('clear')}
                       </button>
                     </div>
                   ) : null}
-                  {annotations.length ? (
-                    <ol className="note-list">
-                      {annotations.map((annotation) => (
-                        <li
-                          key={annotation.id}
-                          className={`note-sticker note-${annotation.color} ${annotation.note ? 'has-note' : ''}`}
+                  {annotations.length ? (() => {
+                    const typeLabels: Record<string, string> = {
+                      clarify: 'typeClarify', dispute: 'typeDispute',
+                      important: 'typeImportant', confirmed: 'typeConfirmed',
+                    }
+                    const filtered = filterType
+                      ? annotations.filter((a) => a.type === filterType)
+                      : annotations
+                    const activeAnnotations = filtered.filter((a) => !a.orphaned)
+                    const orphanedAnnotations = filtered.filter((a) => a.orphaned)
+                    const colorNames: Record<string, string> = {
+                      yellow: 'Yellow', blue: 'Blue', green: 'Green',
+                      rose: 'Rose', violet: 'Violet', amber: 'Amber',
+                    }
+                    const renderItem = (annotation: Annotation) => (
+                      <li
+                        key={annotation.id}
+                        className={`note-sticker note-${annotation.color} ${annotation.note ? 'has-note' : ''} ${annotation.orphaned ? 'note-orphaned' : ''}`}
+                      >
+                        <button
+                          className="note-locate"
+                          type="button"
+                          aria-label="Locate annotation"
+                          onClick={() => scrollToAnnotation(annotation.id)}
+                          disabled={annotation.orphaned}
                         >
+                          <span className="icon-mask icon-map-pin" aria-hidden="true" />
+                        </button>
+                        <button
+                          className="note-sticker-body"
+                          type="button"
+                          onClick={() => openAnnotationDetail(annotation)}
+                        >
+                          <span className="note-kind">
+                            {annotation.orphaned ? '[orphaned] ' : ''}
+                            {annotation.type
+                              ? t(typeLabels[annotation.type])
+                              : annotation.legacyColor
+                                ? `${t('note')} · ${colorNames[annotation.legacyColor] ?? annotation.legacyColor}`
+                                : t('note')}
+                          </span>
+                          <span className="note-preview">
+                            {truncateText(annotation.note || annotation.quote, 34)}
+                          </span>
+                          <time dateTime={annotation.updatedAt}>
+                            {new Date(annotation.updatedAt).toLocaleString()}
+                          </time>
+                        </button>
+                        {annotation.orphaned ? (
                           <button
-                            className="note-locate"
+                            className="note-reanchor-btn"
                             type="button"
-                            aria-label="Locate annotation"
-                            onClick={() => scrollToAnnotation(annotation.id)}
+                            onClick={() => showReanchorCandidates(annotation)}
                           >
-                            <span className="icon-mask icon-map-pin" aria-hidden="true" />
+                            Find
                           </button>
-                          <button
-                            className="note-sticker-body"
-                            type="button"
-                            onClick={() => openAnnotationDetail(annotation)}
-                          >
-                            <span className="note-kind">
-                              {annotation.note ? t('note') : t('highlight')}
-                            </span>
-                            <span className="note-preview">
-                              {truncateText(annotation.note || annotation.quote, 34)}
-                            </span>
-                            <time dateTime={annotation.updatedAt}>
-                              {new Date(annotation.updatedAt).toLocaleString()}
-                            </time>
-                          </button>
-                          <button
-                            className="note-delete"
-                            type="button"
-                            onClick={() => deleteAnnotation(annotation.id)}
-                          >
-                            {t('delete')}
-                          </button>
-                        </li>
-                      ))}
-                    </ol>
-                  ) : (
+                        ) : null}
+                        <button
+                          className="note-delete"
+                          type="button"
+                          onClick={() => deleteAnnotation(annotation.id)}
+                        >
+                          {t('delete')}
+                        </button>
+                        {reanchorId === annotation.id && reanchorCandidates.length > 0 ? (
+                          <div className="reanchor-candidates">
+                            {reanchorCandidates.map((c, i) => (
+                              <button
+                                key={i}
+                                className="reanchor-candidate"
+                                type="button"
+                                onClick={() => reanchorAnnotation(annotation.id, c)}
+                              >
+                                ...{c.snippet}...
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
+                        {reanchorId === annotation.id && reanchorCandidates.length === 0 ? (
+                          <p className="reanchor-empty">No matching candidates found.</p>
+                        ) : null}
+                      </li>
+                    )
+                    return (
+                      <ol className="note-list">
+                        {activeAnnotations.map(renderItem)}
+                        {orphanedAnnotations.length > 0 && activeAnnotations.length > 0 ? (
+                          <li className="note-orphaned-separator" aria-hidden="true" />
+                        ) : null}
+                        {orphanedAnnotations.map(renderItem)}
+                      </ol>
+                    )
+                  })() : (
                     <p className="empty-outline">{t('selectToNote')}</p>
                   )}
                 </aside>
@@ -1533,6 +1728,48 @@ function App() {
               </div>
             </section>
           </div>
+        ) : null}
+
+        {showSaveVersion && document ? (
+          <SaveAsVersion
+            document={document}
+            onSaved={(newFilename) => {
+              void handleSavedNewVersion(newFilename)
+            }}
+            onClose={() => setShowSaveVersion(false)}
+          />
+        ) : null}
+
+        {showMap && document ? (
+          <UnderstandingMap
+            annotations={annotations}
+            tocItems={rendered.toc}
+            onClose={() => setShowMap(false)}
+            onJumpToHeading={(id) => {
+              setShowMap(false)
+              const el = window.document.getElementById(id)
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }}
+          />
+        ) : null}
+
+        {showSettings ? (
+          <SettingsPanel
+            panelMode={panelMode}
+            setPanelMode={setPanelMode}
+            annotationStyle={annotationStyle}
+            setAnnotationStyle={setAnnotationStyle}
+            onClose={() => setShowSettings(false)}
+          />
+        ) : null}
+
+        {showVersions && document ? (
+          <VersionHistory
+            versions={versions}
+            currentId={document.stableId}
+            onOpenVersion={(id) => void openVersion(id)}
+            onClose={() => setShowVersions(false)}
+          />
         ) : null}
 
         {view === 'exports' ? (
@@ -1717,6 +1954,10 @@ type ReaderToolbarProps = {
   documentOpen: boolean
   documentName: string
   openExport: () => void
+  openSaveVersion: () => void
+  openVersions: () => void
+  openMap: () => void
+  openSettings: () => void
   readerFontSize: number
   setReaderFontSize: (value: number | ((value: number) => number)) => void
   searchQuery: string
@@ -1821,9 +2062,36 @@ function ReaderToolbar(props: ReaderToolbarProps) {
           <button
             type="button"
             disabled={!props.documentOpen}
+            onClick={props.openMap}
+          >
+            Map
+          </button>
+          <button
+            type="button"
+            disabled={!props.documentOpen}
+            onClick={props.openSaveVersion}
+          >
+            Save new version
+          </button>
+          <button
+            type="button"
+            disabled={!props.documentOpen}
+            onClick={props.openVersions}
+          >
+            Versions
+          </button>
+          <button
+            type="button"
+            disabled={!props.documentOpen}
             onClick={props.openExport}
           >
             {props.t('exportHtml')}
+          </button>
+          <button
+            type="button"
+            onClick={props.openSettings}
+          >
+            Settings
           </button>
         </div>
       </div>

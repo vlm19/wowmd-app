@@ -7,7 +7,6 @@
     <meta
       name="description"
       content="wowMD is a free Chrome extension that makes long GitHub Markdown pages easier to navigate, scan, and read."
-     
     >
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
@@ -44,31 +43,23 @@
         "name": "wowMD",
         "applicationCategory": "BrowserApplication",
         "operatingSystem": "Chrome",
-        "description": "wowMD is a free Chrome extension that makes long GitHub Markdown pages easier to navigate, scan, and read.",
+        "description": "wowMD is a free Chrome extension that turns long GitHub Markdown pages into structured, focused reading views.",
         "url": "https://wowmd.app/extension.html",
         "image": "https://wowmd.app/assets/hero-demo-poster.jpg",
-        "softwareVersion": "0.1.0",
+        "softwareVersion": "0.4.0",
         "offers": {
           "@type": "Offer",
           "price": "0",
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock"
-        },
-        "featureList": [
-          "Document outline",
-          "Section folding",
-          "Code rendering",
-          "Table scrolling",
-          "Local full-screen reader",
-          "Privacy-first local reading"
-        ]
+        }
       }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260526">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="site-header">
-      <a class="logo-link" href="./" aria-label="wowMD home">
+      <a class="logo-link" href="index.html" aria-label="wowMD home">
         <img src="assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
       </a>
       <nav class="site-nav" aria-label="Primary">
@@ -76,7 +67,7 @@
         <a href="#features">Features</a>
         <a href="#scope">Scope</a>
         <a href="#privacy">Privacy</a>
-        <a class="nav-app" href="pro.html">Pro</a>
+        <a class="nav-pro" href="pro.html">wowMD Pro</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button
@@ -116,6 +107,7 @@
     <main>
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
+          <p class="section-label">Chrome extension</p>
           <h1 id="hero-title">Long Markdown, made readable.</h1>
           <p class="hero-subtitle">wowMD adds an outline, collapsible sections, and a calmer reader to long GitHub READMEs and Markdown files. It appears only when the page is complex enough to help.</p>
           <div class="hero-actions" aria-label="Primary actions">
@@ -133,7 +125,7 @@
             </a>
           </div>
           <div class="hero-badges" aria-label="Product facts">
-            <span>Beta v0.1.0</span>
+            <span>Beta v0.4.0</span>
           </div>
         </div>
       </section>
@@ -157,8 +149,8 @@
         </div>
         <div class="demo-notes" aria-label="Demo moments">
           <span>Better View appears</span>
-          <span>Outline opens first</span>
-          <span>Full-screen reader opens</span>
+          <span>Outline opens with structure</span>
+          <span>Full reader with code and tables</span>
         </div>
       </section>
 
@@ -172,8 +164,8 @@
             <span class="feature-icon icon-blue" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
             </span>
-            <h3>Outline first</h3>
-            <p>See the document structure before jumping into the full text.</p>
+            <h3>Outline navigation</h3>
+            <p>Navigate long documents by heading structure. Scroll-synced outline keeps you oriented.</p>
           </article>
           <article class="feature-card reveal">
             <span class="feature-icon icon-amber" aria-hidden="true">
@@ -186,29 +178,15 @@
             <span class="feature-icon icon-purple" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
             </span>
-            <h3>Code display</h3>
-            <p>Keep code blocks readable with clean spacing and highlighting.</p>
+            <h3>Code highlighting</h3>
+            <p>Keep code blocks readable with clean spacing and syntax highlighting.</p>
           </article>
           <article class="feature-card reveal">
             <span class="feature-icon icon-coral" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
             </span>
-            <h3>Horizontal table scrolling</h3>
+            <h3>Table scrolling</h3>
             <p>Wide tables scroll sideways instead of breaking the reader layout.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-green" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
-            </span>
-            <h3>Appears when useful</h3>
-            <p>Stays out of the way on short READMEs and simple pages.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-teal" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
-            </span>
-            <h3>Clean rendering</h3>
-            <p>Fixes common relative image paths and safely sanitizes rendered Markdown.</p>
           </article>
         </div>
       </section>
@@ -225,11 +203,11 @@
               <li><span class="check" aria-hidden="true"></span><span>Public GitHub repository README pages</span></li>
               <li><span class="check" aria-hidden="true"></span><span>Public GitHub .md file pages</span></li>
               <li><span class="check" aria-hidden="true"></span><span>Public GitHub .markdown file pages</span></li>
-              <li><span class="check" aria-hidden="true"></span><span>Right-side panel and full-screen reader</span></li>
+              <li><span class="check" aria-hidden="true"></span><span>Full-screen reader with outline navigation</span></li>
             </ul>
           </article>
           <article class="scope-card not-supported">
-            <h3>Not supported yet</h3>
+            <h3>Not supported</h3>
             <ul>
               <li><span class="xmark" aria-hidden="true"></span><span>Private repositories</span></li>
               <li><span class="xmark" aria-hidden="true"></span><span>Websites outside GitHub</span></li>
@@ -259,7 +237,7 @@
           <div>
             <p class="section-label">Need more?</p>
             <h2 id="extension-pro-title">Need local files, highlights, notes, or export?</h2>
-            <p>wowMD Pro adds a local Markdown workspace with annotations and clean HTML or EPUB export. The free extension stays focused on GitHub reading.</p>
+            <p>wowMD Pro adds a local Markdown workspace with annotations and clean HTML export. The free extension stays focused on GitHub reading.</p>
           </div>
           <a class="button button-primary" href="pro.html">Explore wowMD Pro</a>
         </div>
@@ -269,7 +247,7 @@
     <footer class="site-footer">
       <div class="footer-brand">
         <img src="assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>Beta v0.1.0 - Chrome extension</p>
+        <p>Beta v0.4.0 - Chrome extension</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="privacy.html">Privacy Policy</a>
@@ -280,4 +258,3 @@
     <script src="script.js"></script>
   </body>
 </html>
-

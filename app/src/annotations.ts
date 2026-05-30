@@ -1,70 +1,167 @@
 export type AnnotationColor = 'yellow' | 'blue' | 'green' | 'rose' | 'violet' | 'amber'
 
+export type AnnotationType = 'clarify' | 'dispute' | 'important' | 'confirmed'
+
 export type Annotation = {
   id: string
+  documentId: string
   documentFingerprint: string
   quote: string
   prefix: string
   suffix: string
   headingPath: string[]
   offset: number
+  type: AnnotationType | null
   note: string
+  suggestedReplacement: string
   color: AnnotationColor
+  legacyColor: AnnotationColor | null
+  orphaned: boolean
   createdAt: string
   updatedAt: string
 }
 
-const storagePrefix = 'wowmd.annotations.v1.'
+const storagePrefixV1 = 'wowmd.annotations.v1.'
+const storagePrefixV2 = 'wowmd.annotations.v2.'
 const dbName = 'wowmd-pro'
-const storeName = 'annotations'
+const storeNameV1 = 'annotations'
+const storeNameV2 = 'annotations_v2'
 
-export function loadAnnotations(documentFingerprint: string): Annotation[] {
-  const raw = localStorage.getItem(storageKey(documentFingerprint))
-  if (!raw) return []
+function storageKeyV1(documentFingerprint: string) {
+  return `${storagePrefixV1}${documentFingerprint}`
+}
+
+function storageKeyV2(documentFingerprint: string) {
+  return `${storagePrefixV2}${documentFingerprint}`
+}
+
+export function migrateAnnotation(raw: Record<string, unknown>): Annotation {
+  const color = (
+    typeof raw.color === 'string' &&
+    ['yellow', 'blue', 'green', 'rose', 'violet', 'amber'].includes(raw.color)
+  ) ? raw.color as AnnotationColor : 'yellow'
+
+  return {
+    id: typeof raw.id === 'string' ? raw.id : crypto.randomUUID(),
+    documentId: typeof raw.documentId === 'string' ? raw.documentId : '',
+    documentFingerprint: typeof raw.documentFingerprint === 'string' ? raw.documentFingerprint : '',
+    quote: typeof raw.quote === 'string' ? raw.quote : '',
+    prefix: typeof raw.prefix === 'string' ? raw.prefix : '',
+    suffix: typeof raw.suffix === 'string' ? raw.suffix : '',
+    headingPath: Array.isArray(raw.headingPath) ? raw.headingPath as string[] : [],
+    offset: typeof raw.offset === 'number' ? raw.offset : -1,
+    type: null,
+    note: typeof raw.note === 'string' ? raw.note : '',
+    suggestedReplacement: '',
+    color,
+    legacyColor: color,
+    orphaned: false,
+    createdAt: typeof raw.createdAt === 'string' ? raw.createdAt : new Date().toISOString(),
+    updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : new Date().toISOString(),
+  }
+}
+
+export function isValidAnnotation(a: Annotation): boolean {
+  return a.type != null || a.note !== '' || a.legacyColor != null
+}
+
+export function migrateAnnotationArray(items: unknown[]): Annotation[] {
+  return items
+    .map((item) => migrateAnnotation(item as Record<string, unknown>))
+    .filter(isValidAnnotation)
+}
+
+export function loadAnnotations(documentId: string, documentFingerprint: string): Annotation[] {
+  const rawV2 = localStorage.getItem(storageKeyV2(documentId))
+  if (rawV2) {
+    try {
+      const parsed = JSON.parse(rawV2)
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      return []
+    }
+  }
+
+  const rawV1 = localStorage.getItem(storageKeyV1(documentFingerprint))
+  if (!rawV1) return []
 
   try {
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
+    const parsed = JSON.parse(rawV1)
+    const migrated = migrateAnnotationArray(Array.isArray(parsed) ? parsed : [])
+    if (migrated.length) {
+      localStorage.setItem(storageKeyV2(documentId), JSON.stringify(migrated))
+    }
+    return migrated
   } catch {
     return []
   }
 }
 
 export function saveAnnotations(
-  documentFingerprint: string,
+  documentId: string,
   annotations: Annotation[],
 ) {
-  localStorage.setItem(storageKey(documentFingerprint), JSON.stringify(annotations))
+  localStorage.setItem(storageKeyV2(documentId), JSON.stringify(annotations))
 }
 
-export async function loadAnnotationsFromDb(documentFingerprint: string) {
+export async function loadAnnotationsFromDb(documentId: string, documentFingerprint: string) {
   try {
     const db = await openAnnotationsDb()
-    return await new Promise<Annotation[]>((resolve, reject) => {
-      const tx = db.transaction(storeName, 'readonly')
-      const request = tx.objectStore(storeName).get(documentFingerprint)
+
+    const fromV2 = await new Promise<Annotation[] | null>((resolve, reject) => {
+      const tx = db.transaction(storeNameV2, 'readonly')
+      const request = tx.objectStore(storeNameV2).get(documentId)
+      request.onsuccess = () => {
+        resolve(Array.isArray(request.result?.items) ? request.result.items : null)
+      }
+      request.onerror = () => reject(request.error)
+    })
+
+    if (fromV2) return fromV2
+
+    const fromV1 = await new Promise<Annotation[]>((resolve, reject) => {
+      const tx = db.transaction(storeNameV1, 'readonly')
+      const request = tx.objectStore(storeNameV1).get(documentFingerprint)
       request.onsuccess = () => {
         resolve(Array.isArray(request.result?.items) ? request.result.items : [])
       }
       request.onerror = () => reject(request.error)
     })
+
+    if (fromV1.length === 0) {
+      return loadAnnotations(documentId, documentFingerprint)
+    }
+
+    const migrated = migrateAnnotationArray(fromV1)
+    try {
+      const txV2 = db.transaction(storeNameV2, 'readwrite')
+      txV2.objectStore(storeNameV2).put({
+        documentId,
+        items: migrated,
+        updatedAt: new Date().toISOString(),
+      })
+      await new Promise<void>((resolve) => { txV2.oncomplete = () => resolve() })
+      saveAnnotations(documentId, migrated)
+    } catch { /* v2 write failed, return migrated from memory */ }
+
+    return migrated
   } catch {
-    return loadAnnotations(documentFingerprint)
+    return loadAnnotations(documentId, documentFingerprint)
   }
 }
 
 export async function saveAnnotationsToDb(
-  documentFingerprint: string,
+  documentId: string,
   annotations: Annotation[],
 ) {
-  saveAnnotations(documentFingerprint, annotations)
+  saveAnnotations(documentId, annotations)
 
   try {
     const db = await openAnnotationsDb()
     await new Promise<void>((resolve, reject) => {
-      const tx = db.transaction(storeName, 'readwrite')
-      tx.objectStore(storeName).put({
-        documentFingerprint,
+      const tx = db.transaction(storeNameV2, 'readwrite')
+      tx.objectStore(storeNameV2).put({
+        documentId,
         items: annotations,
         updatedAt: new Date().toISOString(),
       })
@@ -77,27 +174,38 @@ export async function saveAnnotationsToDb(
 }
 
 export function createAnnotation(input: {
+  documentId?: string
   documentFingerprint: string
   quote: string
   prefix?: string
   suffix?: string
   headingPath?: string[]
   offset?: number
-  note: string
-  color: AnnotationColor
+  type?: AnnotationType | null
+  note?: string
+  suggestedReplacement?: string
+  color?: AnnotationColor
 }): Annotation {
   const now = new Date().toISOString()
+  const annotationType = input.type ?? null
+  const annotationColor = input.color ?? 'yellow'
+  const annotationLegacyColor = input.color ?? null
 
   return {
     id: crypto.randomUUID(),
+    documentId: input.documentId || input.documentFingerprint,
     documentFingerprint: input.documentFingerprint,
     quote: input.quote,
     prefix: input.prefix || '',
     suffix: input.suffix || '',
     headingPath: input.headingPath || [],
     offset: input.offset ?? -1,
-    note: input.note,
-    color: input.color,
+    type: annotationType,
+    note: input.note || '',
+    suggestedReplacement: input.suggestedReplacement || '',
+    color: annotationColor,
+    legacyColor: annotationLegacyColor,
+    orphaned: false,
     createdAt: now,
     updatedAt: now,
   }
@@ -315,27 +423,204 @@ function createHighlightMark(annotation: Annotation, text: string, quote: string
   const mark = document.createElement('mark')
   mark.className = `wowmd-highlight wowmd-highlight-${annotation.color}`
   mark.dataset.annotationId = annotation.id
+  if (annotation.type) {
+    mark.dataset.annotationType = annotation.type
+  }
   mark.title = annotation.note || quote
   mark.textContent = text
   return mark
 }
 
-function storageKey(documentFingerprint: string) {
-  return `${storagePrefix}${documentFingerprint}`
-}
-
 function openAnnotationsDb() {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open(dbName, 1)
+    const request = indexedDB.open(dbName, 2)
 
     request.onupgradeneeded = () => {
       const db = request.result
-      if (!db.objectStoreNames.contains(storeName)) {
-        db.createObjectStore(storeName, { keyPath: 'documentFingerprint' })
+      if (!db.objectStoreNames.contains(storeNameV1)) {
+        db.createObjectStore(storeNameV1, { keyPath: 'documentFingerprint' })
+      }
+      if (!db.objectStoreNames.contains(storeNameV2)) {
+        db.createObjectStore(storeNameV2, { keyPath: 'documentId' })
       }
     }
 
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject(request.error)
   })
+}
+
+function narrowToQuote(body: string, quote: string): string {
+  const paras = body.split(/\n{2,}/)
+  if (!quote) return paras.slice(0, 3).join('\n\n')
+  const q = quote.trim()
+  const i = paras.findIndex((p) => p.includes(q))
+  if (i < 0) return paras.slice(0, 3).join('\n\n')
+  return paras.slice(Math.max(0, i - 1), i + 2).join('\n\n')
+}
+
+export function extractSectionBody(markdown: string, headingPath: string[], quote?: string): string {
+  if (!headingPath.length) return ''
+
+  const lines = markdown.split('\n')
+  const headingRegex = /^(#{1,6})\s+(.+)/
+
+  // Build expected heading levels for each breadcrumb (starting at h1)
+  const expectedLevels: Array<{ level: number; text: string }> = headingPath.map((text, i) => ({
+    level: i + 1,
+    text,
+  }))
+
+  let matchIndex = 0
+  let startLine = -1
+  let sectionLevel = 0
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const match = lines[i].match(headingRegex)
+    if (!match) continue
+
+    const level = match[1].length
+    const text = match[2].trim()
+
+    if (matchIndex < expectedLevels.length && level === expectedLevels[matchIndex].level && text === expectedLevels[matchIndex].text) {
+      matchIndex += 1
+      if (matchIndex === expectedLevels.length) {
+        startLine = i + 1
+        sectionLevel = level
+        continue
+      }
+    } else {
+      matchIndex = 0
+    }
+
+    if (startLine >= 0 && level <= sectionLevel) {
+      const body = lines.slice(startLine, i).join('\n').trim()
+      return body.length > 3000
+        ? narrowToQuote(body, quote ?? '')
+        : body
+    }
+  }
+
+  if (startLine >= 0) {
+    const body = lines.slice(startLine).join('\n').trim()
+    return body.length > 3000
+      ? narrowToQuote(body, quote ?? '')
+      : body
+  }
+
+  // Fallback: search by last heading text at any level
+  const targetHeading = headingPath[headingPath.length - 1]
+  let fallbackLine = -1
+  let fallbackLevel = 0
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const match = lines[i].match(headingRegex)
+    if (!match) continue
+
+    const level = match[1].length
+    const text = match[2].trim()
+
+    if (text === targetHeading) {
+      fallbackLine = i + 1
+      fallbackLevel = level
+      continue
+    }
+
+    if (fallbackLine >= 0 && level <= fallbackLevel) {
+      const body = lines.slice(fallbackLine, i).join('\n').trim()
+      return body.length > 3000
+        ? narrowToQuote(body, quote ?? '')
+        : body
+    }
+  }
+
+  if (fallbackLine >= 0) {
+    const body = lines.slice(fallbackLine).join('\n').trim()
+    return body.length > 3000
+      ? narrowToQuote(body, quote ?? '')
+      : body
+  }
+
+  return ''
+}
+
+export function createTicketExport(
+  documentTitle: string,
+  documentSource: string,
+  documentFingerprint: string,
+  markdown: string,
+  annotations: Annotation[],
+) {
+  const typeLegend: Record<string, string> = {
+    clarify: '解释、澄清此处，勿动实质。Explain or clarify this point without changing substance.',
+    dispute: '复核此处，可能有误，实质可能需要修改。Review — this may be incorrect and may need correction.',
+    important: '保留并强调此关键点。This is a key point worth retaining and emphasizing.',
+    confirmed: '已审、正确，无需动作。Reviewed and confirmed — no action needed.',
+  }
+
+  const tickets = annotations.map((a) => {
+    const sectionBody = extractSectionBody(markdown, a.headingPath, a.quote)
+
+    return {
+      type: a.type,
+      quote: a.quote,
+      prefix: a.prefix,
+      suffix: a.suffix,
+      headingPath: a.headingPath,
+      sectionBody,
+      note: a.note || undefined,
+      suggestedReplacement: a.suggestedReplacement || undefined,
+    }
+  })
+
+  return {
+    document: {
+      title: documentTitle,
+      source: documentSource,
+      fingerprint: documentFingerprint,
+      markdownSnapshot: markdown,
+    },
+    typeLegend,
+    tickets,
+  }
+}
+
+export function quoteMatchesText(fullText: string, quote: string, preferredOffset = -1): boolean {
+  const q = quote.trim()
+  if (!q) return false
+  return findQuoteMatch(fullText, q, preferredOffset) != null
+}
+
+export type ReanchorCandidate = { start: number; end: number; snippet: string }
+
+export function findReanchorCandidates(
+  renderedText: string,
+  annotation: Annotation,
+  maxCandidates = 5,
+): ReanchorCandidate[] {
+  const out: ReanchorCandidate[] = []
+  const quote = annotation.quote.trim()
+  if (!quote) return out
+
+  for (const start of findAllIndexes(renderedText, quote)) {
+    out.push(makeReanchorCandidate(renderedText, start, start + quote.length))
+    if (out.length >= maxCandidates) return out
+  }
+
+  const anchors = [annotation.prefix, annotation.suffix].map((s) => s.trim()).filter(Boolean)
+  for (const anchor of anchors) {
+    for (const idx of findAllIndexes(renderedText, anchor)) {
+      const start = anchor === annotation.prefix ? idx + anchor.length : Math.max(0, idx - quote.length)
+      out.push(makeReanchorCandidate(renderedText, start, start + quote.length))
+      if (out.length >= maxCandidates) return out
+    }
+  }
+  return out
+}
+
+function makeReanchorCandidate(text: string, start: number, end: number): ReanchorCandidate {
+  const s = Math.max(0, start)
+  const e = Math.min(text.length, end)
+  const snippet = text.slice(Math.max(0, s - 30), Math.min(text.length, e + 30)).trim()
+  return { start: s, end: e, snippet }
 }

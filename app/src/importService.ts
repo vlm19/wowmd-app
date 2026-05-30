@@ -1,4 +1,4 @@
-import { createDocId, saveLocalDocument, type LocalDocument } from './localDocuments'
+import { createDocId, findLocalDocumentByUrl, saveLocalDocument, updateLocalDocument, type LocalDocument } from './localDocuments'
 import { computeDocumentFingerprint } from './markdown'
 
 export type ImportMeta = {
@@ -75,7 +75,8 @@ export async function importGitHubMarkdown(searchParams: URLSearchParams) {
   const markdown = await fetchMarkdownFromRawUrl(meta.rawUrl)
   const fingerprint = await computeDocumentFingerprint(markdown)
 
-  return createLocalDocument(meta, markdown, fingerprint)
+  const result = await createLocalDocument(meta, markdown, fingerprint)
+  return result
 }
 
 export async function fetchMarkdownFromRawUrl(rawUrl: string) {
@@ -115,8 +116,19 @@ export async function createLocalDocument(
   meta: ImportMeta,
   markdown: string,
   fingerprint: string,
-): Promise<LocalDocument> {
-  return saveLocalDocument({
+): Promise<{ document: LocalDocument; isNewVersion: boolean }> {
+  const existing = await findLocalDocumentByUrl(meta.rawUrl)
+
+  if (existing) {
+    const updated = await updateLocalDocument(existing.id, {
+      markdownSnapshot: markdown,
+      fingerprint,
+    })
+    if (!updated) throw new ImportError('FETCH_FAILED')
+    return { document: updated, isNewVersion: existing.fingerprint !== fingerprint }
+  }
+
+  const document = await saveLocalDocument({
     id: createDocId(),
     sourceType: 'github',
     title: meta.title,
@@ -129,6 +141,7 @@ export async function createLocalDocument(
     markdownSnapshot: markdown,
     fingerprint,
   })
+  return { document, isNewVersion: false }
 }
 
 function cleanOptional(value: string | null) {
