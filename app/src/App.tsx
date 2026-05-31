@@ -99,6 +99,10 @@ function App() {
   const t = useMemo(() => createTranslator(locale), [locale])
   const feedbackHref = locale === 'en' ? '../feedback.html' : `../${locale}/feedback.html`
 
+  useEffect(() => {
+    globalThis.document.documentElement.lang = locale
+  }, [locale])
+
   const licenseSummary = useMemo(
     () => getLicenseSummary(trialState, t),
     [t, trialState],
