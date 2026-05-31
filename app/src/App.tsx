@@ -1,19 +1,16 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
   type CSSProperties,
-  type ChangeEvent,
-  type DragEvent,
   type MouseEvent,
   type PointerEvent,
 } from 'react'
 import './App.css'
 import {
   applyAnnotationHighlights,
-  loadAnnotationsFromDb,
-  saveAnnotationsToDb,
   type Annotation,
   type AnnotationColor,
   type AnnotationType,
@@ -27,27 +24,14 @@ import {
   type Locale,
 } from './i18n'
 import {
-  importGitHubMarkdown,
-  ImportError,
-  type ImportErrorCode,
-} from './importService'
-import {
   activateLocalLicense,
   createTrialState,
   getLicenseSummary,
 } from './license'
 import {
-  loadLocalDocument,
-  createDocumentVersion,
-  getDocumentLineage,
-  type LocalDocument,
-} from './localDocuments'
-import {
   buildToc,
-  computeDocumentFingerprint,
   getDocumentStats,
   renderMarkdown,
-  sampleMarkdown,
   type TocItem,
 } from './markdown'
 import { applySearchHighlights } from './search'
@@ -58,13 +42,12 @@ import VersionHistory from './VersionHistory'
 import { loadSettings, type PanelMode, type AnnotationStyle } from './settingsStore'
 import { useAnnotations, reanchorAgainstMarkdown } from './hooks/useAnnotations'
 import { useSelectionCapture } from './hooks/useSelectionCapture'
+import { useDocumentSession } from './hooks/useDocumentSession'
 import type { OpenDocument } from './types'
 
 type ThemeName = 'light' | 'dark'
-type WorkspaceView = 'reader' | 'exports' | 'license'
 type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
-type ImportStatus = 'idle' | 'loading' | 'failed'
 
 const themeNames: ThemeName[] = ['light', 'dark']
 
@@ -82,20 +65,12 @@ const localeOptions: Array<{
 ]
 
 function App() {
-  const [document, setDocument] = useState<OpenDocument | null>(null)
   const [theme, setTheme] = useState<ThemeName>('dark')
-  const [error, setError] = useState('')
-  const [importStatus, setImportStatus] = useState<ImportStatus>('idle')
-  const [importSourceUrl, setImportSourceUrl] = useState('')
-  const [view, setView] = useState<WorkspaceView>('reader')
   const [showOutline, setShowOutline] = useState(true)
   const [showNotes, setShowNotes] = useState(true)
   const [isNarrowLayout, setIsNarrowLayout] = useState(false)
-  const [showSaveVersion, setShowSaveVersion] = useState(false)
   const [showMap, setShowMap] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
-  const [showVersions, setShowVersions] = useState(false)
-  const [versions, setVersions] = useState<LocalDocument[]>([])
   const [panelMode, setPanelMode] = useState<PanelMode>(() => loadSettings().panelMode)
   const [annotationStyle, setAnnotationStyle] = useState<AnnotationStyle>(() => loadSettings().annotationStyle)
   const [searchQuery, setSearchQuery] = useState('')
@@ -121,9 +96,7 @@ function App() {
   const [includeExportMetadata, setIncludeExportMetadata] = useState(false)
   const [exportTitle, setExportTitle] = useState('wowMD')
   const [htmlFilename, setHtmlFilename] = useState('wowmd-export.html')
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
   const markdownBodyRef = useRef<HTMLDivElement | null>(null)
-  const trialFilePickerConfirmedRef = useRef(false)
 
   const t = useMemo(() => createTranslator(locale), [locale])
   const feedbackHref = locale === 'en' ? '../feedback.html' : `../${locale}/feedback.html`
@@ -132,6 +105,83 @@ function App() {
     () => getLicenseSummary(trialState, t),
     [t, trialState],
   )
+
+  const trialNeedsConfirmation = Boolean(
+    !trialState.startedAt && !trialState.isLicensed,
+  )
+
+  const annotationsRef = useRef<Annotation[]>([])
+  const setAnnotationsRef = useRef<Dispatch<SetStateAction<Annotation[]>>>(() => {})
+
+  const setExportDefaults = useCallback((name: string) => {
+    const baseName = name.replace(/\.(md|markdown)$/i, '') || 'wowMD'
+    setExportTitle(baseName)
+    setHtmlFilename(withThemeSuffix(safeExportFilename(name, 'html'), theme))
+  }, [setExportTitle, setHtmlFilename, withThemeSuffix, theme])
+
+  const {
+    document,
+    setDocument,
+    error,
+    setError,
+    importStatus,
+    setImportStatus,
+    importSourceUrl,
+    setImportSourceUrl,
+    view,
+    setView,
+    showSaveVersion,
+    setShowSaveVersion,
+    showVersions,
+    setShowVersions,
+    versions,
+    setVersions,
+    fileInputRef,
+    openFile,
+    handleInitialRoute,
+    openSample,
+    clearCurrentFile,
+    requestLocalFile,
+    confirmTrialAction,
+    handleFileInput,
+    handleDrop,
+    handleSavedNewVersion,
+    openVersions,
+    openVersion,
+  } = useDocumentSession({
+    reanchorAgainstMarkdown,
+    annotationsRef,
+    setAnnotationsRef,
+    resetSelectionCapture,
+    canOpenUserFiles: licenseSummary.canOpenUserFiles,
+    setTrialState,
+    isNarrowLayout,
+    setShowOutline,
+    setShowNotes,
+    setSearchQuery,
+    setSearchIndex,
+    setExportDefaults,
+    t,
+    trialNeedsConfirmation,
+    setPendingTrialFile,
+    setShowTrialConfirm,
+  })
+
+  const openExport = useCallback(() => {
+    setView('exports')
+  }, [setView])
+
+  const openAnotherFromFileMenu = useCallback(() => {
+    requestLocalFile()
+  }, [requestLocalFile])
+
+  const openSampleFromFileMenu = useCallback(() => {
+    void openSample()
+  }, [openSample])
+
+  const clearFileFromFileMenu = useCallback(() => {
+    clearCurrentFile()
+  }, [clearCurrentFile])
 
   const {
     selectionQuote,
@@ -207,17 +257,16 @@ function App() {
     onScrollToAnnotation: handleScrollToAnnotation,
   })
 
+  annotationsRef.current = annotations
+  setAnnotationsRef.current = setAnnotations
+
   useEffect(() => {
     void handleInitialRoute()
     // Initial route import/restore should run once on page load.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const trialNeedsConfirmation = Boolean(
-    !trialState.startedAt && !trialState.isLicensed,
-  )
-
-  const rendered = useMemo(() => {
+  useEffect(() => {
     if (!document) {
       return {
         html: '',
@@ -321,192 +370,6 @@ function App() {
     return () => query.removeEventListener('change', sync)
   }, [showNotes])
 
-  async function openFile(file: File) {
-    setError('')
-    setImportStatus('idle')
-
-    if (!/\.(md|markdown)$/i.test(file.name)) {
-      setError(t('typeError'))
-      return
-    }
-
-    if (!licenseSummary.canOpenUserFiles) {
-      setError(t('expiredOpenError'))
-      return
-    }
-
-    const markdown = await file.text()
-    const fingerprint = await computeDocumentFingerprint(markdown)
-    const stableId = `file:${file.name}`
-    setTrialState(createTrialState({ startIfMissing: true }))
-    setDocument({
-      name: file.name,
-      markdown,
-      fingerprint,
-      stableId,
-    })
-    setExportDefaults(file.name)
-    {
-      const loaded = await loadAnnotationsFromDb(stableId, fingerprint)
-      const reanchored = reanchorAgainstMarkdown(loaded, markdown, fingerprint)
-      if (reanchored.some((a, i) => a !== loaded[i])) {
-        void saveAnnotationsToDb(stableId, reanchored)
-      }
-      setAnnotations(reanchored)
-    }
-    setSelectionQuote('')
-    setSelectionToolbar(null)
-    setSearchQuery('')
-    setSearchIndex(0)
-    setView('reader')
-    setShowOutline(!isNarrowLayout)
-    setShowNotes(!isNarrowLayout)
-  }
-
-  async function handleInitialRoute() {
-    const { pathname, search } = window.location
-    const appBasePath = pathname.startsWith('/app/') ? '/app' : ''
-    const routePath = appBasePath ? pathname.slice(appBasePath.length) : pathname
-
-    if (routePath === '/import') {
-      await importFromUrl(new URLSearchParams(search), appBasePath)
-      return
-    }
-
-    const readerMatch = routePath.match(/^\/reader\/([^/]+)$/)
-    if (readerMatch) {
-      await restoreImportedDocument(decodeURIComponent(readerMatch[1]))
-    }
-  }
-
-  async function importFromUrl(searchParams: URLSearchParams, appBasePath = '') {
-    setImportStatus('loading')
-    setImportSourceUrl(searchParams.get('pageUrl') || '')
-    setError('')
-
-    try {
-      const { document: localDocument } = await importGitHubMarkdown(searchParams)
-      // openLocalDocument re-anchors against the freshly imported snapshot, so a
-      // re-pulled new version is handled correctly without a stale-state pass.
-      await openLocalDocument(localDocument)
-      window.history.replaceState(
-        null,
-        '',
-        `${appBasePath}/reader/${encodeURIComponent(localDocument.id)}`,
-      )
-      setImportStatus('idle')
-    } catch (importError) {
-      setImportStatus('failed')
-      setError(importErrorMessage(importError))
-      console.warn('wowMD import failed', importError)
-    }
-  }
-
-  async function restoreImportedDocument(id: string) {
-    setImportStatus('loading')
-    setError('')
-
-    try {
-      const localDocument = await loadLocalDocument(id)
-      if (!localDocument) {
-        setImportStatus('failed')
-        setError('We could not find this local document. Please import it from GitHub again.')
-        return
-      }
-
-      await openLocalDocument(localDocument)
-      setImportStatus('idle')
-    } catch (importError) {
-      setImportStatus('failed')
-      setError('We could not open this local document. Please import it from GitHub again.')
-      console.warn('wowMD local document restore failed', importError)
-    }
-  }
-
-  async function openLocalDocument(localDocument: LocalDocument) {
-    setDocument({
-      name: localDocument.title,
-      markdown: localDocument.markdownSnapshot,
-      fingerprint: localDocument.fingerprint,
-      stableId: localDocument.id,
-      source: {
-        sourceType: localDocument.sourceType,
-        sourceUrl: localDocument.sourceUrl,
-        rawUrl: localDocument.rawUrl,
-        label: sourceLabel(localDocument),
-      },
-    })
-    setExportDefaults(localDocument.title)
-    {
-      const loaded = await loadAnnotationsFromDb(localDocument.id, localDocument.fingerprint)
-      const reanchored = reanchorAgainstMarkdown(
-        loaded,
-        localDocument.markdownSnapshot,
-        localDocument.fingerprint,
-      )
-      if (reanchored.some((a, i) => a !== loaded[i])) {
-        void saveAnnotationsToDb(localDocument.id, reanchored)
-      }
-      setAnnotations(reanchored)
-    }
-    setSelectionQuote('')
-    setSelectionToolbar(null)
-    setSearchQuery('')
-    setSearchIndex(0)
-    setView('reader')
-    setShowOutline(!isNarrowLayout)
-    setShowNotes(!isNarrowLayout)
-  }
-
-  async function openSample() {
-    setError('')
-    setImportStatus('idle')
-    setShowTrialConfirm(false)
-    setPendingTrialFile(null)
-    setDocument({
-      name: 'wowMD Pro sample.md',
-      markdown: sampleMarkdown,
-      fingerprint: 'sample',
-      stableId: 'sample',
-    })
-    setExportDefaults('wowMD Pro sample.md')
-    setAnnotations(await loadAnnotationsFromDb('sample', 'sample'))
-    setSelectionQuote('')
-    setSelectionToolbar(null)
-    setSearchQuery('')
-    setSearchIndex(0)
-    setView('reader')
-    setShowOutline(!isNarrowLayout)
-    setShowNotes(!isNarrowLayout)
-  }
-
-  function clearCurrentFile() {
-    setDocument(null)
-    setAnnotations([])
-    setSelectionQuote('')
-    setSelectionToolbar(null)
-    setSearchQuery('')
-    setSearchIndex(0)
-    setError('')
-    setImportStatus('idle')
-    setImportSourceUrl('')
-    setView('reader')
-    setShowOutline(true)
-    setShowNotes(true)
-  }
-
-  function openAnotherFromFileMenu() {
-    requestLocalFile()
-  }
-
-  function openSampleFromFileMenu() {
-    void openSample()
-  }
-
-  function clearFileFromFileMenu() {
-    clearCurrentFile()
-  }
-
   function startOutlineResize(event: PointerEvent<HTMLButtonElement>) {
     event.preventDefault()
     const startX = event.clientX
@@ -524,35 +387,6 @@ function App() {
     globalThis.document.body.classList.add('is-resizing-outline')
     window.addEventListener('pointermove', resize)
     window.addEventListener('pointerup', stop, { once: true })
-  }
-
-  function setExportDefaults(name: string) {
-    const baseName = name.replace(/\.(md|markdown)$/i, '') || 'wowMD'
-    setExportTitle(baseName)
-    setHtmlFilename(withThemeSuffix(safeExportFilename(name, 'html'), theme))
-  }
-
-  function requestLocalFile() {
-    setError('')
-    if (trialNeedsConfirmation) {
-      setPendingTrialFile(null)
-      setShowTrialConfirm(true)
-      return
-    }
-    fileInputRef.current?.click()
-  }
-
-  function confirmTrialAction() {
-    setShowTrialConfirm(false)
-    if (pendingTrialFile) {
-      const file = pendingTrialFile
-      setPendingTrialFile(null)
-      void openFile(file)
-      return
-    }
-
-    trialFilePickerConfirmedRef.current = true
-    fileInputRef.current?.click()
   }
 
   async function handleMarkdownBodyClick(event: MouseEvent<HTMLDivElement>) {
@@ -584,77 +418,6 @@ function App() {
     }, 1200)
   }
 
-  // After "Save as new version" writes the file, register the successor in the
-  // version lineage and bring the existing annotations into it (Stage E / §2.5).
-  // GitHub-sourced docs persist a successor LocalDocument with parentDocumentId;
-  // local files re-key by stable filename id. Never overwrites the source.
-  async function handleSavedNewVersion(newFilename: string) {
-    if (!document) {
-      setShowSaveVersion(false)
-      return
-    }
-
-    const markdown = document.markdown
-    const fingerprint = await computeDocumentFingerprint(markdown)
-    const carried = reanchorAgainstMarkdown(annotations, markdown, fingerprint)
-
-    let newStableId: string
-    const isGithubSourced = !!document.source && typeof document.source !== 'string'
-
-    if (isGithubSourced) {
-      const successor = await createDocumentVersion({
-        parentDocumentId: document.stableId,
-        title: newFilename,
-        markdownSnapshot: markdown,
-        fingerprint,
-      })
-      newStableId = successor.id
-    } else {
-      newStableId = `file:${newFilename}`
-    }
-
-    await saveAnnotationsToDb(newStableId, carried)
-
-    setDocument({
-      ...document,
-      name: newFilename,
-      fingerprint,
-      stableId: newStableId,
-    })
-    setAnnotations(carried)
-    setExportDefaults(newFilename)
-    setShowSaveVersion(false)
-
-    // Refresh lineage so the version history reflects the new successor.
-    try {
-      setVersions(await getDocumentLineage(newStableId))
-    } catch {
-      /* lineage is read-only sugar; ignore failures */
-    }
-  }
-
-  async function openVersions() {
-    if (!document) return
-    try {
-      setVersions(await getDocumentLineage(document.stableId))
-    } catch {
-      setVersions([])
-    }
-    setShowVersions(true)
-  }
-
-  async function openVersion(id: string) {
-    if (id === document?.stableId) return
-    const localDocument = await loadLocalDocument(id)
-    if (!localDocument) return
-    setShowVersions(false)
-    await openLocalDocument(localDocument)
-  }
-
-  function openExport() {
-    setView('exports')
-  }
-
   function downloadHtmlExport() {
     if (!document) return
     if (!licenseSummary.canExport) {
@@ -684,36 +447,6 @@ function App() {
         setLicenseStatus('error')
       }
     }, 350)
-  }
-
-  function handleFileInput(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0]
-    const trialAlreadyConfirmed = trialFilePickerConfirmedRef.current
-    trialFilePickerConfirmedRef.current = false
-
-    if (file) {
-      if (trialNeedsConfirmation && !trialAlreadyConfirmed) {
-        setPendingTrialFile(file)
-        setShowTrialConfirm(true)
-      } else {
-        void openFile(file)
-      }
-    }
-    event.target.value = ''
-  }
-
-  function handleDrop(event: DragEvent<HTMLDivElement>) {
-    event.preventDefault()
-    const file = event.dataTransfer.files?.[0]
-    if (!file) return
-
-    if (trialNeedsConfirmation) {
-      setPendingTrialFile(file)
-      setShowTrialConfirm(true)
-      return
-    }
-
-    void openFile(file)
   }
 
   function toggleNotes() {
@@ -2173,40 +1906,6 @@ function copyTextWithFallback(text: string) {
   } finally {
     textarea.remove()
   }
-}
-
-function importErrorMessage(error: unknown) {
-  if (error instanceof ImportError) {
-    return importErrorMessageByCode(error.code)
-  }
-
-  return importErrorMessageByCode('UNKNOWN')
-}
-
-function importErrorMessageByCode(code: ImportErrorCode) {
-  if (code === 'DISALLOWED_RAW_URL' || code === 'INVALID_SOURCE') {
-    return 'This link is not supported yet. Currently wowMD only imports public GitHub Markdown files.'
-  }
-
-  if (code === 'EMPTY_MARKDOWN') {
-    return 'This Markdown file seems to be empty.'
-  }
-
-  if (code === 'FETCH_TIMEOUT') {
-    return "GitHub didn't respond in time. Please check your connection and try again."
-  }
-
-  if (code === 'FETCH_FAILED') {
-    return "We couldn't open this Markdown file. You can try again, or open the original GitHub page."
-  }
-
-  return "We couldn't open this Markdown file. You can try again, or open the original GitHub page."
-}
-
-function sourceLabel(document: LocalDocument) {
-  const repo = document.owner && document.repo ? `${document.owner}/${document.repo}` : 'GitHub'
-  const path = document.path || document.title
-  return `Source: GitHub · ${repo} · ${path}`
 }
 
 export default App
