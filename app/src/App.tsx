@@ -39,6 +39,7 @@ import SaveAsVersion from './SaveAsVersion'
 import UnderstandingMap from './UnderstandingMap'
 import SettingsPanel from './SettingsPanel'
 import VersionHistory from './VersionHistory'
+import AnnotationToolbar from './AnnotationToolbar'
 import { loadSettings, type PanelMode, type AnnotationStyle } from './settingsStore'
 import { useAnnotations, reanchorAgainstMarkdown } from './hooks/useAnnotations'
 import { useSelectionCapture } from './hooks/useSelectionCapture'
@@ -259,6 +260,27 @@ function App() {
 
   annotationsRef.current = annotations
   setAnnotationsRef.current = setAnnotations
+
+  const handleToggleType = useCallback(
+    (typeVal: AnnotationType, typeColor: AnnotationColor) => {
+      const next = selectedType === typeVal ? null : typeVal
+      setSelectedType(next)
+      if (next) previewSelectionColor(typeColor)
+      else clearSelectionPreview()
+    },
+    [selectedType, setSelectedType, previewSelectionColor, clearSelectionPreview],
+  )
+
+  const handleToolbarMouseLeave = useCallback(() => {
+    if (!selectedType) clearSelectionPreview()
+  }, [selectedType, clearSelectionPreview])
+
+  const handleAnnotationSave = useCallback(() => {
+    const typeColor = selectedType
+      ? ({ clarify: 'blue', dispute: 'rose', important: 'amber', confirmed: 'green' }[selectedType] as AnnotationColor)
+      : 'yellow'
+    addAnnotation(typeColor, toolbarNote, selectedType, toolbarReplacement)
+  }, [selectedType, toolbarNote, toolbarReplacement, addAnnotation])
 
   useEffect(() => {
     void handleInitialRoute()
@@ -645,92 +667,23 @@ function App() {
             />
 
             {selectionToolbar && selectionQuote ? (
-              <div
-                className="floating-markup floating-markup-v2"
-                style={{
-                  left: selectionToolbar.x,
-                  top: selectionToolbar.y,
-                }}
-                aria-label="Annotation type picker"
-                onMouseLeave={() => {
-                  if (!selectedType) clearSelectionPreview()
-                }}
-              >
-                <div className="type-chips">
-                  {(['clarify', 'dispute', 'important', 'confirmed'] as const).map((typeVal) => {
-                    const typeColor = { clarify: 'blue', dispute: 'rose', important: 'amber', confirmed: 'green' }[typeVal] as AnnotationColor
-                    const typeKeys: Record<string, string> = { clarify: 'typeClarify', dispute: 'typeDispute', important: 'typeImportant', confirmed: 'typeConfirmed' }
-                    return (
-                      <button
-                        key={typeVal}
-                        className={`type-chip chip-${typeVal} ${selectedType === typeVal ? 'active' : ''}`}
-                        type="button"
-                        data-preview-color={typeColor}
-                        aria-label={t(typeKeys[typeVal])}
-                        aria-pressed={selectedType === typeVal}
-                        onFocus={() => previewSelectionColor(typeColor)}
-                        onMouseEnter={() => previewSelectionColor(typeColor)}
-                        onClick={() => {
-                          setSelectedType(selectedType === typeVal ? null : typeVal)
-                          if (selectedType !== typeVal) previewSelectionColor(typeColor)
-                          else clearSelectionPreview()
-                        }}
-                      >
-                        <span className="type-chip-icon" aria-hidden="true">
-                          {typeVal === 'clarify' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/><path d="M7.6 9.5h.8v-4a.4.4 0 0 0-.4-.4H7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="8" cy="11.5" r=".7" fill="currentColor"/></svg>}
-                          {typeVal === 'dispute' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13.5V3.8a.8.8 0 0 1 .8-.8h3.5l.7 1.5h4.2a.8.8 0 0 1 .8.8V10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 13.5l1.5-3h6l1.5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><line x1="7.5" y1="13.5" x2="7.5" y2="15" stroke="currentColor" strokeWidth="1.3"/></svg>}
-                          {typeVal === 'important' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l2 4.5 5 .5-3.5 3.5 1 5L8 12.5l-4.5 2.5 1-5L1 6.5l5-.5z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/></svg>}
-                          {typeVal === 'confirmed' && <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                        </span>
-                        <span className="type-chip-label">{t(typeKeys[typeVal])}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-                <div className="toolbar-note-row">
-                  <input
-                    className="toolbar-note-input"
-                    type="text"
-                    placeholder={t('note')}
-                    maxLength={1000}
-                    value={toolbarNote}
-                    onChange={(e) => setToolbarNote(e.target.value)}
-                  />
-                </div>
-                <div className="toolbar-replacement-row">
-                  <button
-                    className="toolbar-replacement-toggle"
-                    type="button"
-                    onClick={() => setShowReplacement(!showReplacement)}
-                  >
-                    {t('suggestedReplacement')}
-                  </button>
-                  {showReplacement ? (
-                    <textarea
-                      className="toolbar-replacement-input"
-                      placeholder={t('suggestedReplacementHint')}
-                      value={toolbarReplacement}
-                      onChange={(e) => setToolbarReplacement(e.target.value)}
-                      rows={3}
-                    />
-                  ) : null}
-                </div>
-                <div className="toolbar-actions">
-                  <button
-                    className="toolbar-confirm"
-                    type="button"
-                    disabled={!selectedType && !toolbarNote.trim()}
-                    onClick={() => {
-                      const typeColor = selectedType
-                        ? ({ clarify: 'blue', dispute: 'rose', important: 'amber', confirmed: 'green' }[selectedType] as AnnotationColor)
-                        : 'yellow'
-                      addAnnotation(typeColor, toolbarNote, selectedType, toolbarReplacement)
-                    }}
-                  >
-                    {t('save')}
-                  </button>
-                </div>
-              </div>
+              <AnnotationToolbar
+                x={selectionToolbar.x}
+                y={selectionToolbar.y}
+                selectedType={selectedType}
+                toolbarNote={toolbarNote}
+                toolbarReplacement={toolbarReplacement}
+                showReplacement={showReplacement}
+                canSave={!!(selectedType || toolbarNote.trim())}
+                onToggleType={handleToggleType}
+                onTypeHover={previewSelectionColor}
+                onToolbarMouseLeave={handleToolbarMouseLeave}
+                onNoteChange={setToolbarNote}
+                onToggleReplacement={() => setShowReplacement(!showReplacement)}
+                onReplacementChange={setToolbarReplacement}
+                onSave={handleAnnotationSave}
+                t={t}
+              />
             ) : null}
 
             <section
