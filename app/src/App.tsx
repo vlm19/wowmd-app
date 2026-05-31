@@ -5,8 +5,10 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type Dispatch,
   type MouseEvent,
   type PointerEvent,
+  type SetStateAction,
 } from 'react'
 import './App.css'
 import {
@@ -114,6 +116,10 @@ function App() {
 
   const annotationsRef = useRef<Annotation[]>([])
   const setAnnotationsRef = useRef<Dispatch<SetStateAction<Annotation[]>>>(() => {})
+  // Bridge: useDocumentSession (declared first) needs resetSelectionCapture, which
+  // comes from useSelectionCapture (declared after, since it needs `document`).
+  const resetSelectionRef = useRef<() => void>(() => {})
+  const resetSelectionCaptureBridge = useCallback(() => resetSelectionRef.current(), [])
 
   const setExportDefaults = useCallback((name: string) => {
     const baseName = name.replace(/\.(md|markdown)$/i, '') || 'wowMD'
@@ -123,13 +129,9 @@ function App() {
 
   const {
     document,
-    setDocument,
     error,
-    setError,
     importStatus,
-    setImportStatus,
     importSourceUrl,
-    setImportSourceUrl,
     view,
     setView,
     showSaveVersion,
@@ -137,9 +139,8 @@ function App() {
     showVersions,
     setShowVersions,
     versions,
-    setVersions,
     fileInputRef,
-    openFile,
+    trialFilePickerConfirmedRef,
     handleInitialRoute,
     openSample,
     clearCurrentFile,
@@ -154,7 +155,7 @@ function App() {
     reanchorAgainstMarkdown,
     annotationsRef,
     setAnnotationsRef,
-    resetSelectionCapture,
+    resetSelectionCapture: resetSelectionCaptureBridge,
     canOpenUserFiles: licenseSummary.canOpenUserFiles,
     setTrialState,
     isNarrowLayout,
@@ -165,6 +166,7 @@ function App() {
     setExportDefaults,
     t,
     trialNeedsConfirmation,
+    pendingTrialFile,
     setPendingTrialFile,
     setShowTrialConfirm,
   })
@@ -187,9 +189,7 @@ function App() {
 
   const {
     selectionQuote,
-    setSelectionQuote,
     selectionToolbar,
-    setSelectionToolbar,
     selectedType,
     setSelectedType,
     toolbarNote,
@@ -204,6 +204,7 @@ function App() {
     resetSelectionCapture,
     getAnchorMetadata,
   } = useSelectionCapture({ document, markdownBodyRef })
+  resetSelectionRef.current = resetSelectionCapture
 
   const handleBeforeAnnotationSave = useCallback(() => {
     clearSelectionPreview()
@@ -289,7 +290,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
+  const rendered = useMemo(() => {
     if (!document) {
       return {
         html: '',

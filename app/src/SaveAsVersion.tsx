@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { OpenDocument } from './App'
+import type { OpenDocument } from './types'
 
 type Props = {
   document: OpenDocument

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Dispatch, RefObject, SetStateAction } from 'react'
+import type { RefObject } from 'react'
 import type { AnnotationColor, AnnotationType } from '../annotations'
 import type { OpenDocument, SelectionAnchorMetadata, SelectionToolbar } from '../types'
 

@@ -10,6 +10,7 @@ import {
 } from '../importService'
 import {
   createTrialState,
+  type TrialState,
 } from '../license'
 import {
   loadLocalDocument,
@@ -35,7 +36,7 @@ interface UseDocumentSessionArgs {
   setAnnotationsRef: RefObject<Dispatch<SetStateAction<Annotation[]>>>
   resetSelectionCapture: () => void
   canOpenUserFiles: boolean
-  setTrialState: Dispatch<SetStateAction<{ startedAt: number | null; isLicensed: boolean; isExpired: boolean }>>
+  setTrialState: Dispatch<SetStateAction<TrialState>>
   isNarrowLayout: boolean
   setShowOutline: Dispatch<SetStateAction<boolean>>
   setShowNotes: Dispatch<SetStateAction<boolean>>
@@ -44,6 +45,7 @@ interface UseDocumentSessionArgs {
   setExportDefaults: (name: string) => void
   t: (key: string) => string
   trialNeedsConfirmation: boolean
+  pendingTrialFile: File | null
   setPendingTrialFile: Dispatch<SetStateAction<File | null>>
   setShowTrialConfirm: Dispatch<SetStateAction<boolean>>
 }
@@ -63,6 +65,7 @@ export function useDocumentSession({
   setExportDefaults,
   t,
   trialNeedsConfirmation,
+  pendingTrialFile,
   setPendingTrialFile,
   setShowTrialConfirm,
 }: UseDocumentSessionArgs) {
@@ -266,7 +269,7 @@ export function useDocumentSession({
 
     trialFilePickerConfirmedRef.current = true
     fileInputRef.current?.click()
-  }, [openFile, setShowTrialConfirm, setPendingTrialFile])
+  }, [pendingTrialFile, openFile, setShowTrialConfirm, setPendingTrialFile])
 
   const handleFileInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
