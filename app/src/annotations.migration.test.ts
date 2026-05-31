@@ -10,6 +10,7 @@ import {
   isValidAnnotation,
   extractSectionBody,
   createTicketExport,
+  reanchorAnnotationOffset,
   loadAnnotations,
   saveAnnotations,
   loadAnnotationsFromDb,
@@ -465,6 +466,51 @@ describe('localStorage 迁移', () => {
     // v1 key for same doc should not have been written by saveAnnotations
     const v1Keys = Object.keys(localStorage).filter((k) => k.startsWith('wowmd.annotations.v1.'))
     expect(v1Keys.every((k) => !k.includes('doc4'))).toBe(true)
+  })
+})
+
+describe('reanchorAnnotationOffset — 自动重锚', () => {
+  const anno = (over: Partial<{ quote: string; prefix: string; suffix: string; offset: number }>) => ({
+    quote: 'the quick brown fox',
+    prefix: '',
+    suffix: '',
+    offset: 0,
+    ...over,
+  })
+
+  test('唯一命中 → 更新 offset、matched', () => {
+    const text = 'aaa the quick brown fox bbb'
+    const r = reanchorAnnotationOffset(text, anno({ offset: 999 }))
+    expect(r.matched).toBe(true)
+    expect(r.offset).toBe(4)
+  })
+
+  test('多处命中 → 用 prefix/suffix 消歧到正确那处', () => {
+    const text = 'X the quick brown fox first. Y the quick brown fox second.'
+    // 第二处的前缀是 "Y "
+    const r = reanchorAnnotationOffset(text, anno({ prefix: 'Y ', offset: 0 }))
+    expect(r.matched).toBe(true)
+    expect(r.offset).toBe(text.indexOf('the quick brown fox', 10))
+  })
+
+  test('多处命中、无上下文线索 → 退回就近 offset', () => {
+    const text = 'the quick brown fox ... the quick brown fox'
+    const second = text.indexOf('the quick brown fox', 5)
+    const r = reanchorAnnotationOffset(text, anno({ offset: second - 1 }))
+    expect(r.offset).toBe(second)
+  })
+
+  test('引文被改写、彻底消失 → matched=false（交由孤儿处置）', () => {
+    const text = 'the slow green turtle wandered off'
+    const r = reanchorAnnotationOffset(text, anno({ offset: 0 }))
+    expect(r.matched).toBe(false)
+    expect(r.offset).toBe(0)
+  })
+
+  test('仅空白/排版变化 → 仍命中（三级匹配兜底）', () => {
+    const text = 'aaa the   quick\nbrown   fox bbb'
+    const r = reanchorAnnotationOffset(text, anno({ offset: 0 }))
+    expect(r.matched).toBe(true)
   })
 })
 

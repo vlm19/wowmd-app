@@ -9,6 +9,7 @@ import plaintext from 'highlight.js/lib/languages/plaintext'
 import typescript from 'highlight.js/lib/languages/typescript'
 import xml from 'highlight.js/lib/languages/xml'
 import MarkdownIt from 'markdown-it'
+import { sha256Hex } from './compat'
 
 export type TocItem = {
   id: string
@@ -136,11 +137,9 @@ export function getDocumentStats(html: string): DocumentStats {
 }
 
 export async function computeDocumentFingerprint(markdownSource: string) {
-  const bytes = new TextEncoder().encode(markdownSource)
-  const hash = await crypto.subtle.digest('SHA-256', bytes)
-  return Array.from(new Uint8Array(hash))
-    .map((byte) => byte.toString(16).padStart(2, '0'))
-    .join('')
+  // Uses Web Crypto when available, with a pure-JS SHA-256 fallback so the
+  // fingerprint is stable even outside a secure context (http LAN / file://).
+  return sha256Hex(markdownSource)
 }
 
 function addHeadingIds(html: string) {

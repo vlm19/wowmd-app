@@ -1,3 +1,5 @@
+import { randomId } from './compat'
+
 export type AnnotationColor = 'yellow' | 'blue' | 'green' | 'rose' | 'violet' | 'amber'
 
 export type AnnotationType = 'clarify' | 'dispute' | 'important' | 'confirmed'
@@ -42,7 +44,7 @@ export function migrateAnnotation(raw: Record<string, unknown>): Annotation {
   ) ? raw.color as AnnotationColor : 'yellow'
 
   return {
-    id: typeof raw.id === 'string' ? raw.id : crypto.randomUUID(),
+    id: typeof raw.id === 'string' ? raw.id : randomId(),
     documentId: typeof raw.documentId === 'string' ? raw.documentId : '',
     documentFingerprint: typeof raw.documentFingerprint === 'string' ? raw.documentFingerprint : '',
     quote: typeof raw.quote === 'string' ? raw.quote : '',
@@ -192,7 +194,7 @@ export function createAnnotation(input: {
   const annotationLegacyColor = input.color ?? null
 
   return {
-    id: crypto.randomUUID(),
+    id: randomId(),
     documentId: input.documentId || input.documentFingerprint,
     documentFingerprint: input.documentFingerprint,
     quote: input.quote,
@@ -589,6 +591,75 @@ export function quoteMatchesText(fullText: string, quote: string, preferredOffse
   const q = quote.trim()
   if (!q) return false
   return findQuoteMatch(fullText, q, preferredOffset) != null
+}
+
+export type ReanchorOutcome = { offset: number; matched: boolean }
+
+/**
+ * Automatic re-anchor of one annotation against new rendered text.
+ * - Single exact occurrence → relocate offset there.
+ * - Multiple occurrences → disambiguate by surrounding prefix/suffix context,
+ *   tie-break by closeness to the previous offset (fixes wrong-occurrence highlight).
+ * - No exact occurrence → fall back to whitespace-tolerant match for existence.
+ * - Quote genuinely gone → matched=false (caller marks orphaned; manual recovery
+ *   via findReanchorCandidates remains available).
+ * Pure + DOM-free for testability.
+ */
+export function reanchorAnnotationOffset(
+  renderedText: string,
+  annotation: Pick<Annotation, 'quote' | 'prefix' | 'suffix' | 'offset'>,
+): ReanchorOutcome {
+  const quote = annotation.quote.trim()
+  if (!quote) return { offset: annotation.offset, matched: false }
+
+  const exact = findAllIndexes(renderedText, quote)
+  if (exact.length === 1) return { offset: exact[0], matched: true }
+
+  if (exact.length > 1) {
+    let best = exact[0]
+    let bestScore = -1
+    for (const idx of exact) {
+      const score = scoreContext(renderedText, idx, quote.length, annotation.prefix, annotation.suffix)
+      const closer = Math.abs(idx - annotation.offset) < Math.abs(best - annotation.offset)
+      if (score > bestScore || (score === bestScore && closer)) {
+        best = idx
+        bestScore = score
+      }
+    }
+    return { offset: best, matched: true }
+  }
+
+  const fallback = findQuoteMatch(renderedText, quote, annotation.offset)
+  return fallback ? { offset: fallback.start, matched: true } : { offset: annotation.offset, matched: false }
+}
+
+function scoreContext(
+  text: string,
+  start: number,
+  quoteLength: number,
+  prefix: string,
+  suffix: string,
+): number {
+  const compact = (value: string) => value.replace(/\s+/g, '')
+  let score = 0
+
+  const p = compact(prefix).slice(-40)
+  if (p) {
+    const before = compact(text.slice(Math.max(0, start - 80), start)).slice(-40)
+    if (before && (before.endsWith(p) || p.endsWith(before) || before.includes(p) || p.includes(before))) {
+      score += 1
+    }
+  }
+
+  const s = compact(suffix).slice(0, 40)
+  if (s) {
+    const after = compact(text.slice(start + quoteLength, start + quoteLength + 80)).slice(0, 40)
+    if (after && (after.startsWith(s) || s.startsWith(after) || after.includes(s) || s.includes(after))) {
+      score += 1
+    }
+  }
+
+  return score
 }
 
 export type ReanchorCandidate = { start: number; end: number; snippet: string }

@@ -1,3 +1,5 @@
+import { randomId } from './compat'
+
 export type LocalDocumentSource = {
   sourceType: 'github'
   sourceUrl: string
@@ -25,7 +27,7 @@ const dbVersion = 1
 const documentsStore = 'documents'
 
 export function createDocId() {
-  return `doc_${crypto.randomUUID()}`
+  return `doc_${randomId()}`
 }
 
 export async function saveLocalDocument(

@@ -16,7 +16,7 @@ import {
   createTicketExport,
   findReanchorCandidates,
   loadAnnotationsFromDb,
-  quoteMatchesText,
+  reanchorAnnotationOffset,
   saveAnnotationsToDb,
   type Annotation,
   type AnnotationColor,
@@ -339,7 +339,14 @@ function App() {
       stableId,
     })
     setExportDefaults(file.name)
-    setAnnotations(await loadAnnotationsFromDb(stableId, fingerprint))
+    {
+      const loaded = await loadAnnotationsFromDb(stableId, fingerprint)
+      const reanchored = reanchorAgainstMarkdown(loaded, markdown, fingerprint)
+      if (reanchored.some((a, i) => a !== loaded[i])) {
+        void saveAnnotationsToDb(stableId, reanchored)
+      }
+      setAnnotations(reanchored)
+    }
     setSelectionQuote('')
     setSelectionToolbar(null)
     setSearchQuery('')
@@ -371,11 +378,10 @@ function App() {
     setError('')
 
     try {
-      const { document: localDocument, isNewVersion } = await importGitHubMarkdown(searchParams)
+      const { document: localDocument } = await importGitHubMarkdown(searchParams)
+      // openLocalDocument re-anchors against the freshly imported snapshot, so a
+      // re-pulled new version is handled correctly without a stale-state pass.
       await openLocalDocument(localDocument)
-      if (isNewVersion) {
-        await loadAndReanchorAnnotations(localDocument.id, localDocument.fingerprint)
-      }
       window.history.replaceState(
         null,
         '',
@@ -424,7 +430,18 @@ function App() {
       },
     })
     setExportDefaults(localDocument.title)
-    setAnnotations(await loadAnnotationsFromDb(localDocument.id, localDocument.fingerprint))
+    {
+      const loaded = await loadAnnotationsFromDb(localDocument.id, localDocument.fingerprint)
+      const reanchored = reanchorAgainstMarkdown(
+        loaded,
+        localDocument.markdownSnapshot,
+        localDocument.fingerprint,
+      )
+      if (reanchored.some((a, i) => a !== loaded[i])) {
+        void saveAnnotationsToDb(localDocument.id, reanchored)
+      }
+      setAnnotations(reanchored)
+    }
     setSelectionQuote('')
     setSelectionToolbar(null)
     setSearchQuery('')
@@ -887,33 +904,6 @@ function App() {
     setPendingClearAnnotations(false)
   }
 
-  async function loadAndReanchorAnnotations(documentId: string, newFingerprint: string) {
-    const existing = await loadAnnotationsFromDb(documentId, newFingerprint)
-    if (!existing.length || !document) return
-
-    const renderedHtml = renderMarkdown(document.markdown)
-    const probe = new DOMParser().parseFromString(renderedHtml, 'text/html')
-    const renderedText = probe.body.textContent || ''
-
-    const updated = existing.map((annotation): Annotation => {
-      if (annotation.orphaned) return annotation
-      const quote = annotation.quote.trim()
-      if (!quote) return { ...annotation, orphaned: true, updatedAt: new Date().toISOString() }
-      const found = quoteMatchesText(renderedText, quote, annotation.offset)
-      if (!found) {
-        return { ...annotation, orphaned: true, updatedAt: new Date().toISOString() }
-      }
-      return { ...annotation, documentFingerprint: newFingerprint }
-    })
-
-    const anyChange = updated.some((a, i) => a.orphaned !== existing[i].orphaned || a.documentFingerprint !== existing[i].documentFingerprint)
-    if (anyChange) {
-      await saveAnnotationsToDb(documentId, updated)
-    }
-
-    setAnnotations(updated)
-  }
-
   function showReanchorCandidates(annotation: Annotation) {
     if (!document) return
     const renderedHtml = renderMarkdown(document.markdown)
@@ -936,24 +926,37 @@ function App() {
     setReanchorCandidates([])
   }
 
-  // Re-anchor the current annotations against a target markdown (the saved version)
-  // using the same rendered-text surface as capture. Unmatched ones become orphans
-  // rather than being silently dropped (HR7).
-  function carryAnnotationsForward(
+  // Single re-anchor path shared by every place a document's content is (re)loaded:
+  // local open, GitHub open/new-version, and save-as-new-version. Re-anchors each
+  // annotation against the *given* markdown's rendered text (never stale React state),
+  // updating offset (incl. prefix/suffix disambiguation) and marking unmatched ones
+  // orphaned rather than silently dropping (HR7). Returns the SAME array reference
+  // semantics per item so callers can detect "did anything change".
+  function reanchorAgainstMarkdown(
     items: Annotation[],
-    targetMarkdown: string,
-    targetFingerprint: string,
+    markdown: string,
+    fingerprint: string,
   ): Annotation[] {
-    const probe = new DOMParser().parseFromString(renderMarkdown(targetMarkdown), 'text/html')
+    if (!items.length) return items
+    const probe = new DOMParser().parseFromString(renderMarkdown(markdown), 'text/html')
     const renderedText = probe.body.textContent || ''
     const now = new Date().toISOString()
-    return items.map((a): Annotation => {
-      if (a.orphaned) return a
-      const quote = a.quote.trim()
-      const matches = quote ? quoteMatchesText(renderedText, quote, a.offset) : false
-      return matches
-        ? { ...a, documentFingerprint: targetFingerprint, updatedAt: now }
-        : { ...a, orphaned: true, documentFingerprint: targetFingerprint, updatedAt: now }
+
+    return items.map((annotation): Annotation => {
+      if (annotation.orphaned) return annotation
+      const outcome = reanchorAnnotationOffset(renderedText, annotation)
+      if (!outcome.matched) {
+        return { ...annotation, orphaned: true, documentFingerprint: fingerprint, updatedAt: now }
+      }
+      if (outcome.offset === annotation.offset && annotation.documentFingerprint === fingerprint) {
+        return annotation
+      }
+      return {
+        ...annotation,
+        offset: outcome.offset,
+        documentFingerprint: fingerprint,
+        updatedAt: now,
+      }
     })
   }
 
@@ -969,7 +972,7 @@ function App() {
 
     const markdown = document.markdown
     const fingerprint = await computeDocumentFingerprint(markdown)
-    const carried = carryAnnotationsForward(annotations, markdown, fingerprint)
+    const carried = reanchorAgainstMarkdown(annotations, markdown, fingerprint)
 
     let newStableId: string
     const isGithubSourced = !!document.source && typeof document.source !== 'string'
@@ -1309,6 +1312,7 @@ function App() {
               openAnother={openAnotherFromFileMenu}
               openSample={openSampleFromFileMenu}
               clearFile={clearFileFromFileMenu}
+              annotationCount={annotations.length}
             />
 
             {selectionToolbar && selectionQuote ? (
@@ -1873,6 +1877,8 @@ function FileMenu(props: {
   openAnother: () => void
   openSample: () => void
   clearFile: () => void
+  openSaveVersion: () => void
+  openVersions: () => void
   t: (key: string) => string
 }) {
   const closeThen = (event: MouseEvent<HTMLButtonElement>, action: () => void) => {
@@ -1884,15 +1890,24 @@ function FileMenu(props: {
   return (
     <details className="file-menu">
       <summary>{props.documentName}</summary>
-      <button type="button" onClick={(event) => closeThen(event, props.openAnother)}>
-        {props.t('openAnother')}
-      </button>
-      <button type="button" onClick={(event) => closeThen(event, props.openSample)}>
-        {props.t('openSample')}
-      </button>
-      <button type="button" onClick={(event) => closeThen(event, props.clearFile)}>
-        {props.t('clearFile')}
-      </button>
+      <div className="file-menu-list">
+        <button type="button" onClick={(event) => closeThen(event, props.openVersions)}>
+          {props.t('versions')}
+        </button>
+        <button type="button" onClick={(event) => closeThen(event, props.openSaveVersion)}>
+          {props.t('saveNewVersion')}
+        </button>
+        <div className="file-menu-sep" role="separator" />
+        <button type="button" onClick={(event) => closeThen(event, props.openAnother)}>
+          {props.t('openAnother')}
+        </button>
+        <button type="button" onClick={(event) => closeThen(event, props.openSample)}>
+          {props.t('openSample')}
+        </button>
+        <button type="button" onClick={(event) => closeThen(event, props.clearFile)}>
+          {props.t('clearFile')}
+        </button>
+      </div>
     </details>
   )
 }
@@ -1968,9 +1983,11 @@ type ReaderToolbarProps = {
   openAnother: () => void
   openSample: () => void
   clearFile: () => void
+  annotationCount: number
 }
 
 function ReaderToolbar(props: ReaderToolbarProps) {
+  const mapDisabled = !props.documentOpen || props.annotationCount === 0
   return (
     <section
       className={`tool-row reader-tool-row ${props.showOutline ? 'has-outline' : 'no-outline'} ${props.showNotes ? 'has-notes' : 'no-notes'}`}
@@ -2015,6 +2032,8 @@ function ReaderToolbar(props: ReaderToolbarProps) {
             openAnother={props.openAnother}
             openSample={props.openSample}
             clearFile={props.clearFile}
+            openSaveVersion={props.openSaveVersion}
+            openVersions={props.openVersions}
             t={props.t}
           />
         ) : null}
@@ -2061,27 +2080,18 @@ function ReaderToolbar(props: ReaderToolbarProps) {
         <div className="export-actions">
           <button
             type="button"
-            disabled={!props.documentOpen}
-            onClick={props.openMap}
+            className={`map-action ${mapDisabled ? 'is-disabled' : ''}`}
+            aria-disabled={mapDisabled}
+            title={props.documentOpen && props.annotationCount === 0 ? props.t('mapEmptyHint') : undefined}
+            onClick={() => {
+              if (!mapDisabled) props.openMap()
+            }}
           >
-            Map
+            {props.t('map')}
           </button>
           <button
             type="button"
-            disabled={!props.documentOpen}
-            onClick={props.openSaveVersion}
-          >
-            Save new version
-          </button>
-          <button
-            type="button"
-            disabled={!props.documentOpen}
-            onClick={props.openVersions}
-          >
-            Versions
-          </button>
-          <button
-            type="button"
+            className="export-html-action"
             disabled={!props.documentOpen}
             onClick={props.openExport}
           >
@@ -2089,9 +2099,21 @@ function ReaderToolbar(props: ReaderToolbarProps) {
           </button>
           <button
             type="button"
+            className="toolbar-settings-action"
+            aria-label={props.t('settings')}
+            title={props.t('settings')}
             onClick={props.openSettings}
           >
-            Settings
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+              <path
+                d="M19.4 13a1.6 1.6 0 0 0 .32 1.76l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.6 1.6 0 0 0-1.76-.32 1.6 1.6 0 0 0-1 1.46V21a2 2 0 0 1-4 0v-.08a1.6 1.6 0 0 0-1.05-1.46 1.6 1.6 0 0 0-1.76.32l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.6 1.6 0 0 0 4.6 15a1.6 1.6 0 0 0-1.46-1H3a2 2 0 0 1 0-4h.08A1.6 1.6 0 0 0 4.6 8.94a1.6 1.6 0 0 0-.32-1.76l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.6 1.6 0 0 0 1.76.32H9a1.6 1.6 0 0 0 1-1.46V3a2 2 0 0 1 4 0v.08a1.6 1.6 0 0 0 1 1.46 1.6 1.6 0 0 0 1.76-.32l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.6 1.6 0 0 0-.32 1.76V9a1.6 1.6 0 0 0 1.46 1H21a2 2 0 0 1 0 4h-.08a1.6 1.6 0 0 0-1.46 1z"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>

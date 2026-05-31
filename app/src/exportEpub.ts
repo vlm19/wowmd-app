@@ -1,6 +1,7 @@
 import { strToU8, zipSync } from 'fflate'
 import type { TocItem } from './markdown'
 import { safeExportFilename } from './exportHtml'
+import { randomId } from './compat'
 
 type EpubExportInput = {
   title: string
@@ -12,7 +13,7 @@ type EpubExportInput = {
 }
 
 export function exportEpub(input: EpubExportInput) {
-  const id = `urn:uuid:${crypto.randomUUID()}`
+  const id = `urn:uuid:${randomId()}`
   const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')
   const title = input.title.replace(/\.(md|markdown)$/i, '') || 'wowMD export'
   const author = input.author?.trim() || 'Unknown'

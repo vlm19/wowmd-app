@@ -52,11 +52,14 @@ function buildDensityMap(annotations: Annotation[], tocItems: TocItem[]): Sectio
   return Array.from(map.values()).sort((a, b) => b.total - a.total)
 }
 
+// Match the annotation highlight palette (what the reader sees on the text), which
+// is also bright enough to read on the dark modal surface — the accent set
+// (--blue/--coral/...) is the light-theme palette and renders muddy here.
 const TYPE_COLORS: Record<AnnotationType, string> = {
-  clarify: 'var(--blue)',
-  dispute: 'var(--coral)',
-  important: 'var(--amber)',
-  confirmed: 'var(--green)',
+  clarify: 'var(--highlight-blue)',
+  dispute: 'var(--highlight-rose)',
+  important: 'var(--highlight-amber)',
+  confirmed: 'var(--highlight-green)',
 }
 
 const TYPE_LABELS: Record<AnnotationType, string> = {
@@ -97,15 +100,24 @@ export default function UnderstandingMap({ annotations, tocItems, onClose, onJum
                 <div className="map-bars">
                   {(['clarify', 'dispute', 'important', 'confirmed'] as const).map((type) => (
                     <div key={type} className="map-bar-row" title={`${TYPE_LABELS[type]}: ${section[type]}`}>
-                      <span className="map-bar-type">{TYPE_LABELS[type].charAt(0)}</span>
+                      <span className="map-bar-type" style={{ color: TYPE_COLORS[type] }}>
+                        {TYPE_LABELS[type].charAt(0)}
+                      </span>
+                      <span className="map-bar-track">
+                        <span
+                          className="map-bar-fill"
+                          style={{
+                            width: `${(section[type] / maxTotal) * 100}%`,
+                            backgroundColor: TYPE_COLORS[type],
+                          }}
+                        />
+                      </span>
                       <span
-                        className="map-bar-fill"
-                        style={{
-                          width: `${(section[type] / maxTotal) * 100}%`,
-                          backgroundColor: TYPE_COLORS[type],
-                        }}
-                      />
-                      <span className="map-bar-count">{section[type]}</span>
+                        className="map-bar-count"
+                        style={section[type] > 0 ? { color: TYPE_COLORS[type] } : undefined}
+                      >
+                        {section[type]}
+                      </span>
                     </div>
                   ))}
                 </div>
