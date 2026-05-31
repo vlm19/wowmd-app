@@ -12,3 +12,8 @@ export type SelectionAnchorMetadata = {
   headingPath: string[]
   offset: number
 }
+
+export type SelectionToolbar = {
+  x: number
+  y: number
+}
