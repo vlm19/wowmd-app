@@ -43,6 +43,8 @@ import SettingsPanel from './SettingsPanel'
 import VersionHistory from './VersionHistory'
 import AnnotationToolbar from './AnnotationToolbar'
 import NotesPanel from './NotesPanel'
+import FeedbackLink from './FeedbackLink'
+import SearchControl from './SearchControl'
 import { loadSettings, type PanelMode, type AnnotationStyle } from './settingsStore'
 import {
   addCodeCopyButtonsToHtml,
@@ -1036,21 +1038,6 @@ function App() {
   )
 }
 
-function FeedbackLink(props: { href: string; label: string }) {
-  return (
-    <a
-      className="reader-feedback-link"
-      href={props.href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={props.label}
-    >
-      <span className="feedback-bubble-icon" aria-hidden="true" />
-      <span>{props.label}</span>
-    </a>
-  )
-}
-
 function FileMenu(props: {
   documentName: string
   openAnother: () => void
@@ -1088,51 +1075,6 @@ function FileMenu(props: {
         </button>
       </div>
     </details>
-  )
-}
-
-function SearchControl(props: {
-  t: (key: string) => string
-  value: string
-  onChange: (value: string) => void
-  index: number
-  count: number
-  previous: () => void
-  next: () => void
-  disabled?: boolean
-}) {
-  const hasResults = props.count > 0
-
-  return (
-    <div className="search-control" role="search">
-      <input
-        type="search"
-        value={props.value}
-        disabled={props.disabled}
-        placeholder={props.t('search')}
-        aria-label={props.t('search')}
-        onChange={(event) => props.onChange(event.target.value)}
-      />
-      <span className="search-count">
-        {props.value.trim() ? (hasResults ? `${props.index + 1}/${props.count}` : `0/0`) : props.t('search')}
-      </span>
-      <button
-        type="button"
-        disabled={props.disabled || !hasResults}
-        aria-label={props.t('prev')}
-        onClick={props.previous}
-      >
-        -
-      </button>
-      <button
-        type="button"
-        disabled={props.disabled || !hasResults}
-        aria-label={props.t('next')}
-        onClick={props.next}
-      >
-        +
-      </button>
-    </div>
   )
 }
 
