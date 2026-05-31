@@ -17,3 +17,7 @@ export type SelectionToolbar = {
   x: number
   y: number
 }
+
+export type ThemeName = 'light' | 'dark'
+export type ExportViewMode = 'preview' | 'source'
+export const themeNames: ThemeName[] = ['light', 'dark']
