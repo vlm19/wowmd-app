@@ -12,22 +12,13 @@ import {
 import './App.css'
 import {
   applyAnnotationHighlights,
-  createAnnotation,
-  createTicketExport,
-  findReanchorCandidates,
   loadAnnotationsFromDb,
-  reanchorAnnotationOffset,
   saveAnnotationsToDb,
   type Annotation,
   type AnnotationColor,
   type AnnotationType,
-  type ReanchorCandidate,
 } from './annotations'
-import {
-  buildCleanHtmlExport,
-  downloadTextFile,
-  safeExportFilename,
-} from './exportHtml'
+import { buildCleanHtmlExport, downloadTextFile, safeExportFilename } from './exportHtml'
 import { injectH2Foldable } from './fold'
 import {
   createTranslator,
@@ -65,6 +56,8 @@ import UnderstandingMap from './UnderstandingMap'
 import SettingsPanel from './SettingsPanel'
 import VersionHistory from './VersionHistory'
 import { loadSettings, type PanelMode, type AnnotationStyle } from './settingsStore'
+import { useAnnotations, reanchorAgainstMarkdown } from './hooks/useAnnotations'
+import type { OpenDocument, SelectionAnchorMetadata } from './types'
 
 type ThemeName = 'light' | 'dark'
 type WorkspaceView = 'reader' | 'exports' | 'license'
@@ -72,24 +65,9 @@ type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
 type ImportStatus = 'idle' | 'loading' | 'failed'
 
-export type OpenDocument = {
-  name: string
-  markdown: string
-  fingerprint: string
-  stableId: string
-  source?: string | { sourceType: 'github'; sourceUrl: string; rawUrl: string; label: string }
-}
-
 type SelectionToolbar = {
   x: number
   y: number
-}
-
-type SelectionAnchorMetadata = {
-  prefix: string
-  suffix: string
-  headingPath: string[]
-  offset: number
 }
 
 const themeNames: ThemeName[] = ['light', 'dark']
@@ -125,7 +103,6 @@ function App() {
   const [showOutline, setShowOutline] = useState(true)
   const [showNotes, setShowNotes] = useState(true)
   const [isNarrowLayout, setIsNarrowLayout] = useState(false)
-  const [annotations, setAnnotations] = useState<Annotation[]>([])
   const [selectionQuote, setSelectionQuote] = useState('')
   const selectionRangeRef = useRef<Range | null>(null)
   const selectionAnchorRef = useRef<SelectionAnchorMetadata | null>(null)
@@ -138,16 +115,11 @@ function App() {
   const [toolbarNote, setToolbarNote] = useState('')
   const [toolbarReplacement, setToolbarReplacement] = useState('')
   const [showReplacement, setShowReplacement] = useState(false)
-  const [filterType, setFilterType] = useState<AnnotationType | null>(null)
-  const [activeAnnotation, setActiveAnnotation] = useState<Annotation | null>(null)
-  const [pendingClearAnnotations, setPendingClearAnnotations] = useState(false)
   const [showSaveVersion, setShowSaveVersion] = useState(false)
   const [showMap, setShowMap] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showVersions, setShowVersions] = useState(false)
   const [versions, setVersions] = useState<LocalDocument[]>([])
-  const [reanchorId, setReanchorId] = useState<string | null>(null)
-  const [reanchorCandidates, setReanchorCandidates] = useState<ReanchorCandidate[]>([])
   const [panelMode, setPanelMode] = useState<PanelMode>(() => loadSettings().panelMode)
   const [annotationStyle, setAnnotationStyle] = useState<AnnotationStyle>(() => loadSettings().annotationStyle)
   const [searchQuery, setSearchQuery] = useState('')
@@ -184,6 +156,75 @@ function App() {
     () => getLicenseSummary(trialState, t),
     [t, trialState],
   )
+
+  const getAnchorMetadata = useCallback((): SelectionAnchorMetadata => {
+    return selectionAnchorRef.current ?? getSelectionAnchorMetadata()
+  }, [])
+
+  const handleBeforeAnnotationSave = useCallback(() => {
+    clearSelectionPreview()
+  }, [])
+
+  const handleAfterAnnotationSave = useCallback(() => {
+    setShowNotes(true)
+    if (isNarrowLayout) setShowOutline(false)
+    setSelectionQuote('')
+    setSelectedType(null)
+    setToolbarNote('')
+    setToolbarReplacement('')
+    setShowReplacement(false)
+    setSelectionToolbar(null)
+    selectionRangeRef.current = null
+    selectionAnchorRef.current = null
+    setTimeout(() => {
+      const selection = window.getSelection()
+      if (selection) selection.removeAllRanges()
+    }, 0)
+  }, [isNarrowLayout])
+
+  const handleLicenseRequired = useCallback(() => {
+    setView('license')
+    setLicenseMessage(t('activateToSave'))
+  }, [t])
+
+  const handleScrollToAnnotation = useCallback(() => {
+    setView('reader')
+    setShowNotes(true)
+    if (isNarrowLayout) setShowOutline(false)
+  }, [isNarrowLayout])
+
+  const {
+    annotations,
+    setAnnotations,
+    addAnnotation,
+    deleteAnnotation,
+    clearDocumentAnnotations,
+    scrollToAnnotation,
+    openAnnotationDetail,
+    locateAnnotation,
+    showReanchorCandidates,
+    reanchorAnnotation,
+    activeAnnotation,
+    setActiveAnnotation,
+    reanchorCandidates,
+    reanchorId,
+    pendingClearAnnotations,
+    setPendingClearAnnotations,
+    filterType,
+    setFilterType,
+    exportAnnotationsAsJson,
+    exportTicketJson,
+  } = useAnnotations({
+    document,
+    markdownBodyRef,
+    canSaveAnnotations: licenseSummary.canSaveAnnotations,
+    selectionQuote,
+    getAnchorMetadata,
+    onBeforeAnnotationSave: handleBeforeAnnotationSave,
+    onAfterAnnotationSave: handleAfterAnnotationSave,
+    onLicenseRequired: handleLicenseRequired,
+    onScrollToAnnotation: handleScrollToAnnotation,
+  })
 
   useEffect(() => {
     void handleInitialRoute()
@@ -758,48 +799,6 @@ function App() {
     }, 1200)
   }
 
-  function addAnnotation(color: AnnotationColor, note = '', annotationType: AnnotationType | null = null, suggestedReplacement = '') {
-    if (!document || !selectionQuote) return
-    clearSelectionPreview()
-    if (!licenseSummary.canSaveAnnotations) {
-      setView('license')
-      setLicenseMessage(t('activateToSave'))
-      return
-    }
-
-    const next = [
-      createAnnotation({
-        documentId: document.stableId,
-        documentFingerprint: document.fingerprint,
-        quote: selectionQuote,
-        ...(selectionAnchorRef.current ?? getSelectionAnchorMetadata()),
-        note: note.trim().slice(0, 1000),
-        color,
-        type: annotationType,
-        suggestedReplacement,
-      }),
-      ...annotations,
-    ]
-
-    setAnnotations(next)
-    void saveAnnotationsToDb(document.stableId, next)
-    setShowNotes(true)
-    if (isNarrowLayout) setShowOutline(false)
-    setSelectionQuote('')
-    setSelectedType(null)
-    setToolbarNote('')
-    setToolbarReplacement('')
-    setShowReplacement(false)
-    setSelectionToolbar(null)
-    selectionRangeRef.current = null
-    selectionAnchorRef.current = null
-    // reselect after state updates
-    setTimeout(() => {
-      const selection = window.getSelection()
-      if (selection) selection.removeAllRanges()
-    }, 0)
-  }
-
   function getSelectionAnchorMetadata() {
     const selection = window.getSelection()
     const range = selection?.rangeCount ? selection.getRangeAt(0) : null
@@ -848,116 +847,6 @@ function App() {
     })
 
     return path.filter(Boolean)
-  }
-
-  function deleteAnnotation(id: string) {
-    if (!document) return
-    const next = annotations.filter((annotation) => annotation.id !== id)
-    setAnnotations(next)
-    void saveAnnotationsToDb(document.stableId, next)
-  }
-
-  function scrollToAnnotation(id: string) {
-    setView('reader')
-    setShowNotes(true)
-    if (isNarrowLayout) setShowOutline(false)
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const annotation = annotations.find((item) => item.id === id)
-        const root = markdownBodyRef.current
-        if (!root) return
-
-        const target =
-          root.querySelector<HTMLElement>(
-            `[data-annotation-id="${escapeCssIdentifier(id)}"]`,
-          ) ||
-          Array.from(root.querySelectorAll<HTMLElement>('.wowmd-highlight')).find(
-            (element) =>
-              Boolean(annotation?.quote) &&
-              element.textContent?.trim() === annotation?.quote.trim(),
-          )
-
-        if (!target) return
-        target.scrollIntoView({ block: 'center' })
-        target.classList.add('wowmd-highlight-located')
-        window.setTimeout(() => {
-          target.classList.remove('wowmd-highlight-located')
-        }, 900)
-      })
-    })
-  }
-
-  function openAnnotationDetail(annotation: Annotation) {
-    setActiveAnnotation(annotation)
-  }
-
-  function locateAnnotation(annotation: Annotation) {
-    scrollToAnnotation(annotation.id)
-    setActiveAnnotation(null)
-  }
-
-  function clearDocumentAnnotations() {
-    if (!document) return
-    setAnnotations([])
-    void saveAnnotationsToDb(document.stableId, [])
-    setPendingClearAnnotations(false)
-  }
-
-  function showReanchorCandidates(annotation: Annotation) {
-    if (!document) return
-    const renderedHtml = renderMarkdown(document.markdown)
-    const probe = new DOMParser().parseFromString(renderedHtml, 'text/html')
-    const renderedText = probe.body.textContent || ''
-    const candidates = findReanchorCandidates(renderedText, annotation)
-    setReanchorId(annotation.id)
-    setReanchorCandidates(candidates)
-  }
-
-  function reanchorAnnotation(id: string, candidate: ReanchorCandidate) {
-    const next = annotations.map((a) =>
-      a.id === id
-        ? { ...a, offset: candidate.start, orphaned: false, updatedAt: new Date().toISOString() }
-        : a,
-    )
-    setAnnotations(next)
-    void saveAnnotationsToDb(document!.stableId, next)
-    setReanchorId(null)
-    setReanchorCandidates([])
-  }
-
-  // Single re-anchor path shared by every place a document's content is (re)loaded:
-  // local open, GitHub open/new-version, and save-as-new-version. Re-anchors each
-  // annotation against the *given* markdown's rendered text (never stale React state),
-  // updating offset (incl. prefix/suffix disambiguation) and marking unmatched ones
-  // orphaned rather than silently dropping (HR7). Returns the SAME array reference
-  // semantics per item so callers can detect "did anything change".
-  function reanchorAgainstMarkdown(
-    items: Annotation[],
-    markdown: string,
-    fingerprint: string,
-  ): Annotation[] {
-    if (!items.length) return items
-    const probe = new DOMParser().parseFromString(renderMarkdown(markdown), 'text/html')
-    const renderedText = probe.body.textContent || ''
-    const now = new Date().toISOString()
-
-    return items.map((annotation): Annotation => {
-      if (annotation.orphaned) return annotation
-      const outcome = reanchorAnnotationOffset(renderedText, annotation)
-      if (!outcome.matched) {
-        return { ...annotation, orphaned: true, documentFingerprint: fingerprint, updatedAt: now }
-      }
-      if (outcome.offset === annotation.offset && annotation.documentFingerprint === fingerprint) {
-        return annotation
-      }
-      return {
-        ...annotation,
-        offset: outcome.offset,
-        documentFingerprint: fingerprint,
-        updatedAt: now,
-      }
-    })
   }
 
   // After "Save as new version" writes the file, register the successor in the
@@ -1025,34 +914,6 @@ function App() {
     if (!localDocument) return
     setShowVersions(false)
     await openLocalDocument(localDocument)
-  }
-
-  function exportAnnotationsAsJson() {
-    if (!document || !annotations.length) return
-    downloadTextFile(
-      safeExportFilename(document.name, 'json'),
-      JSON.stringify(annotations, null, 2),
-      'application/json;charset=utf-8',
-    )
-  }
-
-  function exportTicketJson() {
-    if (!document || !annotations.length) return
-    const sourceStr = typeof document.source === 'string'
-      ? document.source
-      : document.source?.label ?? ''
-    const ticket = createTicketExport(
-      document.name,
-      sourceStr,
-      document.fingerprint,
-      document.markdown,
-      annotations,
-    )
-    downloadTextFile(
-      safeExportFilename(document.name, 'tickets'),
-      JSON.stringify(ticket, null, 2),
-      'application/json;charset=utf-8',
-    )
   }
 
   function openExport() {
@@ -2577,11 +2438,6 @@ function copyTextWithFallback(text: string) {
   } finally {
     textarea.remove()
   }
-}
-
-function escapeCssIdentifier(value: string) {
-  if (typeof CSS !== 'undefined' && CSS.escape) return CSS.escape(value)
-  return value.replace(/["\\]/g, '\\$&')
 }
 
 function importErrorMessage(error: unknown) {
