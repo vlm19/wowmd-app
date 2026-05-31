@@ -83,8 +83,6 @@ function App() {
   const [exportSearchQuery, setExportSearchQuery] = useState('')
   const [exportSearchIndex, setExportSearchIndex] = useState(0)
   const [trialState, setTrialState] = useState(() => createTrialState())
-  const [showTrialConfirm, setShowTrialConfirm] = useState(false)
-  const [pendingTrialFile, setPendingTrialFile] = useState<File | null>(null)
   const [locale, setLocale] = useState<Locale>(() => getInitialLocale())
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false)
   const [licenseInput, setLicenseInput] = useState('')
@@ -106,9 +104,6 @@ function App() {
     [t, trialState],
   )
 
-  const trialNeedsConfirmation = Boolean(
-    !trialState.startedAt && !trialState.isLicensed,
-  )
 
   const annotationsRef = useRef<Annotation[]>([])
   const setAnnotationsRef = useRef<Dispatch<SetStateAction<Annotation[]>>>(() => {})
@@ -136,12 +131,10 @@ function App() {
     setShowVersions,
     versions,
     fileInputRef,
-    trialFilePickerConfirmedRef,
     handleInitialRoute,
     openSample,
     clearCurrentFile,
     requestLocalFile,
-    confirmTrialAction,
     handleFileInput,
     handleDrop,
     handleSavedNewVersion,
@@ -153,7 +146,6 @@ function App() {
     setAnnotationsRef,
     resetSelectionCapture: resetSelectionCaptureBridge,
     canOpenUserFiles: licenseSummary.canOpenUserFiles,
-    setTrialState,
     isNarrowLayout,
     setShowOutline,
     setShowNotes,
@@ -161,10 +153,6 @@ function App() {
     setSearchIndex,
     setExportDefaults,
     t,
-    trialNeedsConfirmation,
-    pendingTrialFile,
-    setPendingTrialFile,
-    setShowTrialConfirm,
   })
 
   const openExport = useCallback(() => {
@@ -587,50 +575,6 @@ function App() {
                 )}
 
                 {importStatus !== 'loading' ? <p className="privacy-hint">{t('privacyHint')}</p> : null}
-                {importStatus !== 'loading' ? <p className="trial-hint">{t('trialHint')}</p> : null}
-                {showTrialConfirm ? (
-                  <div className="trial-confirm-layer">
-                    <div
-                      className="trial-confirm"
-                      role="alertdialog"
-                      aria-modal="true"
-                      aria-labelledby="trial-confirm-title"
-                    >
-                      <button
-                        className="trial-confirm-close"
-                        type="button"
-                        aria-label="Close"
-                        onClick={() => {
-                          trialFilePickerConfirmedRef.current = false
-                          setShowTrialConfirm(false)
-                          setPendingTrialFile(null)
-                        }}
-                      >
-                        <span aria-hidden="true" />
-                      </button>
-                      <strong id="trial-confirm-title">{t('trialConfirmTitle')}</strong>
-                      <p>{t('trialConfirmBody')}</p>
-                      <div>
-                        <button
-                          className="primary-action"
-                          type="button"
-                          onClick={confirmTrialAction}
-                        >
-                          {pendingTrialFile
-                            ? t('trialConfirmOpenDropped')
-                            : t('trialConfirmAction')}
-                        </button>
-                        <button
-                          className="ghost-action"
-                          type="button"
-                          onClick={() => void openSample()}
-                        >
-                          {t('openSample')}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
                 {error && importStatus !== 'failed' ? <p className="error-message">{error}</p> : null}
               </section>
             ) : null}
@@ -772,20 +716,6 @@ function App() {
                     </div>
                     <FeedbackLink href={feedbackHref} label={t('feedback')} />
                   </>
-                ) : trialState.isExpired ? (
-                  <div className="empty-reader expired-reader">
-                    <p className="eyebrow">{t('trialExpired')}</p>
-                    <h2>{t('licenseRequired')}</h2>
-                    <p>{t('sampleStillAvailable')}</p>
-                    <div className="center-actions">
-                      <button type="button" onClick={() => setView('license')}>
-                        {t('buyLicense')}
-                      </button>
-                      <button type="button" onClick={() => void openSample()}>
-                        {t('openSample')}
-                      </button>
-                    </div>
-                  </div>
                 ) : (
                   <div className="empty-reader">
                     <p className="eyebrow">{t('noDocument')}</p>

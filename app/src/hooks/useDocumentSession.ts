@@ -9,10 +9,6 @@ import {
   importGitHubMarkdown,
 } from '../importService'
 import {
-  createTrialState,
-  type TrialState,
-} from '../license'
-import {
   loadLocalDocument,
   createDocumentVersion,
   getDocumentLineage,
@@ -36,7 +32,6 @@ interface UseDocumentSessionArgs {
   setAnnotationsRef: RefObject<Dispatch<SetStateAction<Annotation[]>>>
   resetSelectionCapture: () => void
   canOpenUserFiles: boolean
-  setTrialState: Dispatch<SetStateAction<TrialState>>
   isNarrowLayout: boolean
   setShowOutline: Dispatch<SetStateAction<boolean>>
   setShowNotes: Dispatch<SetStateAction<boolean>>
@@ -44,10 +39,6 @@ interface UseDocumentSessionArgs {
   setSearchIndex: Dispatch<SetStateAction<number>>
   setExportDefaults: (name: string) => void
   t: (key: string) => string
-  trialNeedsConfirmation: boolean
-  pendingTrialFile: File | null
-  setPendingTrialFile: Dispatch<SetStateAction<File | null>>
-  setShowTrialConfirm: Dispatch<SetStateAction<boolean>>
 }
 
 export function useDocumentSession({
@@ -56,7 +47,6 @@ export function useDocumentSession({
   setAnnotationsRef,
   resetSelectionCapture,
   canOpenUserFiles,
-  setTrialState,
   isNarrowLayout,
   setShowOutline,
   setShowNotes,
@@ -64,10 +54,6 @@ export function useDocumentSession({
   setSearchIndex,
   setExportDefaults,
   t,
-  trialNeedsConfirmation,
-  pendingTrialFile,
-  setPendingTrialFile,
-  setShowTrialConfirm,
 }: UseDocumentSessionArgs) {
   const [document, setDocument] = useState<OpenDocument | null>(null)
   const [error, setError] = useState('')
@@ -78,7 +64,6 @@ export function useDocumentSession({
   const [showVersions, setShowVersions] = useState(false)
   const [versions, setVersions] = useState<LocalDocument[]>([])
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const trialFilePickerConfirmedRef = useRef(false)
 
   const openLocalDocument = useCallback(async (localDocument: LocalDocument) => {
     setDocument({
@@ -131,7 +116,6 @@ export function useDocumentSession({
     const markdown = await file.text()
     const fingerprint = await computeDocumentFingerprint(markdown)
     const stableId = `file:${file.name}`
-    setTrialState(createTrialState({ startIfMissing: true }))
     setDocument({
       name: file.name,
       markdown,
@@ -153,13 +137,11 @@ export function useDocumentSession({
     setView('reader')
     setShowOutline(!isNarrowLayout)
     setShowNotes(!isNarrowLayout)
-  }, [canOpenUserFiles, t, setTrialState, setAnnotationsRef, reanchorAgainstMarkdown, resetSelectionCapture, setSearchQuery, setSearchIndex, setView, setShowOutline, setShowNotes, isNarrowLayout, setExportDefaults])
+  }, [canOpenUserFiles, t, setAnnotationsRef, reanchorAgainstMarkdown, resetSelectionCapture, setSearchQuery, setSearchIndex, setView, setShowOutline, setShowNotes, isNarrowLayout, setExportDefaults])
 
   const openSample = useCallback(async () => {
     setError('')
     setImportStatus('idle')
-    setShowTrialConfirm(false)
-    setPendingTrialFile(null)
     setDocument({
       name: 'wowMD Pro sample.md',
       markdown: sampleMarkdown,
@@ -174,7 +156,7 @@ export function useDocumentSession({
     setView('reader')
     setShowOutline(!isNarrowLayout)
     setShowNotes(!isNarrowLayout)
-  }, [setShowTrialConfirm, setPendingTrialFile, setExportDefaults, setAnnotationsRef, resetSelectionCapture, setSearchQuery, setSearchIndex, setView, setShowOutline, setShowNotes, isNarrowLayout])
+  }, [setExportDefaults, setAnnotationsRef, resetSelectionCapture, setSearchQuery, setSearchIndex, setView, setShowOutline, setShowNotes, isNarrowLayout])
 
   const importFromUrl = useCallback(async (searchParams: URLSearchParams, appBasePath = '') => {
     setImportStatus('loading')
@@ -250,56 +232,20 @@ export function useDocumentSession({
 
   const requestLocalFile = useCallback(() => {
     setError('')
-    if (trialNeedsConfirmation) {
-      setPendingTrialFile(null)
-      setShowTrialConfirm(true)
-      return
-    }
     fileInputRef.current?.click()
-  }, [trialNeedsConfirmation, setShowTrialConfirm, setPendingTrialFile])
-
-  const confirmTrialAction = useCallback(() => {
-    setShowTrialConfirm(false)
-    if (pendingTrialFile) {
-      const file = pendingTrialFile
-      setPendingTrialFile(null)
-      void openFile(file)
-      return
-    }
-
-    trialFilePickerConfirmedRef.current = true
-    fileInputRef.current?.click()
-  }, [pendingTrialFile, openFile, setShowTrialConfirm, setPendingTrialFile])
+  }, [])
 
   const handleFileInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    const trialAlreadyConfirmed = trialFilePickerConfirmedRef.current
-    trialFilePickerConfirmedRef.current = false
-
-    if (file) {
-      if (trialNeedsConfirmation && !trialAlreadyConfirmed) {
-        setPendingTrialFile(file)
-        setShowTrialConfirm(true)
-      } else {
-        void openFile(file)
-      }
-    }
+    if (file) void openFile(file)
     event.target.value = ''
-  }, [trialNeedsConfirmation, openFile, setShowTrialConfirm, setPendingTrialFile])
+  }, [openFile])
 
   const handleDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     const file = event.dataTransfer.files?.[0]
-    if (!file) return
-
-    if (trialNeedsConfirmation) {
-      setPendingTrialFile(file)
-      setShowTrialConfirm(true)
-      return
-    }
-
-    void openFile(file)
-  }, [trialNeedsConfirmation, openFile, setShowTrialConfirm, setPendingTrialFile])
+    if (file) void openFile(file)
+  }, [openFile])
 
   const handleSavedNewVersion = useCallback(async (newFilename: string) => {
     if (!document) {
@@ -381,7 +327,6 @@ export function useDocumentSession({
     versions,
     setVersions,
     fileInputRef,
-    trialFilePickerConfirmedRef,
     openFile,
     handleInitialRoute,
     importFromUrl,
@@ -390,7 +335,6 @@ export function useDocumentSession({
     openSample,
     clearCurrentFile,
     requestLocalFile,
-    confirmTrialAction,
     handleFileInput,
     handleDrop,
     handleSavedNewVersion,
