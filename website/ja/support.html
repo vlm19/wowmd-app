@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMDサポート - ガイドとフィードバック</title>
+    <meta name="description" content="wowMDのレビュータイプ・クロスバージョン注釈サバイバル・チケットJSON・リーダーコントロール・エクスポート・設定・フィードバック・トラブルシューティングのガイド。">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/ja/support.html">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/support.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/support.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/support.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/support.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/support.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/support.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/support.html">
+    <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website"><meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMDサポート - ガイドとフィードバック">
+    <meta property="og:description" content="型付きレビュー・再アンカー・チケットJSON・リーダーコントロール・エクスポート・設定・トラブルシューティングを学ぶ。">
+    <meta property="og:url" content="https://wowmd.app/ja/support.html">
+    <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
+    <meta property="og:image:alt" content="wowMD Understanding Map">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMDサポート - ガイドとフィードバック">
+    <meta name="twitter:description" content="型付きレビュー・クロスバージョンサバイバル・チケットJSONを解説。">
+    <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
+  </head>
+  <body class="site-v2 support-v2">
+    <header class="site-header v2-header">
+      <a class="logo-link" href="./" aria-label="wowMD home"><img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32"></a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="pro.html">wowMD Pro</a>
+        <a href="extension.html">拡張機能</a>
+        <a class="nav-pro" href="../app/">アプリを開く</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/jp.svg" alt=""><span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" href="../support.html"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/support.html"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/support.html" aria-selected="true"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/support.html"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/support.html"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/support.html"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="support-layout">
+      <aside class="support-sidebar" aria-label="Support navigation">
+        <strong>コンセプト</strong>
+        <a href="#typed-review">型付きレビュー</a>
+        <a href="#reanchor">クロスバージョンサバイバル</a>
+        <a href="#ticket">チケットJSON</a>
+        <strong>wowMDを使う</strong>
+        <a href="#reader">リーダー</a>
+        <a href="#annotate">注釈</a>
+        <a href="#map">理解マップ</a>
+        <a href="#export">エクスポート</a>
+        <a href="#settings">設定</a>
+        <strong>ヘルプ</strong>
+        <a href="#feedback">フィードバック</a>
+        <a href="#faq">FAQ</a>
+      </aside>
+
+      <main class="support-doc">
+        <section class="support-hero" aria-labelledby="support-title">
+          <p class="section-label">サポート</p>
+          <h1 id="support-title">レビューループのガイドとフィードバック。</h1>
+          <p class="hero-subtitle">wowMDを際立たせる3つのコンセプトから始めましょう：型付きレビュー・クロスバージョンサバイバル・AIに渡せるチケット。</p>
+        </section>
+
+        <section class="doc-section" id="typed-review">
+          <h2>型付きレビュー：4つの判断、単なる色ではない</h2>
+          <p>wowMDでテキストをマークすると、暗黙のアクションを伴う判断を記録します。これらのタイプがノートパネル・理解マップ・チケットJSONの凡例を駆動します。</p>
+          <table class="type-table"><tbody>
+            <tr><th><span class="type-dot clarify"></span><span>要確認</span></th><td>このポイントを実質を変えずに説明または明確化する。</td></tr>
+            <tr><th><span class="type-dot dispute"></span><span>疑問あり</span></th><td>この主張をレビュー。誤っている可能性があり、修正が必要かもしれない。</td></tr>
+            <tr><th><span class="type-dot important"></span><span>重要</span></th><td>このキーポイントを保持し強調する。</td></tr>
+            <tr><th><span class="type-dot confirmed"></span><span>確認済</span></th><td>レビュー済みで正しい。アクション不要。</td></tr>
+          </tbody></table>
+        </section>
+
+        <section class="doc-section" id="reanchor">
+          <h2>クロスバージョンサバイバル</h2>
+          <p>ソースドキュメントが変更されると、wowMDは選択された引用と周辺コンテキストを使って、注釈を同じパッセージに再アンカーしようとします。パッセージが本当に消えた場合、マークは孤立し、Findで手動回復できます。</p>
+          <div class="doc-callout">再アンカーは非破壊的です。wowMDは注釈の位置を再計算します。ソースファイルには書き戻しません。</div>
+        </section>
+
+        <section class="doc-section" id="ticket">
+          <h2>チケットJSON：あなたの判断をAIの作業指示に</h2>
+          <p>チケットはドキュメントスナップショット・バイリンガルタイプ凡例・セクションコンテキスト・選択された引用・メモ・代替案をバンドルします。バックアップJSONとは異なり、バックアップJSONは生の注釈データをバックアップと再インポート用に保存します。</p>
+          <ol class="steps-list">
+            <li>アプリで</li>
+            <li>お好みのAIツールを開く。</li>
+            <li>下のプロンプトを貼り付け、次にチケットの内容を貼り付ける。</li>
+          </ol>
+          <pre class="prompt-block"><code>あなたは慎重な編集者です。Markdownドキュメントに関する私の注釈のJSONチケットを渡します。
+各エントリをそのタイプで処理し、完全な改訂ドキュメントを出力してください。
+- clarify: 実質を変えずに説明または明確化
+- dispute: レビューし、誤っていれば修正し理由を述べる
+- important: 保持し強調
+- confirmed: そのまま
+ document.markdownSnapshotをベースに使用。headingPath・quote・prefix・suffixで各項目を特定。suggestedReplacementが提供されている場合はそれを優先。
+チケット：
+&lt;エクスポートされたチケットJSONをここに貼り付け&gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="reader">
+          <h2>リーダー</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Reader</strong></div><img src="../assets/shots/reader.png" alt="wowMD reader with outline, Markdown document, and notes panel"></figure>
+          <div class="reference-list">
+            <p>目次</p>
+            <p>折りたたみ</p>
+            <p>検索</p>
+            <p>コード・表・テーマ・フォントサイズ</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="annotate">
+          <h2>注釈</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Annotate</strong></div><img src="../assets/shots/annotate.png" alt="Typed review highlights and notes panel with ticket export"></figure>
+          <div class="reference-list">
+            <p>選択ツールバー</p>
+            <p>ノート</p>
+            <p>タイプでフィルター</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="map">
+          <h2>理解マップ</h2>
+          <p>各行がセクションです。色付きのバーが「要確認」「疑問あり」「重要」「確認済」のマーク数を示し、混乱や疑問がどこに集中しているかがわかります。</p>
+          <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Understanding Map</strong></div><img src="../assets/shots/map.png" alt="Understanding Map with per-section review type density"></figure>
+        </section>
+
+        <section class="doc-section" id="export">
+          <h2>エクスポート</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Export</strong></div><img src="../assets/shots/export.png" alt="Export workspace with HTML preview and include options"></figure>
+          <div class="reference-list">
+            <p>HTMLエクスポート</p>
+            <p>バックアップJSON</p>
+            <p>チケットJSON</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="settings">
+          <h2>設定</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Settings</strong></div><img src="../assets/shots/settings.png" alt="Settings panel with reader and export defaults"></figure>
+          <div class="reference-list">
+            <p>テーマとフォントサイズ</p>
+            <p>エクスポートデフォルト</p>
+            <p>言語</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="feedback">
+          <h2>フィードバック</h2>
+          <p>バグ・わかりにくい表現・ガイドの不足・ワークフローリクエストはこちらで。</p>
+          <form class="feedback-card feedback-card-primary support-feedback-form" data-feedback-form data-feedback-type="feedback">
+            <input type="hidden" name="type" value="feedback"><input type="hidden" name="source" value="support_page"><input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
+            <span hidden data-feedback-status="emptyFeedback">まず短い説明を追加してください。</span>
+            <span hidden data-feedback-status="sending">送信中...</span>
+            <span hidden data-feedback-status="success">受信しました。ありがとうございます。</span>
+            <span hidden data-feedback-status="error">まだ送信できません。後でもう一度お試しください。</span>
+            <label class="field"><span>あなたのメッセージ</span>
+              <textarea name="message" rows="5" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="What happened, or what would help?"></textarea>
+              <small class="field-note"><span data-field-counter>0 / 500</span></small>
+            </label>
+            <label class="field"><span>メール（任意）</span>
+              <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+            </label>
+            <button class="button button-primary" type="submit">フィードバックを送信</button>
+            <p class="form-status" data-form-status aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="doc-section" id="faq">
+          <h2>FAQとトラブルシューティング</h2>
+          <div class="faq-list">
+            <div class="faq-item"><button class="faq-question" type="button">ファイルを変更したらハイライトが移動しました。何が起きましたか？</button><div class="faq-answer"><p>wowMDはソースが変更されると注釈を再アンカーします。パッセージが見つからない場合は、ノートパネルのFindで手動回復してください。</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">何かアップロードされますか？</button><div class="faq-answer"><p>いいえ。レビューワークフローはローカル優先です。ファイルと注釈は、自分でエクスポートして共有しない限りブラウザ内に留まります。</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">どのJSONを使うべきですか？</button><div class="faq-answer"><p>バックアップJSONは注釈データのバックアップまたは再インポートに使用。チケットJSONは型付き判断に基づいてAIや編集者に行動させたいときに使用。</p></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-brand"><img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24"><p>wowMDサポート</p></div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">プライバシー</a>
+        <a href="terms.html">利用規約</a>
+        <a class="support-link" href="support.html">サポート</a>
+      </nav>
+    </footer>
+
+    <div class="feedback-modal" data-feedback-modal hidden>
+      <div class="feedback-modal-backdrop"></div>
+      <div class="feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title">
+        <p class="section-label">受信</p>
+        <h2 id="feedback-modal-title">wowMDの改善にご協力いただきありがとうございます。</h2>
+        <p>すべてのメモに目を通します。数秒後にホームに戻ります。</p>
+        <button class="button button-primary" type="button" data-feedback-modal-confirm>ホームに戻る</button>
+      </div>
+    </div>
+    <script src="../script.js?v=20260601-rebuild"></script>
+  </body>
+</html>

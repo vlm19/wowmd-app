@@ -8,12 +8,46 @@ const countedFields = document.querySelectorAll("[data-counted-field]");
 const feedbackModal = document.querySelector("[data-feedback-modal]");
 const feedbackModalConfirm = document.querySelector("[data-feedback-modal-confirm]");
 const gatewayChoices = document.querySelectorAll(".gateway-choice");
+const zoomImages = document.querySelectorAll("[data-zoom-image]");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let headerIsScrolled = false;
 let ticking = false;
 let feedbackRedirectTimer;
 let gatewayCloseTimer;
+let imageLightbox;
+
+const closeImageLightbox = () => {
+  if (!imageLightbox) return;
+  imageLightbox.hidden = true;
+  imageLightbox.querySelector("img")?.removeAttribute("src");
+};
+
+const ensureImageLightbox = () => {
+  if (imageLightbox) return imageLightbox;
+
+  imageLightbox = document.createElement("div");
+  imageLightbox.className = "image-lightbox";
+  imageLightbox.hidden = true;
+  imageLightbox.innerHTML = `
+    <button class="image-lightbox-close" type="button" aria-label="Close image preview">&times;</button>
+    <img alt="">
+  `;
+  document.body.append(imageLightbox);
+
+  imageLightbox.addEventListener("click", closeImageLightbox);
+
+  return imageLightbox;
+};
+
+const openImageLightbox = (image) => {
+  const lightbox = ensureImageLightbox();
+  const preview = lightbox.querySelector("img");
+  preview.src = image.currentSrc || image.src;
+  preview.alt = image.alt || "";
+  lightbox.hidden = false;
+  lightbox.querySelector(".image-lightbox-close")?.focus();
+};
 
 const activateGatewayChoice = (choice) => {
   window.clearTimeout(gatewayCloseTimer);
@@ -36,6 +70,15 @@ gatewayChoices.forEach((choice) => {
   choice.addEventListener("focusout", (event) => {
     if (choice.contains(event.relatedTarget)) return;
     scheduleGatewayClose();
+  });
+});
+
+zoomImages.forEach((image) => {
+  image.addEventListener("click", () => openImageLightbox(image));
+  image.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    openImageLightbox(image);
   });
 });
 
@@ -99,10 +142,17 @@ if (languagePicker && languageTrigger && languageMenu) {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-    closeLanguageMenu();
+    if (event.key === "Escape") {
+      closeLanguageMenu();
+    }
   });
 }
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeImageLightbox();
+  }
+});
 
 feedbackForms.forEach((form) => {
   const waitingEmail = form.querySelector("[data-waiting-email]");

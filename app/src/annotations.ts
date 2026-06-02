@@ -18,7 +18,14 @@ export type Annotation = {
   suggestedReplacement: string
   color: AnnotationColor
   legacyColor: AnnotationColor | null
+  /** No location for the quote (nor its surrounding context) in the current text. */
   orphaned: boolean
+  /**
+   * Re-anchored by surrounding context only — the quote text itself changed, so
+   * the position is approximate and the wording should be reviewed. Optional for
+   * backward compatibility with annotations persisted before this field existed.
+   */
+  needsReview?: boolean
   createdAt: string
   updatedAt: string
 }
@@ -58,6 +65,7 @@ export function migrateAnnotation(raw: Record<string, unknown>): Annotation {
     color,
     legacyColor: color,
     orphaned: false,
+    needsReview: false,
     createdAt: typeof raw.createdAt === 'string' ? raw.createdAt : new Date().toISOString(),
     updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : new Date().toISOString(),
   }
@@ -208,6 +216,7 @@ export function createAnnotation(input: {
     color: annotationColor,
     legacyColor: annotationLegacyColor,
     orphaned: false,
+    needsReview: false,
     createdAt: now,
     updatedAt: now,
   }
@@ -593,16 +602,30 @@ export function quoteMatchesText(fullText: string, quote: string, preferredOffse
   return findQuoteMatch(fullText, q, preferredOffset) != null
 }
 
-export type ReanchorOutcome = { offset: number; matched: boolean }
+/**
+ * Confidence of an automatic re-anchor:
+ * - `exact`   — the quote text was found verbatim (or modulo whitespace only).
+ * - `context` — the quote text changed, but the surrounding prefix/suffix let us
+ *               relocate the *position*. Approximate; wording needs review.
+ * - `lost`    — neither the quote nor its context survived.
+ */
+export type ReanchorConfidence = 'exact' | 'context' | 'lost'
+export type ReanchorOutcome = { offset: number; matched: boolean; confidence: ReanchorConfidence }
+
+/** Minimum trimmed length of a prefix/suffix anchor before we trust it to relocate by context. */
+const MIN_CONTEXT_ANCHOR = 6
 
 /**
- * Automatic re-anchor of one annotation against new rendered text.
- * - Single exact occurrence → relocate offset there.
+ * Automatic re-anchor of one annotation against new rendered text, in confidence tiers:
+ * - Single exact occurrence → relocate offset there (`exact`).
  * - Multiple occurrences → disambiguate by surrounding prefix/suffix context,
- *   tie-break by closeness to the previous offset (fixes wrong-occurrence highlight).
- * - No exact occurrence → fall back to whitespace-tolerant match for existence.
- * - Quote genuinely gone → matched=false (caller marks orphaned; manual recovery
- *   via findReanchorCandidates remains available).
+ *   tie-break by closeness to the previous offset (fixes wrong-occurrence highlight) (`exact`).
+ * - No exact occurrence → whitespace-tolerant match; same content, only layout moved (`exact`).
+ * - Quote text itself changed → relocate by prefix/suffix context (`context`). The exact
+ *   wording can't be re-derived, so the caller flags it for review rather than dropping it.
+ * - Nothing survives → `lost` (caller marks orphaned; manual recovery via
+ *   findReanchorCandidates remains available, and a later version that restores
+ *   the text will re-anchor it automatically — re-anchoring is retried every load).
  * Pure + DOM-free for testability.
  */
 export function reanchorAnnotationOffset(
@@ -610,10 +633,10 @@ export function reanchorAnnotationOffset(
   annotation: Pick<Annotation, 'quote' | 'prefix' | 'suffix' | 'offset'>,
 ): ReanchorOutcome {
   const quote = annotation.quote.trim()
-  if (!quote) return { offset: annotation.offset, matched: false }
+  if (!quote) return { offset: annotation.offset, matched: false, confidence: 'lost' }
 
   const exact = findAllIndexes(renderedText, quote)
-  if (exact.length === 1) return { offset: exact[0], matched: true }
+  if (exact.length === 1) return { offset: exact[0], matched: true, confidence: 'exact' }
 
   if (exact.length > 1) {
     let best = exact[0]
@@ -626,11 +649,67 @@ export function reanchorAnnotationOffset(
         bestScore = score
       }
     }
-    return { offset: best, matched: true }
+    return { offset: best, matched: true, confidence: 'exact' }
   }
 
+  // Quote text not found verbatim — but whitespace/layout-only changes are the
+  // same content, so a normalized/compact hit still counts as exact.
   const fallback = findQuoteMatch(renderedText, quote, annotation.offset)
-  return fallback ? { offset: fallback.start, matched: true } : { offset: annotation.offset, matched: false }
+  if (fallback) return { offset: fallback.start, matched: true, confidence: 'exact' }
+
+  // The quote text itself changed (e.g. an editor reworded the very passage a
+  // dispute/clarify note targets — exactly the case this whole feature exists
+  // for). The surrounding prose usually survives, so relocate by context. We can
+  // pin the position but not re-derive the new wording: lower-confidence anchor.
+  const contextOffset = findContextAnchor(renderedText, quote.length, annotation)
+  if (contextOffset != null) return { offset: contextOffset, matched: true, confidence: 'context' }
+
+  return { offset: annotation.offset, matched: false, confidence: 'lost' }
+}
+
+/**
+ * Relocate an annotation by its surrounding prefix/suffix when the quote text is
+ * gone. Returns an approximate start offset, or null if context is too weak.
+ * Short anchors (< MIN_CONTEXT_ANCHOR chars) are ignored to avoid false hits.
+ */
+function findContextAnchor(
+  text: string,
+  quoteLength: number,
+  annotation: Pick<Annotation, 'prefix' | 'suffix' | 'offset'>,
+): number | null {
+  // The chars closest to the quote are the most reliable locators; a long anchor
+  // is likelier to have been edited far from the quote, so use only its near slice.
+  const prefix = annotation.prefix.trim().slice(-60)
+  const suffix = annotation.suffix.trim().slice(0, 60)
+  const usePrefix = prefix.length >= MIN_CONTEXT_ANCHOR
+  const useSuffix = suffix.length >= MIN_CONTEXT_ANCHOR
+  if (!usePrefix && !useSuffix) return null
+
+  const prefixStarts = usePrefix ? findAllIndexes(text, prefix).map((i) => i + prefix.length) : []
+  const suffixStarts = useSuffix ? findAllIndexes(text, suffix).map((i) => Math.max(0, i - quoteLength)) : []
+
+  // Strongest signal: a prefix hit bracketed by a suffix hit roughly quoteLength
+  // later — the quote, whatever it now says, sits between them.
+  if (usePrefix && useSuffix) {
+    const window = Math.max(quoteLength * 2, quoteLength + 40)
+    let best: number | null = null
+    for (const start of prefixStarts) {
+      const suffixIdx = text.indexOf(suffix, start)
+      if (suffixIdx >= 0 && suffixIdx - start <= window) {
+        if (best == null || Math.abs(start - annotation.offset) < Math.abs(best - annotation.offset)) {
+          best = start
+        }
+      }
+    }
+    if (best != null) return best
+  }
+
+  // Otherwise fall back to a single surviving anchor, nearest to the old offset.
+  const candidates = [...prefixStarts, ...suffixStarts]
+  if (!candidates.length) return null
+  return candidates.reduce((closest, start) =>
+    Math.abs(start - annotation.offset) < Math.abs(closest - annotation.offset) ? start : closest,
+  )
 }
 
 function scoreContext(

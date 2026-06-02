@@ -1,0 +1,13 @@
+{
+  "name": "wowmd-website",
+  "private": true,
+  "description": "wowMD marketing site. Cloudflare Pages build entry: regenerates localized HTML from templates + i18n JSON.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build-i18n-pages.mjs",
+    "guard": "node scripts/guard-i18n.mjs",
+    "verify": "node scripts/build-i18n-pages.mjs && node scripts/guard-i18n.mjs"
+  }
+}

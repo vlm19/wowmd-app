@@ -3,12 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>wowMD Pro - Lokaler Markdown-Reader mit Markierungen, Notizen und Export</title>
-    <meta
-      name="description"
-      content="wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufuegen von Markierungen und Notizen sowie Exportieren von sauberem HTML."
-     
-    >
+    <title>wowMD Pro - Die Review-Ebene zwischen einem KI-Entwurf und dem, was Sie veröffentlichen</title>
+    <meta name="description" content="Lesen Sie Markdown strukturiert, beurteilen Sie mit vier Review-Typen und liefern Sie HTML, Backup JSON oder einen Ticket-JSON-Arbeitsauftrag für KI. Lokal zuerst und zerstörungsfrei.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/de/pro.html">
@@ -22,49 +18,34 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" content="wowMD Pro - Lokaler Markdown-Reader mit Markierungen, Notizen und Export">
-    <meta property="og:description" content="wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufuegen von Markierungen und Notizen sowie Exportieren von sauberem HTML.">
+    <meta property="og:title" content="wowMD Pro - Die Review-Ebene zwischen einem KI-Entwurf und dem, was Sie veröffentlichen">
+    <meta property="og:description" content="Vier Review-Typen, Verständniskarte, Versionsverlauf und ein Ticket-JSON-Arbeitsauftrag für KI.">
     <meta property="og:url" content="https://wowmd.app/de/pro.html">
-    <meta property="og:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
-    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
+    <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="wowMD Pro - Lokaler Markdown-Reader mit Markierungen, Notizen und Export">
-    <meta name="twitter:description" content="wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufuegen von Markierungen und Notizen sowie Exportieren von sauberem HTML.">
-    <meta name="twitter:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <meta name="twitter:title" content="wowMD Pro - Die Markdown-Review-Ebene">
+    <meta name="twitter:description" content="HTML für Menschen. Backup JSON für Sie selbst. Ticket JSON für KI.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "wowMD Pro",
-        "applicationCategory": "WebApplication",
-        "operatingSystem": "Modern browser",
-        "description": "wowMD Pro ist eine lokale Webapp zum Lesen lokaler Markdown-Dateien, Hinzufuegen von Markierungen und Notizen sowie Exportieren von sauberem HTML.",
-        "url": "https://wowmd.app/de/pro.html",
-        "image": "https://wowmd.app/assets/wowmd-product-demo-poster.jpg",
-        "offers": {
-          "@type": "Offer",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        },
-        "featureList": [
-          "Local Markdown files",
-          "Highlights and notes",
-          "HTML export"
-        ]
-      }
+      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"https://wowmd.app/de/pro.html","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260527-hover-tags">
+    <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
-  <body class="pro-page">
-    <header class="site-header">
+  <body class="site-v2 pro-v2">
+    <header class="site-header v2-header">
       <a class="logo-link" href="./" aria-label="wowMD home">
         <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
       </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#local">Lokale Dateien</a>
-        <a href="#notes">Notizen</a>
-        <a href="#export">Export</a>
-        <a href="#roadmap">Geplant</a>
+      <nav class="site-nav pro-nav" aria-label="Primary">
+        <a href="#read">Lesen</a>
+        <a href="#annotate">Kommentieren</a>
+        <a href="#map">Karte</a>
+        <a href="#deliver">Ausliefern</a>
+        <a href="#versions">Versionen</a>
+        <a href="#compare">Vergleich</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-ext" href="extension.html">Erweiterung</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
@@ -72,128 +53,161 @@
           <span class="language-arrow" aria-hidden="true"></span>
         </button>
         <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
-          <a role="option" data-language-option="en" aria-label="English" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
-          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/pro.html"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
-          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
-          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/pro.html"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
-          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
-          <a role="option" data-language-option="fr" aria-label="French" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
+          <a role="option" data-language-option="en" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/pro.html"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/pro.html"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
         </div>
       </div>
     </header>
 
-    <main>
-      <section class="hero pro-hero" aria-labelledby="pro-title">
-        <div class="hero-copy pro-hero-copy">
-          <p class="section-label">wowMD Pro</p>
-          <h1 id="pro-title">Dein lokaler Markdown-Lesearbeitsbereich.</h1>
-          <p class="hero-subtitle">Öffne lokale Markdown-Dateien im Browser, markiere wichtige Stellen, behalte Notizen und exportiere saubere Lesekopien, ohne deine Dokumente hochzuladen.</p>
-          <div class="hero-actions" aria-label="Primary actions">
-            <a class="button button-primary" href="../app/">wowMD Pro öffnen</a>
-            <a class="button button-secondary" href="extension.html">Kostenlose Erweiterung?</a>
-          </div>
+    <main class="v2-wrap">
+      <section class="pro-hero-v2" aria-labelledby="pro-title">
+        <div class="pro-hero-copy">
+          <p class="section-label">wowMD Pro - Kostenlos in der Beta</p>
+          <h1 id="pro-title">Die Review-Ebene zwischen einem KI-Entwurf und dem, was Sie veröffentlichen.</h1>
+          <p class="hero-subtitle">KI schreibt den Entwurf. Sie lesen strukturiert, beurteilen das Wesentliche mit vier Review-Typen und liefern dann HTML für Menschen oder ein Ticket, das eine KI ausführen kann. Lokal zuerst, zerstörungsfrei, nichts wird hochgeladen.</p>
+          <div class="hero-actions"><a class="button button-primary button-large" href="../app/">wowMD Pro öffnen</a></div>
           <div class="hero-badges" aria-label="Product facts">
-            <span>Early Access kann kostenlos sein</span>
-            <span>Lifetime-Lizenz geplant</span>
             <span>Lokal zuerst</span>
+            <span>Zerstörungsfrei</span>
+            <span>Vier Review-Typen</span>
+            <span>Ticket JSON für KI</span>
           </div>
         </div>
-      </section>
-
-      <section class="product-story reveal" id="local" aria-labelledby="local-title">
-        <div class="product-story-copy">
-          <p class="section-label">Lokale Dateien</p>
-          <h2 id="local-title">Öffne Markdown-Dateien von deinem Gerät.</h2>
-          <p>Lege eine `.md`- oder `.markdown`-Datei ab und lies sie in einem fokussierten Arbeitsbereich mit Gliederung, Einklappen, lesbarem Code und Tabellenscrollen.</p>
-          <a class="button button-secondary" href="../app/">App öffnen</a>
-        </div>
-        <figure class="product-media-frame" aria-label="Local Markdown file preview">
-          <div class="media-browser-bar"><span></span><span></span><span></span><strong>wowMD Pro</strong></div>
-          <video class="product-media" poster="../assets/wowmd-product-demo-poster.jpg" autoplay muted loop playsinline controls>
-            <source src="../assets/wowmd-product-demo.webm" type="video/webm">
-            <source src="../assets/wowmd-product-demo.mp4" type="video/mp4">
-          </video>
+        <figure class="shot-frame hero-shot">
+          <div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>spec.md - wowMD Pro</strong></div>
+          <img src="../assets/shots/annotate.png" alt="wowMD Pro showing typed highlights and the notes panel">
         </figure>
       </section>
 
-      <section class="product-story product-story-flipped reveal" id="notes" aria-labelledby="notes-title">
-        <div class="product-story-copy">
-          <p class="section-label">Markierungen und Notizen</p>
-          <h2 id="notes-title">Halte Nützliches direkt am Dokument fest.</h2>
-          <p>Markiere wichtige Passagen, füge kurze Notizen hinzu und speichere Annotationsdaten lokal. Das ursprüngliche Markdown bleibt unverändert, solange keine spätere Rückschreibfunktion hinzukommt.</p>
-          <a class="button button-secondary" href="../app/">Annotationen testen</a>
-        </div>
-        <div class="product-media-frame product-media-placeholder" aria-label="Highlights and notes preview">
-          <div class="mock-reader">
-            <aside>
-              <span></span>
-              <span></span>
-              <span></span>
-            </aside>
-            <article>
-              <h3>Lesenotizen</h3>
-              <p></p>
-              <p class="mock-highlight"></p>
-              <p></p>
-              <div class="mock-note">Wichtige Idee als lokale Notiz gespeichert.</div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="product-story reveal" id="export" aria-labelledby="export-title">
-        <div class="product-story-copy">
-          <p class="section-label">Export</p>
-          <h2 id="export-title">Verwandle eine Markdown-Datei in saubere Lesekopien.</h2>
-          <p>Erstelle vollstaendiges Offline-HTML zum Teilen, Archivieren oder fokussierten Lesen ausserhalb der App.</p>
-          <a class="button button-primary" href="../app/">Aus Pro exportieren</a>
-        </div>
-        <div class="export-grid" aria-label="Export formats">
-          <article class="export-card">
-            <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
-            <h3>Sauberes HTML</h3>
-            <p>Eigenständiges, strukturiertes Offline-HTML ohne App-Laufzeitcode.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section reveal" id="roadmap" aria-labelledby="roadmap-title">
+      <section class="section pro-section" id="read" aria-labelledby="read-title">
         <div class="section-heading">
-          <p class="section-label">Als Nächstes geplant</p>
-          <h2 id="roadmap-title">Zukünftige Arbeit bleibt von heutigen Zusagen getrennt.</h2>
-          <p class="section-subtitle">Diese Ideen sind geplant oder werden geprüft. Kaufentscheidungen sollten sich an den heute verfügbaren Funktionen orientieren.</p>
+          <p class="section-label">Lesen</p>
+          <h2 id="read-title">Langes Markdown lesen, ohne die Struktur zu verlieren.</h2>
+          <p class="section-subtitle">Öffnen Sie lokale .md- oder .markdown-Dateien, setzen Sie von der Erweiterung aus fort und navigieren Sie dann mit Gliederung, Faltung, syntaxhervorgehobenem Code, innerem Scrollen für breite Tabellen, Volltextsuche, Themes und einstellbarer Schriftgröße.</p>
         </div>
-        <div class="roadmap-list">
-          <span>Bibliothek und Leseverlauf</span>
-          <span>Bessere Annotationsverwaltung</span>
-          <span>Theme-Vorlagen</span>
-          <span>Weitere Exportformate</span>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - reader</strong></div><img src="../assets/shots/reader.png" alt="wowMD Pro reader with document outline, Markdown content, and notes panel"></figure>
+        <div class="feature-grid-v2">
+          <article><h3>Dokumentengliederung</h3><p>Navigieren Sie anhand der Überschriftenstruktur. Die Gliederung folgt Ihrer Scroll-Position.</p></article>
+          <article><h3>Abschnittsfaltung</h3><p>Klappen Sie bereits gelesene Abschnitte ein und bleiben Sie beim aktuellen Abschnitt fokussiert.</p></article>
+          <article><h3>Code und Tabellen</h3><p>Syntaxhervorhebung, Ein-Klick-Kopieren und inneres Scrollen für breite Tabellen.</p></article>
+          <article><h3>Suche und Themes</h3><p>Finden Sie Treffer mit Zähler und Vor/Zurück-Steuerung. Lesen Sie in Hell oder Dunkel in Ihrer gewählten Schriftgröße.</p></article>
         </div>
       </section>
 
-      <section class="section reveal" aria-labelledby="pro-pricing-title">
-        <div class="pricing-card pro-pricing-card">
-          <div>
-            <p class="section-label">Preise</p>
-            <h2 id="pro-pricing-title">Einfacher Early Access, später klarer Checkout.</h2>
-            <p>Die Webapp kann zunächst als kostenloser Early Access starten, während die Preise finalisiert werden. Geplant ist eine günstige einmalige Lifetime-Lizenz mit möglichen Early-Bird- und Aktionsrabatten.</p>
-          </div>
-          <a class="button button-primary" href="../app/">wowMD Pro öffnen</a>
+      <section class="section pro-section" id="annotate" aria-labelledby="annotate-title">
+        <div class="section-heading">
+          <p class="section-label">Kommentieren</p>
+          <h2 id="annotate-title">Vier Review-Typen, nicht nur Farben. Jeder ist eine Beurteilung.</h2>
+          <p class="section-subtitle">Wählen Sie Text aus, wählen Sie einen semantischen Typ, fügen Sie Notizen oder einen Ersetzungsvorschlag hinzu. Jede Markierung ist am Abschnitt verankert, lokal gespeichert und übersteht Quelländerungen, wenn möglich.</p>
         </div>
+        <div class="type-chip-row" aria-label="Review types">
+          <span class="type-chip clarify">Zu klären</span>
+          <span class="type-chip dispute">Zweifelhaft</span>
+          <span class="type-chip important">Wichtig</span>
+          <span class="type-chip confirmed">Bestätigt</span>
+        </div>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - typed highlights</strong></div><img src="../assets/shots/annotate.png" alt="Typed highlights in the document and notes panel with Export ticket option"></figure>
+        <div class="feature-grid-v2 compact">
+          <article><h3>Schwebende Auswahl-Werkzeugleiste</h3><p>Wählen Sie einen Review-Typ oder fügen Sie eine Notiz mit optionalem Ersetzungsvorschlag hinzu.</p></article>
+          <article><h3>Filter im Notizen-Panel</h3><p>Filtern Sie nach Typ, springen Sie zurück zum Abschnitt und halten Sie die Review organisiert.</p></article>
+          <article><h3>Versionsübergreifender Erhalt</h3><p>Wenn sich die Quelle ändert, verankern sich Kommentare automatisch neu; verwaiste Markierungen können mit Suchen wiederhergestellt werden.</p></article>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="map" aria-labelledby="map-title">
+        <div class="section-heading">
+          <p class="section-label">Verständniskarte</p>
+          <h2 id="map-title">Sehen Sie, wo sich Verwirrung, Zweifel und wichtige Punkte ballen.</h2>
+          <p class="section-subtitle">Die Verständniskarte zeigt die Dichte der vier Review-Typen pro Abschnitt, damit Sie entscheiden können, was zuerst bearbeitet wird.</p>
+        </div>
+        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Understanding Map</strong></div><img src="../assets/shots/map.png" alt="Understanding Map showing per-section density by review type"></figure>
+      </section>
+
+      <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
+        <div class="section-heading">
+          <p class="section-label">Ausliefern</p>
+          <h2 id="deliver-title">Drei Ausgaben. Unterschiedliche Zielgruppen.</h2>
+          <p class="section-subtitle">Teilen Sie kommentierte Lektüre mit Menschen, sichern Sie Ihre Kommentare oder übergeben Sie einen präzisen Arbeitsauftrag an eine KI oder einen Redakteur.</p>
+        </div>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - export workspace</strong></div><img src="../assets/shots/export.png" alt="Export workspace with live HTML preview and include options"></figure>
+        <div class="export-trio">
+          <article><span class="audience-tag people">Für Menschen</span><h3>HTML-Export</h3><p>Eigenständige Einzeldatei, die Struktur, Gliederung, Markierungen und Notizen bewahrt. Offline lesbar und in jedem Browser zu öffnen.</p></article>
+          <article><span class="audience-tag backup">Für Backup</span><h3>Backup JSON</h3><p>Rohe Kommentardaten für Backup oder erneuten Import. Ihre Daten bleiben portabel und unter Ihrer Kontrolle.</p></article>
+          <article class="ticket-card"><span class="audience-tag ai">Für KI</span><h3>Ticket JSON</h3><p>Dokument-Snapshot, zweisprachige Typenlegende, Abschnittskontext pro Kommentar, Notizen und Ersetzungsvorschläge.</p><pre><code>"type": "dispute"
+"headingPath": ["Architektur"]
+"note": "Diese Aussage muss korrigiert werden."
+
+Prompt: Überarbeiten Sie das gesamte Dokument gemäß diesen Tickets.</code></pre></article>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="versions" aria-labelledby="versions-title">
+        <div class="section-heading">
+          <p class="section-label">Versionen</p>
+          <h2 id="versions-title">Versionen speichern und die Beurteilung behalten, während sich der Entwurf weiterentwickelt.</h2>
+          <p class="section-subtitle">Als neue Version speichern und den Versionsverlauf durchsuchen. Zusammen mit dem versionsübergreifenden Erhalt bleibt Ihre Review nützlich, während sich die Quelle ändert.</p>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="compare" aria-labelledby="compare-title">
+        <div class="section-heading">
+          <p class="section-label">Vergleich</p>
+          <h2 id="compare-title">Erweiterung vs. Pro.</h2>
+        </div>
+        <table class="compare-table">
+          <thead><tr><th>Funktion</th><th>Erweiterung</th><th>wowMD Pro</th></tr></thead>
+          <tbody>
+            <tr><td>Preis</td><td>Kostenlos</td><td>Kostenlos in der Beta</td></tr>
+            <tr><td>GitHub Markdown</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Lokale .md-Dateien</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Gliederung, Faltung, Code, Tabellen</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Volltextsuche</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Vier Review-Typen</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Verständniskarte</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Versionsübergreifender Erhalt</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Versionsverlauf</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>HTML-Export</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Backup JSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Ticket JSON für KI</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section pro-section" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading">
+          <p class="section-label">FAQ</p>
+          <h2 id="faq-title">Häufige Fragen.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item"><button class="faq-question" type="button">Werden meine Daten hochgeladen?</button><div class="faq-answer"><p>Nein. Dateien, Kommentare, Versionen und Exporte werden in Ihrem Browser verarbeitet, es sei denn, Sie entscheiden sich, eine exportierte Datei woanders hin zu verschieben.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">Wie unterscheidet sich das von einem Markdown-zu-HTML-Konverter?</button><div class="faq-answer"><p>Ein Konverter wandelt Markdown nur in ein anderes Format um. wowMD Pro ist eine Review-Ebene: strukturiert lesen, mit vier semantischen Typen beurteilen, dann HTML für Menschen oder ein Ticket ausliefern, das eine KI ausführen kann.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">Was ist ein Ticket?</button><div class="faq-answer"><p>Ein Ticket ist ein JSON-Arbeitsauftrag, der aus Ihren Kommentaren erstellt wird: Dokument-Snapshot, Typenlegende, Abschnittskontext, Notiz und Ersetzungsvorschlag. Fügen Sie es in eine KI ein, um das Dokument gemäß Ihrer Beurteilung zu überarbeiten.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">Ändert wowMD meine Quelldatei?</button><div class="faq-answer"><p>Nein. Die Review ist zerstörungsfrei. Sie lesen und markieren; die Quelldatei bleibt unberührt, bis Sie entscheiden, was mit dem exportierten Ergebnis geschehen soll.</p></div></div>
+        </div>
+      </section>
+
+      <section class="bottom-cta" aria-labelledby="bottom-cta-title">
+        <h2 id="bottom-cta-title">Starten Sie die Review-Schleife.</h2>
+        <p>Öffnen Sie eine Markdown-Datei, markieren Sie das Wesentliche und übergeben Sie das Ergebnis.</p>
+        <a class="button button-primary button-large" href="../app/">wowMD Pro öffnen</a>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="footer-brand">
         <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>wowMD Pro - lokaler Markdown-Arbeitsbereich</p>
+        <p>wowMD Pro - Kostenlos in der Beta</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="privacy.html">Datenschutz</a>
-        <a href="terms.html">Nutzungsbedingungen</a>
-        <a class="feedback-link" href="feedback.html">Feedback senden</a>
+        <a href="terms.html">AGB</a>
+        <a class="support-link" href="../support.html">Support</a>
       </nav>
     </footer>
-    <script src="../script.js"></script>
+    <script src="../script.js?v=20260601-rebuild"></script>
   </body>
 </html>

@@ -500,17 +500,53 @@ describe('reanchorAnnotationOffset — 自动重锚', () => {
     expect(r.offset).toBe(second)
   })
 
-  test('引文被改写、彻底消失 → matched=false（交由孤儿处置）', () => {
+  test('引文被改写、无上下文线索 → lost（交由孤儿处置）', () => {
     const text = 'the slow green turtle wandered off'
     const r = reanchorAnnotationOffset(text, anno({ offset: 0 }))
     expect(r.matched).toBe(false)
+    expect(r.confidence).toBe('lost')
     expect(r.offset).toBe(0)
   })
 
-  test('仅空白/排版变化 → 仍命中（三级匹配兜底）', () => {
+  test('仅空白/排版变化 → 仍命中（exact，三级匹配兜底）', () => {
     const text = 'aaa the   quick\nbrown   fox bbb'
     const r = reanchorAnnotationOffset(text, anno({ offset: 0 }))
     expect(r.matched).toBe(true)
+    expect(r.confidence).toBe('exact')
+  })
+
+  test('引文被改写、但前后文完好 → 按上下文重锚（context，待复核）', () => {
+    // Quote reworded; the bracketing prefix/suffix survive verbatim.
+    const text = 'In the report the slow green turtle was noted here clearly.'
+    const r = reanchorAnnotationOffset(
+      text,
+      anno({ prefix: 'In the report ', suffix: ' was noted here', offset: 999 }),
+    )
+    expect(r.matched).toBe(true)
+    expect(r.confidence).toBe('context')
+    // Approximate: lands at/near the quote start (anchor is trimmed, so within a space).
+    expect(Math.abs(r.offset - text.indexOf('the slow green turtle'))).toBeLessThanOrEqual(1)
+  })
+
+  test('引文被改写、仅前缀幸存 → context，落在前缀之后', () => {
+    const text = 'In the report something completely different now.'
+    const r = reanchorAnnotationOffset(
+      text,
+      anno({ prefix: 'In the report ', suffix: '', offset: 999 }),
+    )
+    expect(r.matched).toBe(true)
+    expect(r.confidence).toBe('context')
+    expect(Math.abs(r.offset - 'In the report '.length)).toBeLessThanOrEqual(1)
+  })
+
+  test('过短的上下文锚点不被信任 → lost（避免误锚）', () => {
+    const text = 'a b c d e f g totally unrelated content'
+    const r = reanchorAnnotationOffset(
+      text,
+      anno({ prefix: 'a ', suffix: ' b', offset: 0 }),
+    )
+    expect(r.matched).toBe(false)
+    expect(r.confidence).toBe('lost')
   })
 })
 

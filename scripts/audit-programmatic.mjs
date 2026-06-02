@@ -80,7 +80,7 @@ await check('/pro.html', 'Pro', [
   ['Comparison table has rows', async (p) => (await p.locator('.compare-table tbody tr').count()) >= 8],
   ['FAQ present', async (p) => (await p.locator('.faq-item').count()) >= 4],
   ['Bottom CTA visible', async (p) => await p.locator('.bottom-cta').count() > 0],
-  ['No trial text', async (p) => (await p.locator('.trial-note').count()) === 0],
+  ['No trial text', async (p) => (await p.locator('.beta-note').count()) === 0],
   ['No price shown', async (p) => !(await p.textContent('body')).includes('$')],
 ]);
 

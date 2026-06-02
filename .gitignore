@@ -32,3 +32,6 @@ chrome-profile*/
 playwright-report/
 test-results/
 tmp/
+
+# Claude Code machine-local config (keep shared config like launch.json tracked)
+.claude/settings.local.json

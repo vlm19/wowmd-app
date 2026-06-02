@@ -1,10 +1,10 @@
-type TrialOptions = {
+type AccessOptions = {
   startIfMissing?: boolean
 }
 
 export const LICENSE_FEATURE_ENABLED = false
 
-export type TrialState = {
+export type AccessState = {
   startedAt: number | null
   expiresAt: number | null
   isActive: boolean
@@ -13,22 +13,22 @@ export type TrialState = {
   daysRemaining: number
 }
 
-const trialKey = 'wowmd.trial.v1'
+const accessKey = 'wowmd.betaAccess.v1'
 const licenseKey = 'wowmd.license.v1'
-const trialLengthMs = 14 * 24 * 60 * 60 * 1000
+const betaAccessLengthMs = 14 * 24 * 60 * 60 * 1000
 
-export function createTrialState(options: TrialOptions = {}): TrialState {
+export function createAccessState(options: AccessOptions = {}): AccessState {
   const now = Date.now()
-  const existing = localStorage.getItem(trialKey)
+  const existing = localStorage.getItem(accessKey)
   let startedAt = existing ? Number(existing) : null
   const isLicensed = hasLocalLicense()
 
   if (!startedAt && options.startIfMissing) {
     startedAt = now
-    localStorage.setItem(trialKey, String(startedAt))
+    localStorage.setItem(accessKey, String(startedAt))
   }
 
-  const expiresAt = startedAt ? startedAt + trialLengthMs : null
+  const expiresAt = startedAt ? startedAt + betaAccessLengthMs : null
   const isActive = Boolean(!isLicensed && expiresAt && expiresAt > now)
   const isExpired = Boolean(!isLicensed && expiresAt && expiresAt <= now)
   const daysRemaining = expiresAt
@@ -47,7 +47,7 @@ export function createTrialState(options: TrialOptions = {}): TrialState {
 
 type Translate = (key: string) => string
 
-export function getLicenseSummary(trial: TrialState, t: Translate = (key) => key) {
+export function getLicenseSummary(access: AccessState, t: Translate = (key) => key) {
   if (!LICENSE_FEATURE_ENABLED) {
     return {
       label: '',
@@ -58,7 +58,7 @@ export function getLicenseSummary(trial: TrialState, t: Translate = (key) => key
     }
   }
 
-  if (trial.isLicensed) {
+  if (access.isLicensed) {
     return {
       label: t('licensed'),
       detail: t('lifetime'),
@@ -68,19 +68,19 @@ export function getLicenseSummary(trial: TrialState, t: Translate = (key) => key
     }
   }
 
-  if (trial.isActive) {
+  if (access.isActive) {
     return {
-      label: t('trialActive'),
-      detail: `${trial.daysRemaining} ${trial.daysRemaining === 1 ? t('day') : t('days')}`,
+      label: t('betaAccessActive'),
+      detail: `${access.daysRemaining} ${access.daysRemaining === 1 ? t('day') : t('days')}`,
       canOpenUserFiles: true,
       canExport: true,
       canSaveAnnotations: true,
     }
   }
 
-  if (trial.isExpired) {
+  if (access.isExpired) {
     return {
-      label: t('trialExpired'),
+      label: t('betaAccessEnded'),
       detail: t('licenseRequired'),
       canOpenUserFiles: false,
       canExport: false,
@@ -89,7 +89,7 @@ export function getLicenseSummary(trial: TrialState, t: Translate = (key) => key
   }
 
   return {
-    label: t('trialReady'),
+    label: t('betaAccessReady'),
     detail: `14 ${t('days')}`,
     canOpenUserFiles: true,
     canExport: true,

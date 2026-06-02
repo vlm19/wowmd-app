@@ -61,6 +61,7 @@
   .source-preview,
   .note-sticker,
   .annotation-modal,
+  .ticket-export-control,
   .segmented,
   .scale-controls,
   .search-control,
@@ -540,7 +541,7 @@ p {
 
 .app:has(.empty-import) .drop-zone .intro,
 .app:has(.empty-import) .privacy-hint,
-.app:has(.empty-import) .trial-hint {
+.app:has(.empty-import) .beta-access-hint {
   color: #c8c4b8;
 }
 
@@ -560,12 +561,12 @@ p {
   color: #62c6aa;
 }
 
-.app:has(.empty-import) .trial-hint {
+.app:has(.empty-import) .beta-access-hint {
   border-color: #464640;
   background: color-mix(in srgb, #30302d 72%, transparent);
 }
 
-.app:has(.empty-import) .trial-hint::before {
+.app:has(.empty-import) .beta-access-hint::before {
   color: #c7c1ff;
 }
 
@@ -689,7 +690,7 @@ p {
 }
 
 .privacy-hint,
-.trial-hint,
+.beta-access-hint,
 .error-message {
   margin: 0;
   color: var(--text-3);
@@ -709,7 +710,7 @@ p {
   font-size: 13px;
 }
 
-.trial-hint {
+.beta-access-hint {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -721,14 +722,14 @@ p {
   color: var(--text-2);
 }
 
-.trial-hint::before {
+.beta-access-hint::before {
   content: "\ea04";
   color: var(--blue);
   font-family: "tabler-icons";
   font-size: 13px;
 }
 
-.trial-confirm-layer {
+.beta-access-confirm-layer {
   position: fixed;
   z-index: 130;
   inset: 0;
@@ -740,7 +741,7 @@ p {
   backdrop-filter: blur(10px);
 }
 
-.trial-confirm {
+.beta-access-confirm {
   position: relative;
   width: min(420px, calc(100% - 32px));
   border: 0.5px solid #464640;
@@ -751,7 +752,7 @@ p {
   font-size: 12px;
 }
 
-.trial-confirm-close {
+.beta-access-confirm-close {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -768,12 +769,12 @@ p {
   transition: opacity 0.15s ease;
 }
 
-.trial-confirm-close:hover {
+.beta-access-confirm-close:hover {
   opacity: 0.88;
 }
 
-.trial-confirm-close span,
-.trial-confirm-close span::before {
+.beta-access-confirm-close span,
+.beta-access-confirm-close span::before {
   display: block;
   width: 14px;
   height: 1.5px;
@@ -781,60 +782,60 @@ p {
   background: currentColor;
 }
 
-.trial-confirm-close span {
+.beta-access-confirm-close span {
   transform: rotate(45deg);
 }
 
-.trial-confirm-close span::before {
+.beta-access-confirm-close span::before {
   content: "";
   transform: rotate(90deg);
 }
 
-.trial-confirm strong {
+.beta-access-confirm strong {
   color: var(--text-1);
   font-weight: 500;
 }
 
-.trial-confirm p {
+.beta-access-confirm p {
   margin: 6px 0 12px;
 }
 
-.trial-confirm div {
+.beta-access-confirm div {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
-.trial-confirm button {
+.beta-access-confirm button {
   min-height: 34px;
 }
 
-.trial-confirm div .primary-action,
-.trial-confirm div .ghost-action {
+.beta-access-confirm div .primary-action,
+.beta-access-confirm div .ghost-action {
   width: 100%;
   min-height: 38px;
   padding: 7px 12px;
   white-space: nowrap;
 }
 
-.app:has(.empty-import) .trial-confirm {
+.app:has(.empty-import) .beta-access-confirm {
   width: min(500px, calc(100% - 32px));
   border-color: #d0cfc9;
   background: #fff;
   color: #555550;
 }
 
-.app:has(.empty-import) .trial-confirm strong {
+.app:has(.empty-import) .beta-access-confirm strong {
   color: #1a1a1a;
 }
 
-.app:has(.empty-import) .trial-confirm .primary-action {
+.app:has(.empty-import) .beta-access-confirm .primary-action {
   border-color: #5b4dff;
   background: #5b4dff;
   color: #fff;
 }
 
-.app:has(.empty-import) .trial-confirm .ghost-action {
+.app:has(.empty-import) .beta-access-confirm .ghost-action {
   border-color: #e4e3df;
   background: transparent;
   color: #555550;
@@ -1686,6 +1687,7 @@ p {
 .note-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6px;
   border-bottom: 0.5px solid #464640;
   padding: 10px 14px;
@@ -1697,6 +1699,36 @@ p {
   color: #c8c4b8;
   font-size: 10px;
   transition: opacity 0.15s ease;
+}
+
+.ticket-export-control {
+  display: inline-flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 0.5px solid #464640;
+  border-radius: var(--r-md);
+}
+
+.ticket-export-control button {
+  border: 0;
+  border-radius: 0;
+}
+
+.ticket-export-control button:first-child {
+  border-right: 0.5px solid #464640;
+}
+
+.ticket-export-control .ticket-info-button {
+  display: inline-flex;
+  width: 27px;
+  min-width: 27px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #f4f2ea;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .note-sticker {
@@ -1832,6 +1864,11 @@ p {
   opacity: 0.55;
 }
 
+/* Re-anchored by context only — position recovered, wording changed, needs review. */
+.note-review {
+  box-shadow: inset 2px 0 0 0 var(--accent, #d08700);
+}
+
 .note-orphaned-separator {
   height: 1px;
   margin: 6px 8px;
@@ -1853,6 +1890,41 @@ p {
 .note-reanchor-btn:hover {
   border-color: var(--blue);
   color: var(--blue);
+}
+
+.note-reanchor-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.support-help-link {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid #464640;
+  border-radius: var(--r-md);
+  padding: 0 10px;
+  color: #c8c4b8;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.support-help-link:hover,
+.support-help-link:focus-visible {
+  border-color: var(--blue);
+  color: #f4f2ea;
+  outline: none;
+}
+
+.support-help-link.compact {
+  min-height: 24px;
+  padding: 0 7px;
+  border-color: var(--border-mid);
+  color: var(--text-3);
+  font-size: 10px;
 }
 
 .reanchor-candidates {
@@ -1888,6 +1960,43 @@ p {
 
 .understanding-map {
   max-width: 540px;
+}
+
+.annotation-modal .map-intro {
+  margin: -4px 32px 14px 0;
+  color: var(--text-2);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.map-help-link {
+  width: max-content;
+  margin: -4px 0 14px;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 0 0 14px;
+  border-top: 0.5px solid #464640;
+  border-bottom: 0.5px solid #464640;
+  padding: 10px 0;
+}
+
+.map-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.map-legend-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
 }
 
 .map-empty {
@@ -2019,7 +2128,8 @@ p {
 .map-bar-type {
   font-size: 10px;
   font-weight: 700;
-  min-width: 10px;
+  min-width: 18px;
+  text-align: right;
 }
 
 .map-bar-track {
@@ -2182,6 +2292,35 @@ p {
   line-height: 1.6;
 }
 
+.ticket-info-modal {
+  width: min(520px, 100%);
+}
+
+.ticket-info-copy {
+  display: grid;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.ticket-info-copy section {
+  border-top: 0.5px solid #464640;
+  padding-top: 12px;
+}
+
+.ticket-info-copy h3 {
+  margin: 0 0 5px;
+  color: #f4f2ea;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.annotation-modal .ticket-info-copy p {
+  margin: 0;
+  color: #c8c4b8;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
 .modal-close {
   position: absolute;
   top: 14px;
@@ -2241,13 +2380,14 @@ p {
 
 .modal-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 8px;
   margin-top: 14px;
 }
 
 .modal-actions .primary-action,
-.modal-actions .ghost-action {
+.modal-actions .ghost-action,
+.modal-actions .support-help-link {
   display: inline-flex;
   height: 38px;
   align-items: center;
@@ -2934,6 +3074,15 @@ p {
 .theme-light .note-locate,
 .theme-light .note-sticker {
   border-color: var(--reader-paper-border);
+}
+
+.theme-light .ticket-export-control,
+.theme-light .ticket-export-control button:first-child {
+  border-color: var(--reader-paper-border);
+}
+
+.theme-light .ticket-export-control .ticket-info-button {
+  color: var(--reader-paper-text);
 }
 
 .theme-light .note-sticker {

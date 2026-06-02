@@ -1,0 +1,59 @@
+name: Website verification
+
+on:
+  pull_request:
+    paths:
+      - "app/**"
+      - "scripts/**"
+      - "website/**"
+      - ".github/workflows/website-verification.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install app dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Install script dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        working-directory: scripts
+        run: npx playwright install --with-deps chromium
+
+      - name: Start app preview
+        working-directory: app
+        run: |
+          npm run dev -- --host 127.0.0.1 --port 5173 &
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:5173 >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
+
+      - name: Capture current app screenshots
+        run: SHOTS_OUT=website/assets/shots SHOTS_LOCALES=en npm --prefix scripts run capture:shots
+
+      - name: Generate website pages
+        run: node website/scripts/build-i18n-pages.mjs
+
+      - name: Verify website content and anchors
+        run: npm --prefix scripts run verify:website
+
+      - name: Upload website screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-shots
+          path: website/assets/shots

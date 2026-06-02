@@ -11,9 +11,9 @@ const en: Messages = {
   openAnother: 'Open another Markdown',
   openSample: 'Open sample',
   clearFile: 'Close current file',
-  trialReady: 'Trial not started',
-  trialActive: 'Trial active',
-  trialExpired: 'Trial expired',
+  betaAccessReady: 'Beta access ready',
+  betaAccessActive: 'Beta access',
+  betaAccessEnded: 'Beta access ended',
   licensed: 'Licensed',
   lifetime: 'Lifetime',
   licenseRequired: 'License required',
@@ -26,7 +26,7 @@ const en: Messages = {
   chooseMarkdown: 'Choose Markdown',
   dropHint: 'Drop a `.md` file here.',
   typeError: 'Please choose a Markdown file ending in .md or .markdown.',
-  expiredOpenError: 'Your trial has expired. Activate a license to open local files.',
+  expiredOpenError: 'Beta access is not available. Contact support to open local files.',
   light: 'Light',
   dark: 'Dark',
   outline: 'Outline',
@@ -115,7 +115,40 @@ const en: Messages = {
   typeConfirmed: 'Confirmed',
   suggestedReplacement: 'Suggest replacement',
   suggestedReplacementHint: 'Optionally paste a replacement. Written into the exported ticket — never into the source.',
-  exportTicketJson: 'Export ticket JSON',
+  exportTicketJson: 'Export ticket (.json)',
+  backupJsonLabel: 'Backup annotations (.json)',
+  backupJsonTitle: 'Export the raw annotation data for backup or later re-import.',
+  ticketJsonTitle: 'Package your notes into an actionable ticket with source text, section context, and handling instructions for each annotation.',
+  ticketInfoTitle: 'What is a ticket?',
+  ticketInfoWhatTitle: 'What it contains',
+  ticketInfoWhatBody: 'A structured JSON file with the Markdown snapshot, the meaning of each annotation type, and each note with its section, context anchors, comment, and suggested replacement.',
+  ticketInfoHowTitle: 'How to use it',
+  ticketInfoHowBody: 'Paste the full ticket into ChatGPT, Claude, or an editor so they can revise the document section by section from your annotations.',
+  ticketInfoDiffTitle: 'How it differs from backup',
+  ticketInfoDiffBody: 'Backup annotations only store the marks themselves. Tickets also include the source text and processing instructions, so they are useful for AI or human editing.',
+  copyPromptTemplate: 'Copy prompt template',
+  copied: 'Copied',
+  ticketPromptTemplate: `You are a careful document editor. I will give you a JSON ticket containing my annotations on a Markdown document.
+Please process each annotation by its type and output the complete revised document:
+
+- clarify: Explain or clarify this point without changing the substance.
+- dispute: Review this point; it may be incorrect. Correct it when needed and explain why.
+- important: Keep and emphasize this key point.
+- confirmed: Already reviewed and correct. Keep it unchanged.
+
+Rules:
+1. Use document.markdownSnapshot as the source draft. Only change annotated passages and keep everything else unchanged.
+2. Locate each annotation with headingPath + quote + prefix/suffix. Prefer suggestedReplacement when present.
+3. Output the complete revised Markdown first, then add a change list explaining what you changed.
+
+Ticket:
+<paste the exported ticket JSON here>`,
+  notesEmptyFlow: 'Select text -> mark it as Clarify / Dispute / Important / Confirmed -> export a ticket for AI-assisted revision.',
+  mapDensityTitle: 'Section density by type',
+  mapIntro: 'See where confusion and disputes concentrate. Click a section name to jump there.',
+  mapLegend: 'Annotation type legend',
+  mapEmptyTyped: 'No typed annotations yet. Mark text with Clarify / Dispute / Important / Confirmed to see the map.',
+  supportReadMore: 'Read in Support',
   filterByType: 'Filter by type',
   filterAll: 'All',
 }
@@ -129,9 +162,9 @@ const zh: Messages = {
   openAnother: '打开其他 Markdown',
   openSample: '打开示例',
   clearFile: '关闭当前文件',
-  trialReady: '试用未开始',
-  trialActive: '试用中',
-  trialExpired: '试用已过期',
+  betaAccessReady: 'Beta access ready',
+  betaAccessActive: 'Beta access',
+  betaAccessEnded: 'Beta access ended',
   licensed: '已授权',
   lifetime: '终身授权',
   licenseRequired: '需要授权',
@@ -144,7 +177,7 @@ const zh: Messages = {
   chooseMarkdown: '选择 Markdown',
   dropHint: '将 `.md` 文件拖到这里。',
   typeError: '请选择以 .md 或 .markdown 结尾的 Markdown 文件。',
-  expiredOpenError: '试用已过期。激活授权后才能打开本地文件。',
+  expiredOpenError: 'Beta access is not available. Contact support to open local files.',
   light: '浅色',
   dark: '深色',
   outline: '目录',
@@ -233,7 +266,40 @@ const zh: Messages = {
   typeConfirmed: '已确认',
   suggestedReplacement: '建议替换',
   suggestedReplacementHint: '可选粘贴替换文本。会写入导出工单——不会写入源文件。',
-  exportTicketJson: '导出工单 JSON',
+  exportTicketJson: '导出工单 (.json)',
+  backupJsonLabel: '备份标注 (.json)',
+  backupJsonTitle: '导出全部标注的原始数据，用于备份或日后重新导入。',
+  ticketJsonTitle: '把批注打包成可执行工单，包含原文、章节上下文和每条批注的处理指令。',
+  ticketInfoTitle: '什么是工单？',
+  ticketInfoWhatTitle: '里面有什么',
+  ticketInfoWhatBody: '一份结构化 JSON，包含原文快照、四种标注类型的指令含义，以及每条批注的章节、上下文锚点、你的批注和建议替换。',
+  ticketInfoHowTitle: '怎么使用',
+  ticketInfoHowBody: '把整个工单内容粘贴给 ChatGPT、Claude 或编辑，让它按你的批注逐条修订全文。',
+  ticketInfoDiffTitle: '和备份标注的区别',
+  ticketInfoDiffBody: '备份只存标注本身；工单额外带上原文和处理指令，因此可以直接给 AI 或人工编辑使用。',
+  copyPromptTemplate: '复制提示词模板',
+  copied: '已复制',
+  ticketPromptTemplate: `你是一位严谨的文稿编辑。我会给你一份 JSON 工单，里面是我对一篇 Markdown 文档的批注。
+请按每条批注的类型处理，并输出完整修订后的文档：
+
+- clarify：解释或澄清这一点，不改变原意。
+- dispute：复核这一点；它可能不正确。必要时更正并说明原因。
+- important：保留并突出这个关键点。
+- confirmed：已经确认无误，保持不变。
+
+规则：
+1. 以 document.markdownSnapshot 作为原稿。只修改被批注的段落，其他内容保持不变。
+2. 用 headingPath + quote + prefix/suffix 定位每条批注。若有 suggestedReplacement，优先采用。
+3. 先输出完整修订后的 Markdown，再附上变更列表。
+
+工单：
+<在此粘贴导出的工单 JSON 文件内容>`,
+  notesEmptyFlow: '选中正文 -> 标为澄清 / 争议 / 重点 / 已确认 -> 导出工单，交给 AI 按你的批注修订全文。',
+  mapDensityTitle: '按类型查看章节密度',
+  mapIntro: '看出困惑与争议集中在哪些章节。点击章节名可跳转。',
+  mapLegend: '标注类型图例',
+  mapEmptyTyped: '还没有类型化标注。先把正文标为澄清 / 争议 / 重点 / 已确认，再查看地图。',
+  supportReadMore: '查看支持文档',
   filterByType: '按类型筛选',
   filterAll: '全部',
 }
@@ -247,9 +313,9 @@ const ja: Messages = {
   openAnother: '別の Markdown を開く',
   openSample: 'サンプルを開く',
   clearFile: '現在のファイルを閉じる',
-  trialReady: '試用は未開始',
-  trialActive: '試用中',
-  trialExpired: '試用期間終了',
+  betaAccessReady: 'Beta access ready',
+  betaAccessActive: 'Beta access',
+  betaAccessEnded: 'Beta access ended',
   licensed: 'ライセンス認証済み',
   lifetime: '永久ライセンス',
   licenseRequired: 'ライセンスが必要です',
@@ -262,7 +328,7 @@ const ja: Messages = {
   chooseMarkdown: 'Markdown を選択',
   dropHint: '`.md` ファイルをここにドロップしてください。',
   typeError: '.md または .markdown で終わる Markdown ファイルを選択してください。',
-  expiredOpenError: '試用期間が終了しました。ローカルファイルを開くにはライセンスを有効化してください。',
+  expiredOpenError: 'Beta access is not available. Contact support to open local files.',
   light: 'ライト',
   dark: 'ダーク',
   outline: '目次',
@@ -358,9 +424,9 @@ const ko: Messages = {
   openAnother: '다른 Markdown 열기',
   openSample: '샘플 열기',
   clearFile: '현재 파일 닫기',
-  trialReady: '체험판 시작 전',
-  trialActive: '체험판 사용 중',
-  trialExpired: '체험판 만료',
+  betaAccessReady: 'Beta access ready',
+  betaAccessActive: 'Beta access',
+  betaAccessEnded: 'Beta access ended',
   licensed: '라이선스 활성화됨',
   lifetime: '영구 라이선스',
   licenseRequired: '라이선스 필요',
@@ -373,7 +439,7 @@ const ko: Messages = {
   chooseMarkdown: 'Markdown 선택',
   dropHint: '`.md` 파일을 여기에 놓으세요.',
   typeError: '.md 또는 .markdown으로 끝나는 Markdown 파일을 선택하세요.',
-  expiredOpenError: '체험 기간이 만료되었습니다. 로컬 파일을 열려면 라이선스를 활성화하세요.',
+  expiredOpenError: 'Beta access is not available. Contact support to open local files.',
   light: '라이트',
   dark: '다크',
   outline: '목차',
@@ -469,9 +535,9 @@ const de: Messages = {
   openAnother: 'Andere Markdown-Datei öffnen',
   openSample: 'Beispiel öffnen',
   clearFile: 'Aktuelle Datei schließen',
-  trialReady: 'Testphase nicht gestartet',
-  trialActive: 'Testphase aktiv',
-  trialExpired: 'Testphase abgelaufen',
+  betaAccessReady: 'Beta access ready',
+  betaAccessActive: 'Beta access',
+  betaAccessEnded: 'Beta access ended',
   licensed: 'Lizenziert',
   lifetime: 'Dauerlizenz',
   licenseRequired: 'Lizenz erforderlich',
@@ -484,7 +550,7 @@ const de: Messages = {
   chooseMarkdown: 'Markdown wählen',
   dropHint: 'Lege eine `.md`-Datei hier ab.',
   typeError: 'Bitte wähle eine Markdown-Datei mit der Endung .md oder .markdown.',
-  expiredOpenError: 'Deine Testphase ist abgelaufen. Aktiviere eine Lizenz, um lokale Dateien zu öffnen.',
+  expiredOpenError: 'Beta access is not available. Contact support to open local files.',
   light: 'Hell',
   dark: 'Dunkel',
   outline: 'Gliederung',
@@ -580,9 +646,9 @@ const fr: Messages = {
   openAnother: 'Ouvrir un autre Markdown',
   openSample: 'Ouvrir l’exemple',
   clearFile: 'Fermer le fichier actuel',
-  trialReady: 'Essai non démarré',
-  trialActive: 'Essai actif',
-  trialExpired: 'Essai expiré',
+  betaAccessReady: 'Beta access ready',
+  betaAccessActive: 'Beta access',
+  betaAccessEnded: 'Beta access ended',
   licensed: 'Licence active',
   lifetime: 'Licence à vie',
   licenseRequired: 'Licence requise',
@@ -595,7 +661,7 @@ const fr: Messages = {
   chooseMarkdown: 'Choisir un Markdown',
   dropHint: 'Déposez un fichier `.md` ici.',
   typeError: 'Choisissez un fichier Markdown se terminant par .md ou .markdown.',
-  expiredOpenError: 'Votre essai a expiré. Activez une licence pour ouvrir des fichiers locaux.',
+  expiredOpenError: 'Beta access is not available. Contact support to open local files.',
   light: 'Clair',
   dark: 'Sombre',
   outline: 'Plan',

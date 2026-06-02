@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>wowMD Support - Guide et retours</title>
+    <meta name="description" content="Guide des types de relecture wowMD, survie inter-versions des annotations, Ticket JSON, contrôles du lecteur, export, paramètres, retours et dépannage.">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#1e1e1c">
+    <link rel="canonical" href="https://wowmd.app/fr/support.html">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/support.html">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/support.html">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/support.html">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/support.html">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/support.html">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/support.html">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/support.html">
+    <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website"><meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="wowMD Support - Guide et retours">
+    <meta property="og:description" content="Apprenez la relecture typée, le réancrage, le Ticket JSON, les contrôles du lecteur, l'export, les paramètres et le dépannage.">
+    <meta property="og:url" content="https://wowmd.app/fr/support.html">
+    <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
+    <meta property="og:image:alt" content="wowMD Understanding Map">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wowMD Support - Guide et retours">
+    <meta name="twitter:description" content="Relecture typée, survie inter-versions et Ticket JSON expliqués.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
+  </head>
+  <body class="site-v2 support-v2">
+    <header class="site-header v2-header">
+      <a class="logo-link" href="./" aria-label="wowMD home"><img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32"></a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="pro.html">wowMD Pro</a>
+        <a href="extension.html">Extension</a>
+        <a class="nav-pro" href="../app/">Ouvrir l'appli</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/fr.svg" alt=""><span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" href="../support.html"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/support.html"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/support.html"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/support.html"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/support.html"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/support.html" aria-selected="true"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="support-layout">
+      <aside class="support-sidebar" aria-label="Support navigation">
+        <strong>Concepts</strong>
+        <a href="#typed-review">Relecture typée</a>
+        <a href="#reanchor">Survie inter-versions</a>
+        <a href="#ticket">Ticket JSON</a>
+        <strong>Utiliser wowMD</strong>
+        <a href="#reader">Lecteur</a>
+        <a href="#annotate">Annoter</a>
+        <a href="#map">Carte de compréhension</a>
+        <a href="#export">Export</a>
+        <a href="#settings">Paramètres</a>
+        <strong>Aide</strong>
+        <a href="#feedback">Retours</a>
+        <a href="#faq">FAQ</a>
+      </aside>
+
+      <main class="support-doc">
+        <section class="support-hero" aria-labelledby="support-title">
+          <p class="section-label">Support</p>
+          <h1 id="support-title">Guide et retours pour la boucle de relecture.</h1>
+          <p class="hero-subtitle">Commencez par les trois concepts qui distinguent wowMD : la relecture typée, la survie inter-versions et le ticket que vous pouvez transmettre à une IA.</p>
+        </section>
+
+        <section class="doc-section" id="typed-review">
+          <h2>Relecture typée : quatre jugements, pas seulement des couleurs</h2>
+          <p>Quand vous marquez du texte dans wowMD, vous enregistrez un jugement avec une action implicite. Ces types alimentent le panneau de notes, la Carte de compréhension et la légende du Ticket JSON.</p>
+          <table class="type-table"><tbody>
+            <tr><th><span class="type-dot clarify"></span><span>À clarifier</span></th><td>Expliquez ou clarifiez ce point sans en changer le fond.</td></tr>
+            <tr><th><span class="type-dot dispute"></span><span>Contesté</span></th><td>Examinez cette affirmation ; elle pourrait être incorrecte et nécessiter une correction.</td></tr>
+            <tr><th><span class="type-dot important"></span><span>Important</span></th><td>Conservez et soulignez ce point clé.</td></tr>
+            <tr><th><span class="type-dot confirmed"></span><span>Confirmé</span></th><td>Vérifié et correct ; aucune action nécessaire.</td></tr>
+          </tbody></table>
+        </section>
+
+        <section class="doc-section" id="reanchor">
+          <h2>Survie inter-versions</h2>
+          <p>Quand le document source change, wowMD tente de réancrer vos annotations au même passage en utilisant la citation sélectionnée et le contexte environnant. Si un passage disparaît vraiment, la marque devient orpheline et peut être récupérée manuellement avec Rechercher.</p>
+          <div class="doc-callout">Le réancrage est non destructif. wowMD recalcule les positions des annotations ; il ne modifie pas le fichier source.</div>
+        </section>
+
+        <section class="doc-section" id="ticket">
+          <h2>Ticket JSON : vos jugements comme ordre de travail pour l'IA</h2>
+          <p>Un ticket regroupe l'instantané du document, une légende bilingue des types, le contexte de section, les citations sélectionnées, les notes et les remplacements suggérés. Il diffère du Backup JSON, qui stocke les annotations brutes pour sauvegarde et réimportation.</p>
+          <ol class="steps-list">
+            <li>Cliquez</li>
+            <li>Ouvrez l'outil IA de votre choix.</li>
+            <li>Collez le prompt ci-dessous, puis le contenu du ticket.</li>
+          </ol>
+          <pre class="prompt-block"><code>Vous êtes un éditeur minutieux. Je vous donne un ticket JSON contenant mes annotations sur un document Markdown.
+Traitez chaque entrée selon son type et produisez le document complet révisé.
+- clarify : expliquez ou clarifiez sans changer le fond
+- dispute : examinez, corrigez si erroné et expliquez pourquoi
+- important : conservez et soulignez
+- confirmed : laissez tel quel
+Utilisez document.markdownSnapshot comme base. Localisez chaque entrée par headingPath, quote, prefix et suffix. Préférez suggestedReplacement lorsqu'il est fourni.
+Ticket :
+&amp;lt;collez ici le Ticket JSON exporté&amp;gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="reader">
+          <h2>Lecteur</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Reader</strong></div><img src="../assets/shots/reader.png" alt="wowMD reader with outline, Markdown document, and notes panel"></figure>
+          <div class="reference-list">
+            <p>Plan</p>
+            <p>Pliage</p>
+            <p>Recherche</p>
+            <p>Code, tableaux, thème et taille de police</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="annotate">
+          <h2>Annoter</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Annotate</strong></div><img src="../assets/shots/annotate.png" alt="Typed review highlights and notes panel with ticket export"></figure>
+          <div class="reference-list">
+            <p>Barre d'outils de sélection</p>
+            <p>Notes</p>
+            <p>Filtrer par type</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="map">
+          <h2>Carte de compréhension</h2>
+          <p>Chaque ligne est une section. Les barres colorées indiquent combien de marques À clarifier, Contesté, Important et Confirmé elle contient, pour que vous voyiez où se concentrent les confusions ou les contestations.</p>
+          <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Understanding Map</strong></div><img src="../assets/shots/map.png" alt="Understanding Map with per-section review type density"></figure>
+        </section>
+
+        <section class="doc-section" id="export">
+          <h2>Export</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Export</strong></div><img src="../assets/shots/export.png" alt="Export workspace with HTML preview and include options"></figure>
+          <div class="reference-list">
+            <p>Export HTML</p>
+            <p>Backup JSON</p>
+            <p>Ticket JSON</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="settings">
+          <h2>Paramètres</h2>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Settings</strong></div><img src="../assets/shots/settings.png" alt="Settings panel with reader and export defaults"></figure>
+          <div class="reference-list">
+            <p>Thème et taille de police</p>
+            <p>Valeurs d'export par défaut</p>
+            <p>Langue</p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="feedback">
+          <h2>Retours</h2>
+          <p>Utilisez cette section pour les bugs, les formulations peu claires, le matériel de guide manquant ou les demandes de flux de travail.</p>
+          <form class="feedback-card feedback-card-primary support-feedback-form" data-feedback-form data-feedback-type="feedback">
+            <input type="hidden" name="type" value="feedback"><input type="hidden" name="source" value="support_page"><input class="feedback-honeypot" type="text" name="company" tabindex="-1" autocomplete="off">
+            <span hidden data-feedback-status="emptyFeedback">Veuillez d'abord ajouter une courte note.</span>
+            <span hidden data-feedback-status="sending">Envoi en cours...</span>
+            <span hidden data-feedback-status="success">Reçu. Merci.</span>
+            <span hidden data-feedback-status="error">Envoi impossible pour l'instant. Veuillez réessayer plus tard.</span>
+            <label class="field"><span>Votre message</span>
+              <textarea name="message" rows="5" minlength="1" maxlength="500" data-counted-field data-count-max="500" placeholder="What happened, or what would help?"></textarea>
+              <small class="field-note"><span data-field-counter>0 / 500</span></small>
+            </label>
+            <label class="field"><span>E-mail (facultatif)</span>
+              <input type="email" name="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+            </label>
+            <button class="button button-primary" type="submit">Envoyer le retour</button>
+            <p class="form-status" data-form-status aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="doc-section" id="faq">
+          <h2>FAQ et dépannage</h2>
+          <div class="faq-list">
+            <div class="faq-item"><button class="faq-question" type="button">Mes surlignages ont bougé après avoir modifié le fichier. Que s'est-il passé ?</button><div class="faq-answer"><p>wowMD réancre les annotations quand la source change. Si un passage est introuvable, utilisez Rechercher dans le panneau de notes pour le récupérer manuellement.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">Est-ce que quelque chose est téléversé ?</button><div class="faq-answer"><p>Non. Le flux de relecture est local avant tout. Les fichiers et annotations restent dans votre navigateur, sauf si vous les exportez et les partagez vous-même.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">Quel JSON dois-je utiliser ?</button><div class="faq-answer"><p>Utilisez Backup JSON pour sauvegarder ou réimporter les données d'annotation. Utilisez Ticket JSON quand vous voulez qu'une IA ou un éditeur agisse sur vos jugements typés.</p></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-brand"><img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24"><p>wowMD Support</p></div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="privacy.html">Confidentialité</a>
+        <a href="terms.html">Conditions</a>
+        <a class="support-link" href="support.html">Support</a>
+      </nav>
+    </footer>
+
+    <div class="feedback-modal" data-feedback-modal hidden>
+      <div class="feedback-modal-backdrop"></div>
+      <div class="feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title">
+        <p class="section-label">Reçu</p>
+        <h2 id="feedback-modal-title">Merci d'aider à améliorer wowMD.</h2>
+        <p>Nous lisons chaque note. Vous allez retourner à l'accueil dans quelques secondes.</p>
+        <button class="button button-primary" type="button" data-feedback-modal-confirm>Retour à l'accueil</button>
+      </div>
+    </div>
+    <script src="../script.js?v=20260601-rebuild"></script>
+  </body>
+</html>

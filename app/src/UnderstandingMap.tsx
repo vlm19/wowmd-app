@@ -7,6 +7,8 @@ type Props = {
   tocItems: TocItem[]
   onClose: () => void
   onJumpToHeading: (headingId: string) => void
+  supportBaseHref: string
+  t: (key: string) => string
 }
 
 type SectionDensity = {
@@ -62,68 +64,83 @@ const TYPE_COLORS: Record<AnnotationType, string> = {
   confirmed: 'var(--highlight-green)',
 }
 
-const TYPE_LABELS: Record<AnnotationType, string> = {
-  clarify: 'Clarify',
-  dispute: 'Dispute',
-  important: 'Important',
-  confirmed: 'Confirmed',
+const TYPE_LABEL_KEYS: Record<AnnotationType, string> = {
+  clarify: 'typeClarify',
+  dispute: 'typeDispute',
+  important: 'typeImportant',
+  confirmed: 'typeConfirmed',
 }
 
-export default function UnderstandingMap({ annotations, tocItems, onClose, onJumpToHeading }: Props) {
+export default function UnderstandingMap({ annotations, tocItems, onClose, onJumpToHeading, supportBaseHref, t }: Props) {
   const sections = buildDensityMap(annotations, tocItems)
   const maxTotal = Math.max(1, ...sections.map((s) => s.total))
   const hasData = sections.some((s) => s.total > 0)
+  const types: AnnotationType[] = ['clarify', 'dispute', 'important', 'confirmed']
 
   return (
     <div className="annotation-modal-layer" role="presentation">
-      <section className="annotation-modal understanding-map" role="dialog" aria-modal="true" aria-label="Understanding Map">
-        <button className="modal-close" type="button" aria-label="Close" onClick={onClose}>
+      <section className="annotation-modal understanding-map" role="dialog" aria-modal="true" aria-label={t('map')}>
+        <button className="modal-close" type="button" aria-label={t('close')} onClick={onClose}>
           <span className="icon-mask icon-x" aria-hidden="true" />
         </button>
-        <p className="eyebrow">Understanding Map</p>
-        <h2>Section density by type</h2>
+        <p className="eyebrow">{t('map')}</p>
+        <h2>{t('mapDensityTitle')}</h2>
+        <p className="map-intro">{t('mapIntro')}</p>
+        <a className="support-help-link map-help-link" href={`${supportBaseHref}#map`} target="_blank" rel="noreferrer">
+          {t('supportReadMore')}
+        </a>
 
         {!hasData ? (
-          <p className="map-empty">No typed annotations yet. Mark text with Clarify / Dispute / Important / Confirmed to see the map.</p>
+          <p className="map-empty">{t('mapEmptyTyped')}</p>
         ) : (
-          <div className="map-sections">
-            {sections.filter((s) => s.total > 0).map((section) => (
-              <div key={section.headingId} className="map-section-row">
-                <button
-                  className="map-section-label"
-                  type="button"
-                  style={{ paddingLeft: `${(section.level - 1) * 14}px` }}
-                  onClick={() => onJumpToHeading(section.headingId)}
-                >
-                  {section.headingText}
-                </button>
-                <div className="map-bars">
-                  {(['clarify', 'dispute', 'important', 'confirmed'] as const).map((type) => (
-                    <div key={type} className="map-bar-row" title={`${TYPE_LABELS[type]}: ${section[type]}`}>
-                      <span className="map-bar-type" style={{ color: TYPE_COLORS[type] }}>
-                        {TYPE_LABELS[type].charAt(0)}
-                      </span>
-                      <span className="map-bar-track">
+          <>
+            <div className="map-legend" aria-label={t('mapLegend')}>
+              {types.map((type) => (
+                <span key={type} className="map-legend-item">
+                  <span className="map-legend-swatch" style={{ backgroundColor: TYPE_COLORS[type] }} />
+                  <span>{t(TYPE_LABEL_KEYS[type])}</span>
+                </span>
+              ))}
+            </div>
+            <div className="map-sections">
+              {sections.filter((s) => s.total > 0).map((section) => (
+                <div key={section.headingId} className="map-section-row">
+                  <button
+                    className="map-section-label"
+                    type="button"
+                    style={{ paddingLeft: `${(section.level - 1) * 14}px` }}
+                    onClick={() => onJumpToHeading(section.headingId)}
+                  >
+                    {section.headingText}
+                  </button>
+                  <div className="map-bars">
+                    {types.map((type) => (
+                      <span key={type} className="map-bar-row" title={`${t(TYPE_LABEL_KEYS[type])}: ${section[type]}`}>
+                        <span className="map-bar-type" style={{ color: TYPE_COLORS[type] }}>
+                          {t(TYPE_LABEL_KEYS[type]).slice(0, 2)}
+                        </span>
+                        <span className="map-bar-track">
+                          <span
+                            className="map-bar-fill"
+                            style={{
+                              width: `${(section[type] / maxTotal) * 100}%`,
+                              backgroundColor: TYPE_COLORS[type],
+                            }}
+                          />
+                        </span>
                         <span
-                          className="map-bar-fill"
-                          style={{
-                            width: `${(section[type] / maxTotal) * 100}%`,
-                            backgroundColor: TYPE_COLORS[type],
-                          }}
-                        />
+                          className="map-bar-count"
+                          style={section[type] > 0 ? { color: TYPE_COLORS[type] } : undefined}
+                        >
+                          {section[type]}
+                        </span>
                       </span>
-                      <span
-                        className="map-bar-count"
-                        style={section[type] > 0 ? { color: TYPE_COLORS[type] } : undefined}
-                      >
-                        {section[type]}
-                      </span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         )}
       </section>
     </div>

@@ -15,6 +15,16 @@ import { downloadTextFile, safeExportFilename } from '../exportHtml'
 import { renderMarkdown } from '../markdown'
 import type { OpenDocument, SelectionAnchorMetadata } from '../types'
 
+/**
+ * Re-anchor every annotation against a (possibly edited) version of the document.
+ * Runs on every open — including the cross-version paths: same-URL re-import,
+ * "save as new version", and reopening a local file under a matching name.
+ *
+ * Orphaned annotations are re-evaluated rather than skipped, so a later version
+ * that restores deleted text revives them automatically. The result carries a
+ * confidence tier: `context` hits set `needsReview` (position recovered, wording
+ * changed), `lost` hits set `orphaned`, `exact` hits clear both.
+ */
 export function reanchorAgainstMarkdown(
   items: Annotation[],
   markdown: string,
@@ -26,17 +36,23 @@ export function reanchorAgainstMarkdown(
   const now = new Date().toISOString()
 
   return items.map((annotation): Annotation => {
-    if (annotation.orphaned) return annotation
     const outcome = reanchorAnnotationOffset(renderedText, annotation)
-    if (!outcome.matched) {
-      return { ...annotation, orphaned: true, documentFingerprint: fingerprint, updatedAt: now }
-    }
-    if (outcome.offset === annotation.offset && annotation.documentFingerprint === fingerprint) {
-      return annotation
-    }
+    const nextOrphaned = outcome.confidence === 'lost'
+    const nextNeedsReview = outcome.confidence === 'context'
+
+    const unchanged =
+      annotation.documentFingerprint === fingerprint &&
+      annotation.orphaned === nextOrphaned &&
+      (annotation.needsReview ?? false) === nextNeedsReview &&
+      (nextOrphaned || outcome.offset === annotation.offset)
+    if (unchanged) return annotation
+
     return {
       ...annotation,
-      offset: outcome.offset,
+      // Keep the last known offset when lost so manual recovery has a starting point.
+      offset: nextOrphaned ? annotation.offset : outcome.offset,
+      orphaned: nextOrphaned,
+      needsReview: nextNeedsReview,
       documentFingerprint: fingerprint,
       updatedAt: now,
     }
@@ -179,7 +195,7 @@ export function useAnnotations({
     (id: string, candidate: ReanchorCandidate) => {
       const next = annotations.map((a) =>
         a.id === id
-          ? { ...a, offset: candidate.start, orphaned: false, updatedAt: new Date().toISOString() }
+          ? { ...a, offset: candidate.start, orphaned: false, needsReview: false, updatedAt: new Date().toISOString() }
           : a,
       )
       setAnnotations(next)

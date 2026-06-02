@@ -9,17 +9,18 @@ const proTemplatePath = path.join(root, "pro-template.html");
 const privacyTemplatePath = path.join(root, "privacy-template.html");
 const termsTemplatePath = path.join(root, "terms-template.html");
 const feedbackTemplatePath = path.join(root, "feedback-template.html");
+const supportTemplatePath = path.join(root, "support-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
 const sitemapLastmod = "2026-05-27";
 
 const languages = [
-  { code: "en", dir: "", flag: "gb.svg" },
-  { code: "zh", dir: "zh", flag: "cn.svg" },
-  { code: "ja", dir: "ja", flag: "jp.svg" },
-  { code: "ko", dir: "ko", flag: "kr.svg" },
-  { code: "de", dir: "de", flag: "de.svg" },
-  { code: "fr", dir: "fr", flag: "fr.svg" }
+  { code: "en", dir: "", flag: "gb.svg", name: "EN" },
+  { code: "zh", dir: "zh", flag: "cn.svg", name: "ZH" },
+  { code: "ja", dir: "ja", flag: "jp.svg", name: "JA" },
+  { code: "ko", dir: "ko", flag: "kr.svg", name: "KO" },
+  { code: "de", dir: "de", flag: "de.svg", name: "DE" },
+  { code: "fr", dir: "fr", flag: "fr.svg", name: "FR" }
 ];
 
 const landingTemplate = fs.readFileSync(landingTemplatePath, "utf8");
@@ -28,6 +29,7 @@ const proTemplate = fs.readFileSync(proTemplatePath, "utf8");
 const privacyTemplate = fs.readFileSync(privacyTemplatePath, "utf8");
 const termsTemplate = fs.readFileSync(termsTemplatePath, "utf8");
 const feedbackTemplate = fs.readFileSync(feedbackTemplatePath, "utf8");
+const supportTemplate = fs.readFileSync(supportTemplatePath, "utf8");
 
 const escapeHtml = (value) =>
   String(value)
@@ -46,8 +48,14 @@ const replaceElementText = (html, key, value) => {
 
 const replaceContentAttr = (html, key, value) => {
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pattern = new RegExp(`(<meta\\b[^>]*content=")[^"]*("[^>]*data-i18n-content="${escapedKey}"[^>]*>)`, "gi");
-  return html.replace(pattern, `$1${escapeAttr(value)}$2`);
+  // Match the whole <meta> tag carrying data-i18n-content="key" (attribute order
+  // independent), then replace its content="..." value.
+  const tagPattern = new RegExp(`<meta\\b[^>]*\\bdata-i18n-content="${escapedKey}"[^>]*>`, "gi");
+  // Require whitespace before `content=` so it targets the real content attribute,
+  // not the `content=` substring inside `data-i18n-content=`.
+  return html.replace(tagPattern, (tag) =>
+    tag.replace(/(\scontent=")[^"]*(")/i, `$1${escapeAttr(value)}$2`),
+  );
 };
 
 const replacePlaceholderAttr = (html, key, value) => {
@@ -90,6 +98,8 @@ const pagePath = (dir, fileName = "index.html") => {
 };
 
 const feedbackUrl = () => "feedback.html";
+const supportUrl = () => "support.html";
+const supportUrlFor = (dir, code) => (code === "zh" || !dir ? "support.html" : "../support.html");
 
 const marketingPages = {
   "index.html": {
@@ -115,7 +125,7 @@ const marketingPages = {
   }
 };
 
-const writePage = ({ code, dir, flag }, fileName = "index.html") => {
+const writePage = ({ code, dir, flag, name }, fileName = "index.html") => {
   const dataPath = path.join(i18nDir, `${code}.json`);
   const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
   const base = dir ? "../" : "";
@@ -157,13 +167,17 @@ const writePage = ({ code, dir, flag }, fileName = "index.html") => {
     privacyUrl: "privacy.html",
     termsUrl: "terms.html",
     feedbackUrl: feedbackUrl(dir),
+    supportUrl: supportUrlFor(dir, code),
     currentFlag: `${base}assets/flags/${flag}`,
+    languageName: name,
     localeUrlEn: localeUrl(dir, "", fileName),
     localeUrlZh: localeUrl(dir, "zh", fileName),
     localeUrlJa: localeUrl(dir, "ja", fileName),
     localeUrlKo: localeUrl(dir, "ko", fileName),
     localeUrlDe: localeUrl(dir, "de", fileName),
     localeUrlFr: localeUrl(dir, "fr", fileName),
+    localeSupportUrlEn: localeFileUrl(dir, "", "support.html"),
+    localeSupportUrlZh: localeFileUrl(dir, "zh", "support.html"),
     metaTitle: escapeAttr(metaTitle),
     metaDescription: escapeAttr(metaDescription),
     privacyMetaTitle: escapeAttr(metaTitle),
@@ -183,21 +197,12 @@ const writePage = ({ code, dir, flag }, fileName = "index.html") => {
 };
 
 const writeFeedbackPage = ({ code, dir, flag }) => {
-  const data = JSON.parse(fs.readFileSync(path.join(i18nDir, `${code}.json`), "utf8"));
   const base = dir ? "../" : "";
   const outputDir = dir ? path.join(root, dir) : root;
   const outputPath = path.join(outputDir, "feedback.html");
   const canonicalUrl = `${siteUrl}/${pagePath(dir, "feedback.html")}`;
-  const metaTitle = data["feedback.metaTitle"];
-  const metaDescription = data["feedback.metaDescription"];
 
   let html = feedbackTemplate;
-  for (const [key, value] of Object.entries(data)) {
-    html = replaceElementText(html, key, value);
-    html = replaceContentAttr(html, key, value);
-    html = replacePlaceholderAttr(html, key, value);
-  }
-
   html = applyTemplateVars(html, {
     lang: code,
     base,
@@ -205,17 +210,49 @@ const writeFeedbackPage = ({ code, dir, flag }) => {
     homeUrl: "./",
     privacyUrl: "privacy.html",
     termsUrl: "terms.html",
+    supportUrl: supportUrlFor(dir, code),
+    currentFlag: `${base}assets/flags/${flag}`
+  });
+
+  fs.mkdirSync(outputDir, { recursive: true });
+  fs.writeFileSync(outputPath, html, "utf8");
+};
+
+const writeSupportPage = ({ code, dir, flag, name }) => {
+  const data = JSON.parse(fs.readFileSync(path.join(i18nDir, `${code}.json`), "utf8"));
+  const base = dir ? "../" : "";
+  const outputDir = dir ? path.join(root, dir) : root;
+  const outputPath = path.join(outputDir, "support.html");
+  const canonicalUrl = `${siteUrl}/${pagePath(dir, "support.html")}`;
+
+  let html = supportTemplate;
+  for (const [key, value] of Object.entries(data)) {
+    html = replaceElementText(html, key, value);
+    html = replaceContentAttr(html, key, value);
+    html = replacePlaceholderAttr(html, key, value);
+  }
+  html = applyTemplateVars(html, {
+    lang: code,
+    base,
+    canonicalUrl,
+    homeUrl: "./",
+    extensionUrl: "extension.html",
+    proUrl: "pro.html",
+    appUrl: `${base}app/`,
+    privacyUrl: "privacy.html",
+    termsUrl: "terms.html",
+    supportUrl: "support.html",
     currentFlag: `${base}assets/flags/${flag}`,
-    localeFeedbackUrlEn: localeFileUrl(dir, "", "feedback.html"),
-    localeFeedbackUrlZh: localeFileUrl(dir, "zh", "feedback.html"),
-    localeFeedbackUrlJa: localeFileUrl(dir, "ja", "feedback.html"),
-    localeFeedbackUrlKo: localeFileUrl(dir, "ko", "feedback.html"),
-    localeFeedbackUrlDe: localeFileUrl(dir, "de", "feedback.html"),
-    localeFeedbackUrlFr: localeFileUrl(dir, "fr", "feedback.html"),
-    feedbackMetaTitle: escapeAttr(metaTitle),
-    feedbackMetaDescription: escapeAttr(metaDescription)
+    languageName: name,
+    localeUrlEn: localeFileUrl(dir, "", "support.html"),
+    localeUrlZh: localeFileUrl(dir, "zh", "support.html"),
+    localeUrlJa: localeFileUrl(dir, "ja", "support.html"),
+    localeUrlKo: localeFileUrl(dir, "ko", "support.html"),
+    localeUrlDe: localeFileUrl(dir, "de", "support.html"),
+    localeUrlFr: localeFileUrl(dir, "fr", "support.html")
   });
   html = setSelectedLanguage(html, code);
+  html = html.replaceAll(/ data-i18n-content="[^"]+"/g, "");
   html = html.replaceAll(/ data-i18n-placeholder="[^"]+"/g, "");
   html = html.replaceAll(/ data-i18n="[^"]+"/g, "");
 
@@ -230,6 +267,7 @@ for (const language of languages) {
   writePage(language, "privacy.html");
   writePage(language, "terms.html");
   writeFeedbackPage(language);
+  writeSupportPage(language);
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -239,9 +277,9 @@ ${languages
     { loc: dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`, priority: dir ? "0.8" : "1.0" },
     { loc: `${siteUrl}/${pagePath(dir, "extension.html")}`, priority: "0.9" },
     { loc: `${siteUrl}/${pagePath(dir, "pro.html")}`, priority: "0.9" },
+    ...(dir === "" || dir === "zh" ? [{ loc: `${siteUrl}/${pagePath(dir, "support.html")}`, priority: "0.7" }] : []),
     { loc: `${siteUrl}/${pagePath(dir, "privacy.html")}`, priority: "0.6" },
-    { loc: `${siteUrl}/${pagePath(dir, "terms.html")}`, priority: "0.6" },
-    { loc: `${siteUrl}/${pagePath(dir, "feedback.html")}`, priority: "0.7" }
+    { loc: `${siteUrl}/${pagePath(dir, "terms.html")}`, priority: "0.6" }
   ])
   .map(({ loc, priority }) => {
     return `  <url>
@@ -257,4 +295,4 @@ ${languages
 
 fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap, "utf8");
 
-console.log(`Generated ${languages.length * 6} localized pages.`);
+console.log(`Generated ${languages.length * 6 + 2} localized pages.`);

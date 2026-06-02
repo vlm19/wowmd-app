@@ -3,11 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>wowMD Pro - A non-destructive review layer for Markdown</title>
-    <meta
-      name="description"
-      content="A local-first workspace. Open Markdown files, read with structure, highlight, annotate, export as HTML or JSON. Your data, your rules. AI is your choice."
-    >
+    <title>wowMD Pro - The review layer between an AI draft and what you ship</title>
+    <meta name="description" content="Read Markdown with structure, judge with four review types, and deliver HTML, Backup JSON, or a Ticket JSON work order for AI. Local-first and non-destructive.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/pro.html">
@@ -21,218 +18,181 @@
     <link rel="icon" href="assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" content="wowMD Pro - A non-destructive review layer for Markdown">
-    <meta
-      property="og:description"
-      content="Open Markdown, read with structure, annotate, export. AI is your choice, on your terms."
-    >
+    <meta property="og:title" content="wowMD Pro - The review layer between an AI draft and what you ship">
+    <meta property="og:description" content="Four review types, Understanding Map, version history, and a Ticket JSON work order for AI.">
     <meta property="og:url" content="https://wowmd.app/pro.html">
-    <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
-    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
+    <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="wowMD Pro - Open, read, annotate, export">
-    <meta name="twitter:description" content="A local-first workspace. Open, read, annotate, export.">
-    <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <meta name="twitter:title" content="wowMD Pro - The Markdown review layer">
+    <meta name="twitter:description" content="HTML for people. Backup JSON for yourself. Ticket JSON for AI.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Web Browser","description":"A non-destructive review layer for Markdown. Read, annotate, export — locally, privately, under your control.","url":"https://wowmd.app/pro.html","image":"https://wowmd.app/assets/hero-demo-poster.jpg","softwareVersion":"0.1.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/PreOrder"}}
+      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"https://wowmd.app/pro.html","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
     </script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260601-webapp-lang">
   </head>
-  <body>
-    <header class="site-header">
-      <a class="logo-link" href="index.html" aria-label="wowMD home">
+  <body class="site-v2 pro-v2">
+    <header class="site-header v2-header">
+      <a class="logo-link" href="./" aria-label="wowMD home">
         <img src="assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
       </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#reader">Reader</a>
+      <nav class="site-nav pro-nav" aria-label="Primary">
+        <a href="#read">Read</a>
         <a href="#annotate">Annotate</a>
-        <a href="#export">Export</a>
-        <a href="#comparison">Compare</a>
+        <a href="#map">Map</a>
+        <a href="#deliver">Deliver</a>
+        <a href="#versions">Versions</a>
+        <a href="#compare">Compare</a>
         <a href="#faq">FAQ</a>
         <a class="nav-ext" href="extension.html">Extension</a>
       </nav>
       <div class="language-picker" data-language-picker>
-        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector"><img class="flag" data-current-flag src="assets/flags/gb.svg" alt=""><span class="language-arrow" aria-hidden="true"></span></button>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="assets/flags/gb.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
         <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
-          <a role="option" data-language-option="en" aria-label="English" href="pro.html" aria-selected="true"><img class="flag" src="assets/flags/gb.svg" alt=""></a>
-          <a role="option" data-language-option="zh" aria-label="Chinese" href="zh/pro.html"><img class="flag" src="assets/flags/cn.svg" alt=""></a>
-          <a role="option" data-language-option="ja" aria-label="Japanese" href="ja/pro.html"><img class="flag" src="assets/flags/jp.svg" alt=""></a>
-          <a role="option" data-language-option="ko" aria-label="Korean" href="ko/pro.html"><img class="flag" src="assets/flags/kr.svg" alt=""></a>
-          <a role="option" data-language-option="de" aria-label="Deutsch" href="de/pro.html"><img class="flag" src="assets/flags/de.svg" alt=""></a>
-          <a role="option" data-language-option="fr" aria-label="French" href="fr/pro.html"><img class="flag" src="assets/flags/fr.svg" alt=""></a>
+          <a role="option" data-language-option="en" href="pro.html" aria-selected="true"><img class="flag" src="assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="zh/pro.html"><img class="flag" src="assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="ja/pro.html"><img class="flag" src="assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="ko/pro.html"><img class="flag" src="assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="de/pro.html"><img class="flag" src="assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="fr/pro.html"><img class="flag" src="assets/flags/fr.svg" alt=""><span>French</span></a>
         </div>
       </div>
     </header>
 
-    <main>
-      <section class="hero pro-section" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="section-label">wowMD Pro</p>
-          <h1 id="hero-title">Open Markdown. Read with structure. Annotate what matters. Export on your terms.</h1>
-          <p class="hero-subtitle">A non-destructive review layer that stays out of your way. Open from GitHub or your device. Read with outline, search, and syntax-highlighted code. Highlight and annotate — all stored locally. Export as HTML to share with people, or as JSON — use AI or don't, your call. Nothing is uploaded. Nothing is written back to your files.</p>
-          <div class="hero-actions">
-            <a class="button button-primary button-large" href="app/">Open wowMD Pro</a>
+    <main class="v2-wrap">
+      <section class="pro-hero-v2" aria-labelledby="pro-title">
+        <div class="pro-hero-copy">
+          <p class="section-label">wowMD Pro - Free during beta</p>
+          <h1 id="pro-title">The review layer between an AI draft and what you ship.</h1>
+          <p class="hero-subtitle">AI writes the draft. You read with structure, judge what matters with four review types, then deliver HTML for people or a ticket an AI can execute. Local-first, non-destructive, nothing uploaded.</p>
+          <div class="hero-actions"><a class="button button-primary button-large" href="app/">Open wowMD Pro</a></div>
+          <div class="hero-badges" aria-label="Product facts">
+            <span>Local-first</span>
+            <span>Non-destructive</span>
+            <span>Four review types</span>
+            <span>Ticket JSON for AI</span>
           </div>
         </div>
+        <figure class="shot-frame hero-shot">
+          <div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>spec.md - wowMD Pro</strong></div>
+          <img src="assets/shots/annotate.png" alt="wowMD Pro showing typed highlights and the notes panel">
+        </figure>
       </section>
 
-      <section class="section pro-section reveal" id="reader" aria-labelledby="reader-title">
+      <section class="section pro-section" id="read" aria-labelledby="read-title">
         <div class="section-heading">
-          <p class="section-label">Reader</p>
-          <h2 id="reader-title">Read long Markdown without losing structure.</h2>
-          <p class="section-subtitle">Open .md files from GitHub or your device. Every document gets an interactive outline, section folding, syntax-highlighted code, scrollable tables, and full-text search.</p>
+          <p class="section-label">Read</p>
+          <h2 id="read-title">Read long Markdown without losing structure.</h2>
+          <p class="section-subtitle">Open local .md or .markdown files, continue from the extension, then navigate with outline, folding, syntax-highlighted code, wide-table inner scroll, full-text search, themes, and adjustable font size.</p>
         </div>
-        <div class="feature-grid">
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-blue" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-            </span>
-            <h3>Document outline</h3>
-            <p>Navigate by heading structure. The outline tracks your scroll position. Click any heading to jump.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-amber" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-            </span>
-            <h3>Section folding</h3>
-            <p>Collapse H2 sections you've read. Keep your focus on what you're working through.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-purple" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
-            </span>
-            <h3>Code highlighting</h3>
-            <p>Every code block gets syntax highlighting. Copy with one click. Horizontal scroll prevents line wrapping.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-coral" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
-            </span>
-            <h3>Table scrolling</h3>
-            <p>Wide tables scroll inside the reader instead of breaking the layout. No more side-scrolling the whole page.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-teal" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
-            </span>
-            <h3>Full-text search</h3>
-            <p>Find any term in the current document. Highlighted matches with count and previous/next navigation.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-green" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            </span>
-            <h3>Light &amp; dark themes</h3>
-            <p>Read comfortably day or night. Defaults to dark. Reader font size is adjustable.</p>
-          </article>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - reader</strong></div><img src="assets/shots/reader.png" alt="wowMD Pro reader with document outline, Markdown content, and notes panel"></figure>
+        <div class="feature-grid-v2">
+          <article><h3>Document outline</h3><p>Navigate by heading structure. The outline tracks your scroll position.</p></article>
+          <article><h3>Section folding</h3><p>Collapse sections you have read and keep focus on the current passage.</p></article>
+          <article><h3>Code and tables</h3><p>Syntax highlighting, one-click copy, and inner scrolling for wide tables.</p></article>
+          <article><h3>Search and themes</h3><p>Find matches with count and prev/next controls. Read in light or dark at your chosen font size.</p></article>
         </div>
       </section>
 
-      <section class="section pro-section reveal" id="annotate" aria-labelledby="annotate-title">
+      <section class="section pro-section" id="annotate" aria-labelledby="annotate-title">
         <div class="section-heading">
           <p class="section-label">Annotate</p>
-          <h2 id="annotate-title">Highlight what matters. Note what you think.</h2>
-          <p class="section-subtitle">This is what turns reading a file into processing knowledge. Select text, a toolbar appears, choose a color or add a note. Everything stays linked to the passage — stored locally, never uploaded.</p>
+          <h2 id="annotate-title">Four review types, not just colors. Each one is a judgment.</h2>
+          <p class="section-subtitle">Select text, choose a semantic type, add notes or a suggested replacement. Every mark is anchored to the passage, stored locally, and survives source changes when possible.</p>
         </div>
-        <div class="feature-grid">
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-blue" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L8 18l-3 1 1-3Z"/></svg>
-            </span>
-            <h3>Floating toolbar</h3>
-            <p>Select any text and a toolbar appears at the selection. Six highlight colors plus a note button.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-amber" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 6h16v2H4zm0 6h10v2H4z"/></svg>
-            </span>
-            <h3>Notes panel</h3>
-            <p>Every note stays linked to its source passage. Click any note to jump back to the highlight.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-purple" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </span>
-            <h3>Local persistence</h3>
-            <p>All data stored in your browser. Notes survive trial expiry. Your annotations are always yours.</p>
-          </article>
-          <article class="feature-card reveal">
-            <span class="feature-icon icon-teal" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-            </span>
-            <h3>Export annotations</h3>
-            <p>Save all highlights and notes as JSON. Feed structured annotations into your next AI task.</p>
-          </article>
+        <div class="type-chip-row" aria-label="Review types">
+          <span class="type-chip clarify">Clarify needed</span>
+          <span class="type-chip dispute">Disputed</span>
+          <span class="type-chip important">Important</span>
+          <span class="type-chip confirmed">Confirmed</span>
+        </div>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - typed highlights</strong></div><img src="assets/shots/annotate.png" alt="Typed highlights in the document and notes panel with Export ticket option"></figure>
+        <div class="feature-grid-v2 compact">
+          <article><h3>Floating selection toolbar</h3><p>Pick a review type or add a note with an optional suggested replacement.</p></article>
+          <article><h3>Notes panel filters</h3><p>Filter by type, jump back to the passage, and keep the review organized.</p></article>
+          <article><h3>Cross-version survival</h3><p>When the source changes, annotations re-anchor automatically; orphaned marks can be recovered with Find.</p></article>
         </div>
       </section>
 
-      <section class="section pro-section reveal" id="export" aria-labelledby="export-title">
+      <section class="section pro-section" id="map" aria-labelledby="map-title">
         <div class="section-heading">
-          <p class="section-label">Export</p>
-          <h2 id="export-title">Export as HTML to share, as JSON — AI is your choice.</h2>
-          <p class="section-subtitle">Two export formats. Share annotated reading with people. If you choose to involve AI, structured JSON is ready — but the decision and the pipe are yours to control.</p>
+          <p class="section-label">Understanding Map</p>
+          <h2 id="map-title">See where confusion, disputes, and important points cluster.</h2>
+          <p class="section-subtitle">The Understanding Map shows density of the four review types per section, so you can decide what to handle first.</p>
         </div>
-        <div class="export-detail-grid">
-          <ul class="privacy-card export-detail-list">
-            <li><span class="check" aria-hidden="true"></span><span><strong>HTML export</strong> — self-contained single file with document structure, table of contents, code syntax highlighting, and all your highlights and notes preserved. Opens in any browser. No app runtime, no tracking. Responsive layout, offline-readable.</span></li>
-            <li><span class="check" aria-hidden="true"></span><span><strong>JSON export</strong> — structured annotations if you choose to involve AI. Feed into cloud AI, local AI, or no AI at all. The data is yours. The choice is yours.</span></li>
-            <li><span class="check" aria-hidden="true"></span><span><strong>Live preview</strong> — check the export before downloading. Choose what to include: TOC, heading anchors, highlights, metadata. Source tab for technical users. Estimated file size.</span></li>
-          </ul>
+        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Understanding Map</strong></div><img src="assets/shots/map.png" alt="Understanding Map showing per-section density by review type"></figure>
+      </section>
+
+      <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
+        <div class="section-heading">
+          <p class="section-label">Deliver</p>
+          <h2 id="deliver-title">Three outputs. Different audiences.</h2>
+          <p class="section-subtitle">Share annotated reading with people, back up your annotations, or hand a precise work order to an AI or editor.</p>
+        </div>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - export workspace</strong></div><img src="assets/shots/export.png" alt="Export workspace with live HTML preview and include options"></figure>
+        <div class="export-trio">
+          <article><span class="audience-tag people">For people</span><h3>HTML export</h3><p>Self-contained single file preserving structure, outline, highlights, and notes. Offline-readable and opens in any browser.</p></article>
+          <article><span class="audience-tag backup">For backup</span><h3>Backup JSON</h3><p>Raw annotations for backup or re-import. Your data remains portable and under your control.</p></article>
+          <article class="ticket-card"><span class="audience-tag ai">For AI</span><h3>Ticket JSON</h3><p>Document snapshot, bilingual type legend, per-annotation section context, notes, and suggested replacements.</p><pre><code>"type": "dispute"
+"headingPath": ["Architecture"]
+"note": "This claim needs correction."
+
+Prompt: revise the whole document per these tickets.</code></pre></article>
         </div>
       </section>
 
-      <section class="section pro-section reveal" id="comparison" aria-labelledby="comparison-title">
+      <section class="section pro-section" id="versions" aria-labelledby="versions-title">
+        <div class="section-heading">
+          <p class="section-label">Versions</p>
+          <h2 id="versions-title">Save versions and keep judgment attached as the draft evolves.</h2>
+          <p class="section-subtitle">Save as a new version and browse version history. Combined with cross-version survival, your review stays useful while the source changes.</p>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="compare" aria-labelledby="compare-title">
         <div class="section-heading">
           <p class="section-label">Compare</p>
-          <h2 id="comparison-title">Extension vs Pro.</h2>
+          <h2 id="compare-title">Extension vs Pro.</h2>
         </div>
         <table class="compare-table">
-          <thead>
-            <tr><th></th><th>Extension</th><th>wowMD Pro</th></tr>
-          </thead>
+          <thead><tr><th>Capability</th><th>Extension</th><th>wowMD Pro</th></tr></thead>
           <tbody>
             <tr><td>Price</td><td>Free</td><td>Free during beta</td></tr>
-            <tr><td>GitHub Markdown</td><td><span class="compare-check">&#10003;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>Local .md files</td><td><span class="compare-dash">&mdash;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>Outline &amp; folding</td><td><span class="compare-check">&#10003;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>Code highlighting</td><td><span class="compare-check">&#10003;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>Document search</td><td><span class="compare-dash">&mdash;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>Highlights &amp; notes</td><td><span class="compare-dash">&mdash;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>HTML export</td><td><span class="compare-dash">&mdash;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>JSON export for AI</td><td><span class="compare-dash">&mdash;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
-            <tr><td>Light / dark theme</td><td><span class="compare-dash">&mdash;</span></td><td><span class="compare-check">&#10003;</span></td></tr>
+            <tr><td>GitHub Markdown</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Local .md files</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Outline, folding, code, tables</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Full-text search</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Four review types</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Understanding Map</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Cross-version survival</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Version history</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>HTML export</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Backup JSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Ticket JSON for AI</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
           </tbody>
         </table>
       </section>
 
-      <section class="section pro-section reveal" id="faq" aria-labelledby="faq-title">
+      <section class="section pro-section" id="faq" aria-labelledby="faq-title">
         <div class="section-heading">
           <p class="section-label">FAQ</p>
           <h2 id="faq-title">Common questions.</h2>
         </div>
         <div class="faq-list">
-          <div class="faq-item">
-            <button class="faq-question" type="button">Is my data uploaded?</button>
-            <div class="faq-answer"><p>No. All processing happens locally in your browser. Your Markdown files, notes, and highlights never leave your device.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question" type="button">How is this different from a markdown-to-HTML converter?</button>
-            <div class="faq-answer"><p>Converters do one thing: take Markdown in, push HTML out. wowMD Pro is a review layer: open, read with structure, judge what matters, highlight and annotate, then export. Your annotations are persistent, first-class data — not lost in translation. Export as HTML to share, or as JSON if you choose to involve AI downstream.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question" type="button">What file formats are supported?</button>
-            <div class="faq-answer"><p>Input: .md and .markdown. Export: self-contained HTML (with annotations preserved) and JSON (structured annotations for AI tools).</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-question" type="button">What's coming next?</button>
-            <div class="faq-answer"><p><strong>Planned next:</strong> Cross-version annotation survival — your highlights and notes persist even when the source document changes. Understanding map — aggregated view of where you've marked the most questions. Product screenshots on this page.</p></div>
-          </div>
+          <div class="faq-item"><button class="faq-question" type="button">Is my data uploaded?</button><div class="faq-answer"><p>No. Files, annotations, versions, and exports are processed in your browser unless you choose to move an exported file elsewhere.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">How is this different from a Markdown-to-HTML converter?</button><div class="faq-answer"><p>A converter only turns Markdown into another format. wowMD Pro is a review layer: read with structure, judge with four semantic types, then deliver HTML for people or a ticket an AI can execute.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">What is a ticket?</button><div class="faq-answer"><p>A ticket is a JSON work order built from your annotations: document snapshot, type legend, section context, note, and suggested replacement. Paste it into an AI to revise the document by your judgment.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">Does wowMD change my source file?</button><div class="faq-answer"><p>No. The review is non-destructive. You read and mark; the source file stays untouched until you decide what to do with the exported result.</p></div></div>
         </div>
       </section>
 
-      <section class="bottom-cta reveal" aria-labelledby="bottom-cta-title">
-        <h2 id="bottom-cta-title">Start the loop.</h2>
-        <p>Open your first Markdown, add your first highlight, export your first artifact.</p>
+      <section class="bottom-cta" aria-labelledby="bottom-cta-title">
+        <h2 id="bottom-cta-title">Start the review loop.</h2>
+        <p>Open a Markdown file, mark what matters, and hand off the result.</p>
         <a class="button button-primary button-large" href="app/">Open wowMD Pro</a>
       </section>
     </main>
@@ -243,11 +203,11 @@
         <p>wowMD Pro - Free during beta</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
-        <a href="privacy.html">Privacy Policy</a>
+        <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
-        <a class="feedback-link" href="feedback.html">Send feedback</a>
+        <a class="support-link" href="support.html">Support</a>
       </nav>
     </footer>
-    <script src="script.js"></script>
+    <script src="script.js?v=20260601-rebuild"></script>
   </body>
 </html>

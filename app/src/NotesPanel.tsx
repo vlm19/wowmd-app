@@ -1,5 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react'
+﻿import { useState, type Dispatch, type SetStateAction } from 'react'
 import type { Annotation, AnnotationType, ReanchorCandidate } from './annotations'
+import { copyTextWithFallback } from './appUtils'
 
 interface NotesPanelProps {
   annotations: Annotation[]
@@ -16,6 +17,7 @@ interface NotesPanelProps {
   reanchorAnnotation: (id: string, candidate: ReanchorCandidate) => void
   reanchorId: string | null
   reanchorCandidates: ReanchorCandidate[]
+  supportBaseHref: string
   t: (key: string) => string
 }
 
@@ -50,8 +52,11 @@ export default function NotesPanel({
   reanchorAnnotation,
   reanchorId,
   reanchorCandidates,
+  supportBaseHref,
   t,
 }: NotesPanelProps) {
+  const [showTicketInfo, setShowTicketInfo] = useState(false)
+  const [promptCopied, setPromptCopied] = useState(false)
   const filtered = filterType
     ? annotations.filter((a) => a.type === filterType)
     : annotations
@@ -83,15 +88,82 @@ export default function NotesPanel({
             <option value="important">{t('typeImportant')}</option>
             <option value="confirmed">{t('typeConfirmed')}</option>
           </select>
-          <button type="button" onClick={exportTicketJson}>
-            {t('exportTicketJson')}
-          </button>
-          <button type="button" onClick={exportAnnotationsAsJson}>
-            {t('exportJson')}
+          <span className="ticket-export-control">
+            <button type="button" title={t('ticketJsonTitle')} onClick={exportTicketJson}>
+              {t('exportTicketJson')}
+            </button>
+            <button
+              className="ticket-info-button"
+              type="button"
+              aria-label={t('ticketInfoTitle')}
+              title={t('ticketInfoTitle')}
+              onClick={() => setShowTicketInfo(true)}
+            >
+              i
+            </button>
+          </span>
+          <button type="button" title={t('backupJsonTitle')} onClick={exportAnnotationsAsJson}>
+            {t('backupJsonLabel')}
           </button>
           <button type="button" onClick={() => setPendingClearAnnotations(true)}>
             {t('clear')}
           </button>
+        </div>
+      ) : null}
+      {showTicketInfo ? (
+        <div className="annotation-modal-layer" role="presentation">
+          <section
+            className="annotation-modal ticket-info-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('ticketInfoTitle')}
+          >
+            <button
+              className="modal-close"
+              type="button"
+              aria-label={t('close')}
+              onClick={() => setShowTicketInfo(false)}
+            >
+              <span className="icon-mask icon-x" aria-hidden="true" />
+            </button>
+            <p className="eyebrow">{t('exportTicketJson')}</p>
+            <h2>{t('ticketInfoTitle')}</h2>
+            <div className="ticket-info-copy">
+              <section>
+                <h3>{t('ticketInfoWhatTitle')}</h3>
+                <p>{t('ticketInfoWhatBody')}</p>
+              </section>
+              <section>
+                <h3>{t('ticketInfoHowTitle')}</h3>
+                <p>{t('ticketInfoHowBody')}</p>
+              </section>
+              <section>
+                <h3>{t('ticketInfoDiffTitle')}</h3>
+                <p>{t('ticketInfoDiffBody')}</p>
+              </section>
+            </div>
+            <div className="modal-actions">
+              <button
+                className="ghost-action"
+                type="button"
+                onClick={() => {
+                  const copied = copyTextWithFallback(t('ticketPromptTemplate'))
+                  setPromptCopied(copied)
+                  if (copied) {
+                    window.setTimeout(() => setPromptCopied(false), 1600)
+                  }
+                }}
+              >
+                {promptCopied ? t('copied') : t('copyPromptTemplate')}
+              </button>
+              <button className="primary-action" type="button" onClick={() => setShowTicketInfo(false)}>
+                {t('close')}
+              </button>
+              <a className="support-help-link" href={`${supportBaseHref}#ticket`} target="_blank" rel="noreferrer">
+                {t('supportReadMore')}
+              </a>
+            </div>
+          </section>
         </div>
       ) : null}
       {annotations.length ? (
@@ -107,6 +179,7 @@ export default function NotesPanel({
               reanchorAnnotation={reanchorAnnotation}
               reanchorId={reanchorId}
               reanchorCandidates={reanchorCandidates}
+              supportBaseHref={supportBaseHref}
               t={t}
             />
           ))}
@@ -124,12 +197,13 @@ export default function NotesPanel({
               reanchorAnnotation={reanchorAnnotation}
               reanchorId={reanchorId}
               reanchorCandidates={reanchorCandidates}
+              supportBaseHref={supportBaseHref}
               t={t}
             />
           ))}
         </ol>
       ) : (
-        <p className="empty-outline">{t('selectToNote')}</p>
+        <p className="empty-outline">{t('notesEmptyFlow')}</p>
       )}
     </aside>
   )
@@ -144,6 +218,7 @@ interface AnnotationItemProps {
   reanchorAnnotation: (id: string, candidate: ReanchorCandidate) => void
   reanchorId: string | null
   reanchorCandidates: ReanchorCandidate[]
+  supportBaseHref: string
   t: (key: string) => string
 }
 
@@ -156,11 +231,12 @@ function AnnotationItem({
   reanchorAnnotation,
   reanchorId,
   reanchorCandidates,
+  supportBaseHref,
   t,
 }: AnnotationItemProps) {
   return (
     <li
-      className={`note-sticker note-${annotation.color} ${annotation.note ? 'has-note' : ''} ${annotation.orphaned ? 'note-orphaned' : ''}`}
+      className={`note-sticker note-${annotation.color} ${annotation.note ? 'has-note' : ''} ${annotation.orphaned ? 'note-orphaned' : ''} ${annotation.needsReview && !annotation.orphaned ? 'note-review' : ''}`}
     >
       <button
         className="note-locate"
@@ -177,7 +253,7 @@ function AnnotationItem({
         onClick={() => openAnnotationDetail(annotation)}
       >
         <span className="note-kind">
-          {annotation.orphaned ? '[orphaned] ' : ''}
+          {annotation.orphaned ? '[orphaned] ' : annotation.needsReview ? '[review] ' : ''}
           {annotation.type
             ? t(typeLabels[annotation.type])
             : annotation.legacyColor
@@ -192,13 +268,18 @@ function AnnotationItem({
         </time>
       </button>
       {annotation.orphaned ? (
-        <button
-          className="note-reanchor-btn"
-          type="button"
-          onClick={() => showReanchorCandidates(annotation)}
-        >
-          Find
-        </button>
+        <div className="note-reanchor-actions">
+          <button
+            className="note-reanchor-btn"
+            type="button"
+            onClick={() => showReanchorCandidates(annotation)}
+          >
+            Find
+          </button>
+          <a className="support-help-link compact" href={`${supportBaseHref}#reanchor`} target="_blank" rel="noreferrer">
+            {t('supportReadMore')}
+          </a>
+        </div>
       ) : null}
       <button
         className="note-delete"

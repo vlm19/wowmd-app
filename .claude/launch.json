@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wowmd-app",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "app", "run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "mock-site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "4599", "--directory", "mockups/website-v2"],
+      "port": 4599
+    },
+    {
+      "name": "real-site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "4601", "--directory", "website"],
+      "port": 4601
+    }
+  ]
+}

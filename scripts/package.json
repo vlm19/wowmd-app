@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "capture:shots": "node capture-app-shots.mjs",
+    "verify:website": "node verify-website.cjs"
+  },
   "dependencies": {
     "playwright": "^1.60.0"
   }

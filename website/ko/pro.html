@@ -3,12 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>wowMD Pro - 하이라이트, 노트, 내보내기를 지원하는 로컬 Markdown 리더</title>
-    <meta
-      name="description"
-      content="wowMD Pro? ?? Markdown ??? ??, ?????? ??? ????, ??? HTML? ???? ?? ?? Webapp???."
-     
-    >
+    <title>wowMD Pro - AI 초안과 최종 배포 사이의 리뷰 레이어</title>
+    <meta name="description" content="구조화된 읽기, 네 가지 리뷰 유형으로 판단, 그리고 HTML, 백업 JSON, 또는 AI용 티켓 JSON 작업 지시를 전달하세요. 로컬 우선, 비파괴 방식.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/ko/pro.html">
@@ -22,49 +18,34 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" content="wowMD Pro - 하이라이트, 노트, 내보내기를 지원하는 로컬 Markdown 리더">
-    <meta property="og:description" content="wowMD Pro? ?? Markdown ??? ??, ?????? ??? ????, ??? HTML? ???? ?? ?? Webapp???.">
+    <meta property="og:title" content="wowMD Pro - AI 초안과 최종 배포 사이의 리뷰 레이어">
+    <meta property="og:description" content="네 가지 리뷰 유형, 이해 맵, 버전 기록, AI용 티켓 JSON 작업 지시.">
     <meta property="og:url" content="https://wowmd.app/ko/pro.html">
-    <meta property="og:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
-    <meta property="og:image:alt" content="wowMD Pro product preview">
+    <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
+    <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="wowMD Pro - 하이라이트, 노트, 내보내기를 지원하는 로컬 Markdown 리더">
-    <meta name="twitter:description" content="wowMD Pro? ?? Markdown ??? ??, ?????? ??? ????, ??? HTML? ???? ?? ?? Webapp???.">
-    <meta name="twitter:image" content="https://wowmd.app/assets/wowmd-product-demo-poster.jpg">
+    <meta name="twitter:title" content="wowMD Pro - Markdown 리뷰 레이어">
+    <meta name="twitter:description" content="사람에게는 HTML. 자신을 위한 백업 JSON. AI에게는 티켓 JSON.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "wowMD Pro",
-        "applicationCategory": "WebApplication",
-        "operatingSystem": "Modern browser",
-        "description": "wowMD Pro? ?? Markdown ??? ??, ?????? ??? ????, ??? HTML? ???? ?? ?? Webapp???.",
-        "url": "https://wowmd.app/ko/pro.html",
-        "image": "https://wowmd.app/assets/wowmd-product-demo-poster.jpg",
-        "offers": {
-          "@type": "Offer",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        },
-        "featureList": [
-          "Local Markdown files",
-          "Highlights and notes",
-          "HTML export"
-        ]
-      }
+      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"https://wowmd.app/ko/pro.html","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260527-hover-tags">
+    <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
-  <body class="pro-page">
-    <header class="site-header">
+  <body class="site-v2 pro-v2">
+    <header class="site-header v2-header">
       <a class="logo-link" href="./" aria-label="wowMD home">
         <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
       </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#local">로컬 파일</a>
-        <a href="#notes">노트</a>
-        <a href="#export">내보내기</a>
-        <a href="#roadmap">예정</a>
+      <nav class="site-nav pro-nav" aria-label="Primary">
+        <a href="#read">읽기</a>
+        <a href="#annotate">주석</a>
+        <a href="#map">이해 맵</a>
+        <a href="#deliver">전달</a>
+        <a href="#versions">버전</a>
+        <a href="#compare">비교</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-ext" href="extension.html">확장 프로그램</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
@@ -72,128 +53,161 @@
           <span class="language-arrow" aria-hidden="true"></span>
         </button>
         <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
-          <a role="option" data-language-option="en" aria-label="English" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
-          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/pro.html"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
-          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
-          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
-          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/pro.html"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
-          <a role="option" data-language-option="fr" aria-label="French" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
+          <a role="option" data-language-option="en" href="../pro.html"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/pro.html"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/pro.html"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/pro.html" aria-selected="true"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/pro.html"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/pro.html"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
         </div>
       </div>
     </header>
 
-    <main>
-      <section class="hero pro-hero" aria-labelledby="pro-title">
-        <div class="hero-copy pro-hero-copy">
-          <p class="section-label">wowMD Pro</p>
-          <h1 id="pro-title">로컬 Markdown 읽기 워크스페이스.</h1>
-          <p class="hero-subtitle">브라우저에서 로컬 Markdown 파일을 열고, 중요한 부분을 하이라이트하고, 노트를 남기며, 문서를 업로드하지 않고 깔끔한 읽기 사본을 내보냅니다.</p>
-          <div class="hero-actions" aria-label="Primary actions">
-            <a class="button button-primary" href="../app/">wowMD Pro 열기</a>
-            <a class="button button-secondary" href="extension.html">무료 확장 프로그램이 필요하신가요?</a>
-          </div>
+    <main class="v2-wrap">
+      <section class="pro-hero-v2" aria-labelledby="pro-title">
+        <div class="pro-hero-copy">
+          <p class="section-label">wowMD Pro - 베타 기간 무료</p>
+          <h1 id="pro-title">AI 초안과 최종 배포 사이의 리뷰 레이어.</h1>
+          <p class="hero-subtitle">AI가 초안을 작성합니다. 여러분은 구조화된 읽기로 검토하고, 네 가지 리뷰 유형으로 중요한 지점을 판단한 후, 사람을 위한 HTML이나 AI가 실행할 수 있는 티켓을 전달하세요. 로컬 우선, 비파괴, 업로드 없음.</p>
+          <div class="hero-actions"><a class="button button-primary button-large" href="../app/">wowMD Pro 열기</a></div>
           <div class="hero-badges" aria-label="Product facts">
-            <span>초기 접근은 무료일 수 있음</span>
-            <span>평생 라이선스 예정</span>
             <span>로컬 우선</span>
+            <span>비파괴</span>
+            <span>네 가지 리뷰 유형</span>
+            <span>AI용 티켓 JSON</span>
           </div>
         </div>
-      </section>
-
-      <section class="product-story reveal" id="local" aria-labelledby="local-title">
-        <div class="product-story-copy">
-          <p class="section-label">로컬 파일</p>
-          <h2 id="local-title">기기에 있는 Markdown 파일을 여세요.</h2>
-          <p>`.md` 또는 `.markdown` 파일을 넣고 아웃라인, 접기, 읽기 쉬운 코드, 표 스크롤이 있는 집중 워크스페이스에서 읽으세요.</p>
-          <a class="button button-secondary" href="../app/">앱 열기</a>
-        </div>
-        <figure class="product-media-frame" aria-label="Local Markdown file preview">
-          <div class="media-browser-bar"><span></span><span></span><span></span><strong>wowMD Pro</strong></div>
-          <video class="product-media" poster="../assets/wowmd-product-demo-poster.jpg" autoplay muted loop playsinline controls>
-            <source src="../assets/wowmd-product-demo.webm" type="video/webm">
-            <source src="../assets/wowmd-product-demo.mp4" type="video/mp4">
-          </video>
+        <figure class="shot-frame hero-shot">
+          <div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>spec.md - wowMD Pro</strong></div>
+          <img src="../assets/shots/annotate.png" alt="wowMD Pro showing typed highlights and the notes panel">
         </figure>
       </section>
 
-      <section class="product-story product-story-flipped reveal" id="notes" aria-labelledby="notes-title">
-        <div class="product-story-copy">
-          <p class="section-label">하이라이트와 노트</p>
-          <h2 id="notes-title">유용한 부분을 문서 곁에 보관하세요.</h2>
-          <p>중요한 문단을 표시하고 짧은 노트를 추가하며 주석 데이터를 로컬에 보관합니다. 향후 쓰기 기능이 추가되지 않는 한 원본 Markdown은 변경되지 않습니다.</p>
-          <a class="button button-secondary" href="../app/">주석 사용해 보기</a>
-        </div>
-        <div class="product-media-frame product-media-placeholder" aria-label="Highlights and notes preview">
-          <div class="mock-reader">
-            <aside>
-              <span></span>
-              <span></span>
-              <span></span>
-            </aside>
-            <article>
-              <h3>읽기 노트</h3>
-              <p></p>
-              <p class="mock-highlight"></p>
-              <p></p>
-              <div class="mock-note">중요한 아이디어가 로컬 노트로 저장되었습니다.</div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="product-story reveal" id="export" aria-labelledby="export-title">
-        <div class="product-story-copy">
-          <p class="section-label">내보내기</p>
-          <h2 id="export-title">Markdown 하나를 깔끔한 읽기 사본으로 바꾸세요.</h2>
-          <p>??, ??, ?? ? ??? ??? ?? ?? ??? ???? HTML? ?? ? ????.</p>
-          <a class="button button-primary" href="../app/">Pro에서 내보내기</a>
-        </div>
-        <div class="export-grid" aria-label="Export formats">
-          <article class="export-card">
-            <span class="feature-icon icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
-            <h3>깔끔한 HTML</h3>
-            <p>앱 런타임 없이 자체 포함된 구조적 오프라인 HTML입니다.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section reveal" id="roadmap" aria-labelledby="roadmap-title">
+      <section class="section pro-section" id="read" aria-labelledby="read-title">
         <div class="section-heading">
-          <p class="section-label">다음 계획</p>
-          <h2 id="roadmap-title">미래 작업은 현재 약속과 분리해 표시합니다.</h2>
-          <p class="section-subtitle">이 항목들은 계획 또는 검토 중입니다. 구매 판단은 현재 앱에서 사용할 수 있는 기능을 기준으로 해주세요.</p>
+          <p class="section-label">읽기</p>
+          <h2 id="read-title">구조를 잃지 않고 긴 Markdown을 읽으세요.</h2>
+          <p class="section-subtitle">로컬 .md 또는 .markdown 파일을 열거나 확장 프로그램에서 이어서 작업하세요. 목차, 접기, 구문 강조 코드, 넓은 표 내부 스크롤, 전체 텍스트 검색, 테마, 조절 가능한 글꼴 크기로 탐색할 수 있습니다.</p>
         </div>
-        <div class="roadmap-list">
-          <span>라이브러리와 읽기 기록</span>
-          <span>더 나은 주석 관리</span>
-          <span>테마 프리셋</span>
-          <span>추가 내보내기 형식</span>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - reader</strong></div><img src="../assets/shots/reader.png" alt="wowMD Pro reader with document outline, Markdown content, and notes panel"></figure>
+        <div class="feature-grid-v2">
+          <article><h3>문서 목차</h3><p>제목 구조로 탐색하세요. 목차가 스크롤 위치를 추적합니다.</p></article>
+          <article><h3>섹션 접기</h3><p>읽은 섹션을 접고 현재 읽고 있는 부분에 집중하세요.</p></article>
+          <article><h3>코드 및 표</h3><p>구문 강조, 원클릭 복사, 넓은 표를 위한 내부 스크롤.</p></article>
+          <article><h3>검색 및 테마</h3><p>일치 항목 수와 이전/다음 컨트롤로 검색하세요. 선택한 글꼴 크기로 라이트 또는 다크 모드에서 읽을 수 있습니다.</p></article>
         </div>
       </section>
 
-      <section class="section reveal" aria-labelledby="pro-pricing-title">
-        <div class="pricing-card pro-pricing-card">
-          <div>
-            <p class="section-label">가격</p>
-            <h2 id="pro-pricing-title">초기 접근은 단순하게, 정식 결제는 명확하게.</h2>
-            <p>가격이 확정되기 전 Webapp은 무료 초기 접근으로 시작할 수 있습니다. 계획된 유료 모델은 저렴한 일회성 평생 라이선스이며, 얼리버드 및 프로모션 할인이 제공될 수 있습니다.</p>
-          </div>
-          <a class="button button-primary" href="../app/">wowMD Pro 열기</a>
+      <section class="section pro-section" id="annotate" aria-labelledby="annotate-title">
+        <div class="section-heading">
+          <p class="section-label">주석</p>
+          <h2 id="annotate-title">단순한 색상이 아닌 네 가지 리뷰 유형. 각각은 하나의 판단입니다.</h2>
+          <p class="section-subtitle">텍스트를 선택하고 의미 있는 유형을 고른 뒤 메모나 대체 제안을 추가하세요. 모든 마크는 해당 문단에 고정되고 로컬에 저장되며, 가능한 경우 원본 변경 후에도 유지됩니다.</p>
         </div>
+        <div class="type-chip-row" aria-label="Review types">
+          <span class="type-chip clarify">확인 필요</span>
+          <span class="type-chip dispute">의문 있음</span>
+          <span class="type-chip important">중요</span>
+          <span class="type-chip confirmed">확인 완료</span>
+        </div>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - typed highlights</strong></div><img src="../assets/shots/annotate.png" alt="Typed highlights in the document and notes panel with Export ticket option"></figure>
+        <div class="feature-grid-v2 compact">
+          <article><h3>플로팅 선택 도구 모음</h3><p>리뷰 유형을 선택하거나 선택적 대체 제안과 함께 메모를 추가하세요.</p></article>
+          <article><h3>메모 패널 필터</h3><p>유형별로 필터링하고, 해당 문단으로 이동하며, 리뷰를 체계적으로 정리하세요.</p></article>
+          <article><h3>버전 간 유지</h3><p>원본이 변경되면 주석이 자동으로 재고정되며, 분리된 마크는 찾기 기능으로 복구할 수 있습니다.</p></article>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="map" aria-labelledby="map-title">
+        <div class="section-heading">
+          <p class="section-label">이해 맵</p>
+          <h2 id="map-title">혼란, 의문, 중요 지점이 어디에 밀집되어 있는지 확인하세요.</h2>
+          <p class="section-subtitle">이해 맵은 섹션별 네 가지 리뷰 유형의 밀도를 보여주므로, 무엇을 먼저 처리할지 결정할 수 있습니다.</p>
+        </div>
+        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Understanding Map</strong></div><img src="../assets/shots/map.png" alt="Understanding Map showing per-section density by review type"></figure>
+      </section>
+
+      <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
+        <div class="section-heading">
+          <p class="section-label">전달</p>
+          <h2 id="deliver-title">세 가지 출력물. 각기 다른 대상.</h2>
+          <p class="section-subtitle">사람에게 주석이 담긴 읽기 결과를 공유하거나, 주석을 백업하거나, AI나 편집자에게 정확한 작업 지시를 전달하세요.</p>
+        </div>
+        <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - export workspace</strong></div><img src="../assets/shots/export.png" alt="Export workspace with live HTML preview and include options"></figure>
+        <div class="export-trio">
+          <article><span class="audience-tag people">사람에게</span><h3>HTML 내보내기</h3><p>구조, 목차, 하이라이트, 메모를 보존한 독립형 단일 파일입니다. 오프라인에서 읽을 수 있으며 모든 브라우저에서 열립니다.</p></article>
+          <article><span class="audience-tag backup">백업용</span><h3>백업 JSON</h3><p>백업 또는 재가져오기를 위한 원시 주석 데이터. 데이터는 이식 가능하며 여러분의 통제 하에 있습니다.</p></article>
+          <article class="ticket-card"><span class="audience-tag ai">AI에게</span><h3>티켓 JSON</h3><p>문서 스냅샷, 이중 언어 유형 범례, 주석별 섹션 컨텍스트, 메모, 대체 제안.</p><pre><code>"type": "dispute"
+"headingPath": ["아키텍처"]
+"note": "이 주장은 수정이 필요합니다."
+
+프롬프트: 이 티켓에 따라 전체 문서를 수정하세요.</code></pre></article>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="versions" aria-labelledby="versions-title">
+        <div class="section-heading">
+          <p class="section-label">버전</p>
+          <h2 id="versions-title">버전을 저장하고 초안이 발전해도 판단을 유지하세요.</h2>
+          <p class="section-subtitle">새 버전으로 저장하고 버전 기록을 탐색하세요. 버전 간 유지 기능과 결합하면 원본이 변경되어도 리뷰가 계속 유용합니다.</p>
+        </div>
+      </section>
+
+      <section class="section pro-section" id="compare" aria-labelledby="compare-title">
+        <div class="section-heading">
+          <p class="section-label">비교</p>
+          <h2 id="compare-title">확장 프로그램 vs Pro.</h2>
+        </div>
+        <table class="compare-table">
+          <thead><tr><th>기능</th><th>확장 프로그램</th><th>wowMD Pro</th></tr></thead>
+          <tbody>
+            <tr><td>가격</td><td>무료</td><td>베타 기간 무료</td></tr>
+            <tr><td>GitHub Markdown</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>로컬 .md 파일</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>목차, 접기, 코드, 표</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>전체 텍스트 검색</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>네 가지 리뷰 유형</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>이해 맵</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>버전 간 유지</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>버전 기록</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>HTML 내보내기</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>백업 JSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>AI용 티켓 JSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section pro-section" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading">
+          <p class="section-label">FAQ</p>
+          <h2 id="faq-title">자주 묻는 질문.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item"><button class="faq-question" type="button">내 데이터가 업로드되나요?</button><div class="faq-answer"><p>아니요. 파일, 주석, 버전, 내보내기는 여러분이 내보낸 파일을 다른 곳으로 직접 옮기지 않는 한 브라우저 내에서 처리됩니다.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">Markdown-HTML 변환기와 무엇이 다른가요?</button><div class="faq-answer"><p>변환기는 Markdown을 다른 형식으로 바꿀 뿐입니다. wowMD Pro는 리뷰 레이어입니다: 구조화된 읽기, 네 가지 의미 있는 유형으로 판단, 사람을 위한 HTML 또는 AI가 실행할 수 있는 티켓을 전달합니다.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">티켓이란 무엇인가요?</button><div class="faq-answer"><p>티켓은 여러분의 주석으로 구성된 JSON 작업 지시입니다: 문서 스냅샷, 유형 범례, 섹션 컨텍스트, 메모, 대체 제안. AI에 붙여넣어 여러분의 판단대로 문서를 수정하게 하세요.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">wowMD가 내 원본 파일을 변경하나요?</button><div class="faq-answer"><p>아니요. 리뷰는 비파괴적입니다. 읽고 마크할 뿐이며, 내보낸 결과로 무엇을 할지 결정할 때까지 원본 파일은 그대로 유지됩니다.</p></div></div>
+        </div>
+      </section>
+
+      <section class="bottom-cta" aria-labelledby="bottom-cta-title">
+        <h2 id="bottom-cta-title">리뷰 루프를 시작하세요.</h2>
+        <p>Markdown 파일을 열고, 중요한 부분에 마크하고, 결과를 전달하세요.</p>
+        <a class="button button-primary button-large" href="../app/">wowMD Pro 열기</a>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="footer-brand">
         <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>wowMD Pro - 로컬 Markdown 워크스페이스</p>
+        <p>wowMD Pro - 베타 기간 무료</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
-        <a href="privacy.html">개인정보 처리방침</a>
-        <a href="terms.html">이용 약관</a>
-        <a class="feedback-link" href="feedback.html">피드백 보내기</a>
+        <a href="privacy.html">개인정보</a>
+        <a href="terms.html">이용약관</a>
+        <a class="support-link" href="../support.html">지원</a>
       </nav>
     </footer>
-    <script src="../script.js"></script>
+    <script src="../script.js?v=20260601-rebuild"></script>
   </body>
 </html>

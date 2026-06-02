@@ -27,7 +27,7 @@ import {
 } from './i18n'
 import {
   activateLocalLicense,
-  createTrialState,
+  createAccessState,
   getLicenseSummary,
 } from './license'
 import {
@@ -82,7 +82,7 @@ function App() {
   const [exportViewMode, setExportViewMode] = useState<ExportViewMode>('preview')
   const [exportSearchQuery, setExportSearchQuery] = useState('')
   const [exportSearchIndex, setExportSearchIndex] = useState(0)
-  const [trialState, setTrialState] = useState(() => createTrialState())
+  const [accessState, setAccessState] = useState(() => createAccessState())
   const [locale, setLocale] = useState<Locale>(() => getInitialLocale())
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false)
   const [licenseInput, setLicenseInput] = useState('')
@@ -97,15 +97,16 @@ function App() {
   const markdownBodyRef = useRef<HTMLDivElement | null>(null)
 
   const t = useMemo(() => createTranslator(locale), [locale])
-  const feedbackHref = locale === 'en' ? '../feedback.html' : `../${locale}/feedback.html`
+  const feedbackHref = locale === 'zh' ? '../zh/support.html#feedback' : '../support.html#feedback'
+  const supportBaseHref = locale === 'zh' ? '../zh/support.html' : '../support.html'
 
   useEffect(() => {
     globalThis.document.documentElement.lang = locale
   }, [locale])
 
   const licenseSummary = useMemo(
-    () => getLicenseSummary(trialState, t),
-    [t, trialState],
+    () => getLicenseSummary(accessState, t),
+    [t, accessState],
   )
 
 
@@ -454,7 +455,7 @@ function App() {
       setLicenseMessage(t(result.message))
       if (result.ok) {
         setLicenseStatus('activated')
-        setTrialState(createTrialState())
+        setAccessState(createAccessState())
       } else {
         setLicenseStatus('error')
       }
@@ -745,6 +746,7 @@ function App() {
                   reanchorAnnotation={reanchorAnnotation}
                   reanchorId={reanchorId}
                   reanchorCandidates={reanchorCandidates}
+                  supportBaseHref={supportBaseHref}
                   t={t}
                 />
               ) : null}
@@ -854,6 +856,8 @@ function App() {
               const el = window.document.getElementById(id)
               if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }}
+            supportBaseHref={supportBaseHref}
+            t={t}
           />
         ) : null}
 

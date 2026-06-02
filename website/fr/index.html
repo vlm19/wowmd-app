@@ -1,14 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>wowMD - Choisir votre lecteur Markdown</title>
-    <meta
-      name="description"
-      content="Choisissez l'extension Chrome wowMD gratuite pour GitHub Markdown, ou wowMD Pro pour les fichiers Markdown locaux, les surlignages, les notes et l'export."
-     
-    >
+    <title>wowMD - Une couche de relecture vivante pour votre Markdown</title>
+    <meta name="description" content="Lisez de longs Markdown avec structure, jugez l'essentiel avec quatre types de relecture, gardez les annotations vivantes d'une version à l'autre, puis exportez en HTML pour les humains ou en ticket pour une IA.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/fr/">
@@ -22,34 +18,29 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" content="wowMD - Choisir votre lecteur Markdown">
-    <meta property="og:description" content="Choisissez l'extension Chrome wowMD gratuite pour GitHub Markdown, ou wowMD Pro pour les fichiers Markdown locaux, les surlignages, les notes et l'export.">
+    <meta property="og:title" content="wowMD - Une couche de relecture vivante pour votre Markdown">
+    <meta property="og:description" content="Lisez de longs Markdown avec structure, jugez l'essentiel avec quatre types de relecture, gardez les annotations vivantes d'une version à l'autre, puis exportez en HTML pour les humains ou en ticket pour une IA.">
     <meta property="og:url" content="https://wowmd.app/fr/">
-    <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
-    <meta property="og:image:alt" content="wowMD product preview">
+    <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
+    <meta property="og:image:alt" content="wowMD review workspace with typed annotations">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="wowMD - Choisir votre lecteur Markdown">
-    <meta name="twitter:description" content="Choisissez l'extension Chrome wowMD gratuite pour GitHub Markdown, ou wowMD Pro pour les fichiers Markdown locaux, les surlignages, les notes et l'export.">
-    <meta name="twitter:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
+    <meta name="twitter:title" content="wowMD - Une couche de relecture vivante pour votre Markdown">
+    <meta name="twitter:description" content="Lisez de longs Markdown avec structure, jugez l'essentiel avec quatre types de relecture, gardez les annotations vivantes d'une version à l'autre, puis exportez en HTML pour les humains ou en ticket pour une IA.">
+    <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "wowMD",
-        "url": "https://wowmd.app/fr/",
-        "description": "Choisissez l'extension Chrome wowMD gratuite pour GitHub Markdown, ou wowMD Pro pour les fichiers Markdown locaux, les surlignages, les notes et l'export."
-      }
+      {"@context":"https://schema.org","@type":"WebSite","name":"wowMD","url":"https://wowmd.app/fr/","description":"A living, local-first review layer for Markdown."}
     </script>
-    <link rel="stylesheet" href="../styles.css?v=20260527-preview-strip">
+    <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
+    <link rel="stylesheet" href="../styles.css?v=20260601-ext-zoom">
   </head>
-  <body class="landing-page">
-    <header class="site-header gateway-header">
+  <body class="site-v2 landing-v2">
+    <header class="site-header v2-header">
       <a class="logo-link" href="./" aria-label="wowMD home">
         <img src="../assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
       </a>
-      <nav class="site-nav gateway-nav" aria-label="Primary">
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-pro" href="pro.html">wowMD Pro</a>
         <a href="extension.html">Extension</a>
-        <a href="pro.html">Pro</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
@@ -57,154 +48,167 @@
           <span class="language-arrow" aria-hidden="true"></span>
         </button>
         <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
-          <a role="option" data-language-option="en" aria-label="English" href="../"><img class="flag" src="../assets/flags/gb.svg" alt=""></a>
-          <a role="option" data-language-option="zh" aria-label="Chinese" href="../zh/"><img class="flag" src="../assets/flags/cn.svg" alt=""></a>
-          <a role="option" data-language-option="ja" aria-label="Japanese" href="../ja/"><img class="flag" src="../assets/flags/jp.svg" alt=""></a>
-          <a role="option" data-language-option="ko" aria-label="Korean" href="../ko/"><img class="flag" src="../assets/flags/kr.svg" alt=""></a>
-          <a role="option" data-language-option="de" aria-label="Deutsch" href="../de/"><img class="flag" src="../assets/flags/de.svg" alt=""></a>
-          <a role="option" data-language-option="fr" aria-label="French" href="../fr/" aria-selected="true"><img class="flag" src="../assets/flags/fr.svg" alt=""></a>
+          <a role="option" data-language-option="en" href="../"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/" aria-selected="true"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
         </div>
       </div>
     </header>
 
-    <main class="gateway-main">
-      <section class="gateway-hero" aria-labelledby="gateway-title">
-        <p class="section-label">Entrée du lecteur Markdown</p>
-        <h1 id="gateway-title">
-          <span>Les longs Markdown, enfin </span><span class="gateway-title-accent">lisibles.</span>
-        </h1>
-        <p class="gateway-subtitle">Choisissez votre lieu de lecture : pages GitHub ou fichiers Markdown locaux.</p>
+    <main class="v2-wrap home-flow-page">
+      <section class="home-hero home-flow-hero" aria-labelledby="landing-title">
+        <h1 id="landing-title">Une couche de relecture vivante pour votre Markdown.</h1>
+        <p class="home-hero-sub">Lisez avec structure, jugez l'essentiel avec quatre types de relecture et gardez vos annotations vivantes d'une version à l'autre — puis livrez en HTML pour les humains ou en ticket exécutable par une IA.</p>
+      </section>
 
-        <div class="gateway-actions" aria-label="Product paths">
-          <a class="gateway-choice" href="extension.html">
-            <span class="gateway-choice-label">
-              <span class="gateway-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-              </span>
-              <span>Extension Chrome gratuite</span>
-            </span>
-            <span class="gateway-hint">
-              <span class="gateway-hint-inner">
-                <svg class="gateway-mouse-icon" width="13" height="19" viewBox="0 0 13 19" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <rect x="0.75" y="0.75" width="11.5" height="17.5" rx="5.75" stroke="currentColor" stroke-width="1.4"/>
-                  <line x1="6.5" y1="0.75" x2="6.5" y2="8.5" stroke="currentColor" stroke-width="1"/>
-                  <line x1="0.75" y1="8.5" x2="12.25" y2="8.5" stroke="currentColor" stroke-width="1"/>
-                  <path class="gateway-mouse-button" d="M6 1.5 Q1.5 1.5 1.5 6.5 L1.5 8.5 L6 8.5 Z" fill="currentColor"/>
-                </svg>
-                <span>Voir les détails</span>
-              </span>
-            </span>
-            <span class="gateway-tags gateway-feature-list" aria-label="Extension highlights">
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-blue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
-                </span>
-                <strong>Plan en premier</strong>
-                <small>Commencez par la structure du document avant d’entrer dans le texte.</small>
-              </span>
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-                </span>
-                <strong>Sections repliables</strong>
-                <small>Repliez les grandes sections H2 une par une lorsque le document devient long.</small>
-              </span>
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
-                </span>
-                <strong>Code lisible</strong>
-                <small>Les blocs de code restent lisibles grâce à un espacement clair et à la coloration.</small>
-              </span>
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-coral" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 5v14"/></svg>
-                </span>
-                <strong>Défilement horizontal des tableaux</strong>
-                <small>Les tableaux larges défilent horizontalement sans casser la mise en page.</small>
-              </span>
-            </span>
-          </a>
-
-          <a class="gateway-choice gateway-choice-primary" href="pro.html">
-            <span class="gateway-choice-label">
-              <span class="gateway-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M11.5 2.3a.6.6 0 0 1 1 0l2.3 4.7a2.1 2.1 0 0 0 1.6 1.2l5.1.7a.6.6 0 0 1 .3.9l-3.7 3.6a2.1 2.1 0 0 0-.6 1.9l.9 5.1a.6.6 0 0 1-.8.6L13 18.6a2.1 2.1 0 0 0-2 0L6.4 21a.6.6 0 0 1-.8-.6l.9-5.1a2.1 2.1 0 0 0-.6-1.9L2.2 9.8a.6.6 0 0 1 .3-.9l5.1-.7A2.1 2.1 0 0 0 9.2 7z"/></svg>
-              </span>
-              <span>Pro Web App</span>
-            </span>
-            <span class="gateway-hint">
-              <span class="gateway-hint-inner">
-                <svg class="gateway-mouse-icon" width="13" height="19" viewBox="0 0 13 19" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <rect x="0.75" y="0.75" width="11.5" height="17.5" rx="5.75" stroke="currentColor" stroke-width="1.4"/>
-                  <line x1="6.5" y1="0.75" x2="6.5" y2="8.5" stroke="currentColor" stroke-width="1"/>
-                  <line x1="0.75" y1="8.5" x2="12.25" y2="8.5" stroke="currentColor" stroke-width="1"/>
-                  <path class="gateway-mouse-button" d="M6 1.5 Q1.5 1.5 1.5 6.5 L1.5 8.5 L6 8.5 Z" fill="currentColor"/>
-                </svg>
-                <span>Voir les détails</span>
-              </span>
-            </span>
-            <span class="gateway-tags gateway-feature-list gateway-pro-list" aria-label="Pro highlights">
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-purple" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
-                </span>
-                <strong>Fichiers locaux</strong>
-                <small>Ouvrez vos Markdown locaux dans un lecteur concentré.</small>
-              </span>
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-green" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l8.5-8.5a2.1 2.1 0 0 1 3 3L9 19l-5 1z"/></svg>
-                </span>
-                <strong>Surlignages</strong>
-                <small>Marquez les passages importants sans modifier le fichier source.</small>
-              </span>
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-teal" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
-                </span>
-                <strong>Notes</strong>
-                <small>Ajoutez des notes de lecture au document, en local d'abord.</small>
-              </span>
-              <span class="gateway-feature-card">
-                <span class="feature-icon icon-amber" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
-                </span>
-                <strong>HTML propre</strong>
-                <small>Exportez des copies de lecture propres pour l usage hors ligne et l archivage.</small>
-              </span>
-            </span>
-          </a>
-        </div>
-
-        <div class="gateway-preview" aria-label="Product comparison preview">
-          <div class="gateway-preview-frame" tabindex="0">
-            <figure class="gateway-preview-pane">
-              <span>Avant : GitHub README</span>
-              <img src="../assets/hero-demo-poster.jpg" alt="GitHub Markdown page before wowMD" loading="lazy">
-            </figure>
-            <figure class="gateway-preview-pane gateway-preview-pane-after">
-              <span>Après : wowMD Reader</span>
-              <img src="../assets/wowmd-product-demo-poster.jpg" alt="wowMD reader with outline, highlights, notes, and export" loading="lazy">
-            </figure>
+      <section class="home-flow" aria-label="Markdown paths into wowMD">
+        <div class="home-flow-row home-flow-row-github">
+          <div class="flow-source-card">
+            <i class="ti ti-brand-github" aria-hidden="true"></i>
+            <strong>GitHub MDs</strong>
+            <span>README et Markdown de dépôt que vous lisez déjà dans le navigateur.</span>
           </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <article class="flow-stage flow-stage-extension">
+            <a class="flow-stage-label" href="extension.html">Extension Chrome</a>
+            <p>L’extension transforme le Markdown GitHub en lecteur concentré : plan, sections repliables, code et tableaux.</p>
+            <div class="flow-stage-media">
+              <figure class="flow-shot flow-shot-compact">
+                <div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>github.com</strong></div>
+                <img src="../assets/shots/ext1.png" alt="GitHub Markdown source page" loading="lazy" role="button" tabindex="0" data-zoom-image>
+                <figcaption>Markdown GitHub natif</figcaption>
+              </figure>
+              <i class="ti ti-arrow-right flow-stage-icon" aria-hidden="true"></i>
+              <figure class="flow-shot flow-shot-compact">
+                <div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD reader</strong></div>
+                <img src="../assets/shots/ext2.png" alt="wowMD extension reader view" loading="lazy" role="button" tabindex="0" data-zoom-image>
+                <figcaption>Vue de lecture structurée</figcaption>
+              </figure>
+            </div>
+          </article>
         </div>
 
-        <p class="gateway-footnote">Extension gratuite pour GitHub. Espace Pro pour les fichiers locaux.</p>
+        <div class="flow-down">
+          <i class="ti ti-arrow-down"></i>
+          <span>Continuer dans wowMD Pro</span>
+        </div>
+
+        <div class="home-flow-row home-flow-row-local">
+          <div class="flow-source-card">
+            <i class="ti ti-database" aria-hidden="true"></i>
+            <strong>Local MDs</strong>
+            <span>Brouillons, spécifications, docs et exports gardés sur votre machine.</span>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <article class="flow-stage flow-stage-pro" aria-label="wowMD Pro">
+            <a class="flow-stage-label flow-stage-label-pro" href="pro.html">wowMD Pro</a>
+            <div class="flow-copy">
+              <p>Ouvrez du Markdown local, marquez des passages et ajoutez des notes avec quatre types de relecture, gardez chaque note ancrée d'une version à l'autre, puis exportez en HTML pour les humains ou en ticket pour une IA.</p>
+            </div>
+            <div class="aflow" aria-label="wowMD Pro workflow">
+              <span class="aflow-tip" id="aflow-tip" hidden></span>
+              <div class="aflow-row">
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#85B7EB,#185FA5)"><i class="ti ti-folder-open" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">Open</span>
+                  <span class="aflow-data" hidden><b>Ouvrir</b><span>GitHub ou .md local</span></span>
+                </button>
+                <span class="aflow-conn" style="--a:#378ADD"></span>
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#5DCAA5,#0F6E56)"><i class="ti ti-list-tree" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">Read</span>
+                  <span class="aflow-data" hidden><b>Lire avec structure</b><span>Plan, pliage, recherche, code, tableaux</span></span>
+                </button>
+                <span class="aflow-conn" style="--a:#1D9E75"></span>
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#AFA9EC,#534AB7)"><i class="ti ti-highlight" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">Judge</span>
+                  <span class="aflow-data" hidden><b>Juger et annoter</b><span>À clarifier, Contesté, Important, Confirmé</span></span>
+                </button>
+                <span class="aflow-conn" style="--a:#7F77DD"></span>
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#FAC775,#BA7517)"><i class="ti ti-anchor" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">Anchor</span>
+                  <span class="aflow-data" hidden><b>Rester ancré</b><span>Les marques survivent aux changements de source</span></span>
+                </button>
+                <span class="aflow-conn" style="--a:#EF9F27"></span>
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#F0997B,#993C1D)"><i class="ti ti-send" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">Deliver</span>
+                  <span class="aflow-data" hidden><b>Livrer</b><span>Choisissez la sortie pour le prochain lecteur</span></span>
+                </button>
+              </div>
+              <svg class="aflow-link" viewBox="0 0 680 58" width="680" height="58" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <path class="fk" d="M516 2 V14 Q516 32 486 32 H356 Q340 32 340 44" fill="none" stroke="#6f6e69" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 10"/>
+                <path class="fk" d="M340 40 C340 54 300 48 298 58" fill="none" stroke="#639922" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 10"/>
+                <path class="fk" d="M340 40 C340 54 380 48 382 58" fill="none" stroke="#5F5E5A" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 10"/>
+              </svg>
+              <div class="aflow-outs">
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#97C459,#3B6D11)"><i class="ti ti-users" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">HTML</span>
+                  <span class="aflow-data" hidden><b>HTML · pour les humains</b><span>Partagez une lecture annotée.</span></span>
+                </button>
+                <button class="aflow-node" type="button">
+                  <span class="aflow-badge" style="background:radial-gradient(circle at 33% 28%,#888780,#444441)"><i class="ti ti-robot" aria-hidden="true"></i></span>
+                  <span class="aflow-lab">JSON</span>
+                  <span class="aflow-data" hidden><b>Ticket JSON · pour l'IA</b><span>Transformez vos jugements en instructions.</span></span>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
       </section>
     </main>
 
-    <footer class="site-footer gateway-footer">
+    <footer class="site-footer">
       <div class="footer-brand">
         <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>Deux outils de lecture Markdown ciblés</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
-        <a href="privacy.html">Confidentialite</a>
+        <a href="privacy.html">Confidentialité</a>
         <a href="terms.html">Conditions</a>
-        <a class="feedback-link" href="feedback.html">Envoyer un avis</a>
+        <a class="support-link" href="../support.html">Support</a>
       </nav>
     </footer>
-    <script src="../script.js?v=20260527-hover-delay-600"></script>
+    <script src="../script.js?v=20260601-ext-zoom"></script>
+    <script>
+      (function () {
+        var stage = document.querySelector('.aflow');
+        if (!stage) return;
+        var tip = document.getElementById('aflow-tip');
+        var cur = null;
+        function place(n) {
+          var r = n.getBoundingClientRect(), s = stage.getBoundingClientRect();
+          var left = r.left - s.left + r.width / 2 - tip.offsetWidth / 2;
+          left = Math.max(8, Math.min(left, stage.clientWidth - tip.offsetWidth - 8));
+          var top = r.top - s.top - tip.offsetHeight - 10;
+          if (top < 4) top = r.bottom - s.top + 10;
+          tip.style.left = left + 'px';
+          tip.style.top = top + 'px';
+        }
+        function show(n) {
+          var d = n.querySelector('.aflow-data');
+          if (!d) return;
+          tip.innerHTML = '<b>' + d.querySelector('b').textContent + '</b>' + d.querySelector('span').textContent;
+          tip.hidden = false;
+          tip.classList.add('on');
+          place(n);
+          cur = n;
+        }
+        function hide() { tip.classList.remove('on'); cur = null; }
+        stage.querySelectorAll('.aflow-node').forEach(function (n) {
+          n.addEventListener('mouseenter', function () { show(n); });
+          n.addEventListener('mouseleave', hide);
+          n.addEventListener('focus', function () { show(n); });
+          n.addEventListener('blur', hide);
+          n.addEventListener('click', function (e) { e.preventDefault(); cur === n ? hide() : show(n); });
+        });
+      })();
+    </script>
   </body>
 </html>
+
