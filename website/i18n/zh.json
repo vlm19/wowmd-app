@@ -4,7 +4,7 @@
   "landing.navPro": "wowMD Pro",
   "landing.navExtension": "扩展",
   "landing.title": "持续留存的 Markdown 审阅层。",
-  "landing.subtitle": "结构化阅读，用四种评审类型判断要点，让你的标注跨版本持续存活——再交付为给人看的 HTML，或 AI 可执行的工单。",
+  "landing.subtitle": "??????????????????????????????????????????????AI ? Obsidian ??????",
   "landing.extEyebrow": "从 GitHub 开始",
   "landing.extTitle": "让长 Markdown 变得易读。",
   "landing.extBody": "把冗长的 GitHub README 和 Markdown 文件变成清爽的阅读器：大纲、可折叠章节、代码高亮——就在你平时阅读的地方。",
@@ -345,5 +345,10 @@
   "landing.localSourceBody": "保存在你机器上的草稿、规格、文档和导出文件。",
   "landing.nativeGithubLabel": "GitHub 原生 Markdown",
   "landing.structuredReaderLabel": "结构化阅读界面",
-  "landing.continuePro": "继续到 wowMD Pro"
+  "landing.continuePro": "继续到 wowMD Pro",
+  "landing.titlePrefix": "?? Markdown?",
+  "landing.titleEmphasis": "????",
+  "landing.titleSuffix": "???",
+  "landing.badgeLocal": "????",
+  "landing.badgeNoUpload": "?? Markdown ??????"
 }

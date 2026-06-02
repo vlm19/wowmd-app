@@ -4,7 +4,7 @@
   "landing.navPro": "wowMD Pro",
   "landing.navExtension": "Extension",
   "landing.title": "Une couche de relecture vivante pour votre Markdown.",
-  "landing.subtitle": "Lisez avec structure, jugez l'essentiel avec quatre types de relecture et gardez vos annotations vivantes d'une version à l'autre — puis livrez en HTML pour les humains ou en ticket exécutable par une IA.",
+  "landing.subtitle": "Plus qu?un lecteur, pas un ?diteur. Marquez ce qui compte, gardez les annotations ancr?es quand les fichiers changent, puis livrez des sorties propres pour les humains, l?IA ou Obsidian.",
   "landing.extEyebrow": "Commencez sur GitHub",
   "landing.extTitle": "Rendez les longs Markdown lisibles.",
   "landing.extBody": "Transformez les longs README GitHub et fichiers Markdown en un lecteur clair avec plan, sections repliables et code surligné — là où vous lisez déjà.",
@@ -345,5 +345,10 @@
   "landing.localSourceBody": "Brouillons, spécifications, docs et exports gardés sur votre machine.",
   "landing.nativeGithubLabel": "Markdown GitHub natif",
   "landing.structuredReaderLabel": "Vue de lecture structurée",
-  "landing.continuePro": "Continuer dans wowMD Pro"
+  "landing.continuePro": "Continuer dans wowMD Pro",
+  "landing.titlePrefix": "Relisez le Markdown. ",
+  "landing.titleEmphasis": "Ne touchez jamais",
+  "landing.titleSuffix": " ? l?original.",
+  "landing.badgeLocal": "Local-first",
+  "landing.badgeNoUpload": "Votre Markdown n?est jamais t?l?vers?"
 }

@@ -3618,9 +3618,16 @@ h3 {
   font-size: clamp(32px, 5.6vw, 58px); line-height: 1.06; margin: 0 0 16px;
   overflow-wrap: break-word; hyphens: auto;
 }
+.home-hero-title-accent {
+  color: #5B4DFF;
+}
 .home-hero-sub {
   max-width: 660px; margin: 0 auto; color: var(--color-text-secondary);
   font-size: 16px; line-height: 1.62;
+}
+.home-hero-badges {
+  justify-content: center;
+  margin-top: 18px;
 }
 
 .home-product { max-width: 1000px; margin: 0 auto; padding: 44px 24px; }

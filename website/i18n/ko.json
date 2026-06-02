@@ -4,7 +4,7 @@
   "landing.navPro": "wowMD Pro",
   "landing.navExtension": "확장 프로그램",
   "landing.title": "당신의 Markdown을 위한 살아있는 리뷰 레이어.",
-  "landing.subtitle": "구조적으로 읽고, 네 가지 리뷰 유형으로 핵심을 판단하며, 주석을 버전 간에 살려 두었다가 — 사람을 위한 HTML 또는 AI가 실행할 수 있는 티켓으로 전달합니다.",
+  "landing.subtitle": "?? ????? ???? ????. ??? ?? ????, ??? ???? ??? ??? ? ??? ? ??, AI, Obsidian? ?? ??? ???? ?????.",
   "landing.extEyebrow": "GitHub에서 시작",
   "landing.extTitle": "긴 Markdown을 읽기 쉽게.",
   "landing.extBody": "긴 GitHub README와 Markdown 파일을 개요, 접이식 섹션, 코드 하이라이트가 있는 편안한 리더로 — 늘 읽던 그 자리에서.",
@@ -345,5 +345,10 @@
   "landing.localSourceBody": "내 컴퓨터에 보관한 초안, 사양서, 문서, 내보낸 파일입니다.",
   "landing.nativeGithubLabel": "GitHub 기본 Markdown",
   "landing.structuredReaderLabel": "구조화된 리더 보기",
-  "landing.continuePro": "wowMD Pro에서 계속"
+  "landing.continuePro": "wowMD Pro에서 계속",
+  "landing.titlePrefix": "Markdown? ?????. ",
+  "landing.titleEmphasis": "??? ???? ??",
+  "landing.titleSuffix": ".",
+  "landing.badgeLocal": "?? ??",
+  "landing.badgeNoUpload": "Markdown? ?? ????? ????"
 }

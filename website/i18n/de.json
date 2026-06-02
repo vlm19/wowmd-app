@@ -4,7 +4,7 @@
   "landing.navPro": "wowMD Pro",
   "landing.navExtension": "Erweiterung",
   "landing.title": "Eine lebendige Review-Ebene für Ihr Markdown.",
-  "landing.subtitle": "Mit Struktur lesen, mit vier Review-Typen das Wesentliche beurteilen und Anmerkungen versionsübergreifend am Leben halten – und dann als HTML für Menschen oder als Ticket für eine KI ausliefern.",
+  "landing.subtitle": "Mehr als ein Reader, kein Editor. Markieren Sie, was z?hlt, halten Sie Anmerkungen bei Datei?nderungen verankert und liefern Sie saubere Ausgaben f?r Menschen, KI oder Obsidian.",
   "landing.extEyebrow": "Auf GitHub starten",
   "landing.extTitle": "Langes Markdown lesbar machen.",
   "landing.extBody": "Verwandeln Sie lange GitHub-READMEs und Markdown-Dateien in einen ruhigen Reader mit Gliederung, einklappbaren Abschnitten und hervorgehobenem Code – genau dort, wo Sie ohnehin lesen.",
@@ -345,5 +345,10 @@
   "landing.localSourceBody": "Entwürfe, Spezifikationen, Dokumente und Exporte auf deinem Rechner.",
   "landing.nativeGithubLabel": "Natives GitHub Markdown",
   "landing.structuredReaderLabel": "Strukturierte Reader-Ansicht",
-  "landing.continuePro": "In wowMD Pro fortfahren"
+  "landing.continuePro": "In wowMD Pro fortfahren",
+  "landing.titlePrefix": "Markdown reviewen. ",
+  "landing.titleEmphasis": "Nie das Original ber?hren",
+  "landing.titleSuffix": ".",
+  "landing.badgeLocal": "Local-first",
+  "landing.badgeNoUpload": "Ihr Markdown wird nie hochgeladen"
 }
