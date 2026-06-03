@@ -1153,24 +1153,29 @@ p {
 .floating-markup-v2 {
   flex-direction: column;
   gap: 6px;
-  min-width: 240px;
-  max-width: 340px;
+  width: min(460px, calc(100vw - 20px));
+  min-width: min(380px, calc(100vw - 20px));
   padding: 8px 10px;
   transform: translate(-50%, -100%);
 }
 
 .floating-markup-v2 .type-chips {
   display: flex;
-  gap: 4px;
+  flex-wrap: nowrap;
+  gap: 6px;
+  width: 100%;
 }
 
 .type-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  flex: 1 1 0;
+  min-width: max-content;
   border: 0.5px solid #464640;
   border-radius: var(--r-sm);
-  padding: 4px 8px;
+  padding: 4px 7px;
   background: transparent;
   color: #98948c;
   font-size: 11px;
@@ -1184,28 +1189,52 @@ p {
   background: #383834;
 }
 
+.type-chip.chip-clarify {
+  border-color: color-mix(in srgb, var(--highlight-blue) 70%, #464640);
+  background: color-mix(in srgb, var(--highlight-blue) 14%, transparent);
+  color: #b8d8ff;
+}
+
+.type-chip.chip-dispute {
+  border-color: color-mix(in srgb, var(--highlight-rose) 70%, #464640);
+  background: color-mix(in srgb, var(--highlight-rose) 14%, transparent);
+  color: #ffc1cb;
+}
+
+.type-chip.chip-important {
+  border-color: color-mix(in srgb, var(--highlight-amber) 70%, #464640);
+  background: color-mix(in srgb, var(--highlight-amber) 14%, transparent);
+  color: #f5bf72;
+}
+
+.type-chip.chip-confirmed {
+  border-color: color-mix(in srgb, var(--highlight-green) 70%, #464640);
+  background: color-mix(in srgb, var(--highlight-green) 14%, transparent);
+  color: #b9e6c4;
+}
+
 .type-chip.active {
   border-color: transparent;
 }
 
 .type-chip.chip-clarify.active {
   background: var(--highlight-blue);
-  color: #fff;
+  color: #17314c;
 }
 
 .type-chip.chip-dispute.active {
   background: var(--highlight-rose);
-  color: #fff;
+  color: #5b1f2a;
 }
 
 .type-chip.chip-important.active {
   background: var(--highlight-amber);
-  color: #fff;
+  color: #4c2c06;
 }
 
 .type-chip.chip-confirmed.active {
   background: var(--highlight-green);
-  color: #fff;
+  color: #173d22;
 }
 
 .type-chip-icon {
@@ -2210,18 +2239,29 @@ p {
 }
 
 .save-version-filename input {
-  border: 0.5px solid var(--border-mid);
+  border: 1px solid rgb(199 198 188 / 0.72);
   border-radius: var(--r-sm);
   padding: 6px 8px;
-  background: var(--bg-card);
-  color: var(--text-1);
+  background: #f7f5ec;
+  color: #1d1b17;
   font-size: 13px;
   font-family: var(--font-mono);
   outline: none;
+  caret-color: #1d1b17;
 }
 
 .save-version-filename input:focus {
   border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 0.22);
+}
+
+.save-version-filename input::selection {
+  background: rgb(79 70 229 / 0.22);
+  color: #14120f;
+}
+
+.save-version-filename input::placeholder {
+  color: #777268;
 }
 
 .save-version-error {

@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import type { AnnotationColor, AnnotationType } from './annotations'
 
 const typeColorMap: Record<AnnotationType, AnnotationColor> = {
@@ -51,10 +52,29 @@ export default function AnnotationToolbar({
   onSave,
   t,
 }: AnnotationToolbarProps) {
+  const toolbarRef = useRef<HTMLDivElement | null>(null)
+  const [clampedPosition, setClampedPosition] = useState({ x, y })
+
+  useLayoutEffect(() => {
+    const toolbar = toolbarRef.current
+    if (!toolbar) return
+
+    const margin = 10
+    const rect = toolbar.getBoundingClientRect()
+    const halfWidth = rect.width / 2
+    const nextX = Math.min(
+      window.innerWidth - halfWidth - margin,
+      Math.max(halfWidth + margin, x),
+    )
+    const nextY = Math.max(92, y)
+    setClampedPosition({ x: nextX, y: nextY })
+  }, [x, y, showReplacement, toolbarNote, toolbarReplacement, t])
+
   return (
     <div
+      ref={toolbarRef}
       className="floating-markup floating-markup-v2"
-      style={{ left: x, top: y }}
+      style={{ left: clampedPosition.x, top: clampedPosition.y }}
       aria-label="Annotation type picker"
       onMouseLeave={onToolbarMouseLeave}
     >
