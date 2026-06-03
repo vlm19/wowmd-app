@@ -37,7 +37,7 @@ import {
   type TocItem,
 } from './markdown'
 import { applySearchHighlights } from './search'
-import SaveAsVersion from './SaveAsVersion'
+import SaveReviewedCopy from './SaveReviewedCopy'
 import UnderstandingMap from './UnderstandingMap'
 import SettingsPanel from './SettingsPanel'
 import VersionHistory from './VersionHistory'
@@ -142,7 +142,7 @@ function App() {
     requestLocalFile,
     handleFileInput,
     handleDrop,
-    handleSavedNewVersion,
+    handleSavedReviewedCopy,
     openVersions,
     openVersion,
   } = useDocumentSession({
@@ -837,10 +837,11 @@ function App() {
         ) : null}
 
         {showSaveVersion && document ? (
-          <SaveAsVersion
+          <SaveReviewedCopy
             document={document}
-            onSaved={(newFilename) => {
-              void handleSavedNewVersion(newFilename)
+            annotations={annotations}
+            onSaved={(result) => {
+              void handleSavedReviewedCopy(result)
             }}
             onClose={() => setShowSaveVersion(false)}
           />

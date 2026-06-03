@@ -247,15 +247,14 @@ export function useDocumentSession({
     if (file) void openFile(file)
   }, [openFile])
 
-  const handleSavedNewVersion = useCallback(async (newFilename: string) => {
+  const handleSavedReviewedCopy = useCallback(async (result: { newFilename: string; markdown: string }) => {
     if (!document) {
       setShowSaveVersion(false)
       return
     }
 
-    const markdown = document.markdown
-    const fingerprint = await computeDocumentFingerprint(markdown)
-    const carried = reanchorAgainstMarkdown(annotationsRef.current, markdown, fingerprint)
+    const fingerprint = await computeDocumentFingerprint(result.markdown)
+    const carried = reanchorAgainstMarkdown(annotationsRef.current, result.markdown, fingerprint)
 
     let newStableId: string
     const isGithubSourced = !!document.source && typeof document.source !== 'string'
@@ -263,25 +262,26 @@ export function useDocumentSession({
     if (isGithubSourced) {
       const successor = await createDocumentVersion({
         parentDocumentId: document.stableId,
-        title: newFilename,
-        markdownSnapshot: markdown,
+        title: result.newFilename,
+        markdownSnapshot: result.markdown,
         fingerprint,
       })
       newStableId = successor.id
     } else {
-      newStableId = `file:${newFilename}`
+      newStableId = `file:${result.newFilename}`
     }
 
     await saveAnnotationsToDb(newStableId, carried)
 
     setDocument({
       ...document,
-      name: newFilename,
+      name: result.newFilename,
+      markdown: result.markdown,
       fingerprint,
       stableId: newStableId,
     })
     setAnnotationsRef.current(carried)
-    setExportDefaults(newFilename)
+    setExportDefaults(result.newFilename)
     setShowSaveVersion(false)
 
     try {
@@ -337,7 +337,7 @@ export function useDocumentSession({
     requestLocalFile,
     handleFileInput,
     handleDrop,
-    handleSavedNewVersion,
+    handleSavedReviewedCopy,
     openVersions,
     openVersion,
   }

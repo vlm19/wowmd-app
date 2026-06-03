@@ -1,25 +1,21 @@
 import { useState } from 'react'
+import type { Annotation } from './annotations'
+import { buildObsidianReviewedMarkdown, type ObsidianExportOptions } from './exportObsidian'
 import type { OpenDocument } from './types'
 
 type Props = {
   document: OpenDocument
-  onSaved: (newFilename: string) => void
+  annotations: Annotation[]
+  onSaved: (result: { newFilename: string; markdown: string }) => void
   onClose: () => void
 }
 
-const VERSION_REGEX = /-v(\d+)\.md$/i
-
-function nextVersionFilename(name: string) {
-  const match = name.match(VERSION_REGEX)
-  if (match) {
-    const next = Number(match[1]) + 1
-    return name.replace(VERSION_REGEX, `-v${next}.md`)
-  }
+function defaultReviewedFilename(name: string) {
   const dot = name.lastIndexOf('.')
   if (dot > 0) {
-    return `${name.slice(0, dot)}-v2.md`
+    return `${name.slice(0, dot)}-reviewed.md`
   }
-  return `${name}-v2.md`
+  return `${name}-reviewed.md`
 }
 
 async function saveFileWithFSH(filename: string, content: string) {
@@ -47,8 +43,8 @@ function saveFileWithDownload(filename: string, content: string) {
   URL.revokeObjectURL(url)
 }
 
-export default function SaveAsVersion({ document, onSaved, onClose }: Props) {
-  const [filename, setFilename] = useState(nextVersionFilename(document.name))
+export default function SaveReviewedCopy({ document, annotations, onSaved, onClose }: Props) {
+  const [filename, setFilename] = useState(defaultReviewedFilename(document.name))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -57,18 +53,32 @@ export default function SaveAsVersion({ document, onSaved, onClose }: Props) {
     setError('')
 
     try {
+      const options: ObsidianExportOptions = {
+        includeProperties: true,
+        includeTags: true,
+        includeAppendix: true,
+        generatedAt: new Date(),
+        fingerprint: document.fingerprint,
+      }
+
+      const reviewedMarkdown = buildObsidianReviewedMarkdown({
+        markdown: document.markdown,
+        annotations,
+        documentName: document.name,
+        options,
+      })
+
       const hasFSH = 'showSaveFilePicker' in ((window as unknown) as Record<string, unknown>)
 
       if (hasFSH) {
-        await saveFileWithFSH(filename, document.markdown)
+        await saveFileWithFSH(filename, reviewedMarkdown)
       } else {
-        saveFileWithDownload(filename, document.markdown)
+        saveFileWithDownload(filename, reviewedMarkdown)
       }
 
-      onSaved(filename)
+      onSaved({ newFilename: filename, markdown: reviewedMarkdown })
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') {
-        // user cancelled save dialog
         setSaving(false)
         return
       }
@@ -84,7 +94,7 @@ export default function SaveAsVersion({ document, onSaved, onClose }: Props) {
         className="annotation-modal save-version"
         role="dialog"
         aria-modal="true"
-        aria-label="Save as new version"
+        aria-label="Save Obsidian reviewed copy"
       >
         <button
           className="modal-close"
@@ -94,10 +104,10 @@ export default function SaveAsVersion({ document, onSaved, onClose }: Props) {
         >
           <span className="icon-mask icon-x" aria-hidden="true" />
         </button>
-        <p className="eyebrow">Save as new version</p>
+        <p className="eyebrow">Save Obsidian reviewed copy</p>
         <h2>{document.name}</h2>
         <p className="save-version-hint">
-          This creates a <strong>new</strong> file and never overwrites the original.
+          Creates a new Markdown copy with Obsidian-ready review callouts. The original file is never overwritten.
         </p>
 
         <label className="save-version-filename">
@@ -127,7 +137,7 @@ export default function SaveAsVersion({ document, onSaved, onClose }: Props) {
             disabled={saving || !filename}
             onClick={handleSave}
           >
-            {saving ? 'Saving...' : 'Save new file'}
+            {saving ? 'Saving...' : 'Save reviewed .md'}
           </button>
         </div>
       </section>

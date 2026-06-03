@@ -25,7 +25,7 @@ function FileMenu(props: {
           {props.t('versions')}
         </button>
         <button type="button" onClick={(event) => closeThen(event, props.openSaveVersion)}>
-          {props.t('saveNewVersion')}
+          {props.t('saveReviewedCopy')}
         </button>
         <div className="file-menu-sep" role="separator" />
         <button type="button" onClick={(event) => closeThen(event, props.openAnother)}>

@@ -32,8 +32,9 @@ export default function VersionHistory({ versions, currentId, onOpenVersion, onC
 
         {!hasLineage ? (
           <p className="version-empty">
-            This is the only version. Use “Save new version” to create a successor — its
-            annotations are carried forward and the original file is never overwritten.
+            This is the only version. Use "Save reviewed copy" to create an Obsidian-ready
+            successor. Its annotations are carried forward and the original file is never
+            overwritten.
           </p>
         ) : (
           <ol className="version-list">
