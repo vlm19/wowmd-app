@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD 支持 - 指南与反馈</title>
-    <meta name="description" content="关于 wowMD 审阅类型、跨版本标注存活、工单 JSON、阅读器控件、导出、设置、反馈和故障排除的指南。">
+    <meta name="description" content="关于 wowMD 审阅类型、跨版本标注存活、Obsidian-ready 审阅版 Markdown、工单 JSON、阅读器控件、导出、设置、反馈和故障排除的指南。">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/zh/support.html">
@@ -18,13 +18,13 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website"><meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD 支持 - 指南与反馈">
-    <meta property="og:description" content="了解类型化审阅、重新锚定、工单 JSON、阅读器控件、导出、设置和故障排除。">
+    <meta property="og:description" content="了解类型化审阅、重新锚定、Obsidian-ready 审阅版 Markdown、工单 JSON、阅读器控件、导出、设置和故障排除。">
     <meta property="og:url" content="https://wowmd.app/zh/support.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
     <meta property="og:image:alt" content="wowMD Understanding Map">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMD 支持 - 指南与反馈">
-    <meta name="twitter:description" content="类型化审阅、跨版本存活和工单 JSON 详解。">
+    <meta name="twitter:description" content="类型化审阅、跨版本存活、给 Obsidian 的审阅版 Markdown 和工单 JSON 详解。">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
@@ -72,7 +72,7 @@
         <section class="support-hero" aria-labelledby="support-title">
           <p class="section-label">支持</p>
           <h1 id="support-title">审阅循环的指南与反馈。</h1>
-          <p class="hero-subtitle">从让 wowMD 与众不同的三个核心概念开始：类型化审阅、跨版本存活，以及可以交给 AI 的工单。</p>
+          <p class="hero-subtitle">从让 wowMD 与众不同的核心概念开始：类型化审阅、跨版本存活、给 Obsidian 的审阅版 Markdown，以及可以交给 AI 的工单。</p>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -142,9 +142,10 @@
           <h2>导出</h2>
           <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Export</strong></div><img src="../assets/shots/export.png" alt="Export workspace with HTML preview and include options"></figure>
           <div class="reference-list">
-            <p>HTML 导出</p>
-            <p>备份 JSON</p>
-            <p>工单 JSON</p>
+            <p>HTML 导出面向人：一个可离线阅读的文件，保留结构、高亮和备注。</p>
+            <p>审阅版 Markdown 面向 Obsidian：新的 .md 副本，包含审阅 callout、标签和属性。它不会修改原文件，也不会应用建议替换。</p>
+            <p>备份 JSON 用于备份和重新导入：原始标注数据。</p>
+            <p>工单 JSON 面向 AI 或编辑：由你的类型化判断生成的工作指令。</p>
           </div>
         </section>
 
@@ -184,7 +185,7 @@
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">我修改文件后，高亮位置变了。发生了什么？</button><div class="faq-answer"><p>wowMD 在源文件变化时会重新锚定标注。如果某段文字无法找到，可使用笔记面板的 Find 功能手动恢复。</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">有任何数据被上传吗？</button><div class="faq-answer"><p>没有。审阅工作流是本地优先的。文件和标注保留在你的浏览器中，除非你自己导出并分享它们。</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">我应该使用哪个 JSON？</button><div class="faq-answer"><p>使用备份 JSON 来备份或重新导入标注数据。使用工单 JSON 当你想要 AI 或编辑根据你的类型化判断来执行操作。</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">我应该使用哪种导出？</button><div class="faq-answer"><p>HTML 给人阅读；审阅版 Markdown 给 Obsidian；备份 JSON 用于备份或重新导入标注数据；当你希望 AI 或编辑根据你的类型化判断执行操作时，使用工单 JSON。</p></div></div>
           </div>
         </section>
       </main>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD 지원 - 가이드 및 피드백</title>
-    <meta name="description" content="wowMD 리뷰 유형, 버전 간 주석 유지, 티켓 JSON, 리더 컨트롤, 내보내기, 설정, 피드백, 문제 해결 가이드.">
+    <meta name="description" content="wowMD 리뷰 유형, 버전 간 주석 유지, Obsidian-ready 검토 Markdown, 티켓 JSON, 리더 컨트롤, 내보내기, 설정, 피드백, 문제 해결 가이드.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/ko/support.html">
@@ -18,13 +18,13 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website"><meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD 지원 - 가이드 및 피드백">
-    <meta property="og:description" content="유형화된 리뷰, 재고정, 티켓 JSON, 리더 컨트롤, 내보내기, 설정, 문제 해결 방법을 알아보세요.">
+    <meta property="og:description" content="유형화된 리뷰, 재고정, Obsidian-ready 검토 Markdown, 티켓 JSON, 리더 컨트롤, 내보내기, 설정, 문제 해결 방법을 알아보세요.">
     <meta property="og:url" content="https://wowmd.app/ko/support.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
     <meta property="og:image:alt" content="wowMD Understanding Map">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMD 지원 - 가이드 및 피드백">
-    <meta name="twitter:description" content="유형화된 리뷰, 버전 간 유지, 티켓 JSON 설명.">
+    <meta name="twitter:description" content="유형화된 리뷰, 버전 간 유지, Obsidian용 검토 Markdown, 티켓 JSON 설명.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
@@ -72,7 +72,7 @@
         <section class="support-hero" aria-labelledby="support-title">
           <p class="section-label">지원</p>
           <h1 id="support-title">리뷰 루프를 위한 가이드 및 피드백.</h1>
-          <p class="hero-subtitle">wowMD를 차별화하는 세 가지 개념부터 시작하세요: 유형화된 리뷰, 버전 간 유지, AI에 전달할 수 있는 티켓.</p>
+          <p class="hero-subtitle">wowMD를 차별화하는 개념부터 시작하세요: 유형화된 리뷰, 버전 간 유지, Obsidian용 검토 Markdown, AI에 전달할 수 있는 티켓.</p>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -142,9 +142,10 @@
           <h2>내보내기</h2>
           <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Export</strong></div><img src="../assets/shots/export.png" alt="Export workspace with HTML preview and include options"></figure>
           <div class="reference-list">
-            <p>HTML 내보내기</p>
-            <p>백업 JSON</p>
-            <p>티켓 JSON</p>
+            <p>HTML 내보내기는 사람을 위한 것입니다: 구조, 하이라이트, 노트를 담은 오프라인 읽기용 단일 파일입니다.</p>
+            <p>검토 Markdown은 Obsidian용입니다: 리뷰 callout, 태그, properties를 담은 새 .md 사본입니다. 원본을 수정하지 않고 제안된 대체 문구도 적용하지 않습니다.</p>
+            <p>백업 JSON은 백업과 재가져오기를 위한 원시 주석 데이터입니다.</p>
+            <p>티켓 JSON은 AI나 편집자를 위한 것입니다: 유형화된 판단으로 만든 작업 지시입니다.</p>
           </div>
         </section>
 
@@ -184,7 +185,7 @@
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">파일을 변경한 후 하이라이트가 이동했어요. 무슨 일인가요?</button><div class="faq-answer"><p>wowMD는 원본이 변경되면 주석을 재고정합니다. 문단을 찾을 수 없는 경우 메모 패널의 찾기 기능으로 수동 복구하세요.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">무언가 업로드되나요?</button><div class="faq-answer"><p>아니요. 리뷰 워크플로는 로컬 우선입니다. 파일과 주석은 여러분이 직접 내보내 공유하지 않는 한 브라우저에만 머무릅니다.</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">어떤 JSON을 사용해야 하나요?</button><div class="faq-answer"><p>주석 데이터를 백업하거나 재가져오려면 백업 JSON을 사용하세요. AI나 편집자가 유형화된 판단에 따라 작업하게 하려면 티켓 JSON을 사용하세요.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">어떤 내보내기를 사용해야 하나요?</button><div class="faq-answer"><p>HTML은 사람에게, 검토 Markdown은 Obsidian에, 백업 JSON은 주석 데이터 백업 또는 재가져오기에 사용하세요. AI나 편집자가 유형화된 판단에 따라 작업하게 하려면 티켓 JSON을 사용하세요.</p></div></div>
           </div>
         </section>
       </main>

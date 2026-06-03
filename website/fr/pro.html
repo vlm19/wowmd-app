@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD Pro - La couche de relecture entre un brouillon IA et ce que vous publiez</title>
-    <meta name="description" content="Lisez du Markdown avec structure, jugez avec quatre types de relecture, et livrez du HTML, un Backup JSON ou un Ticket JSON comme ordre de travail pour l'IA. Local avant tout et non destructif.">
+    <meta name="description" content="Lisez du Markdown avec structure, jugez avec quatre types de relecture, et livrez du HTML, du Markdown révisé prêt pour Obsidian, un Backup JSON ou un Ticket JSON comme ordre de travail pour l'IA. Local avant tout et non destructif.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/fr/pro.html">
@@ -19,13 +19,13 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD Pro - La couche de relecture entre un brouillon IA et ce que vous publiez">
-    <meta property="og:description" content="Quatre types de relecture, Carte de compréhension, historique des versions et un Ticket JSON comme ordre de travail pour l'IA.">
+    <meta property="og:description" content="Quatre types de relecture, Carte de compréhension, Markdown révisé prêt pour Obsidian et un Ticket JSON comme ordre de travail pour l'IA.">
     <meta property="og:url" content="https://wowmd.app/fr/pro.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
     <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMD Pro - La couche de relecture Markdown">
-    <meta name="twitter:description" content="HTML pour les humains. Backup JSON pour vous. Ticket JSON pour l'IA.">
+    <meta name="twitter:description" content="HTML pour les humains. Markdown révisé pour Obsidian. Backup JSON pour vous. Ticket JSON pour l'IA.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"https://wowmd.app/fr/pro.html","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
@@ -42,7 +42,7 @@
         <a href="#annotate">Annoter</a>
         <a href="#map">Carte</a>
         <a href="#deliver">Livrer</a>
-        <a href="#versions">Versions</a>
+        <a href="#versions">Copie révisée</a>
         <a href="#compare">Comparer</a>
         <a href="#faq">FAQ</a>
         <a class="nav-ext" href="extension.html">Extension</a>
@@ -68,7 +68,7 @@
         <div class="pro-hero-copy">
           <p class="section-label">wowMD Pro - Gratuit pendant la bêta</p>
           <h1 id="pro-title">La couche de relecture entre un brouillon IA et ce que vous publiez.</h1>
-          <p class="hero-subtitle">L'IA rédige le brouillon. Vous lisez avec structure, jugez ce qui compte avec quatre types de relecture, puis livrez du HTML pour les humains ou un ticket qu'une IA peut exécuter. Local avant tout, non destructif, rien n'est téléversé.</p>
+          <p class="hero-subtitle">L'IA rédige le brouillon. Vous lisez avec structure, jugez ce qui compte avec quatre types de relecture, puis livrez du HTML pour les humains, du Markdown révisé pour Obsidian ou un ticket qu'une IA peut exécuter. Local avant tout, non destructif, rien n'est téléversé.</p>
           <div class="hero-actions"><a class="button button-primary button-large" href="../app/">Ouvrir wowMD Pro</a></div>
           <div class="hero-badges" aria-label="Product facts">
             <span>Local avant tout</span>
@@ -130,12 +130,13 @@
       <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
         <div class="section-heading">
           <p class="section-label">Livrer</p>
-          <h2 id="deliver-title">Trois sorties. Des publics différents.</h2>
-          <p class="section-subtitle">Partagez une lecture annotée avec des humains, sauvegardez vos annotations ou transmettez un ordre de travail précis à une IA ou un éditeur.</p>
+          <h2 id="deliver-title">Quatre sorties. Des publics différents.</h2>
+          <p class="section-subtitle">Partagez une lecture annotée avec des humains, envoyez du Markdown révisé vers Obsidian, sauvegardez vos annotations ou transmettez un ordre de travail précis à une IA ou un éditeur.</p>
         </div>
         <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - export workspace</strong></div><img src="../assets/shots/export.png" alt="Export workspace with live HTML preview and include options"></figure>
         <div class="export-trio">
           <article><span class="audience-tag people">Pour les humains</span><h3>Export HTML</h3><p>Fichier unique autonome préservant la structure, le plan, les surlignages et les notes. Lisible hors ligne et ouvrable dans n'importe quel navigateur.</p></article>
+          <article><span class="audience-tag people">Pour Obsidian</span><h3>Markdown révisé</h3><p>Une nouvelle copie .md avec des callouts de relecture lisibles par Obsidian, des tags wowMD et des propriétés de relecture. Elle ne modifie pas l'original et n'applique pas les remplacements suggérés.</p></article>
           <article><span class="audience-tag backup">Pour la sauvegarde</span><h3>Backup JSON</h3><p>Annotations brutes pour sauvegarde ou réimportation. Vos données restent portables et sous votre contrôle.</p></article>
           <article class="ticket-card"><span class="audience-tag ai">Pour l'IA</span><h3>Ticket JSON</h3><p>Instantané du document, légende bilingue des types, contexte de section par annotation, notes et remplacements suggérés.</p><pre><code>"type": "dispute"
 "headingPath": ["Architecture"]
@@ -147,9 +148,9 @@ Prompt : révisez tout le document selon ces tickets.</code></pre></article>
 
       <section class="section pro-section" id="versions" aria-labelledby="versions-title">
         <div class="section-heading">
-          <p class="section-label">Versions</p>
-          <h2 id="versions-title">Enregistrez des versions et gardez le jugement attaché à mesure que le brouillon évolue.</h2>
-          <p class="section-subtitle">Enregistrez comme nouvelle version et parcourez l'historique des versions. Combiné à la survie inter-versions, votre relecture reste utile pendant que la source change.</p>
+          <p class="section-label">Copie révisée</p>
+          <h2 id="versions-title">Enregistrez une copie Markdown prête pour Obsidian sans toucher à la source.</h2>
+          <p class="section-subtitle">Enregistrer une copie révisée crée un nouveau fichier .md avec des callouts Obsidian au niveau des paragraphes pour vos marques wowMD, plus des propriétés de relecture et des tags. Le Markdown original reste inchangé ; cela ne réécrit pas le document, n'applique pas les remplacements suggérés et n'appelle pas l'IA.</p>
         </div>
       </section>
 
@@ -169,7 +170,7 @@ Prompt : révisez tout le document selon ces tickets.</code></pre></article>
             <tr><td>Quatre types de relecture</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Carte de compréhension</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Survie inter-versions</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
-            <tr><td>Historique des versions</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Markdown révisé prêt pour Obsidian</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Export HTML</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Backup JSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Ticket JSON pour l'IA</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
@@ -186,7 +187,7 @@ Prompt : révisez tout le document selon ces tickets.</code></pre></article>
           <div class="faq-item"><button class="faq-question" type="button">Mes données sont-elles téléversées ?</button><div class="faq-answer"><p>Non. Les fichiers, annotations, versions et exports sont traités dans votre navigateur, sauf si vous choisissez de déplacer un fichier exporté ailleurs.</p></div></div>
           <div class="faq-item"><button class="faq-question" type="button">En quoi est-ce différent d'un convertisseur Markdown vers HTML ?</button><div class="faq-answer"><p>Un convertisseur ne fait que transformer du Markdown dans un autre format. wowMD Pro est une couche de relecture : lisez avec structure, jugez avec quatre types sémantiques, puis livrez du HTML pour les humains ou un ticket qu'une IA peut exécuter.</p></div></div>
           <div class="faq-item"><button class="faq-question" type="button">Qu'est-ce qu'un ticket ?</button><div class="faq-answer"><p>Un ticket est un ordre de travail JSON construit à partir de vos annotations : instantané du document, légende des types, contexte de section, note et remplacement suggéré. Collez-le dans une IA pour qu'elle révise le document selon votre jugement.</p></div></div>
-          <div class="faq-item"><button class="faq-question" type="button">wowMD modifie-t-il mon fichier source ?</button><div class="faq-answer"><p>Non. La relecture est non destructive. Vous lisez et marquez ; le fichier source reste intact jusqu'à ce que vous décidiez quoi faire du résultat exporté.</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">wowMD modifie-t-il mon fichier source ?</button><div class="faq-answer"><p>Non. La relecture est non destructive. Enregistrer une copie révisée crée un fichier Markdown séparé ; cela n'écrase pas la source, n'applique pas les remplacements suggérés et n'appelle pas l'IA.</p></div></div>
         </div>
       </section>
 

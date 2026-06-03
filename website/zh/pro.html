@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD Pro - AI 草稿与你交付成品之间的审阅层</title>
-    <meta name="description" content="结构化阅读 Markdown，用四种审阅类型判断，然后交付 HTML、备份 JSON 或工单 JSON。本地优先，非破坏性。">
+    <meta name="description" content="结构化阅读 Markdown，用四种审阅类型判断，然后交付 HTML、Obsidian-ready 审阅版 Markdown、备份 JSON 或给 AI 的工单 JSON。本地优先，非破坏性。">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/zh/pro.html">
@@ -19,13 +19,13 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD Pro - AI 草稿与你交付成品之间的审阅层">
-    <meta property="og:description" content="四种审阅类型、理解地图、版本历史，以及给 AI 的工单 JSON。">
+    <meta property="og:description" content="四种审阅类型、理解地图、Obsidian-ready 审阅版 Markdown，以及给 AI 的工单 JSON。">
     <meta property="og:url" content="https://wowmd.app/zh/pro.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
     <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMD Pro - Markdown 审阅层">
-    <meta name="twitter:description" content="HTML 给人。备份 JSON 给自己。工单 JSON 给 AI。">
+    <meta name="twitter:description" content="HTML 给人。审阅版 Markdown 给 Obsidian。备份 JSON 给自己。工单 JSON 给 AI。">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"https://wowmd.app/zh/pro.html","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
@@ -42,7 +42,7 @@
         <a href="#annotate">标注</a>
         <a href="#map">地图</a>
         <a href="#deliver">交付</a>
-        <a href="#versions">版本</a>
+        <a href="#versions">审阅副本</a>
         <a href="#compare">对比</a>
         <a href="#faq">常见问题</a>
         <a class="nav-ext" href="extension.html">扩展</a>
@@ -68,7 +68,7 @@
         <div class="pro-hero-copy">
           <p class="section-label">wowMD Pro - 测试阶段免费</p>
           <h1 id="pro-title">AI 草稿与你交付成品之间的审阅层。</h1>
-          <p class="hero-subtitle">AI 写草稿。你结构化阅读，用四种审阅类型判断哪些重要，然后交付 HTML 给人或工单给 AI 执行。本地优先，非破坏性，不上传任何数据。</p>
+          <p class="hero-subtitle">AI 写草稿。你结构化阅读，用四种审阅类型判断哪些重要，然后交付 HTML 给人、审阅版 Markdown 给 Obsidian，或工单给 AI 执行。本地优先，非破坏性，不上传任何数据。</p>
           <div class="hero-actions"><a class="button button-primary button-large" href="../app/">打开 wowMD Pro</a></div>
           <div class="hero-badges" aria-label="Product facts">
             <span>本地优先</span>
@@ -130,12 +130,13 @@
       <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
         <div class="section-heading">
           <p class="section-label">交付</p>
-          <h2 id="deliver-title">三种输出。不同的受众。</h2>
-          <p class="section-subtitle">与同事分享标注后的阅读成果，备份你的标注，或交给 AI 或编辑一份精确的工单。</p>
+          <h2 id="deliver-title">四种输出。不同的受众。</h2>
+          <p class="section-subtitle">与同事分享标注后的阅读成果，把审阅版 Markdown 带入 Obsidian，备份你的标注，或交给 AI 或编辑一份精确的工单。</p>
         </div>
         <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - export workspace</strong></div><img src="../assets/shots/export.png" alt="Export workspace with live HTML preview and include options"></figure>
         <div class="export-trio">
           <article><span class="audience-tag people">给人</span><h3>HTML 导出</h3><p>自包含的单文件，保留结构、大纲、高亮和备注。可离线阅读，在任何浏览器中打开。</p></article>
+          <article><span class="audience-tag people">给 Obsidian</span><h3>审阅版 Markdown</h3><p>生成一个新的 .md 副本，包含 Obsidian 可读的审阅 callout、wowMD 标签和审阅属性。它不会修改原文件，也不会应用建议替换。</p></article>
           <article><span class="audience-tag backup">用于备份</span><h3>备份 JSON</h3><p>原始标注数据，用于备份或重新导入。你的数据保持可移植并受你掌控。</p></article>
           <article class="ticket-card"><span class="audience-tag ai">给 AI</span><h3>工单 JSON</h3><p>文档快照、双语类型对照表、每条标注的章节上下文、备注和建议替换。</p><pre><code>"type": "dispute"
 "headingPath": ["Architecture"]
@@ -147,9 +148,9 @@
 
       <section class="section pro-section" id="versions" aria-labelledby="versions-title">
         <div class="section-heading">
-          <p class="section-label">版本</p>
-          <h2 id="versions-title">保存版本，让判断随草稿演变而保持附着。</h2>
-          <p class="section-subtitle">保存为新版本并浏览版本历史。结合跨版本存活的特性，你的审阅在源文件变化时仍然有效。</p>
+          <p class="section-label">审阅副本</p>
+          <h2 id="versions-title">保存 Obsidian-ready Markdown 副本，不触碰源文件。</h2>
+          <p class="section-subtitle">保存审阅副本会创建新的 .md 文件，把 wowMD 标注转换为段落级 Obsidian callout，并写入审阅属性和标签。原始 Markdown 保持不变；它不会重写文档、应用建议替换或调用 AI。</p>
         </div>
       </section>
 
@@ -169,7 +170,7 @@
             <tr><td>四种审阅类型</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>理解地图</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>跨版本存活</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
-            <tr><td>版本历史</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Obsidian-ready 审阅版 Markdown</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>HTML 导出</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>备份 JSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>工单 JSON 给 AI</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
@@ -186,7 +187,7 @@
           <div class="faq-item"><button class="faq-question" type="button">我的数据会被上传吗？</button><div class="faq-answer"><p>不会。文件、标注、版本和导出都在你的浏览器中处理，除非你选择将导出文件转移到其他地方。</p></div></div>
           <div class="faq-item"><button class="faq-question" type="button">这和 Markdown 转 HTML 的工具有何不同？</button><div class="faq-answer"><p>转换器只把 Markdown 变成另一种格式。wowMD Pro 是一个审阅层：结构化阅读，用四种语义类型判断，然后交付 HTML 给人或工单给 AI 执行。</p></div></div>
           <div class="faq-item"><button class="faq-question" type="button">什么是工单？</button><div class="faq-answer"><p>工单是从你的标注中构建出的 JSON 工作指令：包含文档快照、类型对照表、章节上下文、备注和建议替换。将其粘贴给 AI，让它按你的判断修订文档。</p></div></div>
-          <div class="faq-item"><button class="faq-question" type="button">wowMD 会修改我的源文件吗？</button><div class="faq-answer"><p>不会。审阅是非破坏性的。你阅读和标记；源文件保持原样，直到你决定如何处理导出的结果。</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">wowMD 会修改我的源文件吗？</button><div class="faq-answer"><p>不会。审阅是非破坏性的。保存审阅副本会创建单独的 Markdown 文件；它不会覆盖源文件、应用建议替换或调用 AI。</p></div></div>
         </div>
       </section>
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMDサポート - ガイドとフィードバック</title>
-    <meta name="description" content="wowMDのレビュータイプ・クロスバージョン注釈サバイバル・チケットJSON・リーダーコントロール・エクスポート・設定・フィードバック・トラブルシューティングのガイド。">
+    <meta name="description" content="wowMDのレビュータイプ・クロスバージョン注釈サバイバル・Obsidian対応レビュー済みMarkdown・チケットJSON・リーダーコントロール・エクスポート・設定・フィードバック・トラブルシューティングのガイド。">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/ja/support.html">
@@ -18,13 +18,13 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website"><meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMDサポート - ガイドとフィードバック">
-    <meta property="og:description" content="型付きレビュー・再アンカー・チケットJSON・リーダーコントロール・エクスポート・設定・トラブルシューティングを学ぶ。">
+    <meta property="og:description" content="型付きレビュー・再アンカー・Obsidian対応レビュー済みMarkdown・チケットJSON・リーダーコントロール・エクスポート・設定・トラブルシューティングを学ぶ。">
     <meta property="og:url" content="https://wowmd.app/ja/support.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
     <meta property="og:image:alt" content="wowMD Understanding Map">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMDサポート - ガイドとフィードバック">
-    <meta name="twitter:description" content="型付きレビュー・クロスバージョンサバイバル・チケットJSONを解説。">
+    <meta name="twitter:description" content="型付きレビュー・クロスバージョンサバイバル・Obsidian向けレビュー済みMarkdown・チケットJSONを解説。">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
@@ -72,7 +72,7 @@
         <section class="support-hero" aria-labelledby="support-title">
           <p class="section-label">サポート</p>
           <h1 id="support-title">レビューループのガイドとフィードバック。</h1>
-          <p class="hero-subtitle">wowMDを際立たせる3つのコンセプトから始めましょう：型付きレビュー・クロスバージョンサバイバル・AIに渡せるチケット。</p>
+          <p class="hero-subtitle">wowMDを際立たせるコンセプトから始めましょう：型付きレビュー・クロスバージョンサバイバル・Obsidian向けレビュー済みMarkdown・AIに渡せるチケット。</p>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -142,9 +142,10 @@
           <h2>エクスポート</h2>
           <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Export</strong></div><img src="../assets/shots/export.png" alt="Export workspace with HTML preview and include options"></figure>
           <div class="reference-list">
-            <p>HTMLエクスポート</p>
-            <p>バックアップJSON</p>
-            <p>チケットJSON</p>
+            <p>HTMLエクスポートは人向け：構造、ハイライト、メモを含むオフラインで読める1つのファイルです。</p>
+            <p>レビュー済みMarkdownはObsidian向け：レビューcallout、タグ、propertiesを含む新しい.mdコピーです。元ファイルは編集せず、提案置換も適用しません。</p>
+            <p>バックアップJSONはバックアップと再インポート向け：生の注釈データです。</p>
+            <p>チケットJSONはAIまたは編集者向け：型付き判断から作る作業指示です。</p>
           </div>
         </section>
 
@@ -184,7 +185,7 @@
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">ファイルを変更したらハイライトが移動しました。何が起きましたか？</button><div class="faq-answer"><p>wowMDはソースが変更されると注釈を再アンカーします。パッセージが見つからない場合は、ノートパネルのFindで手動回復してください。</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">何かアップロードされますか？</button><div class="faq-answer"><p>いいえ。レビューワークフローはローカル優先です。ファイルと注釈は、自分でエクスポートして共有しない限りブラウザ内に留まります。</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">どのJSONを使うべきですか？</button><div class="faq-answer"><p>バックアップJSONは注釈データのバックアップまたは再インポートに使用。チケットJSONは型付き判断に基づいてAIや編集者に行動させたいときに使用。</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">どのエクスポートを使うべきですか？</button><div class="faq-answer"><p>HTMLは人向け、レビュー済みMarkdownはObsidian向け、バックアップJSONは注釈データのバックアップまたは再インポート向けです。AIや編集者に型付き判断に基づいて作業してほしいときはチケットJSONを使います。</p></div></div>
           </div>
         </section>
       </main>

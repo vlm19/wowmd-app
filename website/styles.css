@@ -3381,7 +3381,7 @@ h3 {
 
 .export-trio {
   display: grid;
-  grid-template-columns: 0.9fr 0.9fr 1.35fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin-top: 18px;
 }

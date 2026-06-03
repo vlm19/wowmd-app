@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD Support - Guide et retours</title>
-    <meta name="description" content="Guide des types de relecture wowMD, survie inter-versions des annotations, Ticket JSON, contrôles du lecteur, export, paramètres, retours et dépannage.">
+    <meta name="description" content="Guide des types de relecture wowMD, survie inter-versions des annotations, Markdown révisé prêt pour Obsidian, Ticket JSON, contrôles du lecteur, export, paramètres, retours et dépannage.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/fr/support.html">
@@ -18,13 +18,13 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website"><meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD Support - Guide et retours">
-    <meta property="og:description" content="Apprenez la relecture typée, le réancrage, le Ticket JSON, les contrôles du lecteur, l'export, les paramètres et le dépannage.">
+    <meta property="og:description" content="Apprenez la relecture typée, le réancrage, le Markdown révisé prêt pour Obsidian, le Ticket JSON, les contrôles du lecteur, l'export, les paramètres et le dépannage.">
     <meta property="og:url" content="https://wowmd.app/fr/support.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
     <meta property="og:image:alt" content="wowMD Understanding Map">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMD Support - Guide et retours">
-    <meta name="twitter:description" content="Relecture typée, survie inter-versions et Ticket JSON expliqués.">
+    <meta name="twitter:description" content="Relecture typée, survie inter-versions, Markdown révisé pour Obsidian et Ticket JSON expliqués.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
@@ -72,7 +72,7 @@
         <section class="support-hero" aria-labelledby="support-title">
           <p class="section-label">Support</p>
           <h1 id="support-title">Guide et retours pour la boucle de relecture.</h1>
-          <p class="hero-subtitle">Commencez par les trois concepts qui distinguent wowMD : la relecture typée, la survie inter-versions et le ticket que vous pouvez transmettre à une IA.</p>
+          <p class="hero-subtitle">Commencez par les concepts qui distinguent wowMD : la relecture typée, la survie inter-versions, le Markdown révisé pour Obsidian et le ticket que vous pouvez transmettre à une IA.</p>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -142,9 +142,10 @@ Ticket :
           <h2>Export</h2>
           <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Export</strong></div><img src="../assets/shots/export.png" alt="Export workspace with HTML preview and include options"></figure>
           <div class="reference-list">
-            <p>Export HTML</p>
-            <p>Backup JSON</p>
-            <p>Ticket JSON</p>
+            <p>L'export HTML est destiné aux humains : un fichier lisible hors ligne avec structure, surlignages et notes.</p>
+            <p>Le Markdown révisé est destiné à Obsidian : une nouvelle copie .md avec callouts de relecture, tags et propriétés. Il ne modifie pas l'original et n'applique pas les remplacements suggérés.</p>
+            <p>Backup JSON sert à sauvegarder et réimporter : les données d'annotation brutes.</p>
+            <p>Ticket JSON est destiné à une IA ou un éditeur : un ordre de travail construit à partir de vos jugements typés.</p>
           </div>
         </section>
 
@@ -184,7 +185,7 @@ Ticket :
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">Mes surlignages ont bougé après avoir modifié le fichier. Que s'est-il passé ?</button><div class="faq-answer"><p>wowMD réancre les annotations quand la source change. Si un passage est introuvable, utilisez Rechercher dans le panneau de notes pour le récupérer manuellement.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Est-ce que quelque chose est téléversé ?</button><div class="faq-answer"><p>Non. Le flux de relecture est local avant tout. Les fichiers et annotations restent dans votre navigateur, sauf si vous les exportez et les partagez vous-même.</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">Quel JSON dois-je utiliser ?</button><div class="faq-answer"><p>Utilisez Backup JSON pour sauvegarder ou réimporter les données d'annotation. Utilisez Ticket JSON quand vous voulez qu'une IA ou un éditeur agisse sur vos jugements typés.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">Quel export dois-je utiliser ?</button><div class="faq-answer"><p>Utilisez HTML pour les humains, Markdown révisé pour Obsidian, Backup JSON pour sauvegarder ou réimporter les données d'annotation, et Ticket JSON quand vous voulez qu'une IA ou un éditeur agisse sur vos jugements typés.</p></div></div>
           </div>
         </section>
       </main>

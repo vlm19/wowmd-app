@@ -26,11 +26,11 @@ const forbidden = [
 ];
 
 const requiredByFile = {
-  "website/index.html": ["Ticket JSON", "HTML", "Free during beta", "Nothing uploaded"],
-  "website/pro.html": ["Ticket JSON", "Backup JSON", "Understanding Map", "Version history", "Clarify needed", "Disputed", "Important", "Confirmed", "Free during beta"],
+  "website/index.html": ["Ticket JSON", "HTML", "Local-first", "Your Markdown is never uploaded"],
+  "website/pro.html": ["Ticket JSON", "Backup JSON", "Reviewed Markdown", "Obsidian-ready reviewed Markdown", "Understanding Map", "Clarify needed", "Disputed", "Important", "Confirmed", "Free during beta"],
   "website/extension.html": ["Add to Chrome", "Open and Read only", "https://chromewebstore.google.com/detail/wowmd/lphibgbpadkfdmhilejjcomoomgkkjmh"],
-  "website/support.html": ["Typed review", "Cross-version survival", "Ticket JSON", "Backup JSON", "Understanding Map", "Feedback"],
-  "website/zh/support.html": ["Typed review", "Ticket JSON", "Backup JSON", "Understanding Map", "Feedback"]
+  "website/support.html": ["Typed review", "Cross-version survival", "Reviewed Markdown", "Ticket JSON", "Backup JSON", "Understanding Map", "Feedback"],
+  "website/zh/support.html": ["Typed review", "Obsidian", "工单 JSON", "备份 JSON", "Understanding Map", "Feedback"]
 };
 
 const mustHaveIds = {
@@ -66,7 +66,7 @@ for (const [file, terms] of Object.entries(requiredByFile)) {
 }
 
 const landing = readHtml("website/index.html");
-const loopButtonCount = (landing.match(/<(button|a)\b[^>]*class="[^"]*(loop-node-v2|loop-output)[^"]*"/g) || []).length;
+const loopButtonCount = (landing.match(/<(button|a)\b[^>]*class="[^"]*aflow-node[^"]*"/g) || []).length;
 if (loopButtonCount < 7) failures.push(`website/index.html: expected keyboard-reachable loop nodes and output fork, found ${loopButtonCount}`);
 
 const extension = readHtml("website/extension.html");

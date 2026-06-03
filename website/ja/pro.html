@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wowMD Pro - AIドラフトと出荷の間にあるレビューレイヤー</title>
-    <meta name="description" content="構造化してMarkdownを読み、4つのレビュータイプで判断し、HTML・バックアップJSON・チケットJSONを届ける。ローカル優先・非破壊。">
+    <meta name="description" content="構造化してMarkdownを読み、4つのレビュータイプで判断し、HTML・Obsidian対応のレビュー済みMarkdown・バックアップJSON・AI向けチケットJSONを届ける。ローカル優先・非破壊。">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
     <link rel="canonical" href="https://wowmd.app/ja/pro.html">
@@ -19,13 +19,13 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD Pro - AIドラフトと出荷の間にあるレビューレイヤー">
-    <meta property="og:description" content="4つのレビュータイプ・理解マップ・バージョン履歴・AI向けチケットJSON。">
+    <meta property="og:description" content="4つのレビュータイプ・理解マップ・Obsidian対応レビュー済みMarkdown・AI向けチケットJSON。">
     <meta property="og:url" content="https://wowmd.app/ja/pro.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
     <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="wowMD Pro - Markdownレビューレイヤー">
-    <meta name="twitter:description" content="HTMLは人に。バックアップJSONは自分に。チケットJSONはAIに。">
+    <meta name="twitter:description" content="HTMLは人に。レビュー済みMarkdownはObsidianに。バックアップJSONは自分に。チケットJSONはAIに。">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"https://wowmd.app/ja/pro.html","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
@@ -42,7 +42,7 @@
         <a href="#annotate">注釈</a>
         <a href="#map">マップ</a>
         <a href="#deliver">届ける</a>
-        <a href="#versions">バージョン</a>
+        <a href="#versions">レビュー済みコピー</a>
         <a href="#compare">比較</a>
         <a href="#faq">FAQ</a>
         <a class="nav-ext" href="extension.html">拡張機能</a>
@@ -68,7 +68,7 @@
         <div class="pro-hero-copy">
           <p class="section-label">wowMD Pro - ベータ期間中無料</p>
           <h1 id="pro-title">AIドラフトとあなたが出荷するものの間にあるレビューレイヤー。</h1>
-          <p class="hero-subtitle">AIがドラフトを書く。あなたは構造化して読み、4つのレビュータイプで何が重要かを判断し、HTMLを人に、チケットをAIに届ける。ローカル優先・非破壊・アップロードなし。</p>
+          <p class="hero-subtitle">AIがドラフトを書く。あなたは構造化して読み、4つのレビュータイプで何が重要かを判断し、HTMLを人に、レビュー済みMarkdownをObsidianに、またはチケットをAIに届ける。ローカル優先・非破壊・アップロードなし。</p>
           <div class="hero-actions"><a class="button button-primary button-large" href="../app/">wowMD Proを開く</a></div>
           <div class="hero-badges" aria-label="Product facts">
             <span>ローカル優先</span>
@@ -130,12 +130,13 @@
       <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
         <div class="section-heading">
           <p class="section-label">届ける</p>
-          <h2 id="deliver-title">3つの出力。異なるオーディエンス。</h2>
-          <p class="section-subtitle">注釈付きの読書を人と共有し、注釈をバックアップし、正確な作業指示をAIや編集者に渡す。</p>
+          <h2 id="deliver-title">4つの出力。異なるオーディエンス。</h2>
+          <p class="section-subtitle">注釈付きの読書を人と共有し、レビュー済みMarkdownをObsidianへ送り、注釈をバックアップし、正確な作業指示をAIや編集者に渡す。</p>
         </div>
         <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - export workspace</strong></div><img src="../assets/shots/export.png" alt="Export workspace with live HTML preview and include options"></figure>
         <div class="export-trio">
           <article><span class="audience-tag people">人向け</span><h3>HTMLエクスポート</h3><p>構造・目次・ハイライト・メモを保持する自己完結型の単一ファイル。オフラインで読め、どのブラウザでも開ける。</p></article>
+          <article><span class="audience-tag people">Obsidian向け</span><h3>レビュー済みMarkdown</h3><p>Obsidianで読めるレビューcallout、wowMDタグ、レビューpropertiesを含む新しい.mdコピー。元ファイルは編集せず、提案置換も適用しません。</p></article>
           <article><span class="audience-tag backup">バックアップ用</span><h3>バックアップJSON</h3><p>バックアップまたは再インポート用の生の注釈データ。データは移植可能で、あなたの管理下に。</p></article>
           <article class="ticket-card"><span class="audience-tag ai">AI向け</span><h3>チケットJSON</h3><p>ドキュメントスナップショット・バイリンガルタイプ凡例・注釈ごとのセクションコンテキスト・メモ・代替案。</p><pre><code>"type": "dispute"
 "headingPath": ["Architecture"]
@@ -147,9 +148,9 @@
 
       <section class="section pro-section" id="versions" aria-labelledby="versions-title">
         <div class="section-heading">
-          <p class="section-label">バージョン</p>
-          <h2 id="versions-title">バージョンを保存し、ドラフトの進化に判断を付着させる。</h2>
-          <p class="section-subtitle">新しいバージョンとして保存し、バージョン履歴を閲覧。クロスバージョンサバイバルと組み合わせることで、ソース変更時もレビューが有用であり続ける。</p>
+          <p class="section-label">レビュー済みコピー</p>
+          <h2 id="versions-title">元ファイルに触れず、Obsidian対応のMarkdownコピーを保存。</h2>
+          <p class="section-subtitle">レビュー済みコピーの保存は、wowMDのマークを段落単位のObsidian calloutに変換し、レビューpropertiesとタグを加えた新しい.mdファイルを作成します。元のMarkdownは変更されません。文書の書き換え、提案置換の適用、AIの呼び出しは行いません。</p>
         </div>
       </section>
 
@@ -169,7 +170,7 @@
             <tr><td>4つのレビュータイプ</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>理解マップ</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>クロスバージョンサバイバル</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
-            <tr><td>バージョン履歴</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Obsidian対応レビュー済みMarkdown</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>HTMLエクスポート</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>バックアップJSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>AI向けチケットJSON</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
@@ -186,7 +187,7 @@
           <div class="faq-item"><button class="faq-question" type="button">データはアップロードされますか？</button><div class="faq-answer"><p>いいえ。ファイル・注釈・バージョン・エクスポートは、エクスポートしたファイルを他に移動しない限り、ブラウザ内で処理されます。</p></div></div>
           <div class="faq-item"><button class="faq-question" type="button">Markdown→HTML変換ツールとどう違いますか？</button><div class="faq-answer"><p>変換ツールはMarkdownを別の形式に変えるだけです。wowMD Proはレビューレイヤー：構造化して読み、4つのセマンティックタイプで判断し、HTMLを人に、チケットをAIに届ける。</p></div></div>
           <div class="faq-item"><button class="faq-question" type="button">チケットとは何ですか？</button><div class="faq-answer"><p>チケットは注釈から構築されたJSONの作業指示書：ドキュメントスナップショット・タイプ凡例・セクションコンテキスト・メモ・代替案。AIに貼り付けて、あなたの判断で文書を改訂させる。</p></div></div>
-          <div class="faq-item"><button class="faq-question" type="button">wowMDはソースファイルを変更しますか？</button><div class="faq-answer"><p>いいえ。レビューは非破壊的です。あなたは読んでマークするだけ。ソースファイルは、エクスポート結果をどうするか決めるまで変更されません。</p></div></div>
+          <div class="faq-item"><button class="faq-question" type="button">wowMDはソースファイルを変更しますか？</button><div class="faq-answer"><p>いいえ。レビューは非破壊的です。レビュー済みコピーの保存は別のMarkdownファイルを作成します。元ファイルの上書き、提案置換の適用、AIの呼び出しは行いません。</p></div></div>
         </div>
       </section>
 
