@@ -49,7 +49,7 @@ export function useSelectionCapture({
     globalThis.document.head.append(style)
   }, [])
 
-  function getHeadingPath(element: Element | null) {
+  const getHeadingPath = useCallback((element: Element | null) => {
     if (!element || !markdownBodyRef.current) return []
     const headings = Array.from(
       markdownBodyRef.current.querySelectorAll('h1,h2,h3,h4,h5,h6'),
@@ -65,12 +65,12 @@ export function useSelectionCapture({
     })
 
     return path.filter(Boolean)
-  }
+  }, [markdownBodyRef])
 
-  function getSelectionAnchorMetadataFromRange(
+  const getSelectionAnchorMetadataFromRange = useCallback((
     range: Range,
     quote: string,
-  ): SelectionAnchorMetadata {
+  ): SelectionAnchorMetadata => {
     if (!markdownBodyRef.current) {
       return { prefix: '', suffix: '', headingPath: [], offset: -1 }
     }
@@ -87,9 +87,9 @@ export function useSelectionCapture({
     const headingPath = getHeadingPath(ancestor)
 
     return { prefix, suffix, headingPath, offset }
-  }
+  }, [getHeadingPath, markdownBodyRef])
 
-  function getSelectionAnchorMetadata(): SelectionAnchorMetadata {
+  const getSelectionAnchorMetadata = useCallback((): SelectionAnchorMetadata => {
     const selection = window.getSelection()
     const range = selection?.rangeCount ? selection.getRangeAt(0) : null
     if (!range || !markdownBodyRef.current) {
@@ -97,9 +97,9 @@ export function useSelectionCapture({
     }
 
     return getSelectionAnchorMetadataFromRange(range, selection?.toString() || '')
-  }
+  }, [getSelectionAnchorMetadataFromRange, markdownBodyRef])
 
-  function renderSelectionPreview(color: AnnotationColor) {
+  const renderSelectionPreview = useCallback((color: AnnotationColor) => {
     const root = markdownBodyRef.current
     if (!root) return
 
@@ -177,7 +177,7 @@ export function useSelectionCapture({
     window.setTimeout(() => {
       selectionPreviewRenderLockRef.current = false
     }, 0)
-  }
+  }, [markdownBodyRef])
 
   const clearSelectionPreview = useCallback(() => {
     const highlights = (globalThis as typeof globalThis & {
@@ -226,7 +226,7 @@ export function useSelectionCapture({
 
       renderSelectionPreview(color)
     },
-    [markdownBodyRef],
+    [markdownBodyRef, renderSelectionPreview],
   )
 
   const captureSelection = useCallback(() => {
@@ -281,7 +281,7 @@ export function useSelectionCapture({
       selectionPreviewPendingRef.current = false
       if (selectionRangeRef.current) previewSelectionColor('yellow')
     }, 0)
-  }, [document, markdownBodyRef, clearSelectionPreview, previewSelectionColor])
+  }, [document, markdownBodyRef, clearSelectionPreview, previewSelectionColor, getSelectionAnchorMetadataFromRange])
 
   const resetSelectionCapture = useCallback(() => {
     setSelectionQuote('')
@@ -300,7 +300,7 @@ export function useSelectionCapture({
 
   const getAnchorMetadata = useCallback((): SelectionAnchorMetadata => {
     return selectionAnchorRef.current ?? getSelectionAnchorMetadata()
-  }, [])
+  }, [getSelectionAnchorMetadata])
 
   return {
     selectionQuote,

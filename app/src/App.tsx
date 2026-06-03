@@ -121,7 +121,7 @@ function App() {
     const baseName = name.replace(/\.(md|markdown)$/i, '') || 'wowMD'
     setExportTitle(baseName)
     setHtmlFilename(withThemeSuffix(safeExportFilename(name, 'html'), theme))
-  }, [setExportTitle, setHtmlFilename, withThemeSuffix, theme])
+  }, [setExportTitle, setHtmlFilename, theme])
 
   const {
     document,
@@ -193,7 +193,10 @@ function App() {
     resetSelectionCapture,
     getAnchorMetadata,
   } = useSelectionCapture({ document, markdownBodyRef })
-  resetSelectionRef.current = resetSelectionCapture
+
+  useEffect(() => {
+    resetSelectionRef.current = resetSelectionCapture
+  }, [resetSelectionCapture])
 
   const handleBeforeAnnotationSave = useCallback(() => {
     clearSelectionPreview()
@@ -208,13 +211,13 @@ function App() {
   const handleLicenseRequired = useCallback(() => {
     setView('license')
     setLicenseMessage(t('activateToSave'))
-  }, [t])
+  }, [setView, t])
 
   const handleScrollToAnnotation = useCallback(() => {
     setView('reader')
     setShowNotes(true)
     if (isNarrowLayout) setShowOutline(false)
-  }, [isNarrowLayout])
+  }, [isNarrowLayout, setView])
 
   const {
     annotations,
@@ -249,8 +252,10 @@ function App() {
     onScrollToAnnotation: handleScrollToAnnotation,
   })
 
-  annotationsRef.current = annotations
-  setAnnotationsRef.current = setAnnotations
+  useEffect(() => {
+    annotationsRef.current = annotations
+    setAnnotationsRef.current = setAnnotations
+  }, [annotations, setAnnotations])
 
   const handleToggleType = useCallback(
     (typeVal: AnnotationType, typeColor: AnnotationColor) => {

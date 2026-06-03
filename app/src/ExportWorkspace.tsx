@@ -87,7 +87,7 @@ export default function ExportWorkspace(props: ExportWorkspaceProps) {
   const hasExportToc = props.includeToc && props.toc.length > 0
   const hasExportNotes = props.includeHighlights && props.annotations.length > 0
   const copySourceHtml = async () => {
-    let copied = false
+    let copied: boolean
     try {
       await navigator.clipboard.writeText(props.htmlPreview)
       copied = true
