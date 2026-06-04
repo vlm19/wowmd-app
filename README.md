@@ -1,120 +1,196 @@
 # wowMD
 
-**A non-destructive review layer for Markdown. Read, annotate, and let your understanding accumulate across document versions — locally, privately, and under your control.**
+wowMD is a local-first Markdown reading and review product.
 
-Markdown files change. AI re-generates them. Editors rewrite them. wowMD gives you a place to pause, read with structure, mark what matters, and keep those annotations alive as the document evolves. Export as HTML to share with people, or as JSON — if you choose to involve AI, it stays your decision, on your terms.
+The repo contains the public website, the wowMD Pro web app, Cloudflare Pages
+Functions, and the generated `/app/` deployment output. The product is currently
+in beta and is free during the beta period.
 
-A local-first workspace plus a free Chrome extension for quick GitHub reading.
+## Current Status
 
----
-
-## Product Philosophy
-
-### Your data, your rules
-
-All processing stays in your browser. Nothing is uploaded. Annotations never leave your machine unless you explicitly export them. wowMD does not make trust decisions on your behalf.
-
-### The annotation layer is the product
-
-Markdown converters come and go. What persists is your layer of judgement — what you highlighted, what you questioned, what you understood. wowMD treats annotations as first-class data: they are stored, reloaded, re-anchored across document versions, and aggregated into an understanding map. This layer grows more valuable the more you use it.
-
-### AI is an optional downstream consumer, not the product
-
-You choose whether to involve AI at all. Export JSON if you want to feed annotations into an external tool. Use local AI to keep everything private. Or don't — the understanding map and cross-version tracking work entirely without AI. The product stands on its own. The AI pipe is yours to connect or ignore.
-
----
-
-## The Workflow
-
-```
-Open Markdown → Read with structure → Judge & highlight → Add notes
-                                                              │
-                                     ┌────────────────────────┘
-                                     ▼
-                              Annotations persist
-                              (IndexedDB + localStorage)
-                                     │
-                                     ├── Export HTML (share with people)
-                                     ├── Export JSON (your choice: feed AI or not)
-                                     └── Understanding map (where you're stuck)
-```
-
----
+- **Beta:** the website and web app show a small orange Beta label next to the
+  wowMD logo.
+- **Pricing:** wowMD Pro remains free during beta.
+- **Data boundary:** local Markdown documents are processed in the browser. The
+  app may store local reading copies, annotations, versions, settings, and
+  dismissals in browser storage, but it does not modify the user's original
+  Markdown files.
+- **Reader beta notice:** when a user opens a real local Markdown document or a
+  Markdown document handed off into the web app, the reader shows a dismissible
+  beta notice. It links to the localized feedback page and explains that the
+  original Markdown document is not affected even if the app crashes.
+- **Feedback:** website feedback is handled by Cloudflare Pages Functions and
+  Cloudflare D1 through `website/functions/api/feedback.js`.
+- **D1:** the `wowmd-feedback` D1 binding is configured in
+  `website/wrangler.toml`. A live API smoke test has succeeded, but direct D1
+  console queries still need authenticated Cloudflare access.
 
 ## Products
 
-### wowMD Pro WebApp (`app/`)
+### wowMD Pro Web App (`app/`)
 
-A browser-based workspace for local Markdown files. Nothing is uploaded.
+React + Vite + TypeScript SPA for reading and reviewing Markdown locally.
 
-- **Open** — drag-and-drop or file picker for `.md` / `.markdown` files. Import from GitHub via the Chrome extension in one click.
-- **Read** — interactive outline with scroll-synced active heading. Section folding. Code syntax highlighting with copy button. Horizontal table scrolling. Full-text search with match count and navigation. Dark (default) and light themes. Adjustable font size.
-- **Annotate** — select text, a floating toolbar appears. Six highlight colors. Add notes linked to the passage with semantic context (quote, prefix, suffix, heading path, offset). Notes panel with locate, delete, and export actions. All data persisted locally in IndexedDB with localStorage fallback.
-- **Export** — self-contained HTML with document structure, TOC, code blocks, highlights, and notes preserved. JSON export for AI workflow handoff (optional — you decide whether to involve AI). Live preview before download.
+Core capabilities:
 
-### Chrome Extension (`bg4abs/wowmd-ext`)
+- Open `.md` and `.markdown` files by picker or drag-and-drop.
+- Open public GitHub Markdown from the extension handoff/import route.
+- Read with outline navigation, search, code highlighting, code copy, table
+  scrolling, section folding, light/dark themes, and adjustable reader sizes.
+- Annotate selected text with typed review marks, notes, suggested replacements,
+  document context, and re-anchoring metadata.
+- Persist annotations, local document snapshots, reviewed copies, versions, and
+  settings in browser storage.
+- Export self-contained HTML with structure, highlights, and notes.
+- Export structured review/ticket JSON for optional downstream AI or workflow
+  handoff.
+- Show an understanding map for review status and unresolved work.
+- Provide a localized feedback link from reader and export surfaces.
 
-A free, lightweight extension for reading Markdown on GitHub.
+The app supports six UI locales:
 
-- One-click Better View on public GitHub `.md` pages.
-- Full Reader with outline navigation, H2 folding, code highlighting, and table scrolling.
-- Continue in Pro — open the same document in the full workspace.
+- English (`en`)
+- Simplified Chinese (`zh`)
+- Japanese (`ja`)
+- Korean (`ko`)
+- German (`de`)
+- French (`fr`)
 
----
+All app locale dictionaries are expected to have complete key coverage.
 
-## Website (`website/`)
+### Public Website (`website/`)
 
-Static HTML/CSS/JS site served via Cloudflare Pages.
+Static Cloudflare Pages site with generated localized HTML.
 
-| Page | URL | Purpose |
-|---|---|---|
-| Landing (Loop Canvas) | `/` | Visual workflow diagram |
-| Pro product page | `/pro.html` | Detailed feature showcase |
-| Extension product page | `/extension.html` | Free Chrome extension details |
-| WebApp SPA | `/app/` | The product itself |
+Source templates:
 
-6 locales: English, Chinese, Japanese, Korean, German, French.
+- `landing-template.html`
+- `template.html`
+- `pro-template.html`
+- `support-template.html`
+- `privacy-template.html`
+- `terms-template.html`
+- `feedback-template.html`
 
----
+Generated pages include English root pages plus localized directories for
+Chinese, Japanese, Korean, German, and French. The sitemap is generated by
+`website/scripts/build-i18n-pages.mjs`.
 
-## Architecture
+Main pages:
 
-```
+| Page | Path |
+| --- | --- |
+| Landing | `/` |
+| Pro | `/pro.html` |
+| Extension | `/extension.html` |
+| Support and feedback | `/support.html#feedback` |
+| Privacy | `/privacy.html` |
+| Terms | `/terms.html` |
+| Web app | `/app/` |
+
+### Chrome Extension
+
+The extension is maintained outside this repo. The website describes it as the
+free GitHub Markdown entry point for wowMD:
+
+- Better View on public GitHub Markdown pages.
+- Reader view with outline, folding, code highlighting, and table handling.
+- Continue in Pro to open the document in the full web app.
+
+## Repository Layout
+
+```text
 wowmd-app/
-  website/          Static marketing site + Cloudflare Pages config
-    index.html      Loop Canvas landing page
-    pro.html        Pro product page
-    extension.html  Extension product page
-    styles.css      CSS design tokens + all page styles
-    script.js       Language picker, scroll reveal, FAQ accordion
-    i18n/           6 locale JSON translation files
-    app/            Built WebApp output (from app/dist)
-  app/              React + Vite + TypeScript SPA
+  app/                         React/Vite web app source
     src/
-      App.tsx       Main component (Reader, Export, License views)
-      App.css       All WebApp styling
-      i18n.ts       6-locale UI translations
-      markdown.ts   markdown-it rendering, TOC, SHA-256 fingerprint
-      annotations.ts  Annotation model, IndexedDB + localStorage CRUD, 3-tier re-anchoring
-      exportHtml.ts   Self-contained HTML export builder
-      importService.ts  GitHub raw URL import + allowlist validation
-      localDocuments.ts  IndexedDB document storage (wowmd_local)
-      license.ts    Trial state model + feature gates
-      search.ts     In-document search with highlighting
-      fold.ts       H2 section folding
-  docs/             Product specs, design docs, implementation guides
+      App.tsx                  Main app shell and reader/license/export routing
+      App.css                  Web app styling
+      ExportWorkspace.tsx      Lazy-loaded export workspace
+      i18n.ts                  6-locale app translations
+      markdown.ts              Markdown rendering, TOC, fingerprinting
+      annotations.ts           Annotation model, storage, and re-anchoring
+      exportHtml.ts            Self-contained HTML export builder
+      importService.ts         GitHub Markdown import service
+      localDocuments.ts        IndexedDB local document storage
+      license.ts               Beta/license gate model
+      search.ts                In-document search highlighting
+      fold.ts                  Section folding
+  website/                     Cloudflare Pages root
+    app/                       Built web app output from app/vite.config.ts
+    functions/                 Cloudflare Pages Functions
+    i18n/                      Website locale JSON files
+    scripts/                   I18n page generation and guards
+    styles.css                 Website styling
+    sitemap.xml                Generated sitemap
+    wrangler.toml              Pages + D1 binding config
+  docs/                        Product notes and implementation plans
+  scripts/                     Playwright/helper scripts for local verification
 ```
 
----
+## Build And Verification
 
-## Tech Stack
+From `app/`:
 
-| Component | Stack |
-|---|---|
-| WebApp | React 19, Vite 8, TypeScript 6, pure CSS |
-| Website | Static HTML/CSS/JS (zero external dependencies) |
-| Fonts (WebApp) | DM Sans + DM Mono (Google Fonts) |
-| Icons | Tabler Icons (CDN, WebApp) + inline SVGs (Website) |
-| Markdown | markdown-it + highlight.js + DOMPurify |
-| Storage | IndexedDB + localStorage |
-| Deployment | Cloudflare Pages + Cloudflare Workers + D1 |
+```powershell
+npm.cmd run build
+npm.cmd run lint
+npm.cmd run test
+```
+
+`npm.cmd run build` compiles the app and writes production assets into
+`website/app/` using Vite's `base: "/app/"`.
+
+From `website/`:
+
+```powershell
+npm.cmd run verify
+```
+
+This regenerates localized pages and runs the i18n guard.
+
+Useful local preview:
+
+```powershell
+python -m http.server 4174 --bind 127.0.0.1 --directory website
+```
+
+Then open:
+
+```text
+http://127.0.0.1:4174/
+http://127.0.0.1:4174/app/
+```
+
+## Deployment Notes
+
+- Cloudflare Pages root is `website/`.
+- `website/app/` is generated output and should not be edited directly.
+- Website localized HTML and `sitemap.xml` are generated from templates and
+  `website/i18n/*.json`.
+- Feedback API route: `/api/feedback`.
+- D1 binding: `DB`.
+- D1 database name: `wowmd-feedback`.
+
+## Release Checklist
+
+Before shipping a change:
+
+1. Update source files, not generated app assets directly.
+2. Run `npm.cmd run build` in `app/` when the web app changes.
+3. Run `npm.cmd run lint` and `npm.cmd run test` in `app/`.
+4. Run `npm.cmd run verify` in `website/`.
+5. For UI changes, use Playwright or browser screenshots on desktop and mobile.
+6. Confirm localized pages, feedback links, and sitemap output are current.
+
+## Privacy And Safety Boundaries
+
+wowMD is designed around local-first reading and non-destructive review:
+
+- Opening a local Markdown file creates a browser-side reading copy.
+- Annotations and local versions are saved in browser storage.
+- The original Markdown file on disk is not modified by the web app.
+- Exports are explicit user actions.
+- Website feedback is the main intentional network submission path.
+
+During beta, users should report anything that affects their experience through
+the feedback page so the product can be improved.

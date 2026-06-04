@@ -28,7 +28,39 @@
     <meta name="twitter:description" data-i18n-content="pro.twitterDescription" content="HTML for people. Reviewed Markdown for Obsidian. Backup JSON for yourself. Ticket JSON for AI.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"wowMD Pro","applicationCategory":"WebApplication","operatingSystem":"Modern browser","description":"A local-first, non-destructive review layer for Markdown.","url":"{{canonicalUrl}}","image":"https://wowmd.app/assets/shots/annotate.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"}}
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "@id": "https://wowmd.app/pro.html#software",
+        "name": "wowMD Pro",
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Modern browser",
+        "description": "A local-first, non-destructive Markdown review layer for structured reading, typed annotations, cross-version re-anchoring, and export.",
+        "url": "{{canonicalUrl}}",
+        "sameAs": "https://wowmd.app/app/",
+        "image": "https://wowmd.app/assets/shots/annotate.png",
+        "isAccessibleForFree": true,
+        "inLanguage": ["en", "zh", "ja", "ko", "de", "fr"],
+        "featureList": [
+          "Local Markdown reader",
+          "Outline navigation and section folding",
+          "Typed review annotations",
+          "Suggested replacements",
+          "Cross-version annotation survival",
+          "Understanding Map",
+          "Offline HTML export",
+          "Reviewed Markdown export",
+          "Backup JSON export",
+          "Ticket JSON export for optional AI handoff"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "description": "Free during beta"
+        }
+      }
     </script>
     <link rel="stylesheet" href="{{base}}styles.css?v=20260601-webapp-lang">
   </head>

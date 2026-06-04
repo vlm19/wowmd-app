@@ -272,12 +272,18 @@ for (const language of languages) {
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${siteUrl}/app/</loc>
+    <lastmod>${sitemapLastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
 ${languages
   .flatMap(({ dir }) => [
     { loc: dir ? `${siteUrl}/${dir}/` : `${siteUrl}/`, priority: dir ? "0.8" : "1.0" },
     { loc: `${siteUrl}/${pagePath(dir, "extension.html")}`, priority: "0.9" },
     { loc: `${siteUrl}/${pagePath(dir, "pro.html")}`, priority: "0.9" },
-    ...(dir === "" || dir === "zh" ? [{ loc: `${siteUrl}/${pagePath(dir, "support.html")}`, priority: "0.7" }] : []),
+    { loc: `${siteUrl}/${pagePath(dir, "support.html")}`, priority: "0.7" },
     { loc: `${siteUrl}/${pagePath(dir, "privacy.html")}`, priority: "0.6" },
     { loc: `${siteUrl}/${pagePath(dir, "terms.html")}`, priority: "0.6" }
   ])
@@ -295,4 +301,4 @@ ${languages
 
 fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap, "utf8");
 
-console.log(`Generated ${languages.length * 6 + 2} localized pages.`);
+console.log(`Generated ${languages.length * 7} localized pages.`);

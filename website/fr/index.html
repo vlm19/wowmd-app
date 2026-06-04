@@ -28,7 +28,49 @@
     <meta name="twitter:description" content="Lisez de longs Markdown avec structure, jugez l'essentiel avec quatre types de relecture, gardez les annotations vivantes d'une version à l'autre, puis exportez en HTML pour les humains ou en ticket pour une IA.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/annotate.png">
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"WebSite","name":"wowMD","url":"https://wowmd.app/fr/","description":"A living, local-first review layer for Markdown."}
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://wowmd.app/#organization",
+            "name": "wowMD",
+            "url": "https://wowmd.app/",
+            "logo": "https://wowmd.app/assets/brand/logo-mark.svg"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://wowmd.app/#website",
+            "name": "wowMD",
+            "url": "https://wowmd.app/",
+            "publisher": { "@id": "https://wowmd.app/#organization" },
+            "inLanguage": ["en", "zh", "ja", "ko", "de", "fr"],
+            "description": "wowMD is a local-first Markdown reading and review product family with a Chrome extension for GitHub Markdown and a Pro web app for local Markdown annotation and export."
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://wowmd.app/extension.html#software",
+            "name": "wowMD Chrome Extension",
+            "applicationCategory": "BrowserApplication",
+            "operatingSystem": "Chrome",
+            "url": "https://wowmd.app/extension.html",
+            "isAccessibleForFree": true,
+            "description": "A free Chrome extension that turns public GitHub Markdown pages into structured reading views with outline, folding, code highlighting, and table handling.",
+            "featureList": ["GitHub Markdown reader", "Outline navigation", "Section folding", "Code highlighting", "Table scrolling"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://wowmd.app/pro.html#software",
+            "name": "wowMD Pro",
+            "applicationCategory": "WebApplication",
+            "operatingSystem": "Modern browser",
+            "url": "https://wowmd.app/app/",
+            "isAccessibleForFree": true,
+            "description": "A local-first Markdown review layer for reading, typed annotations, cross-version annotation survival, Understanding Map, and HTML, reviewed Markdown, Backup JSON, or Ticket JSON export.",
+            "featureList": ["Local Markdown reader", "Typed review annotations", "Cross-version re-anchoring", "Understanding Map", "HTML export", "Reviewed Markdown export", "Ticket JSON export"]
+          }
+        ]
+      }
     </script>
     <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
     <link rel="stylesheet" href="../styles.css?v=20260601-ext-zoom">
