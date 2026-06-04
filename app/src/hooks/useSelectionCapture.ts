@@ -106,22 +106,6 @@ export function useSelectionCapture({
     const root = markdownBodyRef.current
     if (!root) return
 
-    const highlightApi = (globalThis as typeof globalThis & {
-      CSS?: { highlights?: Map<string, unknown> }
-      Highlight?: new (...ranges: Range[]) => unknown
-    })
-    if (highlightApi.CSS?.highlights && highlightApi.Highlight && selectionRangeRef.current) {
-      ;(Object.keys(selectionPreviewColors) as SelectionPreviewColor[]).forEach((previewColor) => {
-        highlightApi.CSS?.highlights?.delete(`wowmd-selection-preview-${previewColor}`)
-      })
-      highlightApi.CSS.highlights.set(
-        `wowmd-selection-preview-${color}`,
-        new highlightApi.Highlight(selectionRangeRef.current.cloneRange()),
-      )
-      selectionPreviewColorRef.current = color
-      return
-    }
-
     const textNodes: Text[] = []
     const walker = globalThis.document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
@@ -139,34 +123,53 @@ export function useSelectionCapture({
       textNodes.push(walker.currentNode as Text)
     }
 
-    const quote = selectionPreviewQuoteRef.current.trim()
-    if (!quote) return
-
-    const fullText = textNodes.map((node) => node.textContent || '').join('')
-    let matchStart = selectionAnchorRef.current?.offset ?? -1
-    if (matchStart < 0 || fullText.slice(matchStart, matchStart + quote.length) !== quote) {
-      matchStart = fullText.indexOf(quote)
-    }
-    if (matchStart < 0) return
-
-    const matchEnd = matchStart + quote.length
-    let cursor = 0
     const segments: Array<{ node: Text; start: number; end: number }> = []
-    textNodes.forEach((node) => {
-      const text = node.textContent || ''
-      const nodeStart = cursor
-      const nodeEnd = cursor + text.length
-      const start = Math.max(matchStart, nodeStart)
-      const end = Math.min(matchEnd, nodeEnd)
-      if (start < end) {
-        segments.push({
-          node,
-          start: start - nodeStart,
-          end: end - nodeStart,
-        })
+
+    const range = selectionRangeRef.current
+    if (range) {
+      textNodes.forEach((node) => {
+        const text = node.textContent || ''
+        if (!text || !range.intersectsNode(node)) return
+
+        let start = 0
+        let end = text.length
+        if (node === range.startContainer) start = range.startOffset
+        if (node === range.endContainer) end = range.endOffset
+        if (start < end && text.slice(start, end).trim()) {
+          segments.push({ node, start, end })
+        }
+      })
+    }
+
+    if (!segments.length) {
+      const quote = selectionPreviewQuoteRef.current.trim()
+      if (!quote) return
+
+      const fullText = textNodes.map((node) => node.textContent || '').join('')
+      let matchStart = selectionAnchorRef.current?.offset ?? -1
+      if (matchStart < 0 || fullText.slice(matchStart, matchStart + quote.length) !== quote) {
+        matchStart = fullText.indexOf(quote)
       }
-      cursor = nodeEnd
-    })
+      if (matchStart < 0) return
+
+      const matchEnd = matchStart + quote.length
+      let cursor = 0
+      textNodes.forEach((node) => {
+        const text = node.textContent || ''
+        const nodeStart = cursor
+        const nodeEnd = cursor + text.length
+        const start = Math.max(matchStart, nodeStart)
+        const end = Math.min(matchEnd, nodeEnd)
+        if (start < end && text.slice(start - nodeStart, end - nodeStart).trim()) {
+          segments.push({
+            node,
+            start: start - nodeStart,
+            end: end - nodeStart,
+          })
+        }
+        cursor = nodeEnd
+      })
+    }
 
     if (!segments.length) return
 
