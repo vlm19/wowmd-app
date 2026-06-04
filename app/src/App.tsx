@@ -650,6 +650,7 @@ function App() {
                 selectedType={selectedType}
                 toolbarNote={toolbarNote}
                 toolbarReplacement={toolbarReplacement}
+                selectionQuote={selectionQuote}
                 showReplacement={showReplacement}
                 canSave={!!(selectedType || toolbarNote.trim())}
                 onToggleType={handleToggleType}

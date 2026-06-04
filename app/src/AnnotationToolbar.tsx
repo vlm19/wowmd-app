@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import type { AnnotationColor, AnnotationType } from './annotations'
+import { copyIconSvg, copyTextWithFallback } from './appUtils'
 
 const typeColorMap: Record<AnnotationType, AnnotationColor> = {
   clarify: 'blue',
@@ -23,6 +24,7 @@ interface AnnotationToolbarProps {
   selectedType: AnnotationType | null
   toolbarNote: string
   toolbarReplacement: string
+  selectionQuote: string
   showReplacement: boolean
   canSave: boolean
   onToggleType: (typeVal: AnnotationType, typeColor: AnnotationColor) => void
@@ -41,6 +43,7 @@ export default function AnnotationToolbar({
   selectedType,
   toolbarNote,
   toolbarReplacement,
+  selectionQuote,
   showReplacement,
   canSave,
   onToggleType,
@@ -54,6 +57,7 @@ export default function AnnotationToolbar({
 }: AnnotationToolbarProps) {
   const toolbarRef = useRef<HTMLDivElement | null>(null)
   const [clampedPosition, setClampedPosition] = useState({ x, y })
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle')
 
   useLayoutEffect(() => {
     const toolbar = toolbarRef.current
@@ -69,6 +73,18 @@ export default function AnnotationToolbar({
     const nextY = Math.max(92, y)
     setClampedPosition({ x: nextX, y: nextY })
   }, [x, y, showReplacement, toolbarNote, toolbarReplacement, t])
+
+  const copySelection = async () => {
+    let copied: boolean
+    try {
+      await navigator.clipboard.writeText(selectionQuote)
+      copied = true
+    } catch {
+      copied = copyTextWithFallback(selectionQuote)
+    }
+    setCopyState(copied ? 'copied' : 'failed')
+    window.setTimeout(() => setCopyState('idle'), 1200)
+  }
 
   return (
     <div
@@ -133,6 +149,22 @@ export default function AnnotationToolbar({
         ) : null}
       </div>
       <div className="toolbar-actions">
+        <button
+          className="toolbar-copy"
+          type="button"
+          aria-label={copyState === 'copied' ? t('copied') : t('copySelection')}
+          title={copyState === 'copied' ? t('copied') : t('copySelection')}
+          data-state={copyState === 'idle' ? undefined : copyState}
+          onClick={copySelection}
+        >
+          {copyState === 'copied' ? (
+            <svg className="toolbar-copy-check" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M5 12.5l4.2 4.2L19 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          ) : (
+            <span dangerouslySetInnerHTML={{ __html: copyIconSvg() }} />
+          )}
+        </button>
         <button
           className="toolbar-confirm"
           type="button"

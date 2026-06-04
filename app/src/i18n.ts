@@ -132,6 +132,7 @@ const en: Messages = {
   ticketInfoDiffTitle: 'How it differs from backup',
   ticketInfoDiffBody: 'Backup annotations only store the marks themselves. Tickets also include the source text and processing instructions, so they are useful for AI or human editing.',
   copyPromptTemplate: 'Copy prompt template',
+  copySelection: 'Copy',
   copied: 'Copied',
   ticketPromptTemplate: `You are a careful document editor. I will give you a JSON ticket containing my annotations on a Markdown document.
 Please process each annotation by its type and output the complete revised document:
@@ -288,6 +289,7 @@ const zh: Messages = {
   ticketInfoDiffTitle: '和备份标注的区别',
   ticketInfoDiffBody: '备份只存标注本身；工单额外带上原文和处理指令，因此可以直接给 AI 或人工编辑使用。',
   copyPromptTemplate: '复制提示词模板',
+  copySelection: '复制',
   copied: '已复制',
   ticketPromptTemplate: `你是一位严谨的文稿编辑。我会给你一份 JSON 工单，里面是我对一篇 Markdown 文档的批注。
 请按每条批注的类型处理，并输出完整修订后的文档：
@@ -445,6 +447,7 @@ const ja: Messages = {
   ticketInfoDiffTitle: 'バックアップとの違い',
   ticketInfoDiffBody: 'バックアップ注釈はマーク自体だけを保存します。チケットは原文と処理指示も含むため、AIや人間の編集に直接使えます。',
   copyPromptTemplate: 'プロンプトテンプレートをコピー',
+  copySelection: 'コピー',
   copied: 'コピーしました',
   ticketPromptTemplate: `あなたは慎重な文書編集者です。Markdown文書に対する私の注釈を含むJSONチケットを渡します。
 各注釈タイプに従って処理し、修正後の完全な文書を出力してください。
@@ -602,6 +605,7 @@ const ko: Messages = {
   ticketInfoDiffTitle: '백업과 다른 점',
   ticketInfoDiffBody: '백업 주석은 표시 자체만 저장합니다. 티켓은 원문과 처리 지침도 포함하므로 AI나 사람이 바로 편집에 사용할 수 있습니다.',
   copyPromptTemplate: '프롬프트 템플릿 복사',
+  copySelection: '복사',
   copied: '복사됨',
   ticketPromptTemplate: `당신은 신중한 문서 편집자입니다. Markdown 문서에 대한 제 주석이 담긴 JSON 티켓을 드리겠습니다.
 각 주석 유형에 따라 처리하고, 수정된 전체 문서를 출력하세요.
@@ -759,6 +763,7 @@ const de: Messages = {
   ticketInfoDiffTitle: 'Unterschied zum Backup',
   ticketInfoDiffBody: 'Backup-Anmerkungen speichern nur die Markierungen selbst. Tickets enthalten zusätzlich Quelltext und Bearbeitungsanweisungen und eignen sich dadurch für KI- oder menschliche Bearbeitung.',
   copyPromptTemplate: 'Prompt-Vorlage kopieren',
+  copySelection: 'Kopieren',
   copied: 'Kopiert',
   ticketPromptTemplate: `Sie sind ein sorgfältiger Dokumenteditor. Ich gebe Ihnen ein JSON-Ticket mit meinen Anmerkungen zu einem Markdown-Dokument.
 Bitte bearbeiten Sie jede Anmerkung nach ihrem Typ und geben Sie das vollständig überarbeitete Dokument aus:
@@ -916,6 +921,7 @@ const fr: Messages = {
   ticketInfoDiffTitle: 'Différence avec la sauvegarde',
   ticketInfoDiffBody: 'La sauvegarde des annotations ne stocke que les marques. Les tickets incluent aussi le texte source et les consignes de traitement, utiles pour une édition par IA ou humaine.',
   copyPromptTemplate: 'Copier le modèle de prompt',
+  copySelection: 'Copier',
   copied: 'Copié',
   ticketPromptTemplate: `Vous êtes un éditeur de documents attentif. Je vais vous fournir un ticket JSON contenant mes annotations sur un document Markdown.
 Traitez chaque annotation selon son type et produisez le document révisé complet :

@@ -103,6 +103,22 @@ export function useSelectionCapture({
     const root = markdownBodyRef.current
     if (!root) return
 
+    const highlightApi = (globalThis as typeof globalThis & {
+      CSS?: { highlights?: Map<string, unknown> }
+      Highlight?: new (...ranges: Range[]) => unknown
+    })
+    if (highlightApi.CSS?.highlights && highlightApi.Highlight && selectionRangeRef.current) {
+      ;(Object.keys(selectionPreviewColors) as AnnotationColor[]).forEach((previewColor) => {
+        highlightApi.CSS?.highlights?.delete(`wowmd-selection-preview-${previewColor}`)
+      })
+      highlightApi.CSS.highlights.set(
+        `wowmd-selection-preview-${color}`,
+        new highlightApi.Highlight(selectionRangeRef.current.cloneRange()),
+      )
+      selectionPreviewColorRef.current = color
+      return
+    }
+
     const textNodes: Text[] = []
     const walker = globalThis.document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
@@ -271,7 +287,7 @@ export function useSelectionCapture({
     selectionRangeRef.current = range.cloneRange()
     selectionAnchorRef.current = getSelectionAnchorMetadataFromRange(range, quote)
     selectionPreviewQuoteRef.current = quote
-    setSelectionQuote(quote.slice(0, 500))
+    setSelectionQuote(quote)
     setSelectionToolbar({
       x: rect.left + rect.width / 2,
       y: Math.max(92, rect.top - 14),

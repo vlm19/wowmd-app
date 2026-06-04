@@ -29,8 +29,10 @@ coverage/
 
 # Local browser/test output
 chrome-profile*/
+.playwright-cli/
 playwright-report/
 test-results/
+output/
 tmp/
 
 # Claude Code machine-local config (keep shared config like launch.json tracked)

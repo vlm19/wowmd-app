@@ -1340,8 +1340,66 @@ p {
 
 .toolbar-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 8px;
   width: 100%;
+}
+
+.toolbar-copy {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  border: 0.5px solid #464640;
+  border-radius: var(--r-sm);
+  padding: 0;
+  background: transparent;
+  color: #b8d8ff;
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    color 0.12s,
+    transform 0.16s ease;
+}
+
+.toolbar-copy svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.toolbar-copy:hover,
+.toolbar-copy:focus-visible {
+  border-color: color-mix(in srgb, var(--highlight-blue) 68%, #464640);
+  background: color-mix(in srgb, var(--highlight-blue) 14%, transparent);
+}
+
+.toolbar-copy[data-state='copied'] {
+  border-color: color-mix(in srgb, var(--highlight-green) 72%, #464640);
+  background: color-mix(in srgb, var(--highlight-green) 18%, transparent);
+  color: #b9e6c4;
+  animation: toolbar-copy-pop 0.34s ease;
+}
+
+.toolbar-copy[data-state='failed'] {
+  border-color: color-mix(in srgb, var(--highlight-rose) 72%, #464640);
+  background: color-mix(in srgb, var(--highlight-rose) 18%, transparent);
+  color: #ffc1cb;
+}
+
+@keyframes toolbar-copy-pop {
+  0% {
+    transform: scale(0.86);
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .toolbar-confirm {
