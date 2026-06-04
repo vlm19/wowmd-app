@@ -119,30 +119,34 @@ p {
 }
 
 .brand {
+  --brand-logo-width: 130px;
+  --brand-logo-height: 32px;
   display: inline-flex;
+  position: relative;
   align-items: center;
-  gap: 4px;
   min-width: max-content;
   margin-right: 8px;
+  padding-right: 32px;
+  text-decoration: none;
   white-space: nowrap;
 }
 
 .brand img {
-  width: 130px;
-  height: 32px;
+  width: var(--brand-logo-width);
+  height: var(--brand-logo-height);
   display: block;
 }
 
 .app-beta-badge {
-  display: inline-flex;
-  align-items: center;
-  height: auto;
-  margin-top: -12px;
+  position: absolute;
+  left: calc(var(--brand-logo-width) * 0.815 + 0.65em);
+  top: calc(var(--brand-logo-height) * 0.656 - 10px);
   color: #ff8a3d;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0;
   line-height: 1;
+  text-decoration: none;
 }
 
 .topbar-nav,
@@ -475,8 +479,8 @@ p {
 }
 
 .app:has(.empty-import) .brand img {
-  width: 130px;
-  height: 32px;
+  width: var(--brand-logo-width);
+  height: var(--brand-logo-height);
 }
 
 .app:has(.empty-import) .topbar {
@@ -2526,8 +2530,8 @@ p {
   border: 0.5px solid color-mix(in srgb, #ff8a3d 42%, var(--border));
   border-radius: var(--r-lg);
   padding: 14px 16px;
-  background: color-mix(in srgb, #ff8a3d 8%, var(--reader-paper-panel));
-  color: var(--reader-text);
+  background: color-mix(in srgb, #ff8a3d 8%, #1e1e1c);
+  color: #f4f2ea;
 }
 
 .beta-reader-notice strong {
@@ -2541,7 +2545,7 @@ p {
 
 .beta-reader-notice p {
   margin: 0;
-  color: var(--reader-muted);
+  color: #c8c4b8;
   font-size: 12px;
   line-height: 1.55;
 }
@@ -2566,7 +2570,7 @@ p {
   border-radius: var(--r-md);
   padding: 0 10px;
   background: transparent;
-  color: var(--reader-muted);
+  color: #c8c4b8;
   font-size: 11px;
   font-weight: 700;
   text-decoration: none;
@@ -2585,6 +2589,19 @@ p {
 .beta-reader-notice-actions button:focus-visible {
   outline: none;
   opacity: 0.86;
+}
+
+.theme-light .beta-reader-notice {
+  background: color-mix(in srgb, #ff8a3d 9%, #f1eadf);
+  color: #302d28;
+}
+
+.theme-light .beta-reader-notice p {
+  color: #625a50;
+}
+
+.theme-light .beta-reader-notice-actions button {
+  color: #625a50;
 }
 
 .reader-feedback-link {
@@ -4214,9 +4231,57 @@ p {
 
   .tool-row {
     position: static;
+    grid-template-columns: minmax(0, 1fr) !important;
     height: auto;
     gap: 8px;
     padding: 10px 20px;
+  }
+
+  .reader-tool-row .toolbar-left,
+  .reader-tool-row .toolbar-center,
+  .reader-tool-row .toolbar-right,
+  .export-tool-row .toolbar-left,
+  .export-tool-row .toolbar-center,
+  .export-tool-row .toolbar-right {
+    grid-column: 1 !important;
+    grid-row: auto;
+    justify-self: stretch;
+    min-width: 0;
+    max-width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .toolbar-left,
+  .toolbar-center,
+  .toolbar-right {
+    flex-wrap: wrap;
+  }
+
+  .toolbar-center-control {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .toolbar-center-control .file-menu {
+    min-width: 0;
+    flex: 1 1 150px;
+  }
+
+  .toolbar-center-control .file-menu summary {
+    max-width: 100%;
+  }
+
+  .search-control {
+    flex: 1 1 220px;
+    max-width: 100%;
+  }
+
+  .search-control input {
+    min-width: 0;
+    flex: 1 1 110px;
+    width: auto;
   }
 
   .workspace {
@@ -4294,9 +4359,9 @@ p {
     padding: 12px;
   }
 
-  .app:has(.empty-import) .brand img {
-    width: 112px;
-    height: auto;
+  .app:has(.empty-import) .brand {
+    --brand-logo-width: 112px;
+    --brand-logo-height: 27.57px;
   }
 
   .app:has(.empty-import) .topbar-nav {
