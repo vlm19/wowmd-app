@@ -121,8 +121,10 @@ p {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  min-width: max-content;
   margin-right: 8px;
+  white-space: nowrap;
 }
 
 .brand img {
@@ -134,16 +136,13 @@ p {
 .app-beta-badge {
   display: inline-flex;
   align-items: center;
-  height: 20px;
-  border: 0.5px solid color-mix(in srgb, #f2d46b 56%, #464640);
-  border-radius: 999px;
-  padding: 0 8px;
-  background: color-mix(in srgb, #f2d46b 14%, #2a2a28);
-  color: #f7e8a4;
-  font-size: 11px;
-  font-weight: 700;
+  height: auto;
+  margin-top: -12px;
+  color: #ff8a3d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .topbar-nav,
