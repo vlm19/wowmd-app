@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -44,7 +46,6 @@ import VersionHistory from './VersionHistory'
 import AnnotationToolbar from './AnnotationToolbar'
 import NotesPanel from './NotesPanel'
 import FeedbackLink from './FeedbackLink'
-import ExportWorkspace from './ExportWorkspace'
 import ReaderToolbar from './ReaderToolbar'
 import LanguagePicker from './LanguagePicker'
 import { loadSettings, type PanelMode, type AnnotationStyle } from './settingsStore'
@@ -63,6 +64,7 @@ type ThemeName = 'light' | 'dark'
 type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
 
+const ExportWorkspace = lazy(() => import('./ExportWorkspace'))
 
 function App() {
   const [theme, setTheme] = useState<ThemeName>('dark')
@@ -485,6 +487,7 @@ function App() {
       <header className="topbar">
         <a className="brand" href="/" aria-label="wowMD home">
           <img src="assets/brand/logo-lockup-outlined.svg" alt="wowMD" />
+          <span className="app-beta-badge">Beta</span>
         </a>
         <div className="topbar-right">
           {document ? (
@@ -887,37 +890,39 @@ function App() {
         ) : null}
 
         {view === 'exports' ? (
-          <ExportWorkspace
-            t={t}
-            document={document}
-            theme={theme}
-            setTheme={setTheme}
-            exportPreviewScale={exportPreviewScale}
-            setExportPreviewScale={setExportPreviewScale}
-            exportViewMode={exportViewMode}
-            setExportViewMode={setExportViewMode}
-            exportSearchQuery={exportSearchQuery}
-            setExportSearchQuery={setExportSearchQuery}
-            exportSearchIndex={exportSearchIndex}
-            setExportSearchIndex={setExportSearchIndex}
-            htmlPreview={htmlPreview}
-            toc={rendered.toc}
-            annotations={annotations}
-            includeToc={includeToc}
-            setIncludeToc={setIncludeToc}
-            includeHeadingAnchors={includeHeadingAnchors}
-            setIncludeHeadingAnchors={setIncludeHeadingAnchors}
-            includeHighlights={includeHighlights}
-            setIncludeHighlights={setIncludeHighlights}
-            includeExportMetadata={includeExportMetadata}
-            setIncludeExportMetadata={setIncludeExportMetadata}
-            htmlFilename={htmlFilename}
-            setHtmlFilename={setHtmlFilename}
-            estimatedHtmlSize={estimatedHtmlSize}
-            canExport={licenseSummary.canExport}
-            downloadHtmlExport={downloadHtmlExport}
-            feedbackHref={feedbackHref}
-          />
+          <Suspense fallback={<section className="center-panel"><p className="intro">{t('exportsTitle')}</p></section>}>
+            <ExportWorkspace
+              t={t}
+              document={document}
+              theme={theme}
+              setTheme={setTheme}
+              exportPreviewScale={exportPreviewScale}
+              setExportPreviewScale={setExportPreviewScale}
+              exportViewMode={exportViewMode}
+              setExportViewMode={setExportViewMode}
+              exportSearchQuery={exportSearchQuery}
+              setExportSearchQuery={setExportSearchQuery}
+              exportSearchIndex={exportSearchIndex}
+              setExportSearchIndex={setExportSearchIndex}
+              htmlPreview={htmlPreview}
+              toc={rendered.toc}
+              annotations={annotations}
+              includeToc={includeToc}
+              setIncludeToc={setIncludeToc}
+              includeHeadingAnchors={includeHeadingAnchors}
+              setIncludeHeadingAnchors={setIncludeHeadingAnchors}
+              includeHighlights={includeHighlights}
+              setIncludeHighlights={setIncludeHighlights}
+              includeExportMetadata={includeExportMetadata}
+              setIncludeExportMetadata={setIncludeExportMetadata}
+              htmlFilename={htmlFilename}
+              setHtmlFilename={setHtmlFilename}
+              estimatedHtmlSize={estimatedHtmlSize}
+              canExport={licenseSummary.canExport}
+              downloadHtmlExport={downloadHtmlExport}
+              feedbackHref={feedbackHref}
+            />
+          </Suspense>
         ) : null}
 
         {view === 'license' ? (

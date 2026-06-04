@@ -12,7 +12,7 @@ const feedbackTemplatePath = path.join(root, "feedback-template.html");
 const supportTemplatePath = path.join(root, "support-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
-const sitemapLastmod = "2026-05-27";
+const sitemapLastmod = "2026-06-04";
 
 const languages = [
   { code: "en", dir: "", flag: "gb.svg", name: "EN" },

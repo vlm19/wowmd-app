@@ -413,6 +413,47 @@ const ja: Messages = {
   typeDispute: '疑問あり',
   typeImportant: '重要',
   typeConfirmed: '確認済',
+  brand: 'wowMD Pro',
+  htmlTab: 'HTML',
+  epubTab: 'EPUB',
+  suggestedReplacement: '置換案',
+  suggestedReplacementHint: '任意で置換テキストを貼り付けます。エクスポートするチケットに書き込まれ、元ファイルには書き込まれません。',
+  exportTicketJson: 'チケットを書き出し (.json)',
+  backupJsonLabel: '注釈をバックアップ (.json)',
+  backupJsonTitle: 'すべての注釈の生データをバックアップまたは後日の再インポート用に書き出します。',
+  ticketJsonTitle: '注釈を、原文、セクション文脈、各注釈の処理指示を含む実行可能なチケットとしてまとめます。',
+  ticketInfoTitle: 'チケットとは？',
+  ticketInfoWhatTitle: '含まれる内容',
+  ticketInfoWhatBody: 'Markdownのスナップショット、各注釈タイプの意味、各メモのセクション、文脈アンカー、コメント、置換案を含む構造化JSONです。',
+  ticketInfoHowTitle: '使い方',
+  ticketInfoHowBody: 'チケット全体をChatGPT、Claude、または編集者に渡すと、注釈に沿ってセクションごとに文書を修正できます。',
+  ticketInfoDiffTitle: 'バックアップとの違い',
+  ticketInfoDiffBody: 'バックアップ注釈はマーク自体だけを保存します。チケットは原文と処理指示も含むため、AIや人間の編集に直接使えます。',
+  copyPromptTemplate: 'プロンプトテンプレートをコピー',
+  copied: 'コピーしました',
+  ticketPromptTemplate: `あなたは慎重な文書編集者です。Markdown文書に対する私の注釈を含むJSONチケットを渡します。
+各注釈タイプに従って処理し、修正後の完全な文書を出力してください。
+
+- clarify: 意味を変えずに、この点を説明または明確化する。
+- dispute: この点を確認する。不正確な可能性があるため、必要なら修正して理由を説明する。
+- important: この重要な点を保持し、強調する。
+- confirmed: 確認済みで正しい。変更しない。
+
+ルール:
+1. document.markdownSnapshotを元原稿として使う。注釈された箇所だけを変更し、それ以外は保持する。
+2. headingPath + quote + prefix/suffixで各注釈を特定する。suggestedReplacementがあれば優先する。
+3. まず修正後の完全なMarkdownを出力し、その後に変更点一覧を付ける。
+
+チケット:
+<ここにエクスポートしたチケットJSONを貼り付ける>`,
+  notesEmptyFlow: '本文を選択 -> Clarify / Dispute / Important / Confirmedとしてマーク -> AI支援編集用のチケットを書き出します。',
+  mapDensityTitle: 'タイプ別のセクション密度',
+  mapIntro: '不明点や論点が集中しているセクションを確認できます。セクション名をクリックすると移動します。',
+  mapLegend: '注釈タイプの凡例',
+  mapEmptyTyped: 'タイプ付き注釈はまだありません。本文をClarify / Dispute / Important / Confirmedでマークするとマップに表示されます。',
+  supportReadMore: 'サポートで読む',
+  filterByType: 'タイプで絞り込み',
+  filterAll: 'すべて',
 }
 
 const ko: Messages = {
@@ -524,6 +565,47 @@ const ko: Messages = {
   typeDispute: '의문 있음',
   typeImportant: '중요',
   typeConfirmed: '확인 완료',
+  brand: 'wowMD Pro',
+  htmlTab: 'HTML',
+  epubTab: 'EPUB',
+  suggestedReplacement: '교체 제안',
+  suggestedReplacementHint: '선택적으로 교체 문구를 붙여 넣으세요. 원본에는 쓰지 않고 내보낸 티켓에만 기록됩니다.',
+  exportTicketJson: '티켓 내보내기 (.json)',
+  backupJsonLabel: '주석 백업 (.json)',
+  backupJsonTitle: '전체 주석 원본 데이터를 백업하거나 나중에 다시 가져오기 위해 내보냅니다.',
+  ticketJsonTitle: '주석을 원문, 섹션 문맥, 각 주석의 처리 지침이 포함된 실행 가능한 티켓으로 묶습니다.',
+  ticketInfoTitle: '티켓이란?',
+  ticketInfoWhatTitle: '포함되는 내용',
+  ticketInfoWhatBody: 'Markdown 스냅샷, 각 주석 유형의 의미, 각 메모의 섹션, 문맥 앵커, 코멘트, 교체 제안을 포함한 구조화된 JSON 파일입니다.',
+  ticketInfoHowTitle: '사용 방법',
+  ticketInfoHowBody: '전체 티켓을 ChatGPT, Claude 또는 편집자에게 전달하면 주석에 따라 섹션별로 문서를 수정할 수 있습니다.',
+  ticketInfoDiffTitle: '백업과 다른 점',
+  ticketInfoDiffBody: '백업 주석은 표시 자체만 저장합니다. 티켓은 원문과 처리 지침도 포함하므로 AI나 사람이 바로 편집에 사용할 수 있습니다.',
+  copyPromptTemplate: '프롬프트 템플릿 복사',
+  copied: '복사됨',
+  ticketPromptTemplate: `당신은 신중한 문서 편집자입니다. Markdown 문서에 대한 제 주석이 담긴 JSON 티켓을 드리겠습니다.
+각 주석 유형에 따라 처리하고, 수정된 전체 문서를 출력하세요.
+
+- clarify: 의미를 바꾸지 않고 이 지점을 설명하거나 명확히 합니다.
+- dispute: 이 지점을 검토합니다. 부정확할 수 있으므로 필요하면 수정하고 이유를 설명합니다.
+- important: 이 핵심 지점을 유지하고 강조합니다.
+- confirmed: 이미 검토되어 정확합니다. 변경하지 않습니다.
+
+규칙:
+1. document.markdownSnapshot을 원본 초안으로 사용합니다. 주석이 달린 부분만 변경하고 나머지는 유지합니다.
+2. headingPath + quote + prefix/suffix로 각 주석을 찾습니다. suggestedReplacement가 있으면 우선 사용합니다.
+3. 먼저 수정된 전체 Markdown을 출력한 뒤, 변경 목록을 덧붙입니다.
+
+티켓:
+<내보낸 티켓 JSON을 여기에 붙여 넣으세요>`,
+  notesEmptyFlow: '본문을 선택 -> Clarify / Dispute / Important / Confirmed로 표시 -> AI 지원 수정을 위한 티켓을 내보내세요.',
+  mapDensityTitle: '유형별 섹션 밀도',
+  mapIntro: '혼란과 논쟁이 집중되는 섹션을 확인하세요. 섹션 이름을 클릭하면 이동합니다.',
+  mapLegend: '주석 유형 범례',
+  mapEmptyTyped: '아직 유형이 지정된 주석이 없습니다. 본문을 Clarify / Dispute / Important / Confirmed로 표시하면 맵에 표시됩니다.',
+  supportReadMore: '지원 문서에서 읽기',
+  filterByType: '유형으로 필터',
+  filterAll: '전체',
 }
 
 const de: Messages = {
@@ -635,6 +717,47 @@ const de: Messages = {
   typeDispute: 'Zweifelhaft',
   typeImportant: 'Wichtig',
   typeConfirmed: 'Bestätigt',
+  brand: 'wowMD Pro',
+  htmlTab: 'HTML',
+  epubTab: 'EPUB',
+  suggestedReplacement: 'Ersatz vorschlagen',
+  suggestedReplacementHint: 'Optional einen Ersatztext einfügen. Er wird in das exportierte Ticket geschrieben, nie in die Quelle.',
+  exportTicketJson: 'Ticket exportieren (.json)',
+  backupJsonLabel: 'Anmerkungen sichern (.json)',
+  backupJsonTitle: 'Rohdaten aller Anmerkungen als Backup oder für einen späteren Re-Import exportieren.',
+  ticketJsonTitle: 'Paketiert Ihre Notizen als ausführbares Ticket mit Quelltext, Abschnittskontext und Bearbeitungsanweisungen pro Anmerkung.',
+  ticketInfoTitle: 'Was ist ein Ticket?',
+  ticketInfoWhatTitle: 'Was es enthält',
+  ticketInfoWhatBody: 'Eine strukturierte JSON-Datei mit dem Markdown-Snapshot, der Bedeutung jedes Anmerkungstyps und jeder Notiz mit Abschnitt, Kontextankern, Kommentar und Ersatzvorschlag.',
+  ticketInfoHowTitle: 'So verwenden Sie es',
+  ticketInfoHowBody: 'Fügen Sie das vollständige Ticket in ChatGPT, Claude oder einen Editor ein, damit das Dokument anhand Ihrer Anmerkungen abschnittsweise überarbeitet werden kann.',
+  ticketInfoDiffTitle: 'Unterschied zum Backup',
+  ticketInfoDiffBody: 'Backup-Anmerkungen speichern nur die Markierungen selbst. Tickets enthalten zusätzlich Quelltext und Bearbeitungsanweisungen und eignen sich dadurch für KI- oder menschliche Bearbeitung.',
+  copyPromptTemplate: 'Prompt-Vorlage kopieren',
+  copied: 'Kopiert',
+  ticketPromptTemplate: `Sie sind ein sorgfältiger Dokumenteditor. Ich gebe Ihnen ein JSON-Ticket mit meinen Anmerkungen zu einem Markdown-Dokument.
+Bitte bearbeiten Sie jede Anmerkung nach ihrem Typ und geben Sie das vollständig überarbeitete Dokument aus:
+
+- clarify: Erklären oder klären Sie diese Stelle, ohne die Aussage zu verändern.
+- dispute: Prüfen Sie diese Stelle; sie könnte falsch sein. Korrigieren Sie sie bei Bedarf und erklären Sie warum.
+- important: Behalten und betonen Sie diesen wichtigen Punkt.
+- confirmed: Bereits geprüft und korrekt. Unverändert lassen.
+
+Regeln:
+1. Verwenden Sie document.markdownSnapshot als Ausgangsentwurf. Ändern Sie nur annotierte Passagen und lassen Sie alles andere unverändert.
+2. Lokalisieren Sie jede Anmerkung mit headingPath + quote + prefix/suffix. Nutzen Sie suggestedReplacement bevorzugt, wenn vorhanden.
+3. Geben Sie zuerst das vollständige überarbeitete Markdown aus und fügen Sie danach eine Änderungsliste hinzu.
+
+Ticket:
+<hier das exportierte Ticket-JSON einfügen>`,
+  notesEmptyFlow: 'Text auswählen -> als Clarify / Dispute / Important / Confirmed markieren -> ein Ticket für KI-gestützte Überarbeitung exportieren.',
+  mapDensityTitle: 'Abschnittsdichte nach Typ',
+  mapIntro: 'Sehen Sie, wo sich Unklarheiten und Streitpunkte häufen. Klicken Sie auf einen Abschnittsnamen, um dorthin zu springen.',
+  mapLegend: 'Legende der Anmerkungstypen',
+  mapEmptyTyped: 'Noch keine typisierten Anmerkungen. Markieren Sie Text mit Clarify / Dispute / Important / Confirmed, um die Karte zu sehen.',
+  supportReadMore: 'Im Support lesen',
+  filterByType: 'Nach Typ filtern',
+  filterAll: 'Alle',
 }
 
 const fr: Messages = {
@@ -746,6 +869,47 @@ const fr: Messages = {
   typeDispute: 'Contesté',
   typeImportant: 'Important',
   typeConfirmed: 'Confirmé',
+  brand: 'wowMD Pro',
+  htmlTab: 'HTML',
+  epubTab: 'EPUB',
+  suggestedReplacement: 'Suggérer un remplacement',
+  suggestedReplacementHint: 'Collez éventuellement un remplacement. Il est écrit dans le ticket exporté, jamais dans la source.',
+  exportTicketJson: 'Exporter le ticket (.json)',
+  backupJsonLabel: 'Sauvegarder les annotations (.json)',
+  backupJsonTitle: 'Exporter les données brutes de toutes les annotations pour sauvegarde ou réimportation ultérieure.',
+  ticketJsonTitle: 'Regroupez vos notes dans un ticket exploitable avec le texte source, le contexte de section et les consignes pour chaque annotation.',
+  ticketInfoTitle: "Qu'est-ce qu'un ticket ?",
+  ticketInfoWhatTitle: "Ce qu'il contient",
+  ticketInfoWhatBody: 'Un fichier JSON structuré avec le snapshot Markdown, le sens de chaque type d’annotation et chaque note avec sa section, ses ancres de contexte, son commentaire et son remplacement suggéré.',
+  ticketInfoHowTitle: "Comment l'utiliser",
+  ticketInfoHowBody: 'Collez le ticket complet dans ChatGPT, Claude ou un éditeur afin de réviser le document section par section à partir de vos annotations.',
+  ticketInfoDiffTitle: 'Différence avec la sauvegarde',
+  ticketInfoDiffBody: 'La sauvegarde des annotations ne stocke que les marques. Les tickets incluent aussi le texte source et les consignes de traitement, utiles pour une édition par IA ou humaine.',
+  copyPromptTemplate: 'Copier le modèle de prompt',
+  copied: 'Copié',
+  ticketPromptTemplate: `Vous êtes un éditeur de documents attentif. Je vais vous fournir un ticket JSON contenant mes annotations sur un document Markdown.
+Traitez chaque annotation selon son type et produisez le document révisé complet :
+
+- clarify : expliquer ou clarifier ce point sans changer le fond.
+- dispute : vérifier ce point ; il peut être incorrect. Corrigez-le si nécessaire et expliquez pourquoi.
+- important : conserver et mettre en valeur ce point clé.
+- confirmed : déjà vérifié et correct. Le laisser inchangé.
+
+Règles :
+1. Utilisez document.markdownSnapshot comme brouillon source. Ne modifiez que les passages annotés et conservez le reste.
+2. Localisez chaque annotation avec headingPath + quote + prefix/suffix. Préférez suggestedReplacement s'il existe.
+3. Produisez d'abord le Markdown révisé complet, puis ajoutez une liste des changements.
+
+Ticket :
+<collez ici le JSON du ticket exporté>`,
+  notesEmptyFlow: 'Sélectionnez du texte -> marquez-le comme Clarify / Dispute / Important / Confirmed -> exportez un ticket pour une révision assistée par IA.',
+  mapDensityTitle: 'Densité des sections par type',
+  mapIntro: 'Voyez où les confusions et les désaccords se concentrent. Cliquez sur le nom d’une section pour y accéder.',
+  mapLegend: 'Légende des types d’annotation',
+  mapEmptyTyped: 'Aucune annotation typée pour le moment. Marquez du texte avec Clarify / Dispute / Important / Confirmed pour afficher la carte.',
+  supportReadMore: 'Lire dans le support',
+  filterByType: 'Filtrer par type',
+  filterAll: 'Tous',
 }
 
 const messages: Record<Locale, Messages> = { en, zh, ja, ko, de, fr }
