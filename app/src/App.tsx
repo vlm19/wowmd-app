@@ -65,6 +65,15 @@ type ExportViewMode = 'preview' | 'source'
 type LicenseStatus = 'idle' | 'activating' | 'activated' | 'error'
 
 const ExportWorkspace = lazy(() => import('./ExportWorkspace'))
+const betaNoticeStorageKey = 'wowmd.betaNotice.dismissed.v1'
+
+function loadBetaNoticeDismissed() {
+  try {
+    return localStorage.getItem(betaNoticeStorageKey) === '1'
+  } catch {
+    return false
+  }
+}
 
 function App() {
   const [theme, setTheme] = useState<ThemeName>('dark')
@@ -96,6 +105,7 @@ function App() {
   const [includeExportMetadata, setIncludeExportMetadata] = useState(false)
   const [exportTitle, setExportTitle] = useState('wowMD')
   const [htmlFilename, setHtmlFilename] = useState('wowmd-export.html')
+  const [betaNoticeDismissed, setBetaNoticeDismissed] = useState(loadBetaNoticeDismissed)
   const markdownBodyRef = useRef<HTMLDivElement | null>(null)
 
   const t = useMemo(() => createTranslator(locale), [locale])
@@ -482,6 +492,18 @@ function App() {
     saveLocale(nextLocale)
   }
 
+  function dismissBetaNotice() {
+    setBetaNoticeDismissed(true)
+    try {
+      localStorage.setItem(betaNoticeStorageKey, '1')
+    } catch {
+      /* localStorage may be unavailable in private contexts */
+    }
+  }
+
+  const showBetaNotice =
+    view === 'reader' && document !== null && document.stableId !== 'sample' && !betaNoticeDismissed
+
   return (
     <div className={`app theme-${theme}`}>
       <header className="topbar">
@@ -701,6 +723,21 @@ function App() {
                 {document ? (
                   <>
                     <div className="reader-document">
+                      {showBetaNotice ? (
+                        <aside className="beta-reader-notice" aria-labelledby="beta-reader-notice-title">
+                          <div className="beta-reader-notice-copy">
+                            <strong id="beta-reader-notice-title">{t('betaNoticeTitle')}</strong>
+                            <p>{t('betaNoticeBody')}</p>
+                            <p>{t('betaNoticeFooter')}</p>
+                          </div>
+                          <div className="beta-reader-notice-actions">
+                            <a href={feedbackHref}>{t('betaNoticeFeedback')}</a>
+                            <button type="button" onClick={dismissBetaNotice}>
+                              {t('betaNoticeDismiss')}
+                            </button>
+                          </div>
+                        </aside>
+                      ) : null}
                       <header className="document-header">
                         <div>
                           <p className="eyebrow">{t('currentDocument')}</p>
