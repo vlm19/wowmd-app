@@ -253,8 +253,10 @@ function wrapFirstQuoteMatch(root: HTMLElement, annotation: Annotation) {
   return wrapTextMatch(textNodes, match.start, match.end, annotation, quote)
 }
 
+type AnnotatableTextNode = { node: Text; start: number; end: number; wrappable: boolean }
+
 function collectAnnotatableTextNodes(root: HTMLElement) {
-  const textNodes: Array<{ node: Text; start: number; end: number }> = []
+  const textNodes: AnnotatableTextNode[] = []
   let cursor = 0
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -273,8 +275,14 @@ function collectAnnotatableTextNodes(root: HTMLElement) {
 
   let node = walker.nextNode() as Text | null
   while (node) {
-    const length = node.textContent?.length || 0
-    textNodes.push({ node, start: cursor, end: cursor + length })
+    const text = node.textContent || ''
+    const length = text.length
+    textNodes.push({
+      node,
+      start: cursor,
+      end: cursor + length,
+      wrappable: text.trim().length > 0,
+    })
     cursor += length
     node = walker.nextNode() as Text | null
   }
@@ -398,7 +406,7 @@ function compactWithMap(value: string) {
 }
 
 function wrapTextMatch(
-  textNodes: Array<{ node: Text; start: number; end: number }>,
+  textNodes: AnnotatableTextNode[],
   start: number,
   end: number,
   annotation: Annotation,
@@ -406,7 +414,8 @@ function wrapTextMatch(
 ) {
   let didWrap = false
 
-  textNodes.forEach(({ node, start: nodeStart, end: nodeEnd }) => {
+  textNodes.forEach(({ node, start: nodeStart, end: nodeEnd, wrappable }) => {
+    if (!wrappable) return
     const wrapStart = Math.max(start, nodeStart)
     const wrapEnd = Math.min(end, nodeEnd)
     if (wrapStart >= wrapEnd) return
