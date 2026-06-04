@@ -274,14 +274,12 @@ function App() {
       const next = selectedType === typeVal ? null : typeVal
       setSelectedType(next)
       if (next) previewSelectionColor(typeColor)
-      else clearSelectionPreview()
+      else previewSelectionColor('selection')
     },
-    [selectedType, setSelectedType, previewSelectionColor, clearSelectionPreview],
+    [selectedType, setSelectedType, previewSelectionColor],
   )
 
-  const handleToolbarMouseLeave = useCallback(() => {
-    if (!selectedType) clearSelectionPreview()
-  }, [selectedType, clearSelectionPreview])
+  const handleToolbarMouseLeave = useCallback(() => {}, [])
 
   const handleAnnotationSave = useCallback(() => {
     const typeColor = selectedType

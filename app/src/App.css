@@ -2976,6 +2976,10 @@ p {
   background: #f3b760;
 }
 
+.wowmd-highlight-selection {
+  background: var(--selection-preview-bg, rgba(91, 77, 255, 0.28));
+}
+
 .wowmd-search-hit {
   background: var(--highlight-yellow);
 }

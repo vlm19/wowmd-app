@@ -3,7 +3,10 @@ import type { RefObject } from 'react'
 import type { AnnotationColor, AnnotationType } from '../annotations'
 import type { OpenDocument, SelectionAnchorMetadata, SelectionToolbar } from '../types'
 
-const selectionPreviewColors: Record<AnnotationColor, string> = {
+type SelectionPreviewColor = AnnotationColor | 'selection'
+
+const selectionPreviewColors: Record<SelectionPreviewColor, string> = {
+  selection: 'rgba(91, 77, 255, 0.28)',
   yellow: '#ffe27a',
   blue: '#a9d6ff',
   green: '#b2e3bd',
@@ -25,7 +28,7 @@ export function useSelectionCapture({
   const selectionRangeRef = useRef<Range | null>(null)
   const selectionAnchorRef = useRef<SelectionAnchorMetadata | null>(null)
   const selectionPreviewQuoteRef = useRef('')
-  const selectionPreviewColorRef = useRef<AnnotationColor | null>(null)
+  const selectionPreviewColorRef = useRef<SelectionPreviewColor | null>(null)
   const selectionPreviewPendingRef = useRef(false)
   const selectionPreviewRenderLockRef = useRef(false)
   const [selectionToolbar, setSelectionToolbar] = useState<SelectionToolbar | null>(null)
@@ -99,7 +102,7 @@ export function useSelectionCapture({
     return getSelectionAnchorMetadataFromRange(range, selection?.toString() || '')
   }, [getSelectionAnchorMetadataFromRange, markdownBodyRef])
 
-  const renderSelectionPreview = useCallback((color: AnnotationColor) => {
+  const renderSelectionPreview = useCallback((color: SelectionPreviewColor) => {
     const root = markdownBodyRef.current
     if (!root) return
 
@@ -108,7 +111,7 @@ export function useSelectionCapture({
       Highlight?: new (...ranges: Range[]) => unknown
     })
     if (highlightApi.CSS?.highlights && highlightApi.Highlight && selectionRangeRef.current) {
-      ;(Object.keys(selectionPreviewColors) as AnnotationColor[]).forEach((previewColor) => {
+      ;(Object.keys(selectionPreviewColors) as SelectionPreviewColor[]).forEach((previewColor) => {
         highlightApi.CSS?.highlights?.delete(`wowmd-selection-preview-${previewColor}`)
       })
       highlightApi.CSS.highlights.set(
@@ -201,7 +204,7 @@ export function useSelectionCapture({
     }).CSS?.highlights
 
     if (highlights) {
-      ;(Object.keys(selectionPreviewColors) as AnnotationColor[]).forEach((color) => {
+      ;(Object.keys(selectionPreviewColors) as SelectionPreviewColor[]).forEach((color) => {
         highlights.delete(`wowmd-selection-preview-${color}`)
       })
     }
@@ -217,7 +220,7 @@ export function useSelectionCapture({
   }, [markdownBodyRef])
 
   const previewSelectionColor = useCallback(
-    (color: AnnotationColor) => {
+    (color: SelectionPreviewColor) => {
       const root = markdownBodyRef.current
       if (!root) return
 
@@ -233,6 +236,7 @@ export function useSelectionCapture({
             'wowmd-highlight-rose',
             'wowmd-highlight-violet',
             'wowmd-highlight-amber',
+            'wowmd-highlight-selection',
           )
           mark.classList.add(`wowmd-highlight-${color}`)
         })
@@ -295,7 +299,7 @@ export function useSelectionCapture({
     selectionPreviewPendingRef.current = true
     window.setTimeout(() => {
       selectionPreviewPendingRef.current = false
-      if (selectionRangeRef.current) previewSelectionColor('yellow')
+      if (selectionRangeRef.current) previewSelectionColor('selection')
     }, 0)
   }, [document, markdownBodyRef, clearSelectionPreview, previewSelectionColor, getSelectionAnchorMetadataFromRange])
 
