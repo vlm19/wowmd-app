@@ -236,7 +236,7 @@ function AnnotationItem({
 }: AnnotationItemProps) {
   return (
     <li
-      className={`note-sticker note-${annotation.color} ${annotation.note ? 'has-note' : ''} ${annotation.orphaned ? 'note-orphaned' : ''} ${annotation.needsReview && !annotation.orphaned ? 'note-review' : ''}`}
+      className={`note-sticker note-${annotation.color} ${annotation.note ? 'has-note' : ''} ${annotation.suggestedReplacement ? 'has-replacement' : ''} ${annotation.orphaned ? 'note-orphaned' : ''} ${annotation.needsReview && !annotation.orphaned ? 'note-review' : ''}`}
     >
       <button
         className="note-locate"
@@ -261,8 +261,14 @@ function AnnotationItem({
               : t('note')}
         </span>
         <span className="note-preview">
-          {truncateText(annotation.note || annotation.quote, 34)}
+          {truncateText(annotation.note || annotation.suggestedReplacement || annotation.quote, 34)}
         </span>
+        {annotation.suggestedReplacement ? (
+          <span className="note-replacement-preview">
+            <b>{t('suggestedReplacementShort')}</b>
+            <span>{truncateText(annotation.suggestedReplacement, 58)}</span>
+          </span>
+        ) : null}
         <time dateTime={annotation.updatedAt}>
           {new Date(annotation.updatedAt).toLocaleString()}
         </time>

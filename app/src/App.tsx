@@ -885,6 +885,12 @@ function App() {
               <h2>{activeAnnotation.headingPath.at(-1) || t('currentDocument')}</h2>
               <blockquote>{activeAnnotation.quote}</blockquote>
               {activeAnnotation.note ? <p>{activeAnnotation.note}</p> : null}
+              {activeAnnotation.suggestedReplacement ? (
+                <section className="annotation-replacement">
+                  <h3>{t('suggestedReplacement')}</h3>
+                  <p>{activeAnnotation.suggestedReplacement}</p>
+                </section>
+              ) : null}
               <div className="modal-actions">
                 <button
                   className="ghost-action"

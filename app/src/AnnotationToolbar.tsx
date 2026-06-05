@@ -89,7 +89,7 @@ export default function AnnotationToolbar({
   return (
     <div
       ref={toolbarRef}
-      className="floating-markup floating-markup-v2"
+      className={`floating-markup floating-markup-v2 ${showReplacement ? 'has-replacement' : ''}`}
       style={{ left: clampedPosition.x, top: clampedPosition.y }}
       aria-label="Annotation type picker"
       onMouseLeave={onToolbarMouseLeave}
@@ -134,18 +134,26 @@ export default function AnnotationToolbar({
         <button
           className="toolbar-replacement-toggle"
           type="button"
+          aria-expanded={showReplacement}
           onClick={onToggleReplacement}
         >
-          {t('suggestedReplacement')}
+          {showReplacement ? t('suggestedReplacement') : t('suggestedReplacementAdd')}
         </button>
         {showReplacement ? (
-          <textarea
-            className="toolbar-replacement-input"
-            placeholder={t('suggestedReplacementHint')}
-            value={toolbarReplacement}
-            onChange={(e) => onReplacementChange(e.target.value)}
-            rows={3}
-          />
+          <div className="toolbar-replacement-shell">
+            <label className="toolbar-replacement-label" htmlFor="toolbar-suggested-replacement">
+              <span>{t('suggestedReplacement')}</span>
+              <small>{t('suggestedReplacementMeta')}</small>
+            </label>
+            <textarea
+              id="toolbar-suggested-replacement"
+              className="toolbar-replacement-input"
+              placeholder={t('suggestedReplacementHint')}
+              value={toolbarReplacement}
+              onChange={(e) => onReplacementChange(e.target.value)}
+              rows={3}
+            />
+          </div>
         ) : null}
       </div>
       <div className="toolbar-actions">
