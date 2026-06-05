@@ -2,21 +2,51 @@
 
 Official site: https://wowmd.app/
 
-wowMD is a local-first Markdown reading and review product family:
-
-- wowMD Chrome Extension: a free GitHub Markdown reader for public GitHub Markdown pages.
-- wowMD Pro: a browser-based web app for local Markdown review, annotation, and export.
+wowMD is a local-first toolset for reading and reviewing long Markdown. It is
+not a generic Markdown converter, cloud document platform, or AI writer. It is
+a review layer between a Markdown draft, often written by a person or AI, and
+the final material that needs to be understood, revised, shared, or archived.
 
 Current status: Beta. wowMD Pro is free during beta.
 
 ## Short Answer
 
-wowMD helps people read long Markdown documents with structure, mark passages
-with typed review judgments, keep annotations anchored across document versions,
-and export review results without editing the original Markdown file.
+wowMD helps people open long Markdown, read it with structure, judge selected
+passages with typed review marks, keep annotations anchored across document
+versions, and export the review result without modifying the original Markdown
+file.
 
 The product is local-first. Local Markdown files are processed in the browser.
 The original file on disk is not modified by the web app.
+
+## Product Family
+
+wowMD has two focused parts:
+
+- wowMD Chrome Extension: a free browser extension for reading public GitHub
+  Markdown pages with better structure.
+- wowMD Pro Web App: a local-first web app for local Markdown files, structured
+  reading, typed annotations, notes, cross-version review, and export.
+
+The boundary is intentional. The extension helps users quickly read long
+Markdown on GitHub. The web app turns Markdown into a deeper review workspace
+with annotations, persistence, maps, and deliverables.
+
+## Core Workflow
+
+wowMD connects reading, judgment, preservation, and delivery:
+
+1. Open Markdown from GitHub or local files.
+2. Read with outline navigation, folding, search, code rendering, table
+   handling, and theme controls.
+3. Judge selected passages with four semantic review types.
+4. Preserve annotations, notes, suggested replacements, and section context
+   locally in the browser.
+5. Deliver the result as HTML, reviewed Markdown for Obsidian, Backup JSON, or
+   Ticket JSON for AI/editor workflows.
+
+The result is not just "I read the document." It becomes "I completed a review
+that can be revisited, shared, backed up, or acted on."
 
 ## Products
 
@@ -28,31 +58,44 @@ wowMD Pro is the full review workspace for local Markdown files.
 
 It supports:
 
-- Opening `.md` and `.markdown` files from the user's device.
-- Opening public GitHub Markdown passed from the Chrome extension or import route.
-- Reading with outline navigation, folding, full-text search, code highlighting,
-  code copy, wide-table scrolling, dark/light themes, and adjustable text size.
+- Opening local `.md` and `.markdown` files.
+- Opening files through picker and drag-and-drop workflows.
+- Importing public GitHub Markdown from extension-provided raw URLs.
+- Validating imports so only `https://raw.githubusercontent.com/...` URLs are
+  fetched.
+- Saving imported GitHub Markdown as browser-local document copies and
+  restoring them through `/app/reader/:docId`.
+- Opening a bundled sample document without starting a real trial.
+- Reading with outline navigation, scroll-aware position, H2 folding,
+  full-text search, code highlighting, code copy, wide-table scrolling,
+  rendered links and images, dark/light themes, and adjustable text size.
+- Using independent scroll regions for outline, document, and notes.
 - Selecting text and applying typed review marks:
-  - Clarify needed
-  - Disputed
-  - Important
-  - Confirmed
-- Adding notes and suggested replacements to selected passages.
-- Keeping annotations anchored with quote, prefix, suffix, heading path, and
-  offset metadata.
-- Re-anchoring annotations when a document changes where possible.
-- Showing an Understanding Map that groups review density by document section.
+  - Clarify: this needs explanation or more context.
+  - Dispute: this may be wrong or needs review.
+  - Important: this is a key point to preserve or emphasize.
+  - Confirmed: this has been reviewed and is trusted.
+- Adding notes and optional suggested replacements to selected passages.
+- Keeping annotations anchored with document fingerprint, quote, prefix,
+  suffix, heading path, offset fallback, review type, note body, suggested
+  replacement, and timestamps.
+- Re-anchoring annotations when a source document changes where possible.
+- Using a Notes panel to filter annotations by type, jump back to source
+  passages, and organize unclear, disputed, important, or confirmed content.
+- Showing an Understanding Map that visualizes annotation density by section
+  and review type. It does not generate summaries or AI judgments.
 - Exporting offline HTML for people.
 - Exporting reviewed Markdown for Obsidian workflows.
-- Exporting Backup JSON for annotation backup and re-import.
-- Exporting Ticket JSON as a structured work order for an AI tool or editor.
+- Exporting Backup JSON for annotation backup, re-import, and portability.
+- Exporting Ticket JSON as a structured work order for an AI tool or editor,
+  including document snapshot, type legend, section context, quotes, notes, and
+  optional suggested replacements.
+- Reviewing skills, prompts, agent instructions, implementation plans,
+  product specs, and workflow documents as Markdown.
 
 wowMD Pro stores local document copies, annotations, versions, settings, and
 notice dismissals in browser storage. It does not write changes back to the
 original Markdown file.
-
-When users open a real local Markdown file or a Markdown file handed off into
-the app, wowMD Pro shows a beta notice and links to feedback.
 
 ### wowMD Chrome Extension
 
@@ -66,14 +109,157 @@ It supports:
 - Public GitHub `.md` file pages.
 - Public GitHub `.markdown` file pages.
 - A Better View entry point on supported GitHub Markdown pages.
-- Reader view with outline, folding, code highlighting, and table handling.
-- Continuing into wowMD Pro for annotation and export workflows.
+- Reader view with outline navigation, section folding, code readability
+  improvements, syntax highlighting, and wide-table handling.
+- Continuing into wowMD Pro when annotation, export, local document review, or
+  cross-version review is needed.
 
-The extension is intentionally scoped to reading GitHub Markdown. Annotation,
-export, local document review, and cross-version review workflows belong to
-wowMD Pro.
+The extension is intentionally scoped to reading GitHub Markdown. It does not
+handle local files, private repositories, GitHub Issues, Pull Requests, Wiki
+pages, non-GitHub websites, annotations, Understanding Map, version survival,
+or export. Those deeper review workflows belong to wowMD Pro.
 
-## Important Privacy Facts
+## Export Outputs
+
+Export is the final step of the review loop.
+
+### HTML Export
+
+HTML export is for human readers. It creates a single offline-readable HTML
+file that preserves document structure, table of contents, heading anchors,
+content, code blocks, tables, links, images, highlights, and notes. It opens in
+any browser and does not include the app runtime, tracking scripts, or license
+logic.
+
+Use HTML export when teammates, clients, reviewers, or future-you need a
+polished reading artifact.
+
+### Reviewed Markdown For Obsidian
+
+Reviewed Markdown export is for knowledge management. It creates a new `.md`
+copy with Obsidian-readable review callouts, wowMD tags, and review
+properties. It does not overwrite the original file, apply suggested
+replacements, or call AI.
+
+Use reviewed Markdown when a reviewed document should live in an Obsidian vault
+or long-term knowledge base.
+
+### Backup JSON
+
+Backup JSON is for backup and portability. It exports raw annotation data for
+backup, re-import, and programmatic handling. It is not the best format for
+direct AI editing because it mainly stores annotation records.
+
+Use Backup JSON to protect important local review data from browser storage
+loss.
+
+### Ticket JSON
+
+Ticket JSON is for AI or editor execution. It includes the document snapshot, a
+bilingual legend for the four review types, and each annotation's heading path,
+quote, prefix/suffix context, note, and suggested replacement.
+
+Use Ticket JSON when the user has already judged the document and wants an AI
+tool or editor to revise it according to those judgments.
+
+## Typical Workflow Scenarios
+
+### Developer Reading A Large Open-Source README
+
+A developer can open a public GitHub README with the extension, use the outline
+to understand structure, fold irrelevant sections, inspect code blocks and
+tables, and continue into wowMD Pro if long-term notes or review are needed.
+
+Efficiency gain: less repeated scrolling, faster section-level navigation, and
+fewer missed parameters in wide tables or dense code blocks.
+
+### Product Manager Reviewing An AI-Written Product Spec
+
+A product manager can open an AI-written spec in wowMD Pro, mark vague passages
+as Clarify, questionable scope or assumptions as Dispute, must-keep details as
+Important, and verified passages as Confirmed. The Understanding Map shows
+where clarification or dispute density is highest. Ticket JSON can then be
+given to an AI tool for revision.
+
+Efficiency gain: the user's judgment becomes structured data, and AI receives
+exact instructions with context instead of a vague rewrite request.
+
+### Engineer Reviewing A Technical Implementation Plan
+
+An engineer can open an implementation plan, search for key modules or APIs,
+mark incorrect assumptions or missing edge cases as Dispute, mark invariants or
+security requirements as Important, add notes or suggested replacements, and
+export Ticket JSON or HTML.
+
+Efficiency gain: each issue carries section path, quote, and context, turning
+review feedback into a structured task list instead of scattered comments.
+
+### Knowledge Worker Moving Reviewed Markdown Into Obsidian
+
+A knowledge worker can mark core ideas as Important, research questions as
+Clarify, and trusted sections as Confirmed, then export reviewed Markdown for
+Obsidian.
+
+Efficiency gain: no manual copy/paste of quotes and notes; the source file
+remains unchanged while review callouts and tags stay visible in Obsidian.
+
+### Sharing A Reviewed Document With Non-Technical Readers
+
+A reviewer can complete annotations and notes, export a single HTML file, and
+share or archive that artifact for people who should not need a code editor,
+Markdown tooling, or repository access.
+
+Efficiency gain: structure, highlights, and notes are preserved in one file
+that opens directly in a browser.
+
+### Turning Long AI Output Into An Executable Revision Loop
+
+A user can save long AI output as Markdown, open it in wowMD Pro, mark
+judgments with the four review types, add suggested replacements, export Ticket
+JSON, and ask an AI tool to revise the full document from those passage-level
+instructions. The revised Markdown can then be reopened for another review
+pass.
+
+Efficiency gain: the user handles judgment while AI handles mechanical
+revision, and cross-version anchoring reduces repeated review work.
+
+### Iterating Agent Skills And Workflow Instructions
+
+wowMD is especially useful for reviewing `SKILL.md` files, prompt guides, agent
+instruction files, and tool workflow documents. Users can inspect trigger
+conditions, required tools, sequencing, constraints, fallback behavior, and
+verification steps; mark vague rules as Clarify; mark conflicts with real tool
+behavior as Dispute; mark non-negotiable constraints as Important; and mark
+verified instructions as Confirmed. Suggested replacements capture exact
+wording changes, and Ticket JSON can be handed to an AI tool to revise the
+skill.
+
+Efficiency gain: skill iteration becomes a structured review loop instead of
+ad hoc prompt editing. Important constraints and verified instructions stay
+visible during rewrites, and AI receives passage-level change instructions
+instead of broad rewrite requests.
+
+## Efficiency Summary
+
+wowMD improves workflow efficiency through:
+
+- Faster navigation with outline, search, folding, and independent scroll
+  regions.
+- Less context loss because annotations store quote, heading path, and
+  surrounding text.
+- Clearer review semantics through four typed judgments instead of generic
+  colors.
+- Shorter delivery paths with separate outputs for people, Obsidian, backup,
+  and AI/editor handoff.
+- Safer defaults through local-first processing and non-destructive source
+  handling.
+- Better AI collaboration because users provide structured judgment and AI
+  executes the revision task.
+- More reliable instruction iteration for skills, prompts, and workflow
+  documents because verified constraints, disputed rules, and suggested
+  rewrites stay attached to exact source text.
+
+## Privacy And Data Handling
 
 - Local Markdown files are processed in the browser.
 - The original Markdown file is not modified.
@@ -83,6 +269,13 @@ wowMD Pro.
 - Feedback is handled by Cloudflare Pages Functions and Cloudflare D1.
 - No account is required for the beta reader workflow.
 - No AI analysis is performed by wowMD in the current beta.
+- AI usage is optional and external: users may export Ticket JSON and decide
+  whether to give it to an AI tool.
+
+Browser-local data may contain sensitive information such as document
+fragments, notes, suggested replacements, source URLs, titles, and version
+context. Important annotations and finished review artifacts should be exported
+as backups.
 
 ## Supported Languages
 
@@ -118,26 +311,39 @@ Localized public pages are available under:
 
 One sentence:
 
-wowMD is a local-first Markdown review layer for reading, annotating, re-anchoring,
-and exporting Markdown without modifying the original file.
+wowMD is a local-first Markdown review layer for reading, annotating,
+re-anchoring, and exporting Markdown without modifying the original file.
 
 Short product description:
 
 wowMD Pro opens local Markdown in the browser, adds structure-aware reading,
-typed review marks, notes, cross-version annotation survival, an Understanding
-Map, and HTML, reviewed Markdown, Backup JSON, or Ticket JSON export.
+typed review marks, notes, suggested replacements, cross-version annotation
+survival, an Understanding Map, and HTML, reviewed Markdown, Backup JSON, or
+Ticket JSON export.
 
 Chrome extension description:
 
 The wowMD Chrome extension turns public GitHub Markdown pages into a structured
 reader with outline navigation, folding, code highlighting, and table handling.
 
+Expanded description:
+
+wowMD helps people turn long Markdown into a structured review workflow. Users
+read with outline navigation, folding, search, code and table support; mark
+passages with four semantic review types; keep notes anchored locally; then
+export HTML for people, reviewed Markdown for Obsidian, Backup JSON for
+themselves, or Ticket JSON for an AI/editor to execute.
+
 ## What wowMD Is Not
 
-- Not a Markdown editor.
 - Not a cloud document host.
+- Not an account-first document platform.
+- Not a collaborative annotation workspace.
 - Not an AI summarizer.
+- Not an AI writer.
+- Not an automatic rewriting tool.
 - Not a private repository importer.
+- Not a multi-file batch processing system.
 - Not a replacement for GitHub, Obsidian, or a writing editor.
 
 ## Current Limitations
@@ -146,8 +352,11 @@ reader with outline navigation, folding, code highlighting, and table handling.
 - Non-GitHub websites are not supported by the extension.
 - GitHub Issues, Pull Requests, Wikis, and other GitHub surfaces are not the
   extension's current scope.
-- AI usage is optional and external: users may export Ticket JSON and decide
-  whether to give it to an AI tool.
+- Cloud sync is not part of the current product.
+- Team collaborative annotation is not part of the current product.
+- The extension does not include the web app's deep review and export workload.
+- wowMD does not directly modify source Markdown unless a future explicit
+  write-back feature is designed.
 
 ## Contact
 
