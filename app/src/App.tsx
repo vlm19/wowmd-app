@@ -75,6 +75,46 @@ function loadBetaNoticeDismissed() {
   }
 }
 
+function getViewportWidth() {
+  return typeof window === 'undefined' ? 1440 : window.innerWidth
+}
+
+function getOutlineWidthBounds(viewportWidth: number, showNotes: boolean) {
+  if (viewportWidth <= 1100) return { min: 240, max: viewportWidth }
+  const maxByViewport = Math.floor(viewportWidth * (showNotes ? 0.28 : 0.34))
+  return {
+    min: 240,
+    max: Math.min(showNotes ? 460 : 520, Math.max(320, maxByViewport)),
+  }
+}
+
+function clampOutlineWidth(width: number, viewportWidth: number, showNotes: boolean) {
+  const bounds = getOutlineWidthBounds(viewportWidth, showNotes)
+  return Math.round(Math.min(bounds.max, Math.max(bounds.min, width)))
+}
+
+function getOutlineTextScore(text: string) {
+  return Array.from(text).reduce((score, char) => {
+    if (/[\u2E80-\u9FFF\uF900-\uFAFF\u3040-\u30FF\uAC00-\uD7AF]/u.test(char)) {
+      return score + 9.5
+    }
+    if (/[A-Z0-9]/.test(char)) return score + 6.8
+    if (/\s/.test(char)) return score + 3.2
+    return score + 5.8
+  }, 0)
+}
+
+function getAutoOutlineWidth(toc: TocItem[], outlineFontSize: number, viewportWidth: number, showNotes: boolean) {
+  if (!toc.length) return clampOutlineWidth(300, viewportWidth, showNotes)
+
+  const longestItem = toc.reduce((longest, item) => {
+    const indent = Math.max(0, item.level - 1) * 8
+    return Math.max(longest, 118 + indent + getOutlineTextScore(item.text) * (outlineFontSize / 11))
+  }, 0)
+
+  return clampOutlineWidth(longestItem, viewportWidth, showNotes)
+}
+
 function App() {
   const [theme, setTheme] = useState<ThemeName>('dark')
   const [showOutline, setShowOutline] = useState(true)
@@ -88,7 +128,11 @@ function App() {
   const [searchIndex, setSearchIndex] = useState(0)
   const [readerFontSize, setReaderFontSize] = useState(12)
   const [outlineFontSize, setOutlineFontSize] = useState(11)
-  const [outlineWidth, setOutlineWidth] = useState(300)
+  const [outlineWidthOverride, setOutlineWidthOverride] = useState<{
+    fingerprint: string | null
+    width: number
+  } | null>(null)
+  const [viewportWidth, setViewportWidth] = useState(getViewportWidth)
   const [exportPreviewScale, setExportPreviewScale] = useState(100)
   const [exportViewMode, setExportViewMode] = useState<ExportViewMode>('preview')
   const [exportSearchQuery, setExportSearchQuery] = useState('')
@@ -326,6 +370,24 @@ function App() {
     }
   }, [annotations, document, searchIndex, searchQuery])
 
+  const autoOutlineWidth = useMemo(
+    () => getAutoOutlineWidth(rendered.toc, outlineFontSize, viewportWidth, showNotes),
+    [outlineFontSize, rendered.toc, showNotes, viewportWidth],
+  )
+  const documentFingerprint = document?.fingerprint ?? null
+  const manualOutlineWidth =
+    outlineWidthOverride?.fingerprint === documentFingerprint ? outlineWidthOverride.width : null
+  const outlineWidth =
+    manualOutlineWidth === null
+      ? autoOutlineWidth
+      : clampOutlineWidth(manualOutlineWidth, viewportWidth, showNotes)
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(getViewportWidth())
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   const exportBodyHtml = useMemo(() => {
     const html = includeHighlights ? rendered.exportHtml : rendered.baseHtml
     return includeHeadingAnchors ? html : stripHeadingIds(html)
@@ -404,7 +466,10 @@ function App() {
     const startWidth = outlineWidth
     const resize = (pointerEvent: globalThis.PointerEvent) => {
       const nextWidth = startWidth + pointerEvent.clientX - startX
-      setOutlineWidth(Math.min(440, Math.max(240, nextWidth)))
+      setOutlineWidthOverride({
+        fingerprint: documentFingerprint,
+        width: clampOutlineWidth(nextWidth, viewportWidth, showNotes),
+      })
     }
     const stop = () => {
       window.removeEventListener('pointermove', resize)

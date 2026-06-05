@@ -1712,16 +1712,16 @@ p {
 
 .outline a {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   min-width: 0;
-  overflow: hidden;
   padding: 4px 14px;
   color: #c8c4b8;
   font-size: var(--outline-font-size);
+  line-height: 1.35;
   text-decoration: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
   transition: background-color 0.1s ease;
 }
 
@@ -1745,6 +1745,7 @@ p {
   width: 4px;
   height: 4px;
   flex-shrink: 0;
+  margin-top: 0.45em;
   border-radius: 50%;
   background: var(--text-3);
 }
