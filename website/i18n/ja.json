@@ -344,7 +344,7 @@
   "landing.localSourceBody": "自分のマシンに置いた下書き、仕様書、ドキュメント、エクスポート。",
   "landing.nativeGithubLabel": "GitHub 標準の Markdown",
   "landing.structuredReaderLabel": "構造化された読書ビュー",
-  "landing.continuePro": "wowMD Pro で続ける",
+  "landing.continuePro": "wowMD Pro でレビュー",
   "landing.titlePrefix": "Markdown をレビュー。",
   "landing.titleEmphasis": "元の文書には触れません",
   "landing.titleSuffix": "",
