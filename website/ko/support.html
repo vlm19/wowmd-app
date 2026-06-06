@@ -57,9 +57,11 @@
     <div class="support-layout">
       <aside class="support-sidebar" aria-label="Support navigation">
         <strong>개념</strong>
+        <a href="#open">열기 및 원본 보호</a>
         <a href="#typed-review">유형화된 리뷰</a>
         <a href="#reanchor">버전 간 유지</a>
         <a href="#ticket">티켓 JSON</a>
+        <a href="#storage">저장 및 복구</a>
         <strong>wowMD 사용법</strong>
         <a href="#reader">리더</a>
         <a href="#annotate">주석</a>
@@ -76,6 +78,16 @@
           <p class="section-label">지원</p>
           <h1 id="support-title">리뷰 루프를 위한 가이드 및 피드백.</h1>
           <p class="hero-subtitle">wowMD를 차별화하는 개념부터 시작하세요: 유형화된 리뷰, 버전 간 유지, Obsidian용 검토 Markdown, AI에 전달할 수 있는 티켓.</p>
+        </section>
+
+        <section class="doc-section" id="open">
+          <h2>원본을 변경하지 않고 Markdown 열기</h2>
+          <p>파일 선택기나 드래그 앤 드롭으로 로컬 .md 및 .markdown 파일을 열거나, 확장 프로그램에서 지원되는 공개 GitHub Markdown을 이어서 작업할 수 있습니다.</p>
+          <div class="reference-list">
+            <p>리뷰는 브라우저에서 진행되며 원본에 다시 쓰지 않습니다. 검토 사본 저장은 주석을 이어받은 별도의 Obsidian용 .md 후속 버전을 만듭니다.</p>
+            <p>버전 기록에서 현재 문서 계보로 만든 브라우저 로컬 후속 버전을 다시 열 수 있습니다.</p>
+          </div>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Version history</strong></div><img src="../assets/shots/versions.png" alt="Version history explaining reviewed copies and source-safe successors"></figure>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -112,6 +124,13 @@
 기본 문서로 document.markdownSnapshot을 사용하세요. headingPath, quote, prefix, suffix로 각 항목을 찾으세요. suggestedReplacement가 있으면 우선 사용하세요.
 티켓:
 &amp;lt;내보낸 티켓 JSON을 여기에 붙여넣으세요&amp;gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="storage">
+          <h2>저장, 백업 및 복구</h2>
+          <p>저장된 주석과 가져온 GitHub 문서 사본은 일반 브라우저 캐시가 아닌 사이트 데이터를 사용합니다. 로컬 파일은 세션 입력으로 유지되며 주석은 문서 지문별로 저장됩니다.</p>
+          <div class="doc-callout">사이트 데이터 삭제, 비공개 브라우징, 다른 브라우저·프로필·기기 사용, 저장소 회수로 브라우저 로컬 작업이 사라질 수 있습니다. 저장하지 않은 툴바 초안도 새로고침이나 충돌 후 손실될 수 있습니다.</div>
+          <p>다시 가져올 수 있는 주석 데이터는 Backup JSON으로, 사람이 읽을 리뷰 문맥은 Reviewed Markdown으로, 완성된 결과물은 장기 보관용으로 내보내세요.</p>
         </section>
 
         <section class="doc-section" id="reader">
@@ -188,6 +207,7 @@
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">파일을 변경한 후 하이라이트가 이동했어요. 무슨 일인가요?</button><div class="faq-answer"><p>wowMD는 원본이 변경되면 주석을 재고정합니다. 문단을 찾을 수 없는 경우 메모 패널의 찾기 기능으로 수동 복구하세요.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">무언가 업로드되나요?</button><div class="faq-answer"><p>아니요. 리뷰 워크플로는 로컬 우선입니다. 파일과 주석은 여러분이 직접 내보내 공유하지 않는 한 브라우저에만 머무릅니다.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">브라우저 데이터를 삭제해도 저장된 작업이 남나요?</button><div class="faq-answer"><p>아니요. 저장된 주석과 가져온 문서 사본은 브라우저 사이트 데이터를 사용합니다. 데이터를 삭제하거나 다른 브라우저, 프로필, 기기로 이동하기 전에 Backup JSON과 완성된 리뷰 결과물을 내보내세요.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">어떤 내보내기를 사용해야 하나요?</button><div class="faq-answer"><p>HTML은 사람에게, 검토 Markdown은 Obsidian에, 백업 JSON은 주석 데이터 백업 또는 재가져오기에 사용하세요. AI나 편집자가 유형화된 판단에 따라 작업하게 하려면 티켓 JSON을 사용하세요.</p></div></div>
           </div>
         </section>

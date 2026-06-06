@@ -57,9 +57,11 @@
     <div class="support-layout">
       <aside class="support-sidebar" aria-label="Support navigation">
         <strong>Konzepte</strong>
+        <a href="#open">Öffnen &amp; Quelle schützen</a>
         <a href="#typed-review">Typisierte Review</a>
         <a href="#reanchor">Versionsübergreifender Erhalt</a>
         <a href="#ticket">Ticket JSON</a>
+        <a href="#storage">Speicher &amp; Wiederherstellung</a>
         <strong>wowMD verwenden</strong>
         <a href="#reader">Reader</a>
         <a href="#annotate">Kommentieren</a>
@@ -76,6 +78,16 @@
           <p class="section-label">Support</p>
           <h1 id="support-title">Leitfaden und Feedback für die Review-Schleife.</h1>
           <p class="hero-subtitle">Beginnen Sie mit den Konzepten, die wowMD auszeichnen: typisierte Review, versionsübergreifender Erhalt, geprüftes Markdown für Obsidian und das Ticket, das Sie einer KI übergeben können.</p>
+        </section>
+
+        <section class="doc-section" id="open">
+          <h2>Markdown öffnen, ohne das Original zu ändern</h2>
+          <p>Öffnen Sie lokale .md- oder .markdown-Dateien per Auswahl oder Drag-and-drop, oder übernehmen Sie unterstütztes öffentliches GitHub-Markdown aus der Erweiterung.</p>
+          <div class="reference-list">
+            <p>Die Prüfung findet im Browser statt und schreibt nie in das Original zurück. Eine geprüfte Kopie erstellt einen separaten Obsidian-fähigen .md-Nachfolger und übernimmt die Annotationen.</p>
+            <p>Im Versionsverlauf können Sie browserlokale Nachfolger aus der aktuellen Dokumentlinie erneut öffnen.</p>
+          </div>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Version history</strong></div><img src="../assets/shots/versions.png" alt="Version history explaining reviewed copies and source-safe successors"></figure>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -112,6 +124,13 @@ Bearbeiten Sie jeden Eintrag gemäß seinem Typ und geben Sie das vollständig �
 Verwenden Sie document.markdownSnapshot als Grundlage. Lokalisieren Sie jeden Eintrag mit headingPath, quote, prefix und suffix. Bevorzugen Sie suggestedReplacement, wenn vorhanden.
 Ticket:
 &amp;lt;fügen Sie hier das exportierte Ticket JSON ein&amp;gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="storage">
+          <h2>Speicher, Backup und Wiederherstellung</h2>
+          <p>Gespeicherte Annotationen und importierte GitHub-Dokumentkopien verwenden Browser-Sitedaten, nicht den normalen Browsercache. Lokale Dateien bleiben Sitzungseingaben; ihre Annotationen werden nach Dokument-Fingerabdruck gespeichert.</p>
+          <div class="doc-callout">Das Löschen von Sitedaten, privates Browsen, ein anderer Browser, ein anderes Profil oder Gerät sowie Speicherbereinigung können lokale Arbeit entfernen. Ungespeicherte Toolbar-Entwürfe können auch nach Aktualisierung oder Absturz verloren gehen.</div>
+          <p>Exportieren Sie Backup JSON für erneut importierbare Annotationen, Reviewed Markdown für lesbaren Review-Kontext und fertige Ergebnisse zur langfristigen Aufbewahrung.</p>
         </section>
 
         <section class="doc-section" id="reader">
@@ -188,6 +207,7 @@ Ticket:
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">Meine Markierungen haben sich verschoben, nachdem ich die Datei geändert habe. Was ist passiert?</button><div class="faq-answer"><p>wowMD verankert Kommentare neu, wenn sich die Quelle ändert. Wenn eine Passage nicht gefunden werden kann, verwenden Sie Suchen im Notizen-Panel, um sie manuell wiederherzustellen.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Wird irgendetwas hochgeladen?</button><div class="faq-answer"><p>Nein. Der Review-Workflow ist lokal zuerst. Dateien und Kommentare bleiben in Ihrem Browser, es sei denn, Sie exportieren und teilen sie selbst.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">Bleibt meine Arbeit nach dem Löschen von Browserdaten erhalten?</button><div class="faq-answer"><p>Nein. Gespeicherte Annotationen und importierte Dokumentkopien verwenden Browser-Sitedaten. Exportieren Sie Backup JSON und fertige Review-Ergebnisse, bevor Sie Sitedaten löschen oder Browser, Profil oder Gerät wechseln.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Welchen Export sollte ich verwenden?</button><div class="faq-answer"><p>Verwenden Sie HTML für Menschen, geprüftes Markdown für Obsidian, Backup JSON zum Sichern oder erneuten Importieren von Kommentardaten und Ticket JSON, wenn eine KI oder ein Redakteur auf Basis Ihrer typisierten Beurteilungen handeln soll.</p></div></div>
           </div>
         </section>

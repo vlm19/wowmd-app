@@ -57,9 +57,11 @@
     <div class="support-layout">
       <aside class="support-sidebar" aria-label="Support navigation">
         <strong>核心概念</strong>
+        <a href="#open">打开与原文保护</a>
         <a href="#typed-review">类型化审阅</a>
         <a href="#reanchor">跨版本存活</a>
         <a href="#ticket">工单 JSON</a>
+        <a href="#storage">存储与恢复</a>
         <strong>使用 wowMD</strong>
         <a href="#reader">阅读器</a>
         <a href="#annotate">标注</a>
@@ -76,6 +78,16 @@
           <p class="section-label">支持</p>
           <h1 id="support-title">审阅循环的指南与反馈。</h1>
           <p class="hero-subtitle">从让 wowMD 与众不同的核心概念开始：类型化审阅、跨版本存活、给 Obsidian 的审阅版 Markdown，以及可以交给 AI 的工单。</p>
+        </section>
+
+        <section class="doc-section" id="open">
+          <h2>打开 Markdown，不改动原文</h2>
+          <p>通过文件选择器或拖放打开本地 .md 与 .markdown 文件，也可以从扩展继续处理受支持的公开 GitHub Markdown。</p>
+          <div class="reference-list">
+            <p>审阅在浏览器中完成，绝不写回原文。保存审阅副本会创建单独的 Obsidian-ready .md 后继版本，并延续标注。</p>
+            <p>版本历史可重新打开由当前文档谱系创建的浏览器本地后继版本。</p>
+          </div>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Version history</strong></div><img src="../assets/shots/versions.png" alt="Version history explaining reviewed copies and source-safe successors"></figure>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -112,6 +124,13 @@
 以 document.markdownSnapshot 为基础。用 headingPath、quote、prefix 和 suffix 定位每条标注。如提供了 suggestedReplacement，优先采用。
 工单：
 &lt;在此粘贴导出的工单 JSON&gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="storage">
+          <h2>存储、备份与恢复</h2>
+          <p>已保存标注和导入的 GitHub 文档副本使用浏览器站点数据，而不是普通浏览器缓存。本地文件仍是会话输入；wowMD 按文档指纹保存其标注。</p>
+          <div class="doc-callout">清除站点数据、使用隐私模式、更换浏览器、配置文件或设备，以及存储被回收，都可能移除浏览器本地工作。未保存的工具栏草稿也可能在刷新或崩溃后丢失。</div>
+          <p>导出备份 JSON 以保留可重新导入的标注数据，导出审阅版 Markdown 以保留可读审阅上下文，并保存完成的交付产物用于长期保管。</p>
         </section>
 
         <section class="doc-section" id="reader">
@@ -188,6 +207,7 @@
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">我修改文件后，高亮位置变了。发生了什么？</button><div class="faq-answer"><p>wowMD 在源文件变化时会重新锚定标注。如果某段文字无法找到，可使用笔记面板的 Find 功能手动恢复。</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">有任何数据被上传吗？</button><div class="faq-answer"><p>没有。审阅工作流是本地优先的。文件和标注保留在你的浏览器中，除非你自己导出并分享它们。</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">清除浏览器数据后，已保存工作还能保留吗？</button><div class="faq-answer"><p>不能。已保存标注和导入的文档副本使用浏览器站点数据。清除站点数据或迁移到其他浏览器、配置文件或设备前，请导出备份 JSON 和完成的审阅产物。</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">我应该使用哪种导出？</button><div class="faq-answer"><p>HTML 给人阅读；审阅版 Markdown 给 Obsidian；备份 JSON 用于备份或重新导入标注数据；当你希望 AI 或编辑根据你的类型化判断执行操作时，使用工单 JSON。</p></div></div>
           </div>
         </section>

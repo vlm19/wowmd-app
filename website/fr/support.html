@@ -57,9 +57,11 @@
     <div class="support-layout">
       <aside class="support-sidebar" aria-label="Support navigation">
         <strong>Concepts</strong>
+        <a href="#open">Ouvrir et protéger la source</a>
         <a href="#typed-review">Relecture typée</a>
         <a href="#reanchor">Survie inter-versions</a>
         <a href="#ticket">Ticket JSON</a>
+        <a href="#storage">Stockage et récupération</a>
         <strong>Utiliser wowMD</strong>
         <a href="#reader">Lecteur</a>
         <a href="#annotate">Annoter</a>
@@ -76,6 +78,16 @@
           <p class="section-label">Support</p>
           <h1 id="support-title">Guide et retours pour la boucle de relecture.</h1>
           <p class="hero-subtitle">Commencez par les concepts qui distinguent wowMD : la relecture typée, la survie inter-versions, le Markdown révisé pour Obsidian et le ticket que vous pouvez transmettre à une IA.</p>
+        </section>
+
+        <section class="doc-section" id="open">
+          <h2>Ouvrir du Markdown sans modifier l’original</h2>
+          <p>Ouvrez des fichiers locaux .md ou .markdown avec le sélecteur ou par glisser-déposer, ou continuez depuis un Markdown GitHub public pris en charge via l’extension.</p>
+          <div class="reference-list">
+            <p>La relecture se fait dans le navigateur et ne réécrit jamais l’original. Enregistrer la copie relue crée un successeur .md séparé, compatible Obsidian, et transmet les annotations.</p>
+            <p>L’historique des versions permet de rouvrir les successeurs locaux au navigateur créés dans la lignée du document actuel.</p>
+          </div>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Version history</strong></div><img src="../assets/shots/versions.png" alt="Version history explaining reviewed copies and source-safe successors"></figure>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -112,6 +124,13 @@ Traitez chaque entrée selon son type et produisez le document complet révisé.
 Utilisez document.markdownSnapshot comme base. Localisez chaque entrée par headingPath, quote, prefix et suffix. Préférez suggestedReplacement lorsqu'il est fourni.
 Ticket :
 &amp;lt;collez ici le Ticket JSON exporté&amp;gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="storage">
+          <h2>Stockage, sauvegarde et récupération</h2>
+          <p>Les annotations enregistrées et les copies de documents GitHub importés utilisent les données de site du navigateur, pas son cache ordinaire. Les fichiers locaux restent des entrées de session ; leurs annotations sont stockées par empreinte de document.</p>
+          <div class="doc-callout">Effacer les données du site, utiliser la navigation privée, changer de navigateur, de profil ou d’appareil, ou subir une éviction du stockage peut supprimer le travail local. Les brouillons non enregistrés peuvent aussi être perdus après actualisation ou plantage.</div>
+          <p>Exportez Backup JSON pour les annotations réimportables, Reviewed Markdown pour un contexte de relecture lisible, et les livrables terminés pour la conservation à long terme.</p>
         </section>
 
         <section class="doc-section" id="reader">
@@ -188,6 +207,7 @@ Ticket :
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">Mes surlignages ont bougé après avoir modifié le fichier. Que s'est-il passé ?</button><div class="faq-answer"><p>wowMD réancre les annotations quand la source change. Si un passage est introuvable, utilisez Rechercher dans le panneau de notes pour le récupérer manuellement.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Est-ce que quelque chose est téléversé ?</button><div class="faq-answer"><p>Non. Le flux de relecture est local avant tout. Les fichiers et annotations restent dans votre navigateur, sauf si vous les exportez et les partagez vous-même.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">Mon travail enregistré survit-il à l’effacement des données du navigateur ?</button><div class="faq-answer"><p>Non. Les annotations enregistrées et les copies importées utilisent les données de site du navigateur. Exportez Backup JSON et les livrables terminés avant de les effacer ou de changer de navigateur, profil ou appareil.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Quel export dois-je utiliser ?</button><div class="faq-answer"><p>Utilisez HTML pour les humains, Markdown révisé pour Obsidian, Backup JSON pour sauvegarder ou réimporter les données d'annotation, et Ticket JSON quand vous voulez qu'une IA ou un éditeur agisse sur vos jugements typés.</p></div></div>
           </div>
         </section>

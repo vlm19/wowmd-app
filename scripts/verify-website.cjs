@@ -29,14 +29,14 @@ const requiredByFile = {
   "website/index.html": ["Ticket JSON", "HTML", "Local-first", "Your Markdown is never uploaded"],
   "website/pro.html": ["Ticket JSON", "Backup JSON", "Reviewed Markdown", "Obsidian-ready reviewed Markdown", "Overall Review Map", "Clarify needed", "Disputed", "Important", "Confirmed", "Free during beta"],
   "website/extension.html": ["Add to Chrome", "Open and Read only", "https://chromewebstore.google.com/detail/wowmd/lphibgbpadkfdmhilejjcomoomgkkjmh"],
-  "website/support.html": ["Typed review", "Cross-version survival", "Reviewed Markdown", "Ticket JSON", "Backup JSON", "Overall Review Map", "Feedback"],
-  "website/zh/support.html": ["Typed review", "Obsidian", "Overall Review Map", "Feedback"]
+  "website/support.html": ["Open Markdown without changing the original", "browser site data", "Typed review", "Cross-version survival", "Reviewed Markdown", "Ticket JSON", "Backup JSON", "Overall Review Map", "Feedback"],
+  "website/zh/support.html": ["打开 Markdown，不改动原文", "浏览器站点数据", "Obsidian", "Overall Review Map", "Feedback"]
 };
 
 const mustHaveIds = {
   "website/pro.html": ["read", "annotate", "map", "deliver", "versions", "compare", "faq"],
-  "website/support.html": ["typed-review", "reanchor", "ticket", "reader", "annotate", "map", "export", "settings", "feedback", "faq"],
-  "website/zh/support.html": ["typed-review", "reanchor", "ticket", "reader", "annotate", "map", "export", "settings", "feedback", "faq"]
+  "website/support.html": ["open", "typed-review", "reanchor", "ticket", "storage", "reader", "annotate", "map", "export", "settings", "feedback", "faq"],
+  "website/zh/support.html": ["open", "typed-review", "reanchor", "ticket", "storage", "reader", "annotate", "map", "export", "settings", "feedback", "faq"]
 };
 
 const failures = [];
@@ -80,7 +80,7 @@ for (const term of ["Ticket JSON", "Backup JSON", "Clarify needed", "Disputed", 
   if (extension.includes(term)) failures.push(`website/extension.html: Pro-only term "${term}"`);
 }
 
-for (const shot of ["reader.png", "annotate.png", "map.png", "export.png", "settings.png"]) {
+for (const shot of ["reader.png", "annotate.png", "map.png", "export.png", "versions.png", "settings.png"]) {
   const shotPath = path.join(root, "website", "assets", "shots", shot);
   if (!fs.existsSync(shotPath)) failures.push(`website/assets/shots/${shot}: missing screenshot`);
 }

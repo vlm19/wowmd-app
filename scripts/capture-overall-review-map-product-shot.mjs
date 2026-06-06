@@ -12,7 +12,10 @@ const productScreenshotPath = path.join(root, 'website', 'assets', 'shots', 'map
 const readerScreenshotPath = path.join(outputDir, 'reader.png')
 const annotateScreenshotPath = path.join(outputDir, 'annotate.png')
 const exportScreenshotPath = path.join(outputDir, 'export.png')
+const versionsScreenshotPath = path.join(outputDir, 'versions.png')
+const settingsScreenshotPath = path.join(outputDir, 'settings.png')
 const markdownPath = path.join(outputDir, 'architecture-review.md')
+const productShotsDir = path.join(root, 'website', 'assets', 'shots')
 
 const markdown = `# AI Architecture Review
 
@@ -170,6 +173,7 @@ async function main() {
     timeout: 10000,
   })
   await page.screenshot({ path: readerScreenshotPath })
+  await copyFile(readerScreenshotPath, path.join(productShotsDir, 'reader.png'))
 
   for (const annotation of annotations) {
     await markAnnotation(page, annotation)
@@ -177,6 +181,7 @@ async function main() {
   }
   await page.evaluate(() => window.scrollTo({ top: 0, left: 0 }))
   await page.screenshot({ path: annotateScreenshotPath })
+  await copyFile(annotateScreenshotPath, path.join(productShotsDir, 'annotate.png'))
 
   await page.locator('.map-action').click()
   await page.getByRole('heading', { name: 'Overall Review Map' }).waitFor({
@@ -207,6 +212,22 @@ async function main() {
   await page.locator('.export-workspace').waitFor({ state: 'visible', timeout: 10000 })
   await page.waitForTimeout(450)
   await page.screenshot({ path: exportScreenshotPath })
+  await copyFile(exportScreenshotPath, path.join(productShotsDir, 'export.png'))
+
+  await page.getByRole('button', { name: 'Reader', exact: true }).click()
+  await page.locator('.file-menu summary').click()
+  await page.getByRole('button', { name: 'Version history', exact: true }).click()
+  await page.locator('.version-history').waitFor({ state: 'visible', timeout: 10000 })
+  await page.waitForTimeout(250)
+  await page.screenshot({ path: versionsScreenshotPath })
+  await copyFile(versionsScreenshotPath, path.join(productShotsDir, 'versions.png'))
+
+  await page.locator('.version-history .modal-close').click()
+  await page.locator('.toolbar-settings-action').click()
+  await page.locator('.settings-panel').waitFor({ state: 'visible', timeout: 10000 })
+  await page.waitForTimeout(250)
+  await page.screenshot({ path: settingsScreenshotPath })
+  await copyFile(settingsScreenshotPath, path.join(productShotsDir, 'settings.png'))
 
   await browser.close()
   console.log(JSON.stringify({
@@ -215,6 +236,8 @@ async function main() {
     readerScreenshotPath,
     annotateScreenshotPath,
     exportScreenshotPath,
+    versionsScreenshotPath,
+    settingsScreenshotPath,
     markdownPath,
     annotations,
     stats,

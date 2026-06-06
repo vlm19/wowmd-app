@@ -57,9 +57,11 @@
     <div class="support-layout">
       <aside class="support-sidebar" aria-label="Support navigation">
         <strong>コンセプト</strong>
+        <a href="#open">開く・原文を保護</a>
         <a href="#typed-review">型付きレビュー</a>
         <a href="#reanchor">クロスバージョンサバイバル</a>
         <a href="#ticket">チケットJSON</a>
+        <a href="#storage">保存と復旧</a>
         <strong>wowMDを使う</strong>
         <a href="#reader">リーダー</a>
         <a href="#annotate">注釈</a>
@@ -76,6 +78,16 @@
           <p class="section-label">サポート</p>
           <h1 id="support-title">レビューループのガイドとフィードバック。</h1>
           <p class="hero-subtitle">wowMDを際立たせるコンセプトから始めましょう：型付きレビュー・クロスバージョンサバイバル・Obsidian向けレビュー済みMarkdown・AIに渡せるチケット。</p>
+        </section>
+
+        <section class="doc-section" id="open">
+          <h2>原文を変更せずに Markdown を開く</h2>
+          <p>ファイル選択またはドラッグ＆ドロップでローカルの .md / .markdown を開くか、拡張機能から対応する公開 GitHub Markdown を引き継げます。</p>
+          <div class="reference-list">
+            <p>レビューはブラウザ内で行われ、原文には書き戻しません。レビュー済みコピーを保存すると、注釈を引き継いだ別の Obsidian 対応 .md が作成されます。</p>
+            <p>バージョン履歴から、現在の文書系統で作成されたブラウザ内の後継版を開き直せます。</p>
+          </div>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Version history</strong></div><img src="../assets/shots/versions.png" alt="Version history explaining reviewed copies and source-safe successors"></figure>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -112,6 +124,13 @@
  document.markdownSnapshotをベースに使用。headingPath・quote・prefix・suffixで各項目を特定。suggestedReplacementが提供されている場合はそれを優先。
 チケット：
 &lt;エクスポートされたチケットJSONをここに貼り付け&gt;</code></pre>
+        </section>
+
+        <section class="doc-section" id="storage">
+          <h2>保存・バックアップ・復旧</h2>
+          <p>保存済み注釈とインポートした GitHub 文書コピーは、通常のブラウザキャッシュではなくサイトデータを使用します。ローカルファイルはセッション入力のままで、注釈は文書フィンガープリント別に保存されます。</p>
+          <div class="doc-callout">サイトデータの消去、プライベートブラウズ、別のブラウザ・プロファイル・端末、ストレージの削除によりローカル作業が失われる場合があります。未保存のツールバー下書きも更新やクラッシュで失われます。</div>
+          <p>再インポート可能な注釈には Backup JSON、読みやすいレビュー文脈には Reviewed Markdown、長期保存には完成した成果物をエクスポートしてください。</p>
         </section>
 
         <section class="doc-section" id="reader">
@@ -188,6 +207,7 @@
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">ファイルを変更したらハイライトが移動しました。何が起きましたか？</button><div class="faq-answer"><p>wowMDはソースが変更されると注釈を再アンカーします。パッセージが見つからない場合は、ノートパネルのFindで手動回復してください。</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">何かアップロードされますか？</button><div class="faq-answer"><p>いいえ。レビューワークフローはローカル優先です。ファイルと注釈は、自分でエクスポートして共有しない限りブラウザ内に留まります。</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">ブラウザデータを消去しても保存済み作業は残りますか？</button><div class="faq-answer"><p>いいえ。保存済み注釈とインポート文書コピーはブラウザのサイトデータを使用します。消去や別環境への移動前に Backup JSON と完成したレビュー成果物をエクスポートしてください。</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">どのエクスポートを使うべきですか？</button><div class="faq-answer"><p>HTMLは人向け、レビュー済みMarkdownはObsidian向け、バックアップJSONは注釈データのバックアップまたは再インポート向けです。AIや編集者に型付き判断に基づいて作業してほしいときはチケットJSONを使います。</p></div></div>
           </div>
         </section>

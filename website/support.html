@@ -57,9 +57,11 @@
     <div class="support-layout">
       <aside class="support-sidebar" aria-label="Support navigation">
         <strong>Concepts</strong>
+        <a href="#open">Open &amp; source safety</a>
         <a href="#typed-review">Typed review</a>
         <a href="#reanchor">Cross-version survival</a>
         <a href="#ticket">Ticket JSON</a>
+        <a href="#storage">Storage &amp; recovery</a>
         <strong>Using wowMD</strong>
         <a href="#reader">Reader</a>
         <a href="#annotate">Annotate</a>
@@ -76,6 +78,16 @@
           <p class="section-label">Support</p>
           <h1 id="support-title">Guide and feedback for the review loop.</h1>
           <p class="hero-subtitle">Start with the concepts that make wowMD different: typed review, cross-version survival, reviewed Markdown for Obsidian, and the ticket you can hand to an AI.</p>
+        </section>
+
+        <section class="doc-section" id="open">
+          <h2>Open Markdown without changing the original</h2>
+          <p>Open local .md or .markdown files by picker or drag-and-drop, or continue from supported public GitHub Markdown through the extension.</p>
+          <div class="reference-list">
+            <p>Source-safe review happens in the browser and never writes back to the original. Save reviewed copy creates a separate Obsidian-ready .md successor and carries annotations forward.</p>
+            <p>Version history lets you reopen browser-local successors created from the current document lineage.</p>
+          </div>
+          <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Version history</strong></div><img src="assets/shots/versions.png" alt="Version history explaining reviewed copies and source-safe successors"></figure>
         </section>
 
         <section class="doc-section" id="typed-review">
@@ -114,11 +126,18 @@ Ticket:
 &amp;lt;paste the exported Ticket JSON here&amp;gt;</code></pre>
         </section>
 
+        <section class="doc-section" id="storage">
+          <h2>Storage, backup, and recovery</h2>
+          <p>Saved annotations and imported GitHub document copies use browser site data, not ordinary browser cache. Local files remain session inputs; wowMD stores their annotations by document fingerprint.</p>
+          <div class="doc-callout">Clearing site data, private browsing, another browser, profile, or device, and storage eviction can remove browser-local work. Unsaved toolbar drafts can also be lost after refresh or crash.</div>
+          <p>Export Backup JSON for re-importable annotation data, Reviewed Markdown for human-readable review context, and finished delivery artifacts for long-term safekeeping.</p>
+        </section>
+
         <section class="doc-section" id="reader">
           <h2>Reader</h2>
           <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Reader</strong></div><img src="assets/shots/reader.png" alt="wowMD reader with outline, Markdown document, and notes panel"></figure>
           <div class="reference-list">
-            <p>Outline</p>
+            <p>Outline adapts to long heading titles, tracks your scroll position, and jumps to headings.</p>
             <p>Fold</p>
             <p>Search</p>
             <p>Code, tables, theme, and font size</p>
@@ -130,7 +149,7 @@ Ticket:
           <figure class="shot-frame support-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>Annotate</strong></div><img src="assets/shots/annotate.png" alt="Typed review highlights and notes panel with ticket export"></figure>
           <div class="reference-list">
             <p>Selection toolbar</p>
-            <p>Notes</p>
+            <p>Notes stay linked to the passage and can include a suggested replacement without changing the source.</p>
             <p>Filter by type</p>
           </div>
         </section>
@@ -188,6 +207,7 @@ Ticket:
           <div class="faq-list">
             <div class="faq-item"><button class="faq-question" type="button">My highlights moved after I changed the file. What happened?</button><div class="faq-answer"><p>wowMD re-anchors annotations when the source changes. If a passage cannot be found, use Find from the Notes panel to recover it manually.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Is anything uploaded?</button><div class="faq-answer"><p>No. The review workflow is local-first. Files and annotations stay in your browser unless you export and share them yourself.</p></div></div>
+            <div class="faq-item"><button class="faq-question" type="button">Will my saved work survive clearing browser data?</button><div class="faq-answer"><p>No. Saved annotations and imported document copies use browser site data. Export Backup JSON and finished review artifacts before clearing site data or moving to another browser, profile, or device.</p></div></div>
             <div class="faq-item"><button class="faq-question" type="button">Which export should I use?</button><div class="faq-answer"><p>Use HTML for people, Reviewed Markdown for Obsidian, Backup JSON to back up or re-import annotation data, and Ticket JSON when you want an AI or editor to act on your typed judgments.</p></div></div>
           </div>
         </section>
