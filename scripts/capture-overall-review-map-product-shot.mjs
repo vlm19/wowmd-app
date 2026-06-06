@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
@@ -8,6 +8,7 @@ const root = path.resolve(__dirname, '..')
 const outputDir = path.join(root, 'tmp', 'overall-review-map-product-shot')
 const appUrl = process.env.APP_URL || 'http://127.0.0.1:4174/app/'
 const screenshotPath = path.join(outputDir, 'map.png')
+const productScreenshotPath = path.join(root, 'website', 'assets', 'shots', 'map.png')
 const readerScreenshotPath = path.join(outputDir, 'reader.png')
 const annotateScreenshotPath = path.join(outputDir, 'annotate.png')
 const exportScreenshotPath = path.join(outputDir, 'export.png')
@@ -188,6 +189,7 @@ async function main() {
   })
   await page.waitForTimeout(350)
   await page.screenshot({ path: screenshotPath })
+  await copyFile(screenshotPath, productScreenshotPath)
 
   const stats = await page.evaluate(() => ({
     title: document.querySelector('.understanding-map h2')?.textContent?.trim(),
@@ -209,6 +211,7 @@ async function main() {
   await browser.close()
   console.log(JSON.stringify({
     screenshotPath,
+    productScreenshotPath,
     readerScreenshotPath,
     annotateScreenshotPath,
     exportScreenshotPath,
