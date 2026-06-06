@@ -65,7 +65,10 @@ const replacePlaceholderAttr = (html, key, value) => {
 };
 
 const setSelectedLanguage = (html, code) =>
-  html.replaceAll(' aria-selected="true"', "").replace(
+  html.replace(
+    /(<a role="option" data-language-option="[^"]+"[^>]*?) aria-selected="true"([^>]*>)/g,
+    "$1$2",
+  ).replace(
     new RegExp(`(<a role="option" data-language-option="${code}"[^>]*)(>)`),
     '$1 aria-selected="true"$2'
   );

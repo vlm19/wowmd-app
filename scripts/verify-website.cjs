@@ -75,6 +75,17 @@ if (!/<a class="flow-stage-label flow-stage-label-pro" href="pro\.html">Explore 
   failures.push("website/index.html: Pro flow card CTA must link to pro.html");
 }
 
+const support = readHtml("website/support.html");
+if (!support.includes('styles.css?v=20260606-support-workflows')) {
+  failures.push("website/support.html: Support workflow stylesheet cache version is stale");
+}
+if (!support.includes('script.js?v=20260606-support-workflows')) {
+  failures.push("website/support.html: Support workflow script cache version is stale");
+}
+if (!/<button class="scenario-tab is-active"[^>]*aria-selected="true"[^>]*data-scenario-target="readme"/.test(support)) {
+  failures.push("website/support.html: default workflow tab must preserve aria-selected=true");
+}
+
 const extension = readHtml("website/extension.html");
 for (const term of ["Ticket JSON", "Backup JSON", "Clarify needed", "Disputed", "Important", "Confirmed"]) {
   if (extension.includes(term)) failures.push(`website/extension.html: Pro-only term "${term}"`);
