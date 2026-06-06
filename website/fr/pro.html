@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>wowMD Pro - La couche de relecture entre un brouillon IA et ce que vous publiez</title>
+    <title>wowMD Pro - Relire Markdown sans toucher à l’original</title>
     <meta name="description" content="Lisez du Markdown avec structure, jugez avec quatre types de relecture, et livrez du HTML, du Markdown révisé prêt pour Obsidian, un Backup JSON ou un Ticket JSON comme ordre de travail pour l'IA. Local avant tout et non destructif.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
@@ -18,8 +18,8 @@
     <link rel="icon" href="../assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" content="wowMD Pro - La couche de relecture entre un brouillon IA et ce que vous publiez">
-    <meta property="og:description" content="Quatre types de relecture, Carte de compréhension, Markdown révisé prêt pour Obsidian et un Ticket JSON comme ordre de travail pour l'IA.">
+    <meta property="og:title" content="wowMD Pro - Relire Markdown sans toucher à l’original">
+    <meta property="og:description" content="Quatre types de relecture, Carte globale de revue, Markdown relu pour Obsidian et livrables précis.">
     <meta property="og:url" content="https://wowmd.app/fr/pro.html">
     <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
     <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
@@ -47,7 +47,7 @@
           "Typed review annotations",
           "Suggested replacements",
           "Cross-version annotation survival",
-          "Understanding Map",
+          "Overall Review Map",
           "Offline HTML export",
           "Reviewed Markdown export",
           "Backup JSON export",
@@ -100,8 +100,8 @@
       <section class="pro-hero-v2" aria-labelledby="pro-title">
         <div class="pro-hero-copy">
           <p class="section-label">wowMD Pro - Gratuit pendant la bêta</p>
-          <h1 id="pro-title">La couche de relecture entre un brouillon IA et ce que vous publiez.</h1>
-          <p class="hero-subtitle">L'IA rédige le brouillon. Vous lisez avec structure, jugez ce qui compte avec quatre types de relecture, puis livrez du HTML pour les humains, du Markdown révisé pour Obsidian ou un ticket qu'une IA peut exécuter. Local avant tout, non destructif, rien n'est téléversé.</p>
+          <h1 id="pro-title">Relisez Markdown. Ne touchez jamais à l’original.</h1>
+          <p class="hero-subtitle">Lisez tout Markdown avec sa structure, consignez votre jugement avec quatre types de relecture, puis livrez le bon résultat pour les humains, Obsidian, la sauvegarde ou la révision assistée par IA. Local-first et non destructif.</p>
           <div class="hero-actions"><a class="button button-primary button-large" href="../app/">Ouvrir wowMD Pro</a></div>
           <div class="hero-badges" aria-label="Product facts">
             <span>Local avant tout</span>
@@ -124,7 +124,7 @@
         </div>
         <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - reader</strong></div><img src="../assets/shots/reader.png" alt="wowMD Pro reader with document outline, Markdown content, and notes panel"></figure>
         <div class="feature-grid-v2">
-          <article><h3>Plan du document</h3><p>Naviguez par la structure des titres. Le plan suit votre position de défilement.</p></article>
+          <article><h3>Plan du document</h3><p>Naviguez selon la structure des titres. Le plan s’adapte aux titres de section longs.</p></article>
           <article><h3>Pliage de sections</h3><p>Repliez les sections déjà lues et restez concentré sur le passage actuel.</p></article>
           <article><h3>Code et tableaux</h3><p>Coloration syntaxique, copie en un clic et défilement interne pour les grands tableaux.</p></article>
           <article><h3>Recherche et thèmes</h3><p>Trouvez des correspondances avec compteur et contrôles précédent/suivant. Lisez en clair ou sombre à la taille de police de votre choix.</p></article>
@@ -153,11 +153,11 @@
 
       <section class="section pro-section" id="map" aria-labelledby="map-title">
         <div class="section-heading">
-          <p class="section-label">Carte de compréhension</p>
-          <h2 id="map-title">Voyez où se concentrent les confusions, les contestations et les points importants.</h2>
-          <p class="section-subtitle">La Carte de compréhension montre la densité des quatre types de relecture par section, pour que vous puissiez décider quoi traiter en premier.</p>
+          <p class="section-label">Carte globale de revue</p>
+          <h2 id="map-title">Comprenez l’avancement de la revue et trouvez où concentrer vos efforts ensuite.</h2>
+          <p class="section-subtitle">La Carte globale de revue combine couverture des sections, confiance de revue, priorité des risques et annotations typées pour renforcer les parties qui demandent de l’attention.</p>
         </div>
-        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Understanding Map</strong></div><img src="../assets/shots/map.png" alt="Understanding Map showing per-section density by review type"></figure>
+        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Overall Review Map</strong></div><img src="../assets/shots/map.png" alt="Overall Review Map showing coverage, review confidence, risk focus, and sections needing attention"></figure>
       </section>
 
       <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
@@ -201,7 +201,7 @@ Prompt : révisez tout le document selon ces tickets.</code></pre></article>
             <tr><td>Plan, pliage, code, tableaux</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Recherche plein texte</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Quatre types de relecture</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
-            <tr><td>Carte de compréhension</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td>Carte globale de revue</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Survie inter-versions</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Markdown révisé prêt pour Obsidian</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td>Export HTML</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>

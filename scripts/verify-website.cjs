@@ -27,10 +27,10 @@ const forbidden = [
 
 const requiredByFile = {
   "website/index.html": ["Ticket JSON", "HTML", "Local-first", "Your Markdown is never uploaded"],
-  "website/pro.html": ["Ticket JSON", "Backup JSON", "Reviewed Markdown", "Obsidian-ready reviewed Markdown", "Understanding Map", "Clarify needed", "Disputed", "Important", "Confirmed", "Free during beta"],
+  "website/pro.html": ["Ticket JSON", "Backup JSON", "Reviewed Markdown", "Obsidian-ready reviewed Markdown", "Overall Review Map", "Clarify needed", "Disputed", "Important", "Confirmed", "Free during beta"],
   "website/extension.html": ["Add to Chrome", "Open and Read only", "https://chromewebstore.google.com/detail/wowmd/lphibgbpadkfdmhilejjcomoomgkkjmh"],
-  "website/support.html": ["Typed review", "Cross-version survival", "Reviewed Markdown", "Ticket JSON", "Backup JSON", "Understanding Map", "Feedback"],
-  "website/zh/support.html": ["Typed review", "Obsidian", "工单 JSON", "备份 JSON", "Understanding Map", "Feedback"]
+  "website/support.html": ["Typed review", "Cross-version survival", "Reviewed Markdown", "Ticket JSON", "Backup JSON", "Overall Review Map", "Feedback"],
+  "website/zh/support.html": ["Typed review", "Obsidian", "Overall Review Map", "Feedback"]
 };
 
 const mustHaveIds = {

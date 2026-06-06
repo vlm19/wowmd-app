@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title data-i18n="pro.metaTitle">wowMD Pro - The review layer between an AI draft and what you ship</title>
+    <title data-i18n="pro.metaTitle">wowMD Pro - Review Markdown without touching the original</title>
     <meta name="description" data-i18n-content="pro.metaDescription" content="Read Markdown with structure, judge with four review types, and deliver HTML, Obsidian-ready reviewed Markdown, Backup JSON, or a Ticket JSON work order for AI. Local-first and non-destructive.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
@@ -18,8 +18,8 @@
     <link rel="icon" href="{{base}}assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
-    <meta property="og:title" data-i18n-content="pro.ogTitle" content="wowMD Pro - The review layer between an AI draft and what you ship">
-    <meta property="og:description" data-i18n-content="pro.ogDescription" content="Four review types, Understanding Map, Obsidian-ready reviewed Markdown, and a Ticket JSON work order for AI.">
+    <meta property="og:title" data-i18n-content="pro.ogTitle" content="wowMD Pro - Review Markdown without touching the original">
+    <meta property="og:description" data-i18n-content="pro.ogDescription" content="Four review types, Overall Review Map, Obsidian-ready reviewed Markdown, and precise handoff outputs.">
     <meta property="og:url" content="{{canonicalUrl}}">
     <meta property="og:image" content="https://wowmd.app/assets/shots/annotate.png">
     <meta property="og:image:alt" content="wowMD Pro typed highlights and notes panel">
@@ -47,7 +47,7 @@
           "Typed review annotations",
           "Suggested replacements",
           "Cross-version annotation survival",
-          "Understanding Map",
+          "Overall Review Map",
           "Offline HTML export",
           "Reviewed Markdown export",
           "Backup JSON export",
@@ -100,8 +100,8 @@
       <section class="pro-hero-v2" aria-labelledby="pro-title">
         <div class="pro-hero-copy">
           <p class="section-label" data-i18n="pro.heroLabel">wowMD Pro - Free during beta</p>
-          <h1 id="pro-title" data-i18n="pro.heroTitle">The review layer between an AI draft and what you ship.</h1>
-          <p class="hero-subtitle" data-i18n="pro.heroSubtitle">AI writes the draft. You read with structure, judge what matters with four review types, then deliver HTML for people, reviewed Markdown for Obsidian, or a ticket an AI can execute. Local-first, non-destructive, nothing uploaded.</p>
+          <h1 id="pro-title" data-i18n="pro.heroTitle">Review Markdown. Never touch the original.</h1>
+          <p class="hero-subtitle" data-i18n="pro.heroSubtitle">Read any Markdown with structure, record your judgment with four review types, then deliver the right artifact for people, Obsidian, backup, or AI-assisted revision. Local-first and non-destructive.</p>
           <div class="hero-actions"><a class="button button-primary button-large" href="{{appUrl}}" data-i18n="pro.openApp">Open wowMD Pro</a></div>
           <div class="hero-badges" aria-label="Product facts">
             <span data-i18n="pro.badgeLocal">Local-first</span>
@@ -124,7 +124,7 @@
         </div>
         <figure class="shot-frame"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - reader</strong></div><img src="{{base}}assets/shots/reader.png" alt="wowMD Pro reader with document outline, Markdown content, and notes panel"></figure>
         <div class="feature-grid-v2">
-          <article><h3 data-i18n="pro.readOutlineTitle">Document outline</h3><p data-i18n="pro.readOutlineBody">Navigate by heading structure. The outline tracks your scroll position.</p></article>
+          <article><h3 data-i18n="pro.readOutlineTitle">Document outline</h3><p data-i18n="pro.readOutlineBody">Navigate by heading structure. The outline adapts to long section titles.</p></article>
           <article><h3 data-i18n="pro.readFoldTitle">Section folding</h3><p data-i18n="pro.readFoldBody">Collapse sections you have read and keep focus on the current passage.</p></article>
           <article><h3 data-i18n="pro.readCodeTitle">Code and tables</h3><p data-i18n="pro.readCodeBody">Syntax highlighting, one-click copy, and inner scrolling for wide tables.</p></article>
           <article><h3 data-i18n="pro.readSearchTitle">Search and themes</h3><p data-i18n="pro.readSearchBody">Find matches with count and prev/next controls. Read in light or dark at your chosen font size.</p></article>
@@ -153,11 +153,11 @@
 
       <section class="section pro-section" id="map" aria-labelledby="map-title">
         <div class="section-heading">
-          <p class="section-label" data-i18n="pro.mapLabel">Understanding Map</p>
-          <h2 id="map-title" data-i18n="pro.mapTitle">See where confusion, disputes, and important points cluster.</h2>
-          <p class="section-subtitle" data-i18n="pro.mapSubtitle">The Understanding Map shows density of the four review types per section, so you can decide what to handle first.</p>
+          <p class="section-label" data-i18n="pro.mapLabel">Overall Review Map</p>
+          <h2 id="map-title" data-i18n="pro.mapTitle">Understand review coverage and find where to focus next.</h2>
+          <p class="section-subtitle" data-i18n="pro.mapSubtitle">The Overall Review Map combines section coverage, review confidence, risk focus, and typed annotations so you can strengthen the document where it needs attention.</p>
         </div>
-        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Understanding Map</strong></div><img src="{{base}}assets/shots/map.png" alt="Understanding Map showing per-section density by review type"></figure>
+        <figure class="shot-frame narrow-shot"><div class="browser-bar"><span class="dot dot-red"></span><span class="dot dot-amber"></span><span class="dot dot-green"></span><strong>wowMD Pro - Overall Review Map</strong></div><img src="{{base}}assets/shots/map.png" alt="Overall Review Map showing coverage, review confidence, risk focus, and sections needing attention"></figure>
       </section>
 
       <section class="section pro-section" id="deliver" aria-labelledby="deliver-title">
@@ -201,7 +201,7 @@ Prompt: revise the whole document per these tickets.</code></pre></article>
             <tr><td data-i18n="pro.cmpOutline">Outline, folding, code, tables</td><td><span class="compare-check">Yes</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td data-i18n="pro.cmpSearch">Full-text search</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td data-i18n="pro.cmpFourTypes">Four review types</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
-            <tr><td data-i18n="pro.cmpMap">Understanding Map</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
+            <tr><td data-i18n="pro.cmpMap">Overall Review Map</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td data-i18n="pro.cmpCrossVersion">Cross-version survival</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td data-i18n="pro.cmpVersions">Obsidian-ready reviewed Markdown</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
             <tr><td data-i18n="pro.cmpHtml">HTML export</td><td><span class="compare-dash">No</span></td><td><span class="compare-check">Yes</span></td></tr>
