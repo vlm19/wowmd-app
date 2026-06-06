@@ -68,6 +68,12 @@ for (const [file, terms] of Object.entries(requiredByFile)) {
 const landing = readHtml("website/index.html");
 const loopButtonCount = (landing.match(/<(button|a)\b[^>]*class="[^"]*aflow-node[^"]*"/g) || []).length;
 if (loopButtonCount < 7) failures.push(`website/index.html: expected keyboard-reachable loop nodes and output fork, found ${loopButtonCount}`);
+if (!/<a class="nav-pro" href="app\/">wowMD Pro App<\/a>/.test(landing)) {
+  failures.push("website/index.html: header Pro app CTA must link directly to app/");
+}
+if (!/<a class="flow-stage-label flow-stage-label-pro" href="pro\.html">Explore wowMD Pro<\/a>/.test(landing)) {
+  failures.push("website/index.html: Pro flow card CTA must link to pro.html");
+}
 
 const extension = readHtml("website/extension.html");
 for (const term of ["Ticket JSON", "Backup JSON", "Clarify needed", "Disputed", "Important", "Confirmed"]) {

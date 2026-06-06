@@ -1,10 +1,11 @@
 {
   "landing.metaTitle": "wowMD - Une couche de relecture vivante pour votre Markdown",
   "landing.metaDescription": "Lisez de longs Markdown avec structure, jugez l'essentiel avec quatre types de relecture, gardez les annotations vivantes d'une version à l'autre, puis exportez en HTML pour les humains ou en ticket pour une IA.",
-  "landing.navPro": "wowMD Pro",
+  "landing.navPro": "wowMD Pro App",
   "landing.navExtension": "Extension",
   "landing.subtitle": "Plus qu?un lecteur, pas un ?diteur. Marquez ce qui compte, gardez les annotations ancr?es quand les fichiers changent, puis livrez des sorties propres pour les humains, l?IA ou Obsidian.",
   "landing.proBody": "Ouvrez du Markdown local, marquez des passages et ajoutez des notes avec quatre types de relecture, gardez chaque note ancrée d'une version à l'autre, puis exportez en HTML pour les humains, en Markdown relu pour Obsidian ou en ticket pour une IA.",
+  "landing.proCta": "Découvrir wowMD Pro",
   "landing.loopOpen": "Ouvrir",
   "landing.loopOpenDesc": "GitHub ou .md local",
   "landing.loopRead": "Lire avec structure",

@@ -1,10 +1,11 @@
 {
   "landing.metaTitle": "wowMD - Eine lebendige Review-Ebene für Ihr Markdown",
   "landing.metaDescription": "Lesen Sie langes Markdown mit Struktur, beurteilen Sie das Wesentliche mit vier Review-Typen, halten Sie Anmerkungen versionsübergreifend am Leben und exportieren Sie als HTML für Menschen oder als Ticket für eine KI.",
-  "landing.navPro": "wowMD Pro",
+  "landing.navPro": "wowMD Pro App",
   "landing.navExtension": "Erweiterung",
   "landing.subtitle": "Mehr als ein Reader, kein Editor. Markieren Sie, was z?hlt, halten Sie Anmerkungen bei Datei?nderungen verankert und liefern Sie saubere Ausgaben f?r Menschen, KI oder Obsidian.",
   "landing.proBody": "Öffnen Sie lokales Markdown, markieren Sie Passagen und fügen Sie Notizen mit vier Review-Typen hinzu, halten Sie jede Notiz versionsübergreifend verankert und exportieren Sie dann HTML für Menschen, Reviewed Markdown für Obsidian oder ein Ticket für eine KI.",
+  "landing.proCta": "wowMD Pro entdecken",
   "landing.loopOpen": "Öffnen",
   "landing.loopOpenDesc": "GitHub oder lokale .md",
   "landing.loopRead": "Strukturiert lesen",

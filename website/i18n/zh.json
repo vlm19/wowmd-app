@@ -1,10 +1,11 @@
 {
   "landing.metaTitle": "wowMD - 为你的 Markdown 而生的审阅层",
   "landing.metaDescription": "结构化阅读长 Markdown，用四种评审类型判断要点，让标注跨版本持续存活，再导出为给人看的 HTML 或给 AI 的工单。",
-  "landing.navPro": "wowMD Pro",
+  "landing.navPro": "wowMD Pro App",
   "landing.navExtension": "扩展",
   "landing.subtitle": "??????????????????????????????????????????????AI ? Obsidian ??????",
   "landing.proBody": "打开本地 Markdown，用四种评审类型标注段落并添加备注，让每条笔记跨版本保持锚定，再导出给人看的 HTML、给 Obsidian 的评审 Markdown，或给 AI 的工单。",
+  "landing.proCta": "了解 wowMD Pro",
   "landing.loopOpen": "打开",
   "landing.loopOpenDesc": "GitHub 或本地 .md",
   "landing.loopRead": "结构化阅读",

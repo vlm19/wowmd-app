@@ -49,6 +49,30 @@ async function main() {
       throw new Error(`${name} mobile header failed: ${JSON.stringify(metrics)}`)
     }
 
+    if (name === 'home') {
+      const entries = await page.evaluate(() => {
+        const appEntry = document.querySelector('.site-header .nav-pro')
+        const proEntry = document.querySelector('.flow-stage-label-pro')
+        return {
+          appText: appEntry?.textContent?.trim(),
+          appHref: appEntry?.getAttribute('href'),
+          proText: proEntry?.textContent?.trim(),
+          proHref: proEntry?.getAttribute('href'),
+        }
+      })
+
+      if (
+        entries.appText !== 'wowMD Pro App'
+        || entries.appHref !== 'app/'
+        || entries.proText !== 'Explore wowMD Pro'
+        || entries.proHref !== 'pro.html'
+      ) {
+        throw new Error(`home entry targets failed: ${JSON.stringify(entries)}`)
+      }
+
+      metrics.entries = entries
+    }
+
     const screenshotPath = path.join(outputDir, `${name}.png`)
     await page.screenshot({ path: screenshotPath, fullPage: false })
     results.push({ name, screenshotPath, metrics })
