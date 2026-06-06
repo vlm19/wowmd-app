@@ -3,7 +3,7 @@
   "landing.metaDescription": "긴 Markdown을 구조적으로 읽고, 네 가지 리뷰 유형으로 핵심을 판단하며, 주석을 버전 간에 살려 두었다가, 사람을 위한 HTML 또는 AI를 위한 티켓으로 내보냅니다.",
   "landing.navPro": "wowMD Pro App",
   "landing.navExtension": "확장 프로그램",
-  "landing.subtitle": "?? ????? ???? ????. ??? ?? ????, ??? ???? ??? ??? ? ??? ? ??, AI, Obsidian? ?? ??? ???? ?????.",
+  "landing.subtitle": "단순한 리더도, 에디터도 아닙니다. 구조화된 주석을 추가하고, 파일이 변경되어도 주석이 유지되며, 사람이 읽거나 AI가 처리하거나 Obsidian 지식 베이스에 맞춘 출력을 제공합니다.",
   "landing.proBody": "로컬 Markdown을 열고, 네 가지 리뷰 유형으로 단락을 표시하고 메모를 추가하며, 모든 메모를 버전 간에 고정해 두었다가, 사람을 위한 HTML, Obsidian용 리뷰 Markdown, 또는 AI를 위한 티켓으로 내보냅니다.",
   "landing.proCta": "wowMD Pro 살펴보기",
   "landing.loopOpen": "열기",
@@ -345,9 +345,9 @@
   "landing.nativeGithubLabel": "GitHub 기본 Markdown",
   "landing.structuredReaderLabel": "구조화된 리더 보기",
   "landing.continuePro": "wowMD Pro에서 계속",
-  "landing.titlePrefix": "Markdown? ?????. ",
-  "landing.titleEmphasis": "??? ???? ??",
-  "landing.titleSuffix": ".",
-  "landing.badgeLocal": "?? ??",
-  "landing.badgeNoUpload": "Markdown? ?? ????? ????"
+  "landing.titlePrefix": "Markdown을 리뷰하세요. ",
+  "landing.titleEmphasis": "원본은 건드리지 않습니다",
+  "landing.titleSuffix": "",
+  "landing.badgeLocal": "로컬 우선",
+  "landing.badgeNoUpload": "Markdown 업로드 없음"
 }

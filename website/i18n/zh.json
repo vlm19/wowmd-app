@@ -3,7 +3,7 @@
   "landing.metaDescription": "结构化阅读长 Markdown，用四种评审类型判断要点，让标注跨版本持续存活，再导出为给人看的 HTML 或给 AI 的工单。",
   "landing.navPro": "wowMD Pro App",
   "landing.navExtension": "扩展",
-  "landing.subtitle": "??????????????????????????????????????????????AI ? Obsidian ??????",
+  "landing.subtitle": "不止是阅读器，更不是编辑器。可以结构化标注，还能让标注随文件变更保持锚定，提供不同的输出，更适合人类阅读，AI处理或者适配Obsidian知识库。",
   "landing.proBody": "打开本地 Markdown，用四种评审类型标注段落并添加备注，让每条笔记跨版本保持锚定，再导出给人看的 HTML、给 Obsidian 的评审 Markdown，或给 AI 的工单。",
   "landing.proCta": "了解 wowMD Pro",
   "landing.loopOpen": "打开",
@@ -345,9 +345,9 @@
   "landing.nativeGithubLabel": "GitHub 原生 Markdown",
   "landing.structuredReaderLabel": "结构化阅读界面",
   "landing.continuePro": "继续到 wowMD Pro",
-  "landing.titlePrefix": "?? Markdown?",
-  "landing.titleEmphasis": "????",
-  "landing.titleSuffix": "???",
-  "landing.badgeLocal": "????",
-  "landing.badgeNoUpload": "?? Markdown ??????"
+  "landing.titlePrefix": "审阅 Markdown。",
+  "landing.titleEmphasis": "绝不触碰",
+  "landing.titleSuffix": "原文。",
+  "landing.badgeLocal": "本地优先",
+  "landing.badgeNoUpload": "你的 Markdown 绝不上传"
 }

@@ -3,7 +3,7 @@
   "landing.metaDescription": "長い Markdown を構造化して読み、4 つのレビュータイプで要点を判断し、注釈をバージョンをまたいで生かし、人向けの HTML や AI 向けのチケットとして書き出します。",
   "landing.navPro": "wowMD Pro App",
   "landing.navExtension": "拡張機能",
-  "landing.subtitle": "????????????????????????????????????????????????????????AI?Obsidian ?????????????????",
+  "landing.subtitle": "リーダーでもエディターでもありません。構造的な注釈を付け、ファイル変更後も注釈を維持し、人による読書・AI 処理・Obsidian ナレッジベースに適した出力を提供します。",
   "landing.proBody": "ローカルの Markdown を開き、4 つのレビュータイプで段落をマークしてノートを追加し、すべてのノートをバージョンをまたいでアンカーし続け、人向けの HTML、Obsidian 向けのレビュー済み Markdown、AI 向けのチケットとして書き出します。",
   "landing.proCta": "wowMD Pro を詳しく見る",
   "landing.loopOpen": "開く",
@@ -345,9 +345,9 @@
   "landing.nativeGithubLabel": "GitHub 標準の Markdown",
   "landing.structuredReaderLabel": "構造化された読書ビュー",
   "landing.continuePro": "wowMD Pro で続ける",
-  "landing.titlePrefix": "Markdown ??????",
-  "landing.titleEmphasis": "????????",
-  "landing.titleSuffix": "?",
-  "landing.badgeLocal": "?????????",
-  "landing.badgeNoUpload": "Markdown ????????????"
+  "landing.titlePrefix": "Markdown をレビュー。",
+  "landing.titleEmphasis": "元の文書には触れません",
+  "landing.titleSuffix": "",
+  "landing.badgeLocal": "ローカル優先",
+  "landing.badgeNoUpload": "Markdown のアップロードなし"
 }
