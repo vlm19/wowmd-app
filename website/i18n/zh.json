@@ -414,5 +414,9 @@
   "landing.titleEmphasis": "绝不触碰",
   "landing.titleSuffix": "原文。",
   "landing.badgeLocal": "本地优先",
-  "landing.badgeNoUpload": "你的 Markdown 绝不上传"
+  "landing.badgeNoUpload": "你的 Markdown 绝不上传",
+  "privacyPage.metaTitle": "wowMD 隐私政策",
+  "privacyPage.metaDescription": "wowMD 是本地优先的 Chrome 扩展和 webapp。不收集个人信息，不上传文档，不追踪。标注和导出均由你主动发起并在本地生成。",
+  "termsPage.metaTitle": "wowMD 条款与条件",
+  "termsPage.metaDescription": "使用 wowMD 网站、Chrome 扩展和 wowMD Pro webapp 的条款。两者在测试阶段均免费。"
 }

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>undefined</title>
-    <meta name="description" content="undefined">
+    <title>wowMD Datenschutzerklärung</title>
+    <meta name="description" content="wowMD ist eine lokal ausgerichtete Chrome-Erweiterung und Webanwendung. Keine Erfassung personenbezogener Daten, keine Dokument-Uploads, kein Tracking. Anmerkungen und Exporte werden immer von Ihnen initiiert und lokal generiert.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#ffffff">
     <link rel="canonical" href="https://wowmd.app/de/privacy.html">
@@ -28,6 +28,20 @@
         <a class="nav-pro" href="../app/">wowMD Pro App</a>
         <a href="extension.html">Erweiterung</a>
       </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/de.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" href="../privacy.html"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/privacy.html"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/privacy.html"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/privacy.html"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/privacy.html" aria-selected="true"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/privacy.html"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
+        </div>
+      </div>
     </header>
 
     <main>
@@ -95,8 +109,7 @@
 
     <footer class="site-footer">
       <div class="footer-brand">
-        <img src="../assets/brand/logo-wordmark-light-bg-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>Beta v0.1.0 - Chrome-Erweiterung</p>
+        <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="privacy.html">Datenschutz</a>

@@ -28,6 +28,20 @@
         <a class="nav-pro" href="{{appUrl}}" data-i18n="landing.navPro">wowMD Pro App</a>
         <a href="{{extensionUrl}}" data-i18n="landing.navExtension">Extension</a>
       </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="{{currentFlag}}" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" href="{{localeUrlEn}}"><img class="flag" src="{{base}}assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="{{localeUrlZh}}"><img class="flag" src="{{base}}assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="{{localeUrlJa}}"><img class="flag" src="{{base}}assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="{{localeUrlKo}}"><img class="flag" src="{{base}}assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="{{localeUrlDe}}"><img class="flag" src="{{base}}assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="{{localeUrlFr}}"><img class="flag" src="{{base}}assets/flags/fr.svg" alt=""><span>French</span></a>
+        </div>
+      </div>
     </header>
 
     <main>
@@ -97,13 +111,12 @@
 
     <footer class="site-footer">
       <div class="footer-brand">
-        <img src="{{base}}assets/brand/logo-wordmark-light-bg-outlined.svg" alt="wowMD" width="88" height="24">
-        <p data-i18n="footer.status">Beta v0.1.0 - Chrome extension - Free</p>
+        <img src="{{base}}assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
       </div>
       <nav class="footer-links" aria-label="Footer">
-        <a href="{{privacyUrl}}" data-i18n="footer.privacy">Privacy</a>
-        <a href="{{termsUrl}}" data-i18n="footer.terms">Terms</a>
-        <a class="support-link" href="{{supportUrl}}">Support</a>
+        <a href="{{privacyUrl}}" data-i18n="landing.footerPrivacy">Privacy</a>
+        <a href="{{termsUrl}}" data-i18n="landing.footerTerms">Terms</a>
+        <a class="support-link" href="{{supportUrl}}" data-i18n="landing.footerSupport">Support</a>
       </nav>
     </footer>
     <script src="{{base}}script.js"></script>

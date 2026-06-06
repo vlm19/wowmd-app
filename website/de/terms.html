@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>undefined</title>
-    <meta name="description" content="undefined">
+    <title>wowMD Nutzungsbedingungen</title>
+    <meta name="description" content="Nutzungsbedingungen für die wowMD-Website, Chrome-Erweiterung und wowMD Pro-Webanwendung. Beide sind während der Beta-Phase kostenlos.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#ffffff">
     <link rel="canonical" href="https://wowmd.app/de/terms.html">
@@ -28,6 +28,20 @@
         <a class="nav-pro" href="../app/">wowMD Pro App</a>
         <a href="extension.html">Erweiterung</a>
       </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="../assets/flags/de.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" href="../terms.html"><img class="flag" src="../assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="../zh/terms.html"><img class="flag" src="../assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="../ja/terms.html"><img class="flag" src="../assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="../ko/terms.html"><img class="flag" src="../assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="../de/terms.html" aria-selected="true"><img class="flag" src="../assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="../fr/terms.html"><img class="flag" src="../assets/flags/fr.svg" alt=""><span>French</span></a>
+        </div>
+      </div>
     </header>
 
     <main>
@@ -111,8 +125,7 @@
 
     <footer class="site-footer">
       <div class="footer-brand">
-        <img src="../assets/brand/logo-wordmark-light-bg-outlined.svg" alt="wowMD" width="88" height="24">
-        <p>Beta v0.1.0 - Chrome-Erweiterung</p>
+        <img src="../assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
       </div>
       <nav class="footer-links" aria-label="Footer">
         <a href="privacy.html">Datenschutz</a>

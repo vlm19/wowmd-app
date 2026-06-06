@@ -414,5 +414,9 @@
   "landing.titleEmphasis": "Never touch",
   "landing.titleSuffix": " the original.",
   "landing.badgeLocal": "Local-first",
-  "landing.badgeNoUpload": "Your Markdown is never uploaded"
+  "landing.badgeNoUpload": "Your Markdown is never uploaded",
+  "privacyPage.metaTitle": "wowMD Privacy Policy",
+  "privacyPage.metaDescription": "wowMD is a local-first Chrome extension and webapp. No personal data collection, no document uploads, no tracking. Annotations and exports are always initiated by you and generated locally.",
+  "termsPage.metaTitle": "wowMD Terms and Conditions",
+  "termsPage.metaDescription": "Terms for using the wowMD website, Chrome extension, and wowMD Pro webapp. Both products are free during beta."
 }
