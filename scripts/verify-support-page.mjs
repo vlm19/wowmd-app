@@ -15,6 +15,7 @@ async function inspectPage(page) {
     'reanchor',
     'ticket',
     'storage',
+    'workflows',
     'reader',
     'annotate',
     'map',
@@ -63,8 +64,34 @@ async function main() {
   if (desktopResult.images.length !== 6 || desktopResult.images.some((image) => !image.loaded)) {
     throw new Error(`Support screenshots failed: ${JSON.stringify(desktopResult.images)}`)
   }
+
+  const scenarioResults = []
+  for (const target of ['readme', 'spec', 'plan', 'obsidian', 'skill']) {
+    await desktop.locator(`[data-scenario-target="${target}"]`).click()
+    const result = await desktop.evaluate((name) => {
+      const activeTab = document.querySelector(`[data-scenario-target="${name}"]`)
+      const activePanel = document.querySelector(`[data-scenario-panel="${name}"]`)
+      return {
+        target: name,
+        tabActive: activeTab?.classList.contains('is-active'),
+        selected: activeTab?.getAttribute('aria-selected'),
+        panelVisible: activePanel ? !activePanel.hidden : false,
+        output: activePanel?.querySelector('.scenario-output strong')?.textContent?.trim(),
+      }
+    }, target)
+    if (!result.tabActive || result.selected !== 'true' || !result.panelVisible || !result.output) {
+      throw new Error(`Scenario interaction failed: ${JSON.stringify(result)}`)
+    }
+    scenarioResults.push(result)
+  }
   const desktopScreenshot = path.join(outputDir, 'support-desktop.png')
   await desktop.screenshot({ path: desktopScreenshot, fullPage: true })
+  const workflowSection = desktop.locator('#workflows')
+  await workflowSection.scrollIntoViewIfNeeded()
+  await desktop.locator('[data-scenario-target="skill"]').click()
+  await desktop.locator('[data-scenario-panel="skill"]').waitFor({ state: 'visible' })
+  const workflowScreenshot = path.join(outputDir, 'support-workflows.png')
+  await workflowSection.screenshot({ path: workflowScreenshot })
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } })
   await mobile.goto(supportUrl, { waitUntil: 'networkidle' })
@@ -78,10 +105,12 @@ async function main() {
   await browser.close()
   console.log(JSON.stringify({
     desktopScreenshot,
+    workflowScreenshot,
     mobileScreenshot,
     desktop: {
       images: desktopResult.images,
       missingIds: desktopResult.missingIds,
+      scenarios: scenarioResults,
       pageWidth: desktopResult.pageWidth,
       scrollWidth: desktopResult.scrollWidth,
     },

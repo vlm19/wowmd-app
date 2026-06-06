@@ -26,6 +26,7 @@
     <meta name="twitter:title" content="wowMD 支持 - 指南与反馈">
     <meta name="twitter:description" content="类型化审阅、跨版本存活、给 Obsidian 的审阅版 Markdown 和工单 JSON 详解。">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
   <body class="site-v2 support-v2">
@@ -63,6 +64,7 @@
         <a href="#ticket">工单 JSON</a>
         <a href="#storage">存储与恢复</a>
         <strong>使用 wowMD</strong>
+        <a href="#workflows">典型工作流</a>
         <a href="#reader">阅读器</a>
         <a href="#annotate">标注</a>
         <a href="#map">总体审阅地图</a>
@@ -131,6 +133,76 @@
           <p>已保存标注和导入的 GitHub 文档副本使用浏览器站点数据，而不是普通浏览器缓存。本地文件仍是会话输入；wowMD 按文档指纹保存其标注。</p>
           <div class="doc-callout">清除站点数据、使用隐私模式、更换浏览器、配置文件或设备，以及存储被回收，都可能移除浏览器本地工作。未保存的工具栏草稿也可能在刷新或崩溃后丢失。</div>
           <p>导出备份 JSON 以保留可重新导入的标注数据，导出审阅版 Markdown 以保留可读审阅上下文，并保存完成的交付产物用于长期保管。</p>
+        </section>
+
+        <section class="doc-section" id="workflows">
+          <p class="section-label">典型工作流</p>
+          <h2>选择任务，沿着审阅路径完成工作。</h2>
+          <p>每个工作流都连接真实输入、合适的审阅动作、关注重点和最佳交付产物。</p>
+          <div class="scenario-board" data-scenario-board>
+            <div class="scenario-tabs" role="tablist" aria-label="Typical workflows">
+              <button class="scenario-tab is-active" type="button" role="tab" data-scenario-target="readme"><i class="ti ti-brand-github" aria-hidden="true"></i><span>README</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="spec"><i class="ti ti-file-description" aria-hidden="true"></i><span>AI 规格</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="plan"><i class="ti ti-code" aria-hidden="true"></i><span>技术方案</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="obsidian"><i class="ti ti-notebook" aria-hidden="true"></i><span>Obsidian</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="skill"><i class="ti ti-adjustments-code" aria-hidden="true"></i><span>Agent Skill</span></button>
+            </div>
+
+            <article class="scenario-panel is-active" data-scenario-panel="readme">
+              <div class="scenario-intro"><span>开发者阅读开源项目 README</span><strong>快速找到安装命令、API、限制和警告。</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-brand-github" aria-hidden="true"></i><b>使用 Chrome 扩展打开</b></li>
+                <li><span>02</span><i class="ti ti-list-tree" aria-hidden="true"></i><b>通过目录导航并折叠章节</b></li>
+                <li><span>03</span><i class="ti ti-search" aria-hidden="true"></i><b>检查命令、代码和表格</b></li>
+                <li><span>04</span><i class="ti ti-arrow-right" aria-hidden="true"></i><b>仅在需要深度审阅时进入 Pro</b></li>
+              </ol>
+              <div class="scenario-output"><span>最佳结果</span><strong>快速结构化阅读，无需导出</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="spec" hidden>
+              <div class="scenario-intro"><span>产品经理审阅 AI 生成的产品规格</span><strong>把模糊或可疑内容转化为可执行的修订说明。</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-import" aria-hidden="true"></i><b>打开规格并扫描整体结构</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>标记澄清、争议、重点和已确认内容</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b>用 Overall Review Map 找到薄弱章节</b></li>
+                <li><span>04</span><i class="ti ti-ticket" aria-hidden="true"></i><b>向 AI 交付精确修订指令</b></li>
+              </ol>
+              <div class="scenario-output"><span>最佳结果</span><strong>Ticket JSON</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="plan" hidden>
+              <div class="scenario-intro"><span>工程师审阅技术实现方案</span><strong>把架构风险和修正意见绑定到准确原文。</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-search" aria-hidden="true"></i><b>搜索 API、模块和迁移步骤</b></li>
+                <li><span>02</span><i class="ti ti-alert-triangle" aria-hidden="true"></i><b>标记风险争议与关键不变量</b></li>
+                <li><span>03</span><i class="ti ti-pencil" aria-hidden="true"></i><b>添加备注与建议替换</b></li>
+                <li><span>04</span><i class="ti ti-file-export" aria-hidden="true"></i><b>交付行动项和可读审阅记录</b></li>
+              </ol>
+              <div class="scenario-output"><span>最佳结果</span><strong>Ticket JSON + HTML</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="obsidian" hidden>
+              <div class="scenario-intro"><span>知识工作者构建 Obsidian 知识库</span><strong>保留个人判断，同时不改动原始文档。</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-text" aria-hidden="true"></i><b>打开本地 Markdown</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>标记核心观点、问题和可信段落</b></li>
+                <li><span>03</span><i class="ti ti-git-branch" aria-hidden="true"></i><b>保存单独的审阅后继版本</b></li>
+                <li><span>04</span><i class="ti ti-notebook" aria-hidden="true"></i><b>将审阅副本放入知识库</b></li>
+              </ol>
+              <div class="scenario-output"><span>最佳结果</span><strong>面向 Obsidian 的 Reviewed Markdown</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="skill" hidden>
+              <div class="scenario-intro"><span>开发者迭代 Agent Skill 或工作流指令</span><strong>保护已验证规则，同时修正歧义、冲突和缺失的失败处理。</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-list-tree" aria-hidden="true"></i><b>检查触发条件、工具顺序、约束和回退方案</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>记录类型化判断并提出准确替换</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b>找到审阅缺口和冲突集中章节</b></li>
+                <li><span>04</span><i class="ti ti-refresh" aria-hidden="true"></i><b>让 AI 修订，再审阅下一个版本</b></li>
+              </ol>
+              <div class="scenario-output"><span>最佳结果</span><strong>Ticket JSON + 下一轮审阅</strong></div>
+            </article>
+          </div>
         </section>
 
         <section class="doc-section" id="reader">

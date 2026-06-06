@@ -26,6 +26,7 @@
     <meta name="twitter:title" data-i18n-content="support.twitterTitle" content="wowMD Support - Guide and feedback">
     <meta name="twitter:description" data-i18n-content="support.twitterDescription" content="Typed review, cross-version survival, reviewed Markdown for Obsidian, and Ticket JSON explained.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <link rel="stylesheet" href="{{base}}assets/icons/tabler-icons.min.css">
     <link rel="stylesheet" href="{{base}}styles.css?v=20260601-webapp-lang">
   </head>
   <body class="site-v2 support-v2">
@@ -63,6 +64,7 @@
         <a href="#ticket" data-i18n="support.sidebarTicket">Ticket JSON</a>
         <a href="#storage" data-i18n="support.sidebarStorage">Storage &amp; recovery</a>
         <strong data-i18n="support.sidebarUsing">Using wowMD</strong>
+        <a href="#workflows" data-i18n="support.sidebarWorkflows">Typical workflows</a>
         <a href="#reader" data-i18n="support.sidebarReader">Reader</a>
         <a href="#annotate" data-i18n="support.sidebarAnnotate">Annotate</a>
         <a href="#map" data-i18n="support.sidebarMap">Overall Review Map</a>
@@ -131,6 +133,76 @@ Ticket:
           <p data-i18n="support.storageBody">Saved annotations and imported GitHub document copies use browser site data, not ordinary browser cache. Local files remain session inputs; wowMD stores their annotations by document fingerprint.</p>
           <div class="doc-callout" data-i18n="support.storageRisk">Clearing site data, private browsing, another browser, profile, or device, and storage eviction can remove browser-local work. Unsaved toolbar drafts can also be lost after refresh or crash.</div>
           <p data-i18n="support.storageProtect">Export Backup JSON for re-importable annotation data, Reviewed Markdown for human-readable review context, and finished delivery artifacts for long-term safekeeping.</p>
+        </section>
+
+        <section class="doc-section" id="workflows">
+          <p class="section-label" data-i18n="support.workflowsLabel">Typical workflows</p>
+          <h2 data-i18n="support.workflowsTitle">Choose the task. Follow the review path.</h2>
+          <p data-i18n="support.workflowsBody">Each workflow connects a real source, the right review actions, where to focus, and the best delivery artifact.</p>
+          <div class="scenario-board" data-scenario-board>
+            <div class="scenario-tabs" role="tablist" aria-label="Typical workflows">
+              <button class="scenario-tab is-active" type="button" role="tab" aria-selected="true" data-scenario-target="readme"><i class="ti ti-brand-github" aria-hidden="true"></i><span data-i18n="support.scenarioReadmeTab">README</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="spec"><i class="ti ti-file-description" aria-hidden="true"></i><span data-i18n="support.scenarioSpecTab">AI spec</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="plan"><i class="ti ti-code" aria-hidden="true"></i><span data-i18n="support.scenarioPlanTab">Technical plan</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="obsidian"><i class="ti ti-notebook" aria-hidden="true"></i><span data-i18n="support.scenarioObsidianTab">Obsidian</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="skill"><i class="ti ti-adjustments-code" aria-hidden="true"></i><span data-i18n="support.scenarioSkillTab">Agent skill</span></button>
+            </div>
+
+            <article class="scenario-panel is-active" data-scenario-panel="readme">
+              <div class="scenario-intro"><span data-i18n="support.scenarioReadmeRole">Developer reading an open-source README</span><strong data-i18n="support.scenarioReadmeGoal">Find setup commands, APIs, limitations, and warnings quickly.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-brand-github" aria-hidden="true"></i><b data-i18n="support.scenarioReadmeStep1">Open with the Chrome extension</b></li>
+                <li><span>02</span><i class="ti ti-list-tree" aria-hidden="true"></i><b data-i18n="support.scenarioReadmeStep2">Navigate outline and fold sections</b></li>
+                <li><span>03</span><i class="ti ti-search" aria-hidden="true"></i><b data-i18n="support.scenarioReadmeStep3">Inspect commands, code, and tables</b></li>
+                <li><span>04</span><i class="ti ti-arrow-right" aria-hidden="true"></i><b data-i18n="support.scenarioReadmeStep4">Continue in Pro only when deeper review is needed</b></li>
+              </ol>
+              <div class="scenario-output"><span data-i18n="support.scenarioOutputLabel">Best outcome</span><strong data-i18n="support.scenarioReadmeOutput">Fast structured reading, with no export required</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="spec" hidden>
+              <div class="scenario-intro"><span data-i18n="support.scenarioSpecRole">Product manager reviewing an AI-written spec</span><strong data-i18n="support.scenarioSpecGoal">Turn vague or questionable content into an executable revision brief.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-import" aria-hidden="true"></i><b data-i18n="support.scenarioSpecStep1">Open the spec and scan its structure</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b data-i18n="support.scenarioSpecStep2">Mark Clarify, Dispute, Important, and Confirmed</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b data-i18n="support.scenarioSpecStep3">Use the Overall Review Map to find weak sections</b></li>
+                <li><span>04</span><i class="ti ti-ticket" aria-hidden="true"></i><b data-i18n="support.scenarioSpecStep4">Hand precise revision instructions to AI</b></li>
+              </ol>
+              <div class="scenario-output"><span data-i18n="support.scenarioOutputLabel">Best outcome</span><strong>Ticket JSON</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="plan" hidden>
+              <div class="scenario-intro"><span data-i18n="support.scenarioPlanRole">Engineer reviewing a technical implementation plan</span><strong data-i18n="support.scenarioPlanGoal">Tie architecture risks and corrections to exact source passages.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-search" aria-hidden="true"></i><b data-i18n="support.scenarioPlanStep1">Search for APIs, modules, and migration steps</b></li>
+                <li><span>02</span><i class="ti ti-alert-triangle" aria-hidden="true"></i><b data-i18n="support.scenarioPlanStep2">Dispute risks and mark invariants Important</b></li>
+                <li><span>03</span><i class="ti ti-pencil" aria-hidden="true"></i><b data-i18n="support.scenarioPlanStep3">Add notes and suggested replacements</b></li>
+                <li><span>04</span><i class="ti ti-file-export" aria-hidden="true"></i><b data-i18n="support.scenarioPlanStep4">Deliver actions plus a readable review record</b></li>
+              </ol>
+              <div class="scenario-output"><span data-i18n="support.scenarioOutputLabel">Best outcome</span><strong data-i18n="support.scenarioPlanOutput">Ticket JSON + HTML</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="obsidian" hidden>
+              <div class="scenario-intro"><span data-i18n="support.scenarioObsidianRole">Knowledge worker building an Obsidian knowledge base</span><strong data-i18n="support.scenarioObsidianGoal">Preserve personal judgments without changing the source document.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-text" aria-hidden="true"></i><b data-i18n="support.scenarioObsidianStep1">Open local Markdown</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b data-i18n="support.scenarioObsidianStep2">Mark core ideas, questions, and trusted passages</b></li>
+                <li><span>03</span><i class="ti ti-git-branch" aria-hidden="true"></i><b data-i18n="support.scenarioObsidianStep3">Save a separate reviewed successor</b></li>
+                <li><span>04</span><i class="ti ti-notebook" aria-hidden="true"></i><b data-i18n="support.scenarioObsidianStep4">Move the reviewed copy into the vault</b></li>
+              </ol>
+              <div class="scenario-output"><span data-i18n="support.scenarioOutputLabel">Best outcome</span><strong data-i18n="support.scenarioObsidianOutput">Reviewed Markdown for Obsidian</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="skill" hidden>
+              <div class="scenario-intro"><span data-i18n="support.scenarioSkillRole">Developer iterating an agent skill or workflow instruction</span><strong data-i18n="support.scenarioSkillGoal">Protect verified rules while correcting ambiguity, conflicts, and missing failure handling.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-list-tree" aria-hidden="true"></i><b data-i18n="support.scenarioSkillStep1">Inspect triggers, tool order, constraints, and fallbacks</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b data-i18n="support.scenarioSkillStep2">Type judgments and propose exact replacements</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b data-i18n="support.scenarioSkillStep3">Find review gaps and conflict-heavy sections</b></li>
+                <li><span>04</span><i class="ti ti-refresh" aria-hidden="true"></i><b data-i18n="support.scenarioSkillStep4">Revise with AI, then review the next version again</b></li>
+              </ol>
+              <div class="scenario-output"><span data-i18n="support.scenarioOutputLabel">Best outcome</span><strong data-i18n="support.scenarioSkillOutput">Ticket JSON + another review pass</strong></div>
+            </article>
+          </div>
         </section>
 
         <section class="doc-section" id="reader">

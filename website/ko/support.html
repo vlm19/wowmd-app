@@ -26,6 +26,7 @@
     <meta name="twitter:title" content="wowMD 지원 - 가이드 및 피드백">
     <meta name="twitter:description" content="유형화된 리뷰, 버전 간 유지, Obsidian용 검토 Markdown, 티켓 JSON 설명.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
   <body class="site-v2 support-v2">
@@ -63,6 +64,7 @@
         <a href="#ticket">티켓 JSON</a>
         <a href="#storage">저장 및 복구</a>
         <strong>wowMD 사용법</strong>
+        <a href="#workflows">대표 워크플로</a>
         <a href="#reader">리더</a>
         <a href="#annotate">주석</a>
         <a href="#map">전체 리뷰 맵</a>
@@ -131,6 +133,76 @@
           <p>저장된 주석과 가져온 GitHub 문서 사본은 일반 브라우저 캐시가 아닌 사이트 데이터를 사용합니다. 로컬 파일은 세션 입력으로 유지되며 주석은 문서 지문별로 저장됩니다.</p>
           <div class="doc-callout">사이트 데이터 삭제, 비공개 브라우징, 다른 브라우저·프로필·기기 사용, 저장소 회수로 브라우저 로컬 작업이 사라질 수 있습니다. 저장하지 않은 툴바 초안도 새로고침이나 충돌 후 손실될 수 있습니다.</div>
           <p>다시 가져올 수 있는 주석 데이터는 Backup JSON으로, 사람이 읽을 리뷰 문맥은 Reviewed Markdown으로, 완성된 결과물은 장기 보관용으로 내보내세요.</p>
+        </section>
+
+        <section class="doc-section" id="workflows">
+          <p class="section-label">대표 워크플로</p>
+          <h2>작업을 선택하고 리뷰 경로를 따르세요.</h2>
+          <p>각 워크플로는 실제 입력, 적절한 리뷰 작업, 집중할 부분, 최적의 결과물을 연결합니다.</p>
+          <div class="scenario-board" data-scenario-board>
+            <div class="scenario-tabs" role="tablist" aria-label="Typical workflows">
+              <button class="scenario-tab is-active" type="button" role="tab" data-scenario-target="readme"><i class="ti ti-brand-github" aria-hidden="true"></i><span>README</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="spec"><i class="ti ti-file-description" aria-hidden="true"></i><span>AI 스펙</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="plan"><i class="ti ti-code" aria-hidden="true"></i><span>기술 계획</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="obsidian"><i class="ti ti-notebook" aria-hidden="true"></i><span>Obsidian</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="skill"><i class="ti ti-adjustments-code" aria-hidden="true"></i><span>Agent Skill</span></button>
+            </div>
+
+            <article class="scenario-panel is-active" data-scenario-panel="readme">
+              <div class="scenario-intro"><span>오픈소스 README를 읽는 개발자</span><strong>설치 명령, API, 제한 사항, 경고를 빠르게 찾습니다.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-brand-github" aria-hidden="true"></i><b>Chrome 확장 프로그램으로 열기</b></li>
+                <li><span>02</span><i class="ti ti-list-tree" aria-hidden="true"></i><b>목차로 이동하고 섹션 접기</b></li>
+                <li><span>03</span><i class="ti ti-search" aria-hidden="true"></i><b>명령, 코드, 표 확인하기</b></li>
+                <li><span>04</span><i class="ti ti-arrow-right" aria-hidden="true"></i><b>깊은 리뷰가 필요할 때만 Pro로 이동</b></li>
+              </ol>
+              <div class="scenario-output"><span>최적 결과</span><strong>내보내기 없이 빠른 구조화 읽기</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="spec" hidden>
+              <div class="scenario-intro"><span>AI 작성 스펙을 검토하는 제품 관리자</span><strong>모호하거나 의심스러운 내용을 실행 가능한 수정 지시로 전환합니다.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-import" aria-hidden="true"></i><b>스펙을 열고 구조 살펴보기</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>설명 필요, 이의 있음, 중요, 확인됨으로 표시하기</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b>Overall Review Map으로 취약한 섹션 찾기</b></li>
+                <li><span>04</span><i class="ti ti-ticket" aria-hidden="true"></i><b>AI에 정확한 수정 지시 전달하기</b></li>
+              </ol>
+              <div class="scenario-output"><span>최적 결과</span><strong>Ticket JSON</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="plan" hidden>
+              <div class="scenario-intro"><span>기술 구현 계획을 검토하는 엔지니어</span><strong>아키텍처 위험과 수정 사항을 정확한 원문에 연결합니다.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-search" aria-hidden="true"></i><b>API, 모듈, 마이그레이션 단계 검색하기</b></li>
+                <li><span>02</span><i class="ti ti-alert-triangle" aria-hidden="true"></i><b>위험은 Dispute, 불변 조건은 Important로 표시하기</b></li>
+                <li><span>03</span><i class="ti ti-pencil" aria-hidden="true"></i><b>메모와 제안 교체문 추가하기</b></li>
+                <li><span>04</span><i class="ti ti-file-export" aria-hidden="true"></i><b>실행 항목과 읽기 쉬운 리뷰 기록 전달하기</b></li>
+              </ol>
+              <div class="scenario-output"><span>최적 결과</span><strong>Ticket JSON + HTML</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="obsidian" hidden>
+              <div class="scenario-intro"><span>Obsidian 지식 베이스를 구축하는 지식 작업자</span><strong>원본 문서를 변경하지 않고 개인 판단을 보존합니다.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-text" aria-hidden="true"></i><b>로컬 Markdown 열기</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>핵심 아이디어, 질문, 신뢰한 구절 표시하기</b></li>
+                <li><span>03</span><i class="ti ti-git-branch" aria-hidden="true"></i><b>별도의 검토 후속 버전 저장하기</b></li>
+                <li><span>04</span><i class="ti ti-notebook" aria-hidden="true"></i><b>검토 사본을 보관소로 이동하기</b></li>
+              </ol>
+              <div class="scenario-output"><span>최적 결과</span><strong>Obsidian용 Reviewed Markdown</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="skill" hidden>
+              <div class="scenario-intro"><span>Agent Skill 또는 워크플로 지침을 개선하는 개발자</span><strong>검증된 규칙을 보호하면서 모호함, 충돌, 누락된 실패 처리를 수정합니다.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-list-tree" aria-hidden="true"></i><b>트리거, 도구 순서, 제약, 폴백 확인하기</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>판단 유형을 기록하고 정확한 교체문 제안하기</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b>리뷰 공백과 충돌 집중 섹션 찾기</b></li>
+                <li><span>04</span><i class="ti ti-refresh" aria-hidden="true"></i><b>AI로 수정하고 다음 버전을 다시 리뷰하기</b></li>
+              </ol>
+              <div class="scenario-output"><span>최적 결과</span><strong>Ticket JSON + 다음 리뷰 패스</strong></div>
+            </article>
+          </div>
         </section>
 
         <section class="doc-section" id="reader">

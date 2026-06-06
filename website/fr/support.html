@@ -26,6 +26,7 @@
     <meta name="twitter:title" content="wowMD Support - Guide et retours">
     <meta name="twitter:description" content="Relecture typée, survie inter-versions, Markdown révisé pour Obsidian et Ticket JSON expliqués.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
     <link rel="stylesheet" href="../styles.css?v=20260601-webapp-lang">
   </head>
   <body class="site-v2 support-v2">
@@ -63,6 +64,7 @@
         <a href="#ticket">Ticket JSON</a>
         <a href="#storage">Stockage et récupération</a>
         <strong>Utiliser wowMD</strong>
+        <a href="#workflows">Flux typiques</a>
         <a href="#reader">Lecteur</a>
         <a href="#annotate">Annoter</a>
         <a href="#map">Carte globale de revue</a>
@@ -131,6 +133,76 @@ Ticket :
           <p>Les annotations enregistrées et les copies de documents GitHub importés utilisent les données de site du navigateur, pas son cache ordinaire. Les fichiers locaux restent des entrées de session ; leurs annotations sont stockées par empreinte de document.</p>
           <div class="doc-callout">Effacer les données du site, utiliser la navigation privée, changer de navigateur, de profil ou d’appareil, ou subir une éviction du stockage peut supprimer le travail local. Les brouillons non enregistrés peuvent aussi être perdus après actualisation ou plantage.</div>
           <p>Exportez Backup JSON pour les annotations réimportables, Reviewed Markdown pour un contexte de relecture lisible, et les livrables terminés pour la conservation à long terme.</p>
+        </section>
+
+        <section class="doc-section" id="workflows">
+          <p class="section-label">Flux typiques</p>
+          <h2>Choisissez la tâche. Suivez le parcours de relecture.</h2>
+          <p>Chaque flux relie une source réelle, les bonnes actions de relecture, les points d’attention et le meilleur livrable.</p>
+          <div class="scenario-board" data-scenario-board>
+            <div class="scenario-tabs" role="tablist" aria-label="Typical workflows">
+              <button class="scenario-tab is-active" type="button" role="tab" data-scenario-target="readme"><i class="ti ti-brand-github" aria-hidden="true"></i><span>README</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="spec"><i class="ti ti-file-description" aria-hidden="true"></i><span>Spécification IA</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="plan"><i class="ti ti-code" aria-hidden="true"></i><span>Plan technique</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="obsidian"><i class="ti ti-notebook" aria-hidden="true"></i><span>Obsidian</span></button>
+              <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-scenario-target="skill"><i class="ti ti-adjustments-code" aria-hidden="true"></i><span>Agent Skill</span></button>
+            </div>
+
+            <article class="scenario-panel is-active" data-scenario-panel="readme">
+              <div class="scenario-intro"><span>Développeur lisant un README open source</span><strong>Trouver rapidement commandes d’installation, API, limites et avertissements.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-brand-github" aria-hidden="true"></i><b>Ouvrir avec l’extension Chrome</b></li>
+                <li><span>02</span><i class="ti ti-list-tree" aria-hidden="true"></i><b>Naviguer dans le plan et replier les sections</b></li>
+                <li><span>03</span><i class="ti ti-search" aria-hidden="true"></i><b>Inspecter commandes, code et tableaux</b></li>
+                <li><span>04</span><i class="ti ti-arrow-right" aria-hidden="true"></i><b>Passer à Pro seulement pour une relecture approfondie</b></li>
+              </ol>
+              <div class="scenario-output"><span>Meilleur résultat</span><strong>Lecture structurée rapide, sans export nécessaire</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="spec" hidden>
+              <div class="scenario-intro"><span>Chef de produit relisant une spécification écrite par IA</span><strong>Transformer les passages vagues ou discutables en consignes de révision exécutables.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-import" aria-hidden="true"></i><b>Ouvrir la spécification et parcourir sa structure</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>Marquer Clarify, Dispute, Important et Confirmed</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b>Utiliser Overall Review Map pour trouver les sections faibles</b></li>
+                <li><span>04</span><i class="ti ti-ticket" aria-hidden="true"></i><b>Transmettre des consignes de révision précises à l’IA</b></li>
+              </ol>
+              <div class="scenario-output"><span>Meilleur résultat</span><strong>Ticket JSON</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="plan" hidden>
+              <div class="scenario-intro"><span>Ingénieur relisant un plan d’implémentation technique</span><strong>Relier risques d’architecture et corrections aux passages sources exacts.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-search" aria-hidden="true"></i><b>Rechercher API, modules et étapes de migration</b></li>
+                <li><span>02</span><i class="ti ti-alert-triangle" aria-hidden="true"></i><b>Contester les risques et marquer les invariants Important</b></li>
+                <li><span>03</span><i class="ti ti-pencil" aria-hidden="true"></i><b>Ajouter notes et remplacements suggérés</b></li>
+                <li><span>04</span><i class="ti ti-file-export" aria-hidden="true"></i><b>Livrer les actions et une trace de relecture lisible</b></li>
+              </ol>
+              <div class="scenario-output"><span>Meilleur résultat</span><strong>Ticket JSON + HTML</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="obsidian" hidden>
+              <div class="scenario-intro"><span>Professionnel construisant une base de connaissances Obsidian</span><strong>Préserver ses jugements sans modifier le document source.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-file-text" aria-hidden="true"></i><b>Ouvrir le Markdown local</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>Marquer idées clés, questions et passages fiables</b></li>
+                <li><span>03</span><i class="ti ti-git-branch" aria-hidden="true"></i><b>Enregistrer un successeur relu séparé</b></li>
+                <li><span>04</span><i class="ti ti-notebook" aria-hidden="true"></i><b>Déplacer la copie relue dans le coffre</b></li>
+              </ol>
+              <div class="scenario-output"><span>Meilleur résultat</span><strong>Reviewed Markdown pour Obsidian</strong></div>
+            </article>
+
+            <article class="scenario-panel" data-scenario-panel="skill" hidden>
+              <div class="scenario-intro"><span>Développeur améliorant un Agent Skill ou une instruction de workflow</span><strong>Protéger les règles validées tout en corrigeant ambiguïtés, conflits et gestion d’échec manquante.</strong></div>
+              <ol class="scenario-path">
+                <li><span>01</span><i class="ti ti-list-tree" aria-hidden="true"></i><b>Inspecter déclencheurs, ordre des outils, contraintes et replis</b></li>
+                <li><span>02</span><i class="ti ti-highlight" aria-hidden="true"></i><b>Qualifier les jugements et proposer des remplacements précis</b></li>
+                <li><span>03</span><i class="ti ti-chart-bar" aria-hidden="true"></i><b>Trouver les lacunes de relecture et sections conflictuelles</b></li>
+                <li><span>04</span><i class="ti ti-refresh" aria-hidden="true"></i><b>Réviser avec l’IA puis relire la version suivante</b></li>
+              </ol>
+              <div class="scenario-output"><span>Meilleur résultat</span><strong>Ticket JSON + nouvelle passe de relecture</strong></div>
+            </article>
+          </div>
         </section>
 
         <section class="doc-section" id="reader">

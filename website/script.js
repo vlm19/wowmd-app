@@ -9,6 +9,7 @@ const feedbackModal = document.querySelector("[data-feedback-modal]");
 const feedbackModalConfirm = document.querySelector("[data-feedback-modal-confirm]");
 const gatewayChoices = document.querySelectorAll(".gateway-choice");
 const zoomImages = document.querySelectorAll("[data-zoom-image]");
+const scenarioBoards = document.querySelectorAll("[data-scenario-board]");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let headerIsScrolled = false;
@@ -79,6 +80,28 @@ zoomImages.forEach((image) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     event.preventDefault();
     openImageLightbox(image);
+  });
+});
+
+scenarioBoards.forEach((board) => {
+  const tabs = Array.from(board.querySelectorAll("[data-scenario-target]"));
+  const panels = Array.from(board.querySelectorAll("[data-scenario-panel]"));
+
+  const activateScenario = (target) => {
+    tabs.forEach((tab) => {
+      const active = tab.dataset.scenarioTarget === target;
+      tab.classList.toggle("is-active", active);
+      tab.setAttribute("aria-selected", String(active));
+    });
+    panels.forEach((panel) => {
+      const active = panel.dataset.scenarioPanel === target;
+      panel.classList.toggle("is-active", active);
+      panel.hidden = !active;
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => activateScenario(tab.dataset.scenarioTarget));
   });
 });
 
