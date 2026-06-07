@@ -3321,7 +3321,7 @@ p {
 }
 
 .markdown-body ::selection {
-  background: var(--selection-preview-bg, rgba(91, 77, 255, 0.25));
+  background: var(--selection-preview-bg, rgba(190, 190, 184, 0.24));
   color: inherit;
 }
 
@@ -3470,7 +3470,7 @@ p {
 }
 
 .wowmd-highlight-selection {
-  background: var(--selection-preview-bg, rgba(91, 77, 255, 0.28));
+  background: var(--selection-preview-bg, rgba(190, 190, 184, 0.26));
 }
 
 .wowmd-search-hit {
@@ -3896,7 +3896,7 @@ p {
 }
 
 .theme-light .markdown-body ::selection {
-  background: var(--selection-preview-bg, rgba(91, 77, 255, 0.24));
+  background: var(--selection-preview-bg, rgba(92, 92, 88, 0.18));
   color: inherit;
 }
 
@@ -3967,7 +3967,7 @@ p {
 }
 
 .theme-dark .markdown-body ::selection {
-  background: var(--selection-preview-bg, rgba(199, 193, 255, 0.32));
+  background: var(--selection-preview-bg, rgba(210, 210, 204, 0.24));
   color: inherit;
 }
 

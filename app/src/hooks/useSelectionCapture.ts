@@ -1,19 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 import type { AnnotationColor, AnnotationType } from '../annotations'
 import type { OpenDocument, SelectionAnchorMetadata, SelectionToolbar } from '../types'
 
 type SelectionPreviewColor = AnnotationColor | 'selection'
-
-const selectionPreviewColors: Record<SelectionPreviewColor, string> = {
-  selection: 'rgba(91, 77, 255, 0.28)',
-  yellow: '#ffe27a',
-  blue: '#a9d6ff',
-  green: '#b2e3bd',
-  rose: '#ffbac7',
-  violet: '#d2bdff',
-  amber: '#f3b760',
-}
 
 interface UseSelectionCaptureArgs {
   document: OpenDocument | null
@@ -36,21 +26,6 @@ export function useSelectionCapture({
   const [toolbarNote, setToolbarNote] = useState('')
   const [toolbarReplacement, setToolbarReplacement] = useState('')
   const [showReplacement, setShowReplacement] = useState(false)
-
-  useEffect(() => {
-    const styleId = 'wowmd-selection-preview-highlight-styles'
-    if (globalThis.document.getElementById(styleId)) return
-
-    const style = globalThis.document.createElement('style')
-    style.id = styleId
-    style.textContent = Object.entries(selectionPreviewColors)
-      .map(
-        ([color, value]) =>
-          `::highlight(wowmd-selection-preview-${color}) { background: ${value}; color: inherit; }`,
-      )
-      .join('\n')
-    globalThis.document.head.append(style)
-  }, [])
 
   const getHeadingPath = useCallback((element: Element | null) => {
     if (!element || !markdownBodyRef.current) return []
@@ -102,9 +77,67 @@ export function useSelectionCapture({
     return getSelectionAnchorMetadataFromRange(range, selection?.toString() || '')
   }, [getSelectionAnchorMetadataFromRange, markdownBodyRef])
 
+  const resolveCurrentSelectionRange = useCallback(() => {
+    const root = markdownBodyRef.current
+    if (!root) return null
+
+    const existing = selectionRangeRef.current
+    if (
+      existing?.startContainer.isConnected &&
+      existing.endContainer.isConnected &&
+      root.contains(existing.startContainer) &&
+      root.contains(existing.endContainer)
+    ) {
+      return existing.cloneRange()
+    }
+
+    const quote = selectionPreviewQuoteRef.current.trim()
+    if (!quote) return null
+
+    const fullText = root.textContent || ''
+    let matchStart = selectionAnchorRef.current?.offset ?? -1
+    if (matchStart < 0 || fullText.slice(matchStart, matchStart + quote.length) !== quote) {
+      matchStart = fullText.indexOf(quote)
+    }
+    if (matchStart < 0) return null
+
+    const matchEnd = matchStart + quote.length
+    const walker = globalThis.document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    let cursor = 0
+    let startNode: Text | null = null
+    let endNode: Text | null = null
+    let startOffset = 0
+    let endOffset = 0
+
+    while (walker.nextNode()) {
+      const node = walker.currentNode as Text
+      const nodeEnd = cursor + node.length
+      if (!startNode && matchStart >= cursor && matchStart <= nodeEnd) {
+        startNode = node
+        startOffset = matchStart - cursor
+      }
+      if (matchEnd >= cursor && matchEnd <= nodeEnd) {
+        endNode = node
+        endOffset = matchEnd - cursor
+        break
+      }
+      cursor = nodeEnd
+    }
+
+    if (!startNode || !endNode) return null
+
+    const range = globalThis.document.createRange()
+    range.setStart(startNode, startOffset)
+    range.setEnd(endNode, endOffset)
+    selectionRangeRef.current = range.cloneRange()
+    return range
+  }, [markdownBodyRef])
+
   const renderSelectionPreview = useCallback((color: SelectionPreviewColor) => {
     const root = markdownBodyRef.current
     if (!root) return
+
+    const range = resolveCurrentSelectionRange()
 
     const textNodes: Text[] = []
     const walker = globalThis.document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -125,11 +158,15 @@ export function useSelectionCapture({
 
     const segments: Array<{ node: Text; start: number; end: number }> = []
 
-    const range = selectionRangeRef.current
     if (range) {
       textNodes.forEach((node) => {
         const text = node.textContent || ''
-        if (!text || !range.intersectsNode(node)) return
+        if (!text) return
+        try {
+          if (!range.intersectsNode(node)) return
+        } catch {
+          return
+        }
 
         let start = 0
         let end = text.length
@@ -199,19 +236,9 @@ export function useSelectionCapture({
     window.setTimeout(() => {
       selectionPreviewRenderLockRef.current = false
     }, 0)
-  }, [markdownBodyRef])
+  }, [markdownBodyRef, resolveCurrentSelectionRange])
 
   const clearSelectionPreview = useCallback(() => {
-    const highlights = (globalThis as typeof globalThis & {
-      CSS?: { highlights?: Map<string, unknown> }
-    }).CSS?.highlights
-
-    if (highlights) {
-      ;(Object.keys(selectionPreviewColors) as SelectionPreviewColor[]).forEach((color) => {
-        highlights.delete(`wowmd-selection-preview-${color}`)
-      })
-    }
-
     const root = markdownBodyRef.current
     if (!root) return
 
