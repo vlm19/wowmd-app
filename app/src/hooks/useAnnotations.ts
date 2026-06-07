@@ -226,6 +226,12 @@ export function useAnnotations({
       document.fingerprint,
       document.markdown,
       annotations,
+      {
+        lineageId: document.lineageId,
+        documentId: document.stableId,
+        bodyHash: document.bodyHash,
+        filename: document.name,
+      },
     )
     downloadTextFile(
       safeExportFilename(document.name, 'tickets'),

@@ -1,4 +1,5 @@
 import { randomId } from './compat'
+import { createTicketId } from './fileLineage'
 
 export type AnnotationColor = 'yellow' | 'blue' | 'green' | 'rose' | 'violet' | 'amber'
 
@@ -570,7 +571,14 @@ export function createTicketExport(
   documentFingerprint: string,
   markdown: string,
   annotations: Annotation[],
+  lineage?: {
+    lineageId?: string
+    documentId: string
+    bodyHash?: string
+    filename: string
+  },
 ) {
+  const ticketId = createTicketId()
   const typeLegend: Record<string, string> = {
     clarify: '解释、澄清此处，勿动实质。Explain or clarify this point without changing substance.',
     dispute: '复核此处，可能有误，实质可能需要修改。Review — this may be incorrect and may need correction.',
@@ -594,6 +602,22 @@ export function createTicketExport(
   })
 
   return {
+    schemaVersion: 2,
+    ticketId,
+    sourceDocument: lineage ? {
+      lineageId: lineage.lineageId,
+      documentId: lineage.documentId,
+      bodyHash: lineage.bodyHash,
+      filename: lineage.filename,
+      title: documentTitle,
+      reviewedAt: new Date().toISOString(),
+    } : undefined,
+    outputContract: lineage ? {
+      instruction: 'Append a wowMD document-meta v1 HTML comment to the revised Markdown. Preserve lineageId, set parentDocumentId to the source documentId, set sourceTicketId to this ticketId, generate a new opaque documentId, and omit bodyHash if it cannot be calculated correctly.',
+      lineageId: lineage.lineageId,
+      parentDocumentId: lineage.documentId,
+      sourceTicketId: ticketId,
+    } : undefined,
     document: {
       title: documentTitle,
       source: documentSource,

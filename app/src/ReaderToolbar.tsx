@@ -9,6 +9,8 @@ function FileMenu(props: {
   clearFile: () => void
   openSaveVersion: () => void
   openVersions: () => void
+  reviewSuggestedRelationship: () => void
+  hasSuggestedRelationship: boolean
   t: (key: string) => string
 }) {
   const closeThen = (event: MouseEvent<HTMLButtonElement>, action: () => void) => {
@@ -24,6 +26,11 @@ function FileMenu(props: {
         <button type="button" onClick={(event) => closeThen(event, props.openVersions)}>
           {props.t('versions')}
         </button>
+        {props.hasSuggestedRelationship ? (
+          <button type="button" onClick={(event) => closeThen(event, props.reviewSuggestedRelationship)}>
+            {props.t('associationReviewLater')}
+          </button>
+        ) : null}
         <button type="button" onClick={(event) => closeThen(event, props.openSaveVersion)}>
           {props.t('saveReviewedCopy')}
         </button>
@@ -56,6 +63,8 @@ export type ReaderToolbarProps = {
   openExport: () => void
   openSaveVersion: () => void
   openVersions: () => void
+  reviewSuggestedRelationship: () => void
+  hasSuggestedRelationship: boolean
   openMap: () => void
   openSettings: () => void
   readerFontSize: number
@@ -119,6 +128,8 @@ export default function ReaderToolbar(props: ReaderToolbarProps) {
             clearFile={props.clearFile}
             openSaveVersion={props.openSaveVersion}
             openVersions={props.openVersions}
+            reviewSuggestedRelationship={props.reviewSuggestedRelationship}
+            hasSuggestedRelationship={props.hasSuggestedRelationship}
             t={props.t}
           />
         ) : null}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "ticketId": "ticket_real_case_001",
+  "sourceDocument": {
+    "lineageId": "lineage_real_case_001",
+    "documentId": "doc_source_001",
+    "bodyHash": "sha256:source-body-hash-recorded-by-wowmd",
+    "filename": "source-no-meta.md",
+    "title": "Local-first Review Plan",
+    "reviewedAt": "2026-06-07T10:00:00.000Z"
+  },
+  "document": {
+    "title": "Local-first Review Plan",
+    "source": "local",
+    "fingerprint": "legacy-source-fingerprint",
+    "markdownSnapshot": "# Local-first Review Plan\n\n## Storage boundary\n\nSaved annotations live in browser site data. Unsaved toolbar drafts are temporary.\n\n## Delivery\n\nExport HTML for people and Ticket JSON for an AI or editor.\n"
+  },
+  "typeLegend": {
+    "clarify": "Explain or clarify without changing substance."
+  },
+  "tickets": [
+    {
+      "type": "clarify",
+      "quote": "browser site data",
+      "headingPath": [
+        "Local-first Review Plan",
+        "Storage boundary"
+      ],
+      "note": "Distinguish site data from browser cache."
+    }
+  ]
+}
+

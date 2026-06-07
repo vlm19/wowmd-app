@@ -25,6 +25,7 @@ export function importErrorMessageByCode(code: ImportErrorCode) {
 }
 
 export function sourceLabel(document: LocalDocument) {
+  if (document.sourceType === 'local') return `Local file · ${document.title}`
   const repo = document.owner && document.repo ? `${document.owner}/${document.repo}` : 'GitHub'
   const path = document.path || document.title
   return `Source: GitHub · ${repo} · ${path}`

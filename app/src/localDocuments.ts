@@ -1,7 +1,7 @@
 import { randomId } from './compat'
 
 export type LocalDocumentSource = {
-  sourceType: 'github'
+  sourceType: 'github' | 'local'
   sourceUrl: string
   rawUrl: string
   owner?: string
@@ -17,6 +17,10 @@ export type LocalDocument = LocalDocumentSource & {
   fingerprint: string
   /** Version lineage: id of the document this one was saved-as-new-version from. */
   parentDocumentId?: string
+  lineageId?: string
+  sourceTicketId?: string
+  bodyHash?: string
+  suggestedParentDocumentId?: string
   createdAt: string
   updatedAt: string
   lastOpenedAt: string
@@ -80,10 +84,14 @@ export async function createDocumentVersion(input: {
   title: string
   markdownSnapshot: string
   fingerprint: string
-  sourceType?: 'github'
+  sourceType?: 'github' | 'local'
+  id?: string
+  lineageId?: string
+  sourceTicketId?: string
+  bodyHash?: string
 }): Promise<LocalDocument> {
   return saveLocalDocument({
-    id: createDocId(),
+    id: input.id ?? createDocId(),
     sourceType: input.sourceType ?? 'github',
     sourceUrl: '',
     rawUrl: '',
@@ -91,7 +99,48 @@ export async function createDocumentVersion(input: {
     markdownSnapshot: input.markdownSnapshot,
     fingerprint: input.fingerprint,
     parentDocumentId: input.parentDocumentId,
+    lineageId: input.lineageId,
+    sourceTicketId: input.sourceTicketId,
+    bodyHash: input.bodyHash,
   })
+}
+
+export async function listLocalDocuments() {
+  const db = await openLocalDb()
+  return new Promise<LocalDocument[]>((resolve, reject) => {
+    const tx = db.transaction(documentsStore, 'readonly')
+    const request = tx.objectStore(documentsStore).getAll()
+    request.onsuccess = () => resolve(request.result || [])
+    request.onerror = () => reject(request.error)
+  })
+}
+
+export async function confirmLocalDocumentRelationship(input: {
+  id: string
+  parentDocumentId: string
+  lineageId: string
+  sourceTicketId?: string
+}) {
+  const document = await loadLocalDocumentWithoutTouch(input.id)
+  if (!document) return null
+  const now = new Date().toISOString()
+  const updated: LocalDocument = {
+    ...document,
+    parentDocumentId: input.parentDocumentId,
+    lineageId: input.lineageId,
+    sourceTicketId: input.sourceTicketId,
+    suggestedParentDocumentId: undefined,
+    updatedAt: now,
+    lastOpenedAt: now,
+  }
+  const db = await openLocalDb()
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(documentsStore, 'readwrite')
+    tx.objectStore(documentsStore).put(updated)
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error)
+  })
+  return updated
 }
 
 /**

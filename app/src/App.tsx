@@ -43,6 +43,7 @@ import SaveReviewedCopy from './SaveReviewedCopy'
 import UnderstandingMap from './UnderstandingMap'
 import SettingsPanel from './SettingsPanel'
 import VersionHistory from './VersionHistory'
+import FileAssociationDialog from './FileAssociationDialog'
 import AnnotationToolbar from './AnnotationToolbar'
 import NotesPanel from './NotesPanel'
 import FeedbackLink from './FeedbackLink'
@@ -191,6 +192,8 @@ function App() {
     showVersions,
     setShowVersions,
     versions,
+    pendingAssociation,
+    setPendingAssociation,
     fileInputRef,
     handleInitialRoute,
     openSample,
@@ -201,6 +204,9 @@ function App() {
     handleSavedReviewedCopy,
     openVersions,
     openVersion,
+    confirmPendingAssociation,
+    openPendingAsNew,
+    reviewSuggestedRelationship,
   } = useDocumentSession({
     reanchorAgainstMarkdown,
     annotationsRef,
@@ -691,6 +697,8 @@ function App() {
               openExport={openExport}
               openSaveVersion={() => setShowSaveVersion(true)}
               openVersions={() => void openVersions()}
+              reviewSuggestedRelationship={() => void reviewSuggestedRelationship()}
+              hasSuggestedRelationship={Boolean(document?.suggestedParentDocumentId)}
               openMap={() => setShowMap(true)}
               openSettings={() => setShowSettings(true)}
               readerFontSize={readerFontSize}
@@ -1030,6 +1038,16 @@ function App() {
               feedbackHref={feedbackHref}
             />
           </Suspense>
+        ) : null}
+
+        {pendingAssociation ? (
+          <FileAssociationDialog
+            candidate={pendingAssociation.candidate}
+            t={t}
+            onAssociate={() => void confirmPendingAssociation()}
+            onOpenAsNew={() => void openPendingAsNew()}
+            onClose={() => setPendingAssociation(null)}
+          />
         ) : null}
 
         {view === 'license' ? (

@@ -11,7 +11,10 @@ import {
 import {
   loadLocalDocument,
   createDocumentVersion,
+  confirmLocalDocumentRelationship,
   getDocumentLineage,
+  listLocalDocuments,
+  saveLocalDocument,
   type LocalDocument,
 } from '../localDocuments'
 import {
@@ -19,10 +22,32 @@ import {
   sampleMarkdown,
 } from '../markdown'
 import type { OpenDocument } from '../types'
+import {
+  computeBodyHash,
+  buildLineDifference,
+  createLineageDocumentId,
+  createLineageId,
+  findFileLineageCandidate,
+  markdownBody,
+  parseFileLineage,
+  type FileLineageMetadata,
+} from '../fileLineage'
+import type { FileAssociationCandidate } from '../FileAssociationDialog'
 import { importErrorMessage, sourceLabel } from './documentUtils'
 
 type WorkspaceView = 'reader' | 'exports' | 'license'
 type ImportStatus = 'idle' | 'loading' | 'failed'
+
+type PendingAssociation = {
+  candidate: FileAssociationCandidate
+  markdown: string
+  filename: string
+  fingerprint: string
+  bodyHash: string
+  metadata?: FileLineageMetadata
+  carried: Annotation[]
+  existingDocumentId?: string
+}
 
 export type { OpenDocument, WorkspaceView }
 
@@ -63,6 +88,7 @@ export function useDocumentSession({
   const [showSaveVersion, setShowSaveVersion] = useState(false)
   const [showVersions, setShowVersions] = useState(false)
   const [versions, setVersions] = useState<LocalDocument[]>([])
+  const [pendingAssociation, setPendingAssociation] = useState<PendingAssociation | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const openLocalDocument = useCallback(async (localDocument: LocalDocument) => {
@@ -71,6 +97,11 @@ export function useDocumentSession({
       markdown: localDocument.markdownSnapshot,
       fingerprint: localDocument.fingerprint,
       stableId: localDocument.id,
+      lineageId: localDocument.lineageId,
+      parentDocumentId: localDocument.parentDocumentId,
+      sourceTicketId: localDocument.sourceTicketId,
+      bodyHash: localDocument.bodyHash,
+      suggestedParentDocumentId: localDocument.suggestedParentDocumentId,
       source: {
         sourceType: localDocument.sourceType,
         sourceUrl: localDocument.sourceUrl,
@@ -113,31 +144,114 @@ export function useDocumentSession({
       return
     }
 
-    const markdown = await file.text()
+    const rawMarkdown = await file.text()
+    const parsed = parseFileLineage(rawMarkdown)
+    const markdown = markdownBody(rawMarkdown)
     const fingerprint = await computeDocumentFingerprint(markdown)
-    const stableId = `file:${file.name}`
-    setDocument({
-      name: file.name,
-      markdown,
-      fingerprint,
-      stableId,
-    })
-    setExportDefaults(file.name)
-    {
-      const loaded = await loadAnnotationsFromDb(stableId, fingerprint)
-      const reanchored = reanchorAgainstMarkdown(loaded, markdown, fingerprint)
-      if (reanchored.some((a, i) => a !== loaded[i])) {
-        void saveAnnotationsToDb(stableId, reanchored)
-      }
-      setAnnotationsRef.current(reanchored)
+    const bodyHash = await computeBodyHash(markdown)
+    const all = await listLocalDocuments()
+    const metadata = parsed.valid ? parsed.metadata : undefined
+    const registeredExact = !metadata
+      ? all.find((item) => item.title === file.name && item.bodyHash === bodyHash)
+      : undefined
+    if (registeredExact) {
+      await openLocalDocument(registeredExact)
+      return
     }
-    resetSelectionCapture()
-    setSearchQuery('')
-    setSearchIndex(0)
-    setView('reader')
-    setShowOutline(!isNarrowLayout)
-    setShowNotes(!isNarrowLayout)
-  }, [canOpenUserFiles, t, setAnnotationsRef, reanchorAgainstMarkdown, resetSelectionCapture, setSearchQuery, setSearchIndex, setView, setShowOutline, setShowNotes, isNarrowLayout, setExportDefaults])
+    const candidate = findFileLineageCandidate(file.name, markdown, bodyHash, metadata, all)
+
+    if (candidate) {
+      const loaded = await loadAnnotationsFromDb(candidate.parent.id, candidate.parent.fingerprint)
+      const carried = reanchorAgainstMarkdown(loaded, markdown, fingerprint)
+      const differences = buildLineDifference(candidate.parent.markdownSnapshot, markdown)
+      setPendingAssociation({
+        candidate: {
+          ...candidate,
+          exactCount: carried.filter((item) => !item.orphaned && !item.needsReview).length,
+          reviewCount: carried.filter((item) => item.needsReview && !item.orphaned).length,
+          lostCount: carried.filter((item) => item.orphaned).length,
+          ...differences,
+        },
+        markdown,
+        filename: file.name,
+        fingerprint,
+        bodyHash,
+        metadata,
+        carried,
+      })
+      return
+    }
+
+    const registered = await registerStandaloneLocalFile(file.name, markdown, fingerprint, bodyHash)
+    await openLocalDocument(registered)
+  }, [canOpenUserFiles, t, reanchorAgainstMarkdown, openLocalDocument])
+
+  const confirmPendingAssociation = useCallback(async () => {
+    if (!pendingAssociation) return
+    const { candidate, markdown, filename, fingerprint, bodyHash, metadata, carried } = pendingAssociation
+    const existing = await loadLocalDocument(metadata?.documentId || '')
+    const lineageId = metadata?.lineageId || candidate.parent.lineageId || createLineageId()
+    const registered = pendingAssociation.existingDocumentId
+      ? await confirmLocalDocumentRelationship({
+          id: pendingAssociation.existingDocumentId,
+          parentDocumentId: candidate.parent.id,
+          lineageId,
+          sourceTicketId: metadata?.sourceTicketId,
+        })
+      : await saveLocalDocument({
+          // A known documentId with a changed body is an externally edited
+          // successor. Give it a new id and point back to the registered version.
+          id: metadata?.documentId && !existing ? metadata.documentId : createLineageDocumentId(),
+          sourceType: 'local',
+          sourceUrl: '',
+          rawUrl: '',
+          title: filename,
+          markdownSnapshot: markdown,
+          fingerprint,
+          parentDocumentId: candidate.parent.id,
+          lineageId,
+          sourceTicketId: metadata?.sourceTicketId,
+          bodyHash,
+        })
+    if (!registered) return
+    await saveAnnotationsToDb(registered.id, carried)
+    setPendingAssociation(null)
+    await openLocalDocument(registered)
+  }, [pendingAssociation, openLocalDocument])
+
+  const openPendingAsNew = useCallback(async () => {
+    if (!pendingAssociation) return
+    const { filename, markdown, fingerprint, bodyHash } = pendingAssociation
+    const registered = await registerStandaloneLocalFile(filename, markdown, fingerprint, bodyHash, pendingAssociation.candidate.parent.id)
+    setPendingAssociation(null)
+    await openLocalDocument(registered)
+  }, [pendingAssociation, openLocalDocument])
+
+  const reviewSuggestedRelationship = useCallback(async () => {
+    if (!document?.suggestedParentDocumentId) return
+    const parent = await loadLocalDocument(document.suggestedParentDocumentId)
+    if (!parent) return
+    const loaded = await loadAnnotationsFromDb(parent.id, parent.fingerprint)
+    const carried = reanchorAgainstMarkdown(loaded, document.markdown, document.fingerprint)
+    setPendingAssociation({
+      candidate: {
+        parent,
+        filename: document.name,
+        reason: 'structure-similarity',
+        externalEdit: false,
+        exactCount: carried.filter((item) => !item.orphaned && !item.needsReview).length,
+        reviewCount: carried.filter((item) => item.needsReview && !item.orphaned).length,
+        lostCount: carried.filter((item) => item.orphaned).length,
+        ...buildLineDifference(parent.markdownSnapshot, document.markdown),
+      },
+      markdown: document.markdown,
+      filename: document.name,
+      fingerprint: document.fingerprint,
+      bodyHash: document.bodyHash || await computeBodyHash(document.markdown),
+      carried,
+      existingDocumentId: document.stableId,
+    })
+  }, [document, reanchorAgainstMarkdown])
 
   const openSample = useCallback(async () => {
     setError('')
@@ -225,6 +339,7 @@ export function useDocumentSession({
     setError('')
     setImportStatus('idle')
     setImportSourceUrl('')
+    setPendingAssociation(null)
     setView('reader')
     setShowOutline(true)
     setShowNotes(true)
@@ -253,32 +368,37 @@ export function useDocumentSession({
       return
     }
 
-    const fingerprint = await computeDocumentFingerprint(result.markdown)
-    const carried = reanchorAgainstMarkdown(annotationsRef.current, result.markdown, fingerprint)
+    const parsed = parseFileLineage(result.markdown)
+    const body = markdownBody(result.markdown)
+    const fingerprint = await computeDocumentFingerprint(body)
+    const carried = reanchorAgainstMarkdown(annotationsRef.current, body, fingerprint)
+    const metadata = parsed.valid ? parsed.metadata : undefined
 
-    let newStableId: string
-    const isGithubSourced = !!document.source && typeof document.source !== 'string'
-
-    if (isGithubSourced) {
-      const successor = await createDocumentVersion({
-        parentDocumentId: document.stableId,
-        title: result.newFilename,
-        markdownSnapshot: result.markdown,
-        fingerprint,
-      })
-      newStableId = successor.id
-    } else {
-      newStableId = `file:${result.newFilename}`
-    }
+    const successor = await createDocumentVersion({
+      id: metadata?.documentId,
+      parentDocumentId: document.stableId,
+      title: result.newFilename,
+      markdownSnapshot: body,
+      fingerprint,
+      sourceType: typeof document.source === 'object' ? document.source.sourceType : 'local',
+      lineageId: metadata?.lineageId || document.lineageId || createLineageId(),
+      sourceTicketId: metadata?.sourceTicketId,
+      bodyHash: metadata?.bodyHash || await computeBodyHash(body),
+    })
+    const newStableId = successor.id
 
     await saveAnnotationsToDb(newStableId, carried)
 
     setDocument({
       ...document,
       name: result.newFilename,
-      markdown: result.markdown,
+      markdown: body,
       fingerprint,
       stableId: newStableId,
+      lineageId: successor.lineageId,
+      parentDocumentId: successor.parentDocumentId,
+      sourceTicketId: successor.sourceTicketId,
+      bodyHash: successor.bodyHash,
     })
     setAnnotationsRef.current(carried)
     setExportDefaults(result.newFilename)
@@ -326,6 +446,8 @@ export function useDocumentSession({
     setShowVersions,
     versions,
     setVersions,
+    pendingAssociation,
+    setPendingAssociation,
     fileInputRef,
     openFile,
     handleInitialRoute,
@@ -340,5 +462,29 @@ export function useDocumentSession({
     handleSavedReviewedCopy,
     openVersions,
     openVersion,
+    confirmPendingAssociation,
+    openPendingAsNew,
+    reviewSuggestedRelationship,
   }
+}
+
+async function registerStandaloneLocalFile(
+  filename: string,
+  markdown: string,
+  fingerprint: string,
+  bodyHash: string,
+  suggestedParentDocumentId?: string,
+) {
+  return saveLocalDocument({
+    id: createLineageDocumentId(),
+    sourceType: 'local',
+    sourceUrl: '',
+    rawUrl: '',
+    title: filename,
+    markdownSnapshot: markdown,
+    fingerprint,
+    lineageId: createLineageId(),
+    bodyHash,
+    suggestedParentDocumentId,
+  })
 }

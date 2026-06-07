@@ -1,7 +1,8 @@
 {
   "scripts": {
     "capture:shots": "node capture-app-shots.mjs",
-    "verify:website": "node verify-website.cjs"
+    "verify:website": "node verify-website.cjs",
+    "test:file-lineage-ui": "node verify-file-lineage-ui.mjs"
   },
   "dependencies": {
     "playwright": "^1.60.0"

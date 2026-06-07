@@ -3,7 +3,12 @@ export type OpenDocument = {
   markdown: string
   fingerprint: string
   stableId: string
-  source?: string | { sourceType: 'github'; sourceUrl: string; rawUrl: string; label: string }
+  lineageId?: string
+  parentDocumentId?: string
+  sourceTicketId?: string
+  bodyHash?: string
+  suggestedParentDocumentId?: string
+  source?: string | { sourceType: 'github' | 'local'; sourceUrl: string; rawUrl: string; label: string }
 }
 
 export type SelectionAnchorMetadata = {

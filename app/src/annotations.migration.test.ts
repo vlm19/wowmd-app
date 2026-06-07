@@ -308,6 +308,28 @@ describe('createTicketExport', () => {
     const ticket = createTicketExport('x', 'x', 'x', markdown, a)
     expect(ticket.tickets[0].suggestedReplacement).toBeUndefined()
   })
+
+  test('Ticket JSON includes portable source provenance when provided', () => {
+    const ticket = createTicketExport('My Doc', 'local', 'fp123', markdown, annotations, {
+      lineageId: 'lineage-real',
+      documentId: 'doc-real',
+      bodyHash: 'sha256:real',
+      filename: 'my-doc.md',
+    })
+    expect(ticket.schemaVersion).toBe(2)
+    expect(ticket.ticketId).toMatch(/^ticket_/)
+    expect(ticket.sourceDocument).toMatchObject({
+      lineageId: 'lineage-real',
+      documentId: 'doc-real',
+      bodyHash: 'sha256:real',
+      filename: 'my-doc.md',
+    })
+    expect(ticket.outputContract).toMatchObject({
+      lineageId: 'lineage-real',
+      parentDocumentId: 'doc-real',
+      sourceTicketId: ticket.ticketId,
+    })
+  })
 })
 
 describe('IndexedDB 迁移', () => {

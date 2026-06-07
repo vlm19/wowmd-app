@@ -2,6 +2,11 @@ import { useState } from 'react'
 import type { Annotation } from './annotations'
 import { buildObsidianReviewedMarkdown, type ObsidianExportOptions } from './exportObsidian'
 import type { OpenDocument } from './types'
+import {
+  appendFileLineage,
+  createLineageDocumentId,
+  createLineageId,
+} from './fileLineage'
 
 type Props = {
   document: OpenDocument
@@ -61,11 +66,20 @@ export default function SaveReviewedCopy({ document, annotations, onSaved, onClo
         fingerprint: document.fingerprint,
       }
 
-      const reviewedMarkdown = buildObsidianReviewedMarkdown({
+      const reviewedBody = buildObsidianReviewedMarkdown({
         markdown: document.markdown,
         annotations,
         documentName: document.name,
         options,
+      })
+      const reviewedMarkdown = await appendFileLineage(reviewedBody, {
+        lineageId: document.lineageId || createLineageId(),
+        documentId: createLineageDocumentId(),
+        parentDocumentId: document.stableId,
+        sourceTicketId: document.sourceTicketId,
+        originalFilename: document.name,
+        savedAt: new Date().toISOString(),
+        producer: { app: 'wowMD Pro' },
       })
 
       const hasFSH = 'showSaveFilePicker' in ((window as unknown) as Record<string, unknown>)
@@ -107,7 +121,7 @@ export default function SaveReviewedCopy({ document, annotations, onSaved, onClo
         <p className="eyebrow">Save Obsidian reviewed copy</p>
         <h2>{document.name}</h2>
         <p className="save-version-hint">
-          Creates a new Markdown copy with Obsidian-ready review callouts. The original file is never overwritten.
+          Creates a new Markdown copy with Obsidian-ready review callouts and portable version identity. The original file is never overwritten.
         </p>
 
         <label className="save-version-filename">
