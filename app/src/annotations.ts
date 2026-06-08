@@ -580,16 +580,18 @@ export function createTicketExport(
 ) {
   const ticketId = createTicketId()
   const typeLegend: Record<string, string> = {
-    clarify: '解释、澄清此处，勿动实质。Explain or clarify this point without changing substance.',
-    dispute: '复核此处，可能有误，实质可能需要修改。Review — this may be incorrect and may need correction.',
-    important: '保留并强调此关键点。This is a key point worth retaining and emphasizing.',
-    confirmed: '已审、正确，无需动作。Reviewed and confirmed — no action needed.',
+    clarify: 'Explain or clarify this point without changing the substance.',
+    dispute: 'Review this point because it may be incorrect and may need correction.',
+    important: 'This is a key point worth retaining. Emphasize only when requested by the note or replacement.',
+    confirmed: 'Reviewed and confirmed. No action needed.',
   }
 
-  const tickets = annotations.map((a) => {
+  const tickets = annotations.map((a, index) => {
     const sectionBody = extractSectionBody(markdown, a.headingPath, a.quote)
 
     return {
+      id: a.id,
+      sequence: index + 1,
       type: a.type,
       quote: a.quote,
       prefix: a.prefix,
@@ -600,9 +602,20 @@ export function createTicketExport(
       suggestedReplacement: a.suggestedReplacement || undefined,
     }
   })
+  const sections = createTicketSections(tickets)
+  const confirmedZones = tickets
+    .filter((ticket) => ticket.type === 'confirmed')
+    .map((ticket) => ({
+      ticketId: ticket.id,
+      headingPath: ticket.headingPath,
+      quote: ticket.quote,
+      prefix: ticket.prefix,
+      suffix: ticket.suffix,
+    }))
+  const lineageOutput = lineage ? createLineageOutputContract(lineage, ticketId) : undefined
 
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     ticketId,
     sourceDocument: lineage ? {
       lineageId: lineage.lineageId,
@@ -612,12 +625,6 @@ export function createTicketExport(
       title: documentTitle,
       reviewedAt: new Date().toISOString(),
     } : undefined,
-    outputContract: lineage ? {
-      instruction: 'Append a wowMD document-meta v1 HTML comment to the revised Markdown. Preserve lineageId, set parentDocumentId to the source documentId, set sourceTicketId to this ticketId, generate a new opaque documentId, and omit bodyHash if it cannot be calculated correctly.',
-      lineageId: lineage.lineageId,
-      parentDocumentId: lineage.documentId,
-      sourceTicketId: ticketId,
-    } : undefined,
     document: {
       title: documentTitle,
       source: documentSource,
@@ -626,6 +633,109 @@ export function createTicketExport(
     },
     typeLegend,
     tickets,
+    executionContract: {
+      executionInstruction: 'You are a Markdown document revision assistant. Execute the tickets exactly; do not improvise changes outside ticket scope.',
+      coordinateGuide: 'Use headingPath to find the section, then locate each ticket inside sectionBody with prefix + quote + suffix. Apply changes to document.markdownSnapshot. If the quote cannot be uniquely located in that section, leave it unchanged and report the ticket as unresolved.',
+      typeOperations: {
+        confirmed: 'Do not modify, move, merge, split, summarize, or rewrite this passage. Preserve every character unless another non-confirmed ticket explicitly targets the same text.',
+        important: 'Default to no-op. Preserve the point; emphasize only when note or suggestedReplacement explicitly asks for emphasis.',
+        clarify: 'Prefer suggestedReplacement when present. Otherwise make the smallest clarification needed by the note, either by replacing the unclear wording or adding a brief explanation.',
+        dispute: 'Prefer suggestedReplacement when present. Otherwise correct only the identified issue and avoid rewriting nearby structure.',
+      },
+      unannotatedPolicy: 'Preserve unannotated content exactly. Do not improve wording, grammar, tone, order, or structure unless a ticket change creates a local reference break or requires one short transition; report any such supporting edit.',
+      executionStrategy: 'Process internally by sections. For each section, consider only its ticketIds. If a section has many tickets, prioritize dispute, then clarify, then important; confirmed tickets are preservation zones. Final output must still be the complete revised Markdown document.',
+      outputRequirements: 'Output the complete revised Markdown first, without omitting unchanged sections. Then provide a concise change list keyed by ticket id and sequence, including unresolved tickets.',
+      languageConstraint: {
+        documentLanguage: 'auto-detect from document.markdownSnapshot',
+        outputLanguage: 'same-as-document',
+        foreignTermPolicy: 'preserve existing foreign terms and code identifiers',
+      },
+    },
+    sections,
+    confirmedZones,
+    lineageOutput,
+  }
+}
+
+type TicketExportItem = {
+  id: string
+  sequence: number
+  type: AnnotationType | null
+  quote: string
+  prefix: string
+  suffix: string
+  headingPath: string[]
+  sectionBody: string
+  note?: string
+  suggestedReplacement?: string
+}
+
+function createTicketSections(tickets: TicketExportItem[]) {
+  const grouped = new Map<string, {
+    headingPath: string[]
+    sectionBody: string
+    ticketIds: string[]
+  }>()
+
+  tickets
+    .filter((ticket) => ticket.type !== 'confirmed')
+    .forEach((ticket) => {
+      const key = JSON.stringify(ticket.headingPath)
+      const existing = grouped.get(key)
+      if (existing) {
+        existing.ticketIds.push(ticket.id)
+        if (!existing.sectionBody && ticket.sectionBody) {
+          existing.sectionBody = ticket.sectionBody
+        }
+        return
+      }
+
+      grouped.set(key, {
+        headingPath: ticket.headingPath,
+        sectionBody: ticket.sectionBody,
+        ticketIds: [ticket.id],
+      })
+    })
+
+  return Array.from(grouped.values())
+}
+
+function createLineageOutputContract(
+  lineage: { lineageId?: string; documentId: string; filename: string },
+  ticketId: string,
+) {
+  return {
+    required: true,
+    mode: 'external-ai-candidate',
+    bodyHashPolicy: 'omit-if-not-computable',
+    canonicalization: 'wowMD computes bodyHash after import and confirmation.',
+    fields: {
+      lineageId: 'preserve sourceDocument.lineageId',
+      documentId: 'generate a new opaque doc_ id',
+      parentDocumentId: 'sourceDocument.documentId',
+      sourceTicketId: 'ticketId',
+      originalFilename: 'sourceDocument.filename',
+      savedAt: 'current ISO 8601 timestamp',
+      producerApp: 'External AI',
+    },
+    lineageId: lineage.lineageId,
+    parentDocumentId: lineage.documentId,
+    sourceTicketId: ticketId,
+    template: [
+      '<!-- wowmd:document-meta:v1',
+      '{',
+      '  "lineageId": "{sourceDocument.lineageId}",',
+      '  "documentId": "{new doc_ id}",',
+      '  "parentDocumentId": "{sourceDocument.documentId}",',
+      '  "sourceTicketId": "{ticketId}",',
+      '  "originalFilename": "{sourceDocument.filename}",',
+      '  "savedAt": "{current ISO 8601 time}",',
+      '  "producer": {',
+      '    "app": "External AI"',
+      '  }',
+      '}',
+      'wowmd:document-meta:end -->',
+    ].join('\n'),
   }
 }
 

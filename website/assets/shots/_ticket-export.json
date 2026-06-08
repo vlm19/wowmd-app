@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 3,
+  "ticketId": "ticket_ed7a2fd6-cffa-4c97-922d-5572e388990c",
+  "sourceDocument": {
+    "documentId": "sample",
+    "filename": "wowMD Pro sample.md",
+    "title": "wowMD Pro sample.md",
+    "reviewedAt": "2026-06-08T14:19:41.592Z"
+  },
+  "document": {
+    "title": "wowMD Pro sample.md",
+    "source": "",
+    "fingerprint": "sample",
+    "markdownSnapshot": "# wowMD Pro sample\n\nThis sample shows the first webapp slice: local Markdown reading, outline generation, safe rendering, code blocks, and tables.\n\n## Local-first reading\n\nThe production app will process Markdown in the browser. Documents should not be uploaded for rendering, notes, HTML export, EPUB export, analytics, or license checks.\n\n## Code blocks\n\n```ts\ntype ExportTarget = 'html' | 'epub'\n\nfunction canExport(target: ExportTarget, licensed: boolean) {\n  return licensed || target === 'html-preview'\n}\n```\n\n## Tables\n\n| Feature | V1 status | Notes |\n| --- | --- | --- |\n| Local files | In progress | File picker and drag-and-drop |\n| Highlights | Next | Stored locally by document fingerprint |\n| HTML export | Next | Clean offline single-file export |\n| EPUB export | Planned | Kindle, Apple Books, and Kobo |\n\n## Paid upgrade\n\nwowMD Pro is a low-price, lifetime webapp upgrade for local Markdown workflows.\n"
+  },
+  "typeLegend": {
+    "clarify": "Explain or clarify this point without changing the substance.",
+    "dispute": "Review this point because it may be incorrect and may need correction.",
+    "important": "This is a key point worth retaining. Emphasize only when requested by the note or replacement.",
+    "confirmed": "Reviewed and confirmed. No action needed."
+  },
+  "tickets": [
+    {
+      "id": "7344c9e2-9701-4eea-b396-266619b8926b",
+      "sequence": 1,
+      "type": "important",
+      "quote": "Clean offline single-file export",
+      "prefix": "rop\n\n\nHighlights\nNext\nStored locally by document fingerprint\n\n\nHTML export\nNext\n",
+      "suffix": "\n\n\nEPUB export\nPlanned\nKindle, Apple Books, and Kobo\n\n\n\nPaid upgrade▾\nwowMD Pro ",
+      "headingPath": [
+        "wowMD Pro sample",
+        "Tables"
+      ],
+      "sectionBody": "| Feature | V1 status | Notes |\n| --- | --- | --- |\n| Local files | In progress | File picker and drag-and-drop |\n| Highlights | Next | Stored locally by document fingerprint |\n| HTML export | Next | Clean offline single-file export |\n| EPUB export | Planned | Kindle, Apple Books, and Kobo |"
+    },
+    {
+      "id": "93738985-1de7-4236-b1fd-722c67a35496",
+      "sequence": 2,
+      "type": "confirmed",
+      "quote": "Stored locally by document fingerprint",
+      "prefix": "tes\n\n\n\n\nLocal files\nIn progress\nFile picker and drag-and-drop\n\n\nHighlights\nNext\n",
+      "suffix": "\n\n\nHTML export\nNext\nClean offline single-file export\n\n\nEPUB export\nPlanned\nKindl",
+      "headingPath": [
+        "wowMD Pro sample",
+        "Tables"
+      ],
+      "sectionBody": "| Feature | V1 status | Notes |\n| --- | --- | --- |\n| Local files | In progress | File picker and drag-and-drop |\n| Highlights | Next | Stored locally by document fingerprint |\n| HTML export | Next | Clean offline single-file export |\n| EPUB export | Planned | Kindle, Apple Books, and Kobo |"
+    },
+    {
+      "id": "648fac98-9a74-45cb-836e-f67248698b01",
+      "sequence": 3,
+      "type": "clarify",
+      "quote": "outline generation, safe rendering",
+      "prefix": "MD Pro sample\nThis sample shows the first webapp slice: local Markdown reading, ",
+      "suffix": ", code blocks, and tables.\nLocal-first reading▾\nThe production app will process ",
+      "headingPath": [
+        "wowMD Pro sample"
+      ],
+      "sectionBody": "This sample shows the first webapp slice: local Markdown reading, outline generation, safe rendering, code blocks, and tables.\n\n## Local-first reading\n\nThe production app will process Markdown in the browser. Documents should not be uploaded for rendering, notes, HTML export, EPUB export, analytics, or license checks.\n\n## Code blocks\n\n```ts\ntype ExportTarget = 'html' | 'epub'\n\nfunction canExport(target: ExportTarget, licensed: boolean) {\n  return licensed || target === 'html-preview'\n}\n```\n\n## Tables\n\n| Feature | V1 status | Notes |\n| --- | --- | --- |\n| Local files | In progress | File picker and drag-and-drop |\n| Highlights | Next | Stored locally by document fingerprint |\n| HTML export | Next | Clean offline single-file export |\n| EPUB export | Planned | Kindle, Apple Books, and Kobo |\n\n## Paid upgrade\n\nwowMD Pro is a low-price, lifetime webapp upgrade for local Markdown workflows."
+    },
+    {
+      "id": "cae9338e-dc87-4162-8540-d8f8c94bc161",
+      "sequence": 4,
+      "type": "important",
+      "quote": "Documents should not be uploaded",
+      "prefix": ".\nLocal-first reading▾\nThe production app will process Markdown in the browser. ",
+      "suffix": " for rendering, notes, HTML export, EPUB export, analytics, or license checks.\nC",
+      "headingPath": [
+        "wowMD Pro sample",
+        "Local-first reading"
+      ],
+      "sectionBody": "The production app will process Markdown in the browser. Documents should not be uploaded for rendering, notes, HTML export, EPUB export, analytics, or license checks."
+    },
+    {
+      "id": "26f1b61c-4247-4bde-81e9-17fc0a05f1e1",
+      "sequence": 5,
+      "type": "dispute",
+      "quote": "process Markdown in the browser",
+      "prefix": "rendering, code blocks, and tables.\nLocal-first reading\nThe production app will ",
+      "suffix": ". Documents should not be uploaded for rendering, notes, HTML export, EPUB expor",
+      "headingPath": [
+        "wowMD Pro sample",
+        "Local-first reading"
+      ],
+      "sectionBody": "The production app will process Markdown in the browser. Documents should not be uploaded for rendering, notes, HTML export, EPUB export, analytics, or license checks."
+    }
+  ],
+  "executionContract": {
+    "executionInstruction": "You are a Markdown document revision assistant. Execute the tickets exactly; do not improvise changes outside ticket scope.",
+    "coordinateGuide": "Use headingPath to find the section, then locate each ticket inside sectionBody with prefix + quote + suffix. Apply changes to document.markdownSnapshot. If the quote cannot be uniquely located in that section, leave it unchanged and report the ticket as unresolved.",
+    "typeOperations": {
+      "confirmed": "Do not modify, move, merge, split, summarize, or rewrite this passage. Preserve every character unless another non-confirmed ticket explicitly targets the same text.",
+      "important": "Default to no-op. Preserve the point; emphasize only when note or suggestedReplacement explicitly asks for emphasis.",
+      "clarify": "Prefer suggestedReplacement when present. Otherwise make the smallest clarification needed by the note, either by replacing the unclear wording or adding a brief explanation.",
+      "dispute": "Prefer suggestedReplacement when present. Otherwise correct only the identified issue and avoid rewriting nearby structure."
+    },
+    "unannotatedPolicy": "Preserve unannotated content exactly. Do not improve wording, grammar, tone, order, or structure unless a ticket change creates a local reference break or requires one short transition; report any such supporting edit.",
+    "executionStrategy": "Process internally by sections. For each section, consider only its ticketIds. If a section has many tickets, prioritize dispute, then clarify, then important; confirmed tickets are preservation zones. Final output must still be the complete revised Markdown document.",
+    "outputRequirements": "Output the complete revised Markdown first, without omitting unchanged sections. Then provide a concise change list keyed by ticket id and sequence, including unresolved tickets.",
+    "languageConstraint": {
+      "documentLanguage": "auto-detect from document.markdownSnapshot",
+      "outputLanguage": "same-as-document",
+      "foreignTermPolicy": "preserve existing foreign terms and code identifiers"
+    }
+  },
+  "sections": [
+    {
+      "headingPath": [
+        "wowMD Pro sample",
+        "Tables"
+      ],
+      "sectionBody": "| Feature | V1 status | Notes |\n| --- | --- | --- |\n| Local files | In progress | File picker and drag-and-drop |\n| Highlights | Next | Stored locally by document fingerprint |\n| HTML export | Next | Clean offline single-file export |\n| EPUB export | Planned | Kindle, Apple Books, and Kobo |",
+      "ticketIds": [
+        "7344c9e2-9701-4eea-b396-266619b8926b"
+      ]
+    },
+    {
+      "headingPath": [
+        "wowMD Pro sample"
+      ],
+      "sectionBody": "This sample shows the first webapp slice: local Markdown reading, outline generation, safe rendering, code blocks, and tables.\n\n## Local-first reading\n\nThe production app will process Markdown in the browser. Documents should not be uploaded for rendering, notes, HTML export, EPUB export, analytics, or license checks.\n\n## Code blocks\n\n```ts\ntype ExportTarget = 'html' | 'epub'\n\nfunction canExport(target: ExportTarget, licensed: boolean) {\n  return licensed || target === 'html-preview'\n}\n```\n\n## Tables\n\n| Feature | V1 status | Notes |\n| --- | --- | --- |\n| Local files | In progress | File picker and drag-and-drop |\n| Highlights | Next | Stored locally by document fingerprint |\n| HTML export | Next | Clean offline single-file export |\n| EPUB export | Planned | Kindle, Apple Books, and Kobo |\n\n## Paid upgrade\n\nwowMD Pro is a low-price, lifetime webapp upgrade for local Markdown workflows.",
+      "ticketIds": [
+        "648fac98-9a74-45cb-836e-f67248698b01"
+      ]
+    },
+    {
+      "headingPath": [
+        "wowMD Pro sample",
+        "Local-first reading"
+      ],
+      "sectionBody": "The production app will process Markdown in the browser. Documents should not be uploaded for rendering, notes, HTML export, EPUB export, analytics, or license checks.",
+      "ticketIds": [
+        "cae9338e-dc87-4162-8540-d8f8c94bc161",
+        "26f1b61c-4247-4bde-81e9-17fc0a05f1e1"
+      ]
+    }
+  ],
+  "confirmedZones": [
+    {
+      "ticketId": "93738985-1de7-4236-b1fd-722c67a35496",
+      "headingPath": [
+        "wowMD Pro sample",
+        "Tables"
+      ],
+      "quote": "Stored locally by document fingerprint",
+      "prefix": "tes\n\n\n\n\nLocal files\nIn progress\nFile picker and drag-and-drop\n\n\nHighlights\nNext\n",
+      "suffix": "\n\n\nHTML export\nNext\nClean offline single-file export\n\n\nEPUB export\nPlanned\nKindl"
+    }
+  ],
+  "lineageOutput": {
+    "required": true,
+    "mode": "external-ai-candidate",
+    "bodyHashPolicy": "omit-if-not-computable",
+    "canonicalization": "wowMD computes bodyHash after import and confirmation.",
+    "fields": {
+      "lineageId": "preserve sourceDocument.lineageId",
+      "documentId": "generate a new opaque doc_ id",
+      "parentDocumentId": "sourceDocument.documentId",
+      "sourceTicketId": "ticketId",
+      "originalFilename": "sourceDocument.filename",
+      "savedAt": "current ISO 8601 timestamp",
+      "producerApp": "External AI"
+    },
+    "parentDocumentId": "sample",
+    "sourceTicketId": "ticket_ed7a2fd6-cffa-4c97-922d-5572e388990c",
+    "template": "<!-- wowmd:document-meta:v1\n{\n  \"lineageId\": \"{sourceDocument.lineageId}\",\n  \"documentId\": \"{new doc_ id}\",\n  \"parentDocumentId\": \"{sourceDocument.documentId}\",\n  \"sourceTicketId\": \"{ticketId}\",\n  \"originalFilename\": \"{sourceDocument.filename}\",\n  \"savedAt\": \"{current ISO 8601 time}\",\n  \"producer\": {\n    \"app\": \"External AI\"\n  }\n}\nwowmd:document-meta:end -->"
+  }
+}

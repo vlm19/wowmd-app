@@ -272,51 +272,57 @@ describe('createTicketExport', () => {
   ]
   const markdown = '# Title\n\nintro.\n\n## Section A\n\ncontent here.\n'
 
-  test('生成正确信封结构', () => {
+  test('generates the ticket envelope', () => {
     const ticket = createTicketExport('My Doc', 'local', 'fp123', markdown, annotations)
+    expect(ticket.schemaVersion).toBe(3)
     expect(ticket).toHaveProperty('document')
     expect(ticket).toHaveProperty('typeLegend')
     expect(ticket).toHaveProperty('tickets')
+    expect(ticket).toHaveProperty('executionContract')
+    expect(ticket).toHaveProperty('sections')
+    expect(ticket).toHaveProperty('confirmedZones')
     expect(ticket.document.title).toBe('My Doc')
     expect(ticket.document.source).toBe('local')
     expect(ticket.document.fingerprint).toBe('fp123')
     expect(ticket.document.markdownSnapshot).toBe(markdown)
   })
 
-  test('typeLegend 含 4 种类型', () => {
+  test('typeLegend contains the four review types', () => {
     const ticket = createTicketExport('x', 'x', 'x', markdown, annotations)
     expect(Object.keys(ticket.typeLegend)).toEqual(['clarify', 'dispute', 'important', 'confirmed'])
   })
 
-  test('每条标注转为 ticket', () => {
+  test('converts each annotation to an addressable ticket item', () => {
     const ticket = createTicketExport('x', 'x', 'x', markdown, annotations)
     expect(ticket.tickets).toHaveLength(1)
+    expect(ticket.tickets[0].id).toBe('a1')
+    expect(ticket.tickets[0].sequence).toBe(1)
     expect(ticket.tickets[0].type).toBe('clarify')
     expect(ticket.tickets[0].quote).toBe('hello')
     expect(ticket.tickets[0].note).toBe('needs explanation')
     expect(ticket.tickets[0].suggestedReplacement).toBe('hello world')
   })
 
-  test('空 note → undefined', () => {
+  test('omits empty note fields', () => {
     const a = [{ ...annotations[0], note: '' }]
     const ticket = createTicketExport('x', 'x', 'x', markdown, a)
     expect(ticket.tickets[0].note).toBeUndefined()
   })
 
-  test('空 suggestedReplacement → undefined', () => {
+  test('omits empty suggestedReplacement fields', () => {
     const a = [{ ...annotations[0], suggestedReplacement: '' }]
     const ticket = createTicketExport('x', 'x', 'x', markdown, a)
     expect(ticket.tickets[0].suggestedReplacement).toBeUndefined()
   })
 
-  test('Ticket JSON includes portable source provenance when provided', () => {
+  test('includes external-AI lineage output instructions when provenance is provided', () => {
     const ticket = createTicketExport('My Doc', 'local', 'fp123', markdown, annotations, {
       lineageId: 'lineage-real',
       documentId: 'doc-real',
       bodyHash: 'sha256:real',
       filename: 'my-doc.md',
     })
-    expect(ticket.schemaVersion).toBe(2)
+    expect(ticket.schemaVersion).toBe(3)
     expect(ticket.ticketId).toMatch(/^ticket_/)
     expect(ticket.sourceDocument).toMatchObject({
       lineageId: 'lineage-real',
@@ -324,11 +330,56 @@ describe('createTicketExport', () => {
       bodyHash: 'sha256:real',
       filename: 'my-doc.md',
     })
-    expect(ticket.outputContract).toMatchObject({
+    expect(ticket.lineageOutput).toMatchObject({
+      mode: 'external-ai-candidate',
+      bodyHashPolicy: 'omit-if-not-computable',
       lineageId: 'lineage-real',
       parentDocumentId: 'doc-real',
       sourceTicketId: ticket.ticketId,
     })
+    expect(ticket.lineageOutput?.template).toContain('wowmd:document-meta:v1')
+  })
+
+  test('groups executable tickets by section and keeps confirmed zones separate', () => {
+    const more = [
+      annotations[0],
+      {
+        ...annotations[0],
+        id: 'a2',
+        type: 'confirmed' as const,
+        quote: 'content',
+        suggestedReplacement: '',
+      },
+      {
+        ...annotations[0],
+        id: 'a3',
+        type: 'dispute' as const,
+        quote: 'intro',
+        headingPath: [],
+      },
+    ]
+    const ticket = createTicketExport('x', 'x', 'x', markdown, more)
+    expect(ticket.sections).toEqual([
+      {
+        headingPath: ['Section A'],
+        sectionBody: 'content here.',
+        ticketIds: ['a1'],
+      },
+      {
+        headingPath: [],
+        sectionBody: '',
+        ticketIds: ['a3'],
+      },
+    ])
+    expect(ticket.confirmedZones).toEqual([
+      {
+        ticketId: 'a2',
+        headingPath: ['Section A'],
+        quote: 'content',
+        prefix: 'pre',
+        suffix: 'suf',
+      },
+    ])
   })
 })
 

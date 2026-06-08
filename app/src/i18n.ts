@@ -63,6 +63,7 @@ const en: Messages = {
   associationLines: 'lines',
   associationNoVisibleChanges: 'No visible line changes. The relationship evidence comes from identity metadata.',
   associationBoundary: "The opened file stays unchanged. Association only updates wowMD's browser-local history and annotation records.",
+  associationExternalMetadata: 'This relationship metadata came from an external AI output. wowMD will verify the relationship before carrying annotations forward.',
   associationOpenAsNew: 'Open as new',
   associationConfirm: 'Associate and review',
   associationReviewLater: 'Review suggested relationship',
@@ -160,20 +161,22 @@ const en: Messages = {
   copyPromptTemplate: 'Copy prompt template',
   copySelection: 'Copy',
   copied: 'Copied',
-  ticketPromptTemplate: `You are a careful document editor. I will give you a JSON ticket containing my annotations on a Markdown document.
-Please process each annotation by its type and output the complete revised document:
+  ticketPromptTemplate: `You are a careful Markdown document editor. I will give you a wowMD Ticket JSON.
 
-- clarify: Explain or clarify this point without changing the substance.
-- dispute: Review this point; it may be incorrect. Correct it when needed and explain why.
-- important: Keep and emphasize this key point.
-- confirmed: Already reviewed and correct. Keep it unchanged.
+Use ticket.document.markdownSnapshot as the only source draft. Read and obey ticket.executionContract, ticket.sections, ticket.confirmedZones, and ticket.lineageOutput when present.
 
 Rules:
-1. Use document.markdownSnapshot as the source draft. Only change annotated passages and keep everything else unchanged.
-2. Locate each annotation with headingPath + quote + prefix/suffix. Prefer suggestedReplacement when present.
-3. Output the complete revised Markdown first, then add a change list explaining what you changed.
+1. Process every item in ticket.tickets by id and sequence.
+2. Use ticket.typeLegend and ticket.executionContract.typeOperations as the authoritative meaning of each type.
+3. Locate each item by headingPath, sectionBody, quote, prefix, and suffix. If a location is ambiguous or missing, leave it unchanged and report it as unresolved.
+4. Preserve unannotated content exactly unless ticket.executionContract explicitly allows a supporting local edit.
+5. Prefer suggestedReplacement when present. Use note as reviewer intent, not as text to paste unless it clearly asks for wording.
+6. If ticket.lineageOutput is present, append the requested wowMD document-meta block at the end. Omit bodyHash unless you can calculate it correctly.
 
-Ticket:
+Output:
+First output the complete revised Markdown without omitting unchanged sections. Then output a short change list keyed by ticket id and sequence.
+
+Ticket JSON:
 <paste the exported ticket JSON here>`,
   notesEmptyFlow: 'Select text -> mark it as Clarify / Dispute / Important / Confirmed -> export a ticket for AI-assisted revision.',
   mapDensityTitle: 'Section density by type',

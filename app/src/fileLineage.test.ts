@@ -8,6 +8,7 @@ import {
   createLineageId,
   markdownBody,
   parseFileLineage,
+  parseFileLineageCandidate,
 } from './fileLineage'
 
 const source = '# Real local document\n\nA paragraph used for a real lineage boundary test.\n'
@@ -61,6 +62,72 @@ describe('file lineage protocol', () => {
     })
     expect(parseFileLineage(`${valid}\n${valid.slice(valid.indexOf('<!-- wowmd:document-meta:v1'))}`).valid).toBe(false)
     expect(parseFileLineage(`${source}\n<!-- wowmd:document-meta:v1\n{\nwowmd:document-meta:end -->`).valid).toBe(false)
+  })
+
+  test('accepts external AI candidate metadata without bodyHash and strips it from the body', () => {
+    const output = `${source}
+<!-- wowmd:document-meta:v1
+{
+  "lineageId": "lineage-real",
+  "documentId": "doc-ai",
+  "parentDocumentId": "doc-source",
+  "sourceTicketId": "ticket-real",
+  "producer": {
+    "app": "External AI"
+  }
+}
+wowmd:document-meta:end -->
+`
+    const strict = parseFileLineage(output)
+    expect(strict.valid).toBe(false)
+    if (strict.valid) return
+    expect(strict.reason).toBe('invalid-fields')
+
+    const candidate = parseFileLineageCandidate(output)
+    expect(candidate.valid).toBe(true)
+    if (!candidate.valid) return
+    expect(candidate.missingBodyHash).toBe(true)
+    expect(candidate.body).toBe(source)
+    expect(candidate.metadata).toMatchObject({
+      lineageId: 'lineage-real',
+      documentId: 'doc-ai',
+      parentDocumentId: 'doc-source',
+      sourceTicketId: 'ticket-real',
+    })
+  })
+
+  test('rejects damaged wowMD metadata without downgrading it to an external candidate', () => {
+    const damaged = `${source}
+<!-- wowmd:document-meta:v1
+{
+  "lineageId": "lineage-real",
+  "documentId": "doc-v2",
+  "parentDocumentId": "doc-v1",
+  "sourceTicketId": "ticket-real",
+  "originalFilename": "real.md",
+  "savedAt": "2026-06-07T10:00:00.000Z",
+  "producer": {
+    "app": "wowMD Pro"
+  }
+}
+wowmd:document-meta:end -->
+`
+    const candidate = parseFileLineageCandidate(damaged)
+    expect(candidate.valid).toBe(false)
+    if (candidate.valid) return
+    expect(candidate.reason).toBe('canonical-without-hash')
+  })
+
+  test('does not parse invalid-json lineage blocks as candidates', () => {
+    const malformed = `${source}
+<!-- wowmd:document-meta:v1
+{
+wowmd:document-meta:end -->
+`
+    const candidate = parseFileLineageCandidate(malformed)
+    expect(candidate.valid).toBe(false)
+    if (candidate.valid) return
+    expect(candidate.reason).toBe('invalid-json')
   })
 
   test('generates opaque identifiers', () => {

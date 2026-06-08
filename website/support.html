@@ -117,15 +117,23 @@
             <li>Open your AI tool of choice.</li>
             <li>Paste the prompt below, then paste the ticket contents.</li>
           </ol>
-          <pre class="prompt-block"><code>You are a careful editor. I will give you a JSON ticket of my annotations on a Markdown document.
-Handle each entry by its type and output the full revised document.
-- clarify: explain or clarify without changing substance
-- dispute: review, correct if wrong, and say why
-- important: keep and emphasize
-- confirmed: leave as is
-Use document.markdownSnapshot as the base. Locate each item by headingPath, quote, prefix, and suffix. Prefer suggestedReplacement when provided.
-Ticket:
-&amp;lt;paste the exported Ticket JSON here&amp;gt;</code></pre>
+          <pre class="prompt-block"><code>You are a careful Markdown document editor. I will give you a wowMD Ticket JSON.
+
+Use ticket.document.markdownSnapshot as the only source draft. Read and obey ticket.executionContract, ticket.sections, ticket.confirmedZones, and ticket.lineageOutput when present.
+
+Rules:
+1. Process every item in ticket.tickets by id and sequence.
+2. Use ticket.typeLegend and ticket.executionContract.typeOperations as the authoritative meaning of each type.
+3. Locate each item by headingPath, sectionBody, quote, prefix, and suffix. If a location is ambiguous or missing, leave it unchanged and report it as unresolved.
+4. Preserve unannotated content exactly unless ticket.executionContract explicitly allows a supporting local edit.
+5. Prefer suggestedReplacement when present. Use note as reviewer intent, not as text to paste unless it clearly asks for wording.
+6. If ticket.lineageOutput is present, append the requested wowMD document-meta block at the end. Omit bodyHash unless you can calculate it correctly.
+
+Output:
+First output the complete revised Markdown without omitting unchanged sections. Then output a short change list keyed by ticket id and sequence.
+
+Ticket JSON:
+&lt;paste the exported Ticket JSON here&gt;</code></pre>
         </section>
 
         <section class="doc-section" id="storage">

@@ -30,6 +30,8 @@ import {
   findFileLineageCandidate,
   markdownBody,
   parseFileLineage,
+  parseFileLineageCandidate,
+  type FileLineageCandidateMetadata,
   type FileLineageMetadata,
 } from '../fileLineage'
 import type { FileAssociationCandidate } from '../FileAssociationDialog'
@@ -44,7 +46,8 @@ type PendingAssociation = {
   filename: string
   fingerprint: string
   bodyHash: string
-  metadata?: FileLineageMetadata
+  metadata?: FileLineageMetadata | FileLineageCandidateMetadata
+  metadataSource: 'canonical' | 'external-candidate' | 'none'
   carried: Annotation[]
   existingDocumentId?: string
 }
@@ -146,11 +149,27 @@ export function useDocumentSession({
 
     const rawMarkdown = await file.text()
     const parsed = parseFileLineage(rawMarkdown)
-    const markdown = markdownBody(rawMarkdown)
+    const candidateParsed = !parsed.valid && parsed.reason === 'invalid-fields'
+      ? parseFileLineageCandidate(rawMarkdown)
+      : null
+    const metadata = parsed.valid
+      ? parsed.metadata
+      : candidateParsed?.valid
+        ? candidateParsed.metadata
+        : undefined
+    const metadataSource: PendingAssociation['metadataSource'] = parsed.valid
+      ? 'canonical'
+      : candidateParsed?.valid
+        ? 'external-candidate'
+        : 'none'
+    const markdown = parsed.valid
+      ? parsed.body
+      : candidateParsed?.valid
+        ? candidateParsed.body
+        : rawMarkdown
     const fingerprint = await computeDocumentFingerprint(markdown)
     const bodyHash = await computeBodyHash(markdown)
     const all = await listLocalDocuments()
-    const metadata = parsed.valid ? parsed.metadata : undefined
     const registeredExact = !metadata
       ? all.find((item) => item.title === file.name && item.bodyHash === bodyHash)
       : undefined
@@ -167,6 +186,7 @@ export function useDocumentSession({
       setPendingAssociation({
         candidate: {
           ...candidate,
+          metadataSource,
           exactCount: carried.filter((item) => !item.orphaned && !item.needsReview).length,
           reviewCount: carried.filter((item) => item.needsReview && !item.orphaned).length,
           lostCount: carried.filter((item) => item.orphaned).length,
@@ -177,6 +197,7 @@ export function useDocumentSession({
         fingerprint,
         bodyHash,
         metadata,
+        metadataSource,
         carried,
       })
       return
@@ -239,6 +260,7 @@ export function useDocumentSession({
         filename: document.name,
         reason: 'structure-similarity',
         externalEdit: false,
+        metadataSource: 'none',
         exactCount: carried.filter((item) => !item.orphaned && !item.needsReview).length,
         reviewCount: carried.filter((item) => item.needsReview && !item.orphaned).length,
         lostCount: carried.filter((item) => item.orphaned).length,
@@ -248,6 +270,7 @@ export function useDocumentSession({
       filename: document.name,
       fingerprint: document.fingerprint,
       bodyHash: document.bodyHash || await computeBodyHash(document.markdown),
+      metadataSource: 'none',
       carried,
       existingDocumentId: document.stableId,
     })

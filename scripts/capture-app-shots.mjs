@@ -7,10 +7,10 @@
  *   SHOTS_LOCALES  comma list, e.g. "en,zh"     (default "en")
  *
  * Single locale -> flat files in SHOTS_OUT. Multiple -> SHOTS_OUT/<locale>/.
- * Captures: reader.png, annotate.png (4 real typed annotations), map.png, export.png, settings.png.
+ * Captures: reader.png, annotate.png, ticket-info.png, ticket-prompt.png, ticket-json.png, map.png, settings.png, export.png.
  */
 import { chromium } from 'playwright';
-import { mkdirSync } from 'fs';
+import { mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -74,6 +74,50 @@ async function captureLocale(browser, locale, outDir) {
   await page.evaluate(() => window.getSelection()?.removeAllRanges());
   await page.waitForTimeout(400);
   await page.screenshot({ path: join(outDir, 'annotate.png') });
+
+  // --- Ticket JSON flow ---
+  const ticketInfoBtn = page.locator('button.ticket-info-button');
+  if (await ticketInfoBtn.count()) {
+    await ticketInfoBtn.click();
+    await page.waitForSelector('.ticket-info-modal', { timeout: 3000 });
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: join(outDir, 'ticket-info.png') });
+
+    const copyBtn = page.locator('.ticket-info-modal button.ghost-action');
+    if (await copyBtn.count()) {
+      await copyBtn.click();
+      await page.waitForTimeout(400);
+      await page.screenshot({ path: join(outDir, 'ticket-prompt.png') });
+    }
+
+    await page.locator('.ticket-info-modal .modal-close').click().catch(() => {});
+    await page.waitForTimeout(300);
+  }
+
+  const ticketExportBtn = page.getByRole('button', { name: /ticket.*\.json|工单.*\.json|チケット.*\.json|티켓.*\.json|Ticket.*\.json/i });
+  if (await ticketExportBtn.count()) {
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      ticketExportBtn.click(),
+    ]);
+    const dlPath = join(outDir, '_ticket-export.json');
+    await download.saveAs(dlPath);
+    const raw = readFileSync(dlPath, 'utf-8');
+    const pretty = JSON.stringify(JSON.parse(raw), null, 2);
+    await page.evaluate((json) => {
+      const pre = document.createElement('pre');
+      pre.id = '__ticket_json_view';
+      pre.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:#1a1a2e;color:#d4d4d4;padding:32px;overflow:auto;font:13px/1.6 monospace;white-space:pre-wrap;word-break:break-word;margin:0;';
+      pre.textContent = json;
+      document.body.appendChild(pre);
+    }, pretty);
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: join(outDir, 'ticket-json.png') });
+    await page.evaluate(() => {
+      const pre = document.getElementById('__ticket_json_view');
+      if (pre) pre.remove();
+    });
+  }
 
   const mapBtn = page.locator('.map-action');
   if (await mapBtn.count()) {

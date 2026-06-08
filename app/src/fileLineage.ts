@@ -19,9 +19,22 @@ export type FileLineageMetadata = {
   }
 }
 
+export type FileLineageCandidateMetadata =
+  Omit<FileLineageMetadata, 'bodyHash' | 'originalFilename' | 'savedAt'> & {
+    parentDocumentId: string
+    sourceTicketId: string
+    bodyHash?: string
+    originalFilename?: string
+    savedAt?: string
+  }
+
 export type FileLineageParseResult =
   | { valid: true; metadata: FileLineageMetadata; body: string }
   | { valid: false; reason: 'missing' | 'duplicate' | 'not-tail' | 'invalid-json' | 'invalid-fields'; body: string }
+
+export type FileLineageCandidateParseResult =
+  | { valid: true; metadata: FileLineageCandidateMetadata; body: string; missingBodyHash: boolean }
+  | { valid: false; reason: 'missing' | 'duplicate' | 'not-tail' | 'invalid-json' | 'invalid-fields' | 'canonical-without-hash' | 'strict-should-handle'; body: string }
 
 export type FileLineageRecord = {
   id: string
@@ -65,7 +78,7 @@ export function createTicketId() {
   return `ticket_${randomId()}`
 }
 
-export function parseFileLineage(markdown: string): FileLineageParseResult {
+function extractLineageBlock(markdown: string): { valid: true; rawJson: string; body: string } | { valid: false; reason: 'missing' | 'duplicate' | 'not-tail'; body: string } {
   const start = markdown.lastIndexOf(FILE_LINEAGE_START)
   const end = markdown.lastIndexOf(FILE_LINEAGE_END)
   if (start < 0 || end < 0 || end < start) return { valid: false, reason: 'missing', body: markdown }
@@ -74,8 +87,19 @@ export function parseFileLineage(markdown: string): FileLineageParseResult {
     return { valid: false, reason: 'not-tail', body: markdown }
   }
 
+  return {
+    valid: true,
+    rawJson: markdown.slice(start + FILE_LINEAGE_START.length, end).trim(),
+    body: markdown.slice(0, start).trimEnd() + '\n',
+  }
+}
+
+export function parseFileLineage(markdown: string): FileLineageParseResult {
+  const block = extractLineageBlock(markdown)
+  if (!block.valid) return block
+
   try {
-    const raw = JSON.parse(markdown.slice(start + FILE_LINEAGE_START.length, end).trim()) as Partial<FileLineageMetadata>
+    const raw = JSON.parse(block.rawJson) as Partial<FileLineageMetadata>
     if (
       typeof raw.lineageId !== 'string' ||
       typeof raw.documentId !== 'string' ||
@@ -90,7 +114,46 @@ export function parseFileLineage(markdown: string): FileLineageParseResult {
     return {
       valid: true,
       metadata: raw as FileLineageMetadata,
-      body: markdown.slice(0, start).trimEnd() + '\n',
+      body: block.body,
+    }
+  } catch {
+    return { valid: false, reason: 'invalid-json', body: markdown }
+  }
+}
+
+export function parseFileLineageCandidate(markdown: string): FileLineageCandidateParseResult {
+  const block = extractLineageBlock(markdown)
+  if (!block.valid) return block
+
+  try {
+    const raw = JSON.parse(block.rawJson) as Partial<FileLineageCandidateMetadata>
+    const producerApp = raw.producer?.app
+
+    if (typeof raw.bodyHash === 'string') {
+      return { valid: false, reason: 'strict-should-handle', body: markdown }
+    }
+
+    if (producerApp === 'wowMD Pro') {
+      return { valid: false, reason: 'canonical-without-hash', body: markdown }
+    }
+
+    if (
+      typeof raw.lineageId !== 'string' ||
+      typeof raw.documentId !== 'string' ||
+      typeof raw.parentDocumentId !== 'string' ||
+      typeof raw.sourceTicketId !== 'string' ||
+      !raw.producer ||
+      typeof producerApp !== 'string' ||
+      !producerApp.trim()
+    ) {
+      return { valid: false, reason: 'invalid-fields', body: markdown }
+    }
+
+    return {
+      valid: true,
+      metadata: raw as FileLineageCandidateMetadata,
+      body: block.body,
+      missingBodyHash: true,
     }
   } catch {
     return { valid: false, reason: 'invalid-json', body: markdown }
@@ -122,7 +185,7 @@ export function findFileLineageCandidate<T extends FileLineageRecord>(
   filename: string,
   markdown: string,
   bodyHash: string,
-  metadata: FileLineageMetadata | undefined,
+  metadata: FileLineageMetadata | FileLineageCandidateMetadata | undefined,
   documents: T[],
 ): FileLineageCandidate<T> | null {
   if (metadata) {

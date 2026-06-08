@@ -8,6 +8,7 @@ export type FileAssociationCandidate = {
   filename: string
   reason: FileLineageCandidateReason
   externalEdit: boolean
+  metadataSource?: 'canonical' | 'external-candidate' | 'none'
   exactCount: number
   reviewCount: number
   lostCount: number
@@ -66,6 +67,12 @@ export default function FileAssociationDialog({ candidate, t, onAssociate, onOpe
             <span>{t(REASON_KEYS[candidate.reason])}</span>
           </div>
         </div>
+
+        {candidate.metadataSource === 'external-candidate' ? (
+          <p className="association-boundary">
+            {t('associationExternalMetadata')}
+          </p>
+        ) : null}
 
         <div className="association-results" aria-label="Annotation migration preview">
           <div>
