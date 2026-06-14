@@ -8,11 +8,10 @@ const templatePath = path.join(root, "template.html");
 const proTemplatePath = path.join(root, "pro-template.html");
 const privacyTemplatePath = path.join(root, "privacy-template.html");
 const termsTemplatePath = path.join(root, "terms-template.html");
-const feedbackTemplatePath = path.join(root, "feedback-template.html");
 const supportTemplatePath = path.join(root, "support-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
-const sitemapLastmod = "2026-06-04";
+const sitemapLastmod = "2026-06-14";
 
 const languages = [
   { code: "en", dir: "", flag: "gb.svg", name: "EN" },
@@ -28,7 +27,6 @@ const template = fs.readFileSync(templatePath, "utf8");
 const proTemplate = fs.readFileSync(proTemplatePath, "utf8");
 const privacyTemplate = fs.readFileSync(privacyTemplatePath, "utf8");
 const termsTemplate = fs.readFileSync(termsTemplatePath, "utf8");
-const feedbackTemplate = fs.readFileSync(feedbackTemplatePath, "utf8");
 const supportTemplate = fs.readFileSync(supportTemplatePath, "utf8");
 
 const escapeHtml = (value) =>
@@ -100,8 +98,6 @@ const pagePath = (dir, fileName = "index.html") => {
   return `${prefix}${fileName}`;
 };
 
-const feedbackUrl = () => "feedback.html";
-const supportUrl = () => "support.html";
 const supportUrlFor = (dir, code) => (code === "zh" || !dir ? "support.html" : "../support.html");
 
 const marketingPages = {
@@ -169,7 +165,6 @@ const writePage = ({ code, dir, flag, name }, fileName = "index.html") => {
     appUrl: `${base}app/`,
     privacyUrl: "privacy.html",
     termsUrl: "terms.html",
-    feedbackUrl: feedbackUrl(dir),
     supportUrl: supportUrlFor(dir, code),
     currentFlag: `${base}assets/flags/${flag}`,
     languageName: name,
@@ -194,28 +189,6 @@ const writePage = ({ code, dir, flag, name }, fileName = "index.html") => {
   html = html.replaceAll(/ data-i18n-content="[^"]+"/g, "");
   html = html.replaceAll(/ data-i18n-placeholder="[^"]+"/g, "");
   html = html.replaceAll(/ data-i18n="[^"]+"/g, "");
-
-  fs.mkdirSync(outputDir, { recursive: true });
-  fs.writeFileSync(outputPath, html, "utf8");
-};
-
-const writeFeedbackPage = ({ code, dir, flag }) => {
-  const base = dir ? "../" : "";
-  const outputDir = dir ? path.join(root, dir) : root;
-  const outputPath = path.join(outputDir, "feedback.html");
-  const canonicalUrl = `${siteUrl}/${pagePath(dir, "feedback.html")}`;
-
-  let html = feedbackTemplate;
-  html = applyTemplateVars(html, {
-    lang: code,
-    base,
-    canonicalUrl,
-    homeUrl: "./",
-    privacyUrl: "privacy.html",
-    termsUrl: "terms.html",
-    supportUrl: supportUrlFor(dir, code),
-    currentFlag: `${base}assets/flags/${flag}`
-  });
 
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(outputPath, html, "utf8");
@@ -269,7 +242,6 @@ for (const language of languages) {
   }
   writePage(language, "privacy.html");
   writePage(language, "terms.html");
-  writeFeedbackPage(language);
   writeSupportPage(language);
 }
 
@@ -304,4 +276,4 @@ ${languages
 
 fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap, "utf8");
 
-console.log(`Generated ${languages.length * 7} localized pages.`);
+console.log(`Generated ${languages.length * 6} localized pages.`);

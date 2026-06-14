@@ -18,7 +18,7 @@ const i18nDir = path.join(root, "i18n");
 const LOCALES = ["zh", "ja", "ko", "de", "fr"];
 const GENERATED_ROOT = [
   "index.html", "extension.html", "pro.html",
-  "privacy.html", "terms.html", "feedback.html", "support.html",
+  "privacy.html", "terms.html", "support.html",
 ];
 
 const escapeHtml = (v) =>
