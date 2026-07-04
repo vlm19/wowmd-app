@@ -16,6 +16,25 @@
     <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/terms">
     <link rel="alternate" hreflang="x-default" href="https://wowmd.app/terms">
     <link rel="icon" href="{{base}}assets/brand/logo-mark.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="wowMD">
+    <meta property="og:title" content="{{termsMetaTitle}}">
+    <meta property="og:description" content="{{termsMetaDescription}}">
+    <meta property="og:url" content="{{canonicalUrl}}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{termsMetaTitle}}">
+    <meta name="twitter:description" content="{{termsMetaDescription}}">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "{{termsMetaTitle}}",
+        "description": "{{jsonDescription}}",
+        "url": "{{canonicalUrl}}",
+        "inLanguage": "{{lang}}",
+        "isPartOf": { "@id": "https://wowmd.app/#website" }
+      }
+    </script>
     <link rel="stylesheet" href="{{base}}styles.css">
   </head>
   <body>

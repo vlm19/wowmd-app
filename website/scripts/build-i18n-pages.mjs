@@ -150,6 +150,11 @@ const writePage = ({ code, dir, flag, name }, fileName = "index.html") => {
     : isTermsPage
       ? data["termsPage.metaDescription"]
       : data[pageConfig?.metaDescriptionKey] || data["meta.description"];
+  const ogImageAltKey = isIndexPage ? "landing.ogImageAlt"
+    : isPrivacyPage ? "privacy.ogImageAlt"
+    : isTermsPage ? "terms.ogImageAlt"
+    : pageConfig?.metaTitleKey ? pageConfig.metaTitleKey.replace("metaTitle", "ogImageAlt") : "";
+  const ogImageAlt = data[ogImageAltKey] || "";
 
   let html = isPrivacyPage ? privacyTemplate : isTermsPage ? termsTemplate : pageConfig.template;
   for (const [key, value] of Object.entries(data)) {
@@ -171,6 +176,7 @@ const writePage = ({ code, dir, flag, name }, fileName = "index.html") => {
     supportUrl: supportUrlFor(dir, code),
     currentFlag: `${base}assets/flags/${flag}`,
     languageName: name,
+    ogImageAlt: escapeAttr(ogImageAlt),
     localeUrlEn: localeUrl(dir, "", fileName),
     localeUrlZh: localeUrl(dir, "zh", fileName),
     localeUrlJa: localeUrl(dir, "ja", fileName),
@@ -203,6 +209,9 @@ const writeSupportPage = ({ code, dir, flag, name }) => {
   const outputDir = dir ? path.join(root, dir) : root;
   const outputPath = path.join(outputDir, "support.html");
   const canonicalUrl = `${siteUrl}/${pagePath(dir, "support.html")}`;
+  const metaTitle = data["support.metaTitle"];
+  const metaDescription = data["support.metaDescription"];
+  const ogImageAlt = data["support.ogImageAlt"] || data["support.ogImageAlt"];
 
   let html = supportTemplate;
   for (const [key, value] of Object.entries(data)) {
@@ -223,6 +232,10 @@ const writeSupportPage = ({ code, dir, flag, name }) => {
     supportUrl: "support",
     currentFlag: `${base}assets/flags/${flag}`,
     languageName: name,
+    metaTitle: escapeAttr(metaTitle),
+    metaDescription: escapeAttr(metaDescription),
+    jsonDescription: String(metaDescription).replaceAll("\\", "\\\\").replaceAll('"', '\\"'),
+    ogImageAlt: escapeAttr(ogImageAlt),
     localeUrlEn: localeFileUrl(dir, "", "support.html"),
     localeUrlZh: localeFileUrl(dir, "zh", "support.html"),
     localeUrlJa: localeFileUrl(dir, "ja", "support.html"),

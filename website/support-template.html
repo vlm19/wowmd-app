@@ -21,11 +21,22 @@
     <meta property="og:description" data-i18n-content="support.ogDescription" content="Learn typed review, re-anchoring, Obsidian-ready reviewed Markdown, Ticket JSON, reader controls, export, settings, and troubleshooting.">
     <meta property="og:url" content="{{canonicalUrl}}">
     <meta property="og:image" content="https://wowmd.app/assets/shots/map.png">
-    <meta property="og:image:alt" content="wowMD Overall Review Map">
+    <meta property="og:image:alt" content="{{ogImageAlt}}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" data-i18n-content="support.twitterTitle" content="wowMD Support - Guide and feedback">
     <meta name="twitter:description" data-i18n-content="support.twitterDescription" content="Typed review, cross-version survival, reviewed Markdown for Obsidian, and Ticket JSON explained.">
     <meta name="twitter:image" content="https://wowmd.app/assets/shots/map.png">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "{{metaTitle}}",
+        "description": "{{jsonDescription}}",
+        "url": "{{canonicalUrl}}",
+        "inLanguage": "{{lang}}",
+        "isPartOf": { "@id": "https://wowmd.app/#website" }
+      }
+    </script>
     <link rel="stylesheet" href="{{base}}assets/icons/tabler-icons.min.css">
     <link rel="stylesheet" href="{{base}}styles.css?v=20260606-support-workflows">
   </head>
