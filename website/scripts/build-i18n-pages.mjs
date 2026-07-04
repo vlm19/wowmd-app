@@ -11,7 +11,7 @@ const termsTemplatePath = path.join(root, "terms-template.html");
 const supportTemplatePath = path.join(root, "support-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
-const sitemapLastmod = "2026-06-14";
+const sitemapLastmod = "2026-06-29";
 
 const languages = [
   { code: "en", dir: "", flag: "gb.svg", name: "EN" },
@@ -85,20 +85,23 @@ const localeUrl = (currentDir, targetDir, fileName = "index.html") => {
     if (targetDir) return `${prefix}${targetDir}/`;
     return currentDir ? "../" : "./";
   }
-  return targetDir ? `${prefix}${targetDir}/${fileName}` : `${prefix}${fileName}`;
+  const clean = fileName.replace(/\.html$/, "");
+  return targetDir ? `${prefix}${targetDir}/${clean}` : `${prefix}${clean}`;
 };
 
 const localeFileUrl = (currentDir, targetDir, fileName) => {
   const prefix = currentDir ? "../" : "";
-  return targetDir ? `${prefix}${targetDir}/${fileName}` : `${prefix}${fileName}`;
+  const clean = fileName.replace(/\.html$/, "");
+  return targetDir ? `${prefix}${targetDir}/${clean}` : `${prefix}${clean}`;
 };
 
 const pagePath = (dir, fileName = "index.html") => {
   const prefix = dir ? `${dir}/` : "";
-  return `${prefix}${fileName}`;
+  const clean = fileName.replace(/\.html$/, "");
+  return `${prefix}${clean}`;
 };
 
-const supportUrlFor = (dir, code) => (code === "zh" || !dir ? "support.html" : "../support.html");
+const supportUrlFor = (dir, code) => (code === "zh" || !dir ? "support" : "../support");
 
 const marketingPages = {
   "index.html": {
@@ -160,11 +163,11 @@ const writePage = ({ code, dir, flag, name }, fileName = "index.html") => {
     base,
     canonicalUrl,
     homeUrl: "./",
-    extensionUrl: "extension.html",
-    proUrl: "pro.html",
+    extensionUrl: "extension",
+    proUrl: "pro",
     appUrl: `${base}app/`,
-    privacyUrl: "privacy.html",
-    termsUrl: "terms.html",
+    privacyUrl: "privacy",
+    termsUrl: "terms",
     supportUrl: supportUrlFor(dir, code),
     currentFlag: `${base}assets/flags/${flag}`,
     languageName: name,
@@ -212,12 +215,12 @@ const writeSupportPage = ({ code, dir, flag, name }) => {
     base,
     canonicalUrl,
     homeUrl: "./",
-    extensionUrl: "extension.html",
-    proUrl: "pro.html",
+    extensionUrl: "extension",
+    proUrl: "pro",
     appUrl: `${base}app/`,
-    privacyUrl: "privacy.html",
-    termsUrl: "terms.html",
-    supportUrl: "support.html",
+    privacyUrl: "privacy",
+    termsUrl: "terms",
+    supportUrl: "support",
     currentFlag: `${base}assets/flags/${flag}`,
     languageName: name,
     localeUrlEn: localeFileUrl(dir, "", "support.html"),

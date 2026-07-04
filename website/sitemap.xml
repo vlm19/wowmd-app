@@ -2,223 +2,223 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wowmd.app/app/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://wowmd.app/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/extension.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/extension</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/pro.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/pro</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/support.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/support</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/privacy.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/privacy</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/terms.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/terms</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://wowmd.app/zh/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/zh/extension.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/zh/extension</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/zh/pro.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/zh/pro</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/zh/support.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/zh/support</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/zh/privacy.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/zh/privacy</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/zh/terms.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/zh/terms</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://wowmd.app/ja/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ja/extension.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ja/extension</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ja/pro.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ja/pro</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ja/support.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ja/support</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ja/privacy.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ja/privacy</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ja/terms.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ja/terms</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://wowmd.app/ko/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ko/extension.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ko/extension</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ko/pro.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ko/pro</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ko/support.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ko/support</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ko/privacy.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ko/privacy</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/ko/terms.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/ko/terms</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://wowmd.app/de/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/de/extension.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/de/extension</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/de/pro.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/de/pro</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/de/support.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/de/support</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/de/privacy.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/de/privacy</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/de/terms.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/de/terms</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://wowmd.app/fr/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/fr/extension.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/fr/extension</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/fr/pro.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/fr/pro</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/fr/support.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/fr/support</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/fr/privacy.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/fr/privacy</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wowmd.app/fr/terms.html</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://wowmd.app/fr/terms</loc>
+    <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>

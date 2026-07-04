@@ -7,20 +7,20 @@
     <meta name="description" content="A Chrome extension that makes long GitHub Markdown pages easier to navigate, scan, and read. Open and read only; annotations and export live in wowMD Pro.">
     <meta name="robots" content="index,follow">
     <meta name="theme-color" content="#1e1e1c">
-    <link rel="canonical" href="https://wowmd.app/extension.html">
-    <link rel="alternate" hreflang="en" href="https://wowmd.app/extension.html">
-    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/extension.html">
-    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/extension.html">
-    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/extension.html">
-    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/extension.html">
-    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/extension.html">
-    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/extension.html">
+    <link rel="canonical" href="https://wowmd.app/extension">
+    <link rel="alternate" hreflang="en" href="https://wowmd.app/extension">
+    <link rel="alternate" hreflang="zh" href="https://wowmd.app/zh/extension">
+    <link rel="alternate" hreflang="ja" href="https://wowmd.app/ja/extension">
+    <link rel="alternate" hreflang="ko" href="https://wowmd.app/ko/extension">
+    <link rel="alternate" hreflang="de" href="https://wowmd.app/de/extension">
+    <link rel="alternate" hreflang="fr" href="https://wowmd.app/fr/extension">
+    <link rel="alternate" hreflang="x-default" href="https://wowmd.app/extension">
     <link rel="icon" href="assets/brand/logo-mark.svg" type="image/svg+xml">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="wowMD">
     <meta property="og:title" content="wowMD - Chrome extension for readable GitHub Markdown">
     <meta property="og:description" content="Open and read long GitHub Markdown with outline, folding, code highlighting, and table scrolling.">
-    <meta property="og:url" content="https://wowmd.app/extension.html">
+    <meta property="og:url" content="https://wowmd.app/extension">
     <meta property="og:image" content="https://wowmd.app/assets/hero-demo-poster.jpg">
     <meta property="og:image:alt" content="wowMD extension reader preview">
     <meta name="twitter:card" content="summary_large_image">
@@ -31,12 +31,12 @@
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "@id": "https://wowmd.app/extension.html#software",
+        "@id": "https://wowmd.app/extension#software",
         "name": "wowMD Chrome Extension",
         "applicationCategory": "BrowserApplication",
         "operatingSystem": "Chrome",
         "description": "A free Chrome extension that turns public GitHub Markdown pages into structured reading views.",
-        "url": "https://wowmd.app/extension.html",
+        "url": "https://wowmd.app/extension",
         "image": "https://wowmd.app/assets/hero-demo-poster.jpg",
         "isAccessibleForFree": true,
         "inLanguage": ["en", "zh", "ja", "ko", "de", "fr"],
@@ -69,7 +69,7 @@
         <a href="#features">Features</a>
         <a href="#scope">Scope</a>
         <a href="#privacy">Privacy</a>
-        <a class="nav-pro" href="pro.html">wowMD Pro</a>
+        <a class="nav-pro" href="pro">wowMD Pro</a>
       </nav>
       <div class="language-picker" data-language-picker>
         <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
@@ -77,12 +77,12 @@
           <span class="language-arrow" aria-hidden="true"></span>
         </button>
         <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
-          <a role="option" data-language-option="en" href="extension.html" aria-selected="true"><img class="flag" src="assets/flags/gb.svg" alt=""><span>English</span></a>
-          <a role="option" data-language-option="zh" href="zh/extension.html"><img class="flag" src="assets/flags/cn.svg" alt=""><span>Chinese</span></a>
-          <a role="option" data-language-option="ja" href="ja/extension.html"><img class="flag" src="assets/flags/jp.svg" alt=""><span>Japanese</span></a>
-          <a role="option" data-language-option="ko" href="ko/extension.html"><img class="flag" src="assets/flags/kr.svg" alt=""><span>Korean</span></a>
-          <a role="option" data-language-option="de" href="de/extension.html"><img class="flag" src="assets/flags/de.svg" alt=""><span>Deutsch</span></a>
-          <a role="option" data-language-option="fr" href="fr/extension.html"><img class="flag" src="assets/flags/fr.svg" alt=""><span>French</span></a>
+          <a role="option" data-language-option="en" href="extension" aria-selected="true"><img class="flag" src="assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="zh/extension"><img class="flag" src="assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="ja/extension"><img class="flag" src="assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="ko/extension"><img class="flag" src="assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="de/extension"><img class="flag" src="assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="fr/extension"><img class="flag" src="assets/flags/fr.svg" alt=""><span>French</span></a>
         </div>
       </div>
     </header>
@@ -95,7 +95,7 @@
           <p class="hero-subtitle">The extension opens supported GitHub Markdown pages in a calmer reader with outline, folding, readable code, and scrollable tables. It is intentionally scoped to Open and Read only.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://chromewebstore.google.com/detail/wowmd/lphibgbpadkfdmhilejjcomoomgkkjmh" target="_blank" rel="noreferrer">Add to Chrome</a>
-            <a class="button button-secondary" href="pro.html">Need annotations?</a>
+            <a class="button button-secondary" href="pro">Need annotations?</a>
           </div>
           <div class="hero-badges" aria-label="Extension facts">
             <span>GitHub Markdown</span>
@@ -176,7 +176,7 @@
             <h2 id="extension-pro-title">Need local files, typed annotations, the Understanding Map, or export?</h2>
             <p>wowMD Pro adds the full local-first review workflow. The extension stays focused on GitHub reading.</p>
           </div>
-          <a class="button button-primary" href="pro.html">Explore wowMD Pro</a>
+          <a class="button button-primary" href="pro">Explore wowMD Pro</a>
         </div>
       </section>
     </main>
@@ -187,9 +187,9 @@
         <p>Chrome extension</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
-        <a href="privacy.html">Privacy</a>
-        <a href="terms.html">Terms</a>
-        <a class="support-link" href="support.html">Support</a>
+        <a href="privacy">Privacy</a>
+        <a href="terms">Terms</a>
+        <a class="support-link" href="support">Support</a>
       </nav>
     </footer>
     <script src="script.js?v=20260601-rebuild"></script>

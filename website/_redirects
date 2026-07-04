@@ -2,26 +2,18 @@
 /import /app/index.html 200
 /reader/* /app/index.html 200
 
-# Redirect old feedback.html pages (removed from sitemap, were meta-refresh pages)
-/feedback.html /support.html 301
-/zh/feedback.html /zh/support.html 301
-/ja/feedback.html /ja/support.html 301
-/ko/feedback.html /ko/support.html 301
-/de/feedback.html /de/support.html 301
-/fr/feedback.html /fr/support.html 301
+# Redirect old feedback URLs to support page
+/feedback.html /support 301
+/zh/feedback.html /zh/support 301
+/ja/feedback.html /ja/support 301
+/ko/feedback.html /ko/support 301
+/de/feedback.html /de/support 301
+/fr/feedback.html /fr/support 301
 
 # Redirect extensionless feedback URLs
-/feedback /support.html 301
-/zh/feedback /zh/support.html 301
-/ja/feedback /ja/support.html 301
-/ko/feedback /ko/support.html 301
-/de/feedback /de/support.html 301
-/fr/feedback /fr/support.html 301
-
-# Canonical index.html to directory (Cloudflare already does this, made explicit)
-/index.html / 301
-/zh/index.html /zh/ 301
-/ja/index.html /ja/ 301
-/ko/index.html /ko/ 301
-/de/index.html /de/ 301
-/fr/index.html /fr/ 301
+/feedback /support 301
+/zh/feedback /zh/support 301
+/ja/feedback /ja/support 301
+/ko/feedback /ko/support 301
+/de/feedback /de/support 301
+/fr/feedback /fr/support 301
