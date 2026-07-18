@@ -2932,6 +2932,23 @@ h3 {
 }
 
 /* =============================================
+   Home FAQ Section (Landing Page)
+   ============================================= */
+
+.home-faq {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 64px 24px 16px;
+}
+
+.home-faq h2 {
+  margin: 0 0 12px;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* =============================================
    Bottom CTA Section (Pro Page)
    ============================================= */
 

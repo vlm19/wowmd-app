@@ -73,7 +73,7 @@
       }
     </script>
     <link rel="stylesheet" href="{{base}}assets/icons/tabler-icons.min.css">
-    <link rel="stylesheet" href="{{base}}styles.css?v=20260601-ext-zoom">
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260718-seo">
   </head>
   <body class="site-v2 landing-v2">
     <header class="site-header v2-header">
@@ -215,6 +215,18 @@
           </article>
         </div>
       </section>
+
+      <section class="home-faq" aria-labelledby="home-faq-title" itemscope itemtype="https://schema.org/FAQPage">
+        <h2 id="home-faq-title" data-i18n="landing.faqTitle">Frequently asked questions</h2>
+        <div class="faq-list">
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name" data-i18n="landing.faqWhatQ">What is wowMD?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text" data-i18n="landing.faqWhatA">wowMD is a local-first review layer for long Markdown. You read with structure, judge passages with four review types, keep annotations anchored as files change, and export the result for people, Obsidian, backup, or AI — without modifying the original file.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name" data-i18n="landing.faqFreeQ">Is wowMD free?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text" data-i18n="landing.faqFreeA">Yes, during beta. The Chrome extension is free, and wowMD Pro is free while in beta.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name" data-i18n="landing.faqUploadQ">Is my Markdown uploaded to a server?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text" data-i18n="landing.faqUploadA">No. Local files are processed in your browser, annotations are stored in browser site data, and exports only happen when you choose them. wowMD never modifies or uploads the original file.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name" data-i18n="landing.faqDiffQ">What is the difference between the Chrome extension and wowMD Pro?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text" data-i18n="landing.faqDiffA">The extension turns public GitHub Markdown pages into a structured reader with outline, folding, code, and table support. wowMD Pro is the full review workspace for local Markdown files: typed annotations, notes, cross-version anchoring, an Overall Review Map, and four export formats.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name" data-i18n="landing.faqExportQ">What can wowMD Pro export?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text" data-i18n="landing.faqExportA">Four outputs for different readers: offline HTML for people, reviewed Markdown for Obsidian, Backup JSON for annotation backup and re-import, and Ticket JSON as a structured work order for an AI tool or editor.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name" data-i18n="landing.faqAiQ">Does wowMD use AI?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text" data-i18n="landing.faqAiA">wowMD does not run AI analysis on your documents. AI is optional and external: you can export a Ticket JSON and decide yourself whether to hand it to an AI tool for revision.</p></div></div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -227,7 +239,7 @@
         <a class="support-link" href="{{supportUrl}}" data-i18n="landing.footerSupport">Support</a>
       </nav>
     </footer>
-    <script src="{{base}}script.js?v=20260601-ext-zoom"></script>
+    <script src="{{base}}script.js?v=20260718-seo"></script>
     <script>
       (function () {
         var stage = document.querySelector('.aflow');

@@ -73,7 +73,7 @@
       }
     </script>
     <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
-    <link rel="stylesheet" href="../styles.css?v=20260601-ext-zoom">
+    <link rel="stylesheet" href="../styles.css?v=20260718-seo">
   </head>
   <body class="site-v2 landing-v2">
     <header class="site-header v2-header">
@@ -215,6 +215,18 @@
           </article>
         </div>
       </section>
+
+      <section class="home-faq" aria-labelledby="home-faq-title" itemscope itemtype="https://schema.org/FAQPage">
+        <h2 id="home-faq-title">자주 묻는 질문</h2>
+        <div class="faq-list">
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">wowMD란 무엇인가요?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD는 로컬 우선 장문 Markdown 검토 레이어입니다. 구조화된 읽기, 네 가지 검토 유형으로 구절 판단, 파일 변경에 따른 주석 앵커 유지, 그리고 사람·Obsidian·백업·AI를 위한 결과 내보내기를 지원합니다. 원본 파일은 수정하지 않습니다.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">wowMD는 무료인가요?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">네, 베타 기간 동안 무료입니다. Chrome 확장은 무료이며, wowMD Pro도 베타 기간 동안 무료입니다.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">제 Markdown이 서버에 업로드되나요?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">아니요. 로컬 파일은 브라우저에서 처리되고, 주석은 브라우저 사이트 데이터에 저장되며, 내보내기는 직접 선택할 때만 실행됩니다. wowMD는 원본 파일을 수정하거나 업로드하지 않습니다.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Chrome 확장과 wowMD Pro의 차이점은 무엇인가요?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">확장은 공개 GitHub Markdown 페이지를 개요, 접기, 코드, 표를 지원하는 구조화된 리더로 바꿔줍니다. wowMD Pro는 로컬 Markdown 파일을 위한 완전한 검토 작업 공간으로, 유형화된 주석, 노트, 버전 간 앵커링, Overall Review Map, 네 가지 내보내기 형식을 제공합니다.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">wowMD Pro는 무엇을 내보낼 수 있나요?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">독자별 네 가지 출력: 사람을 위한 오프라인 HTML, Obsidian용 검토된 Markdown, 주석 백업 및 재가져오기용 Backup JSON, AI 도구나 편집자에게 전달하는 구조화된 작업 지시서인 Ticket JSON입니다.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">wowMD는 AI를 사용하나요?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD는 문서에 대해 AI 분석을 실행하지 않습니다. AI는 선택 사항이며 외부에서 이루어집니다. Ticket JSON을 내보내고 AI 도구에 전달할지 여부는 직접 결정합니다.</p></div></div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -227,7 +239,7 @@
         <a class="support-link" href="../support">지원</a>
       </nav>
     </footer>
-    <script src="../script.js?v=20260601-ext-zoom"></script>
+    <script src="../script.js?v=20260718-seo"></script>
     <script>
       (function () {
         var stage = document.querySelector('.aflow');

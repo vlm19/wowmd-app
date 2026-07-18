@@ -73,7 +73,7 @@
       }
     </script>
     <link rel="stylesheet" href="../assets/icons/tabler-icons.min.css">
-    <link rel="stylesheet" href="../styles.css?v=20260601-ext-zoom">
+    <link rel="stylesheet" href="../styles.css?v=20260718-seo">
   </head>
   <body class="site-v2 landing-v2">
     <header class="site-header v2-header">
@@ -215,6 +215,18 @@
           </article>
         </div>
       </section>
+
+      <section class="home-faq" aria-labelledby="home-faq-title" itemscope itemtype="https://schema.org/FAQPage">
+        <h2 id="home-faq-title">Questions fréquentes</h2>
+        <div class="faq-list">
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Qu'est-ce que wowMD ?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD est une couche de révision locale pour les longs documents Markdown. Vous lisez avec structure, jugez les passages avec quatre types de révision, les annotations restent ancrées quand le fichier change, puis vous exportez le résultat pour des personnes, Obsidian, une sauvegarde ou une IA — sans modifier le fichier original.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">wowMD est-il gratuit ?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Oui, pendant la bêta. L'extension Chrome est gratuite, et wowMD Pro est gratuit pendant la bêta.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Mon Markdown est-il envoyé sur un serveur ?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Non. Les fichiers locaux sont traités dans votre navigateur, les annotations sont stockées dans les données de site du navigateur, et les exports n'ont lieu que lorsque vous les lancez. wowMD ne modifie ni ne téléverse jamais le fichier original.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Quelle est la différence entre l'extension Chrome et wowMD Pro ?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">L'extension transforme les pages Markdown publiques de GitHub en un lecteur structuré avec plan, pliage, code et tableaux. wowMD Pro est l'espace de révision complet pour les fichiers Markdown locaux : annotations typées, notes, ancrage entre versions, Overall Review Map et quatre formats d'export.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Que peut exporter wowMD Pro ?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Quatre sorties selon le lecteur : HTML hors ligne pour les personnes, Markdown révisé pour Obsidian, Backup JSON pour sauvegarder et réimporter les annotations, et Ticket JSON comme ordre de travail structuré pour un outil IA ou un éditeur.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">wowMD utilise-t-il l'IA ?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD n'exécute aucune analyse IA sur vos documents. L'IA est optionnelle et externe : vous pouvez exporter un Ticket JSON et décider vous-même de le confier à un outil IA pour révision.</p></div></div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -227,7 +239,7 @@
         <a class="support-link" href="../support">Support</a>
       </nav>
     </footer>
-    <script src="../script.js?v=20260601-ext-zoom"></script>
+    <script src="../script.js?v=20260718-seo"></script>
     <script>
       (function () {
         var stage = document.querySelector('.aflow');

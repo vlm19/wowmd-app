@@ -73,7 +73,7 @@
       }
     </script>
     <link rel="stylesheet" href="assets/icons/tabler-icons.min.css">
-    <link rel="stylesheet" href="styles.css?v=20260601-ext-zoom">
+    <link rel="stylesheet" href="styles.css?v=20260718-seo">
   </head>
   <body class="site-v2 landing-v2">
     <header class="site-header v2-header">
@@ -215,6 +215,18 @@
           </article>
         </div>
       </section>
+
+      <section class="home-faq" aria-labelledby="home-faq-title" itemscope itemtype="https://schema.org/FAQPage">
+        <h2 id="home-faq-title">Frequently asked questions</h2>
+        <div class="faq-list">
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">What is wowMD?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD is a local-first review layer for long Markdown. You read with structure, judge passages with four review types, keep annotations anchored as files change, and export the result for people, Obsidian, backup, or AI — without modifying the original file.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Is wowMD free?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Yes, during beta. The Chrome extension is free, and wowMD Pro is free while in beta.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Is my Markdown uploaded to a server?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">No. Local files are processed in your browser, annotations are stored in browser site data, and exports only happen when you choose them. wowMD never modifies or uploads the original file.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">What is the difference between the Chrome extension and wowMD Pro?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">The extension turns public GitHub Markdown pages into a structured reader with outline, folding, code, and table support. wowMD Pro is the full review workspace for local Markdown files: typed annotations, notes, cross-version anchoring, an Overall Review Map, and four export formats.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">What can wowMD Pro export?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Four outputs for different readers: offline HTML for people, reviewed Markdown for Obsidian, Backup JSON for annotation backup and re-import, and Ticket JSON as a structured work order for an AI tool or editor.</p></div></div>
+          <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">Does wowMD use AI?</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD does not run AI analysis on your documents. AI is optional and external: you can export a Ticket JSON and decide yourself whether to hand it to an AI tool for revision.</p></div></div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -227,7 +239,7 @@
         <a class="support-link" href="support">Support</a>
       </nav>
     </footer>
-    <script src="script.js?v=20260601-ext-zoom"></script>
+    <script src="script.js?v=20260718-seo"></script>
     <script>
       (function () {
         var stage = document.querySelector('.aflow');

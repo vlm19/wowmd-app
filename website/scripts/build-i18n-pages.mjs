@@ -11,7 +11,7 @@ const termsTemplatePath = path.join(root, "terms-template.html");
 const supportTemplatePath = path.join(root, "support-template.html");
 const i18nDir = path.join(root, "i18n");
 const siteUrl = "https://wowmd.app";
-const sitemapLastmod = "2026-06-29";
+const sitemapLastmod = "2026-07-18";
 
 const languages = [
   { code: "en", dir: "", flag: "gb.svg", name: "EN" },

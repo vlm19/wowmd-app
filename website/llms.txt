@@ -99,7 +99,7 @@ original Markdown file.
 
 ### wowMD Chrome Extension
 
-URL: https://wowmd.app/extension.html
+URL: https://wowmd.app/extension
 
 The Chrome extension is the free entry point for public GitHub Markdown reading.
 
@@ -291,12 +291,12 @@ The public website and web app support:
 ## Main URLs
 
 - Home: https://wowmd.app/
-- wowMD Pro: https://wowmd.app/pro.html
+- wowMD Pro: https://wowmd.app/pro
 - Web app: https://wowmd.app/app/
-- Chrome extension: https://wowmd.app/extension.html
-- Support and feedback: https://wowmd.app/support.html#feedback
-- Privacy: https://wowmd.app/privacy.html
-- Terms: https://wowmd.app/terms.html
+- Chrome extension: https://wowmd.app/extension
+- Support and feedback: https://wowmd.app/support#feedback
+- Privacy: https://wowmd.app/privacy
+- Terms: https://wowmd.app/terms
 - Sitemap: https://wowmd.app/sitemap.xml
 
 Localized public pages are available under:
@@ -362,4 +362,4 @@ themselves, or Ticket JSON for an AI/editor to execute.
 
 Use the support and feedback page:
 
-https://wowmd.app/support.html#feedback
+https://wowmd.app/support#feedback

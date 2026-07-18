@@ -293,13 +293,13 @@ Ticket JSON?
           </form>
         </section>
 
-        <section class="doc-section" id="faq">
+        <section class="doc-section" id="faq" itemscope itemtype="https://schema.org/FAQPage">
           <h2>常见问题与故障排除</h2>
           <div class="faq-list">
-            <div class="faq-item"><button class="faq-question" type="button">我修改文件后，高亮位置变了。发生了什么？</button><div class="faq-answer"><p>wowMD 在源文件变化时会重新锚定标注。如果某段文字无法找到，可使用笔记面板的 Find 功能手动恢复。</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">有任何数据被上传吗？</button><div class="faq-answer"><p>没有。审阅工作流是本地优先的。文件和标注保留在你的浏览器中，除非你自己导出并分享它们。</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">清除浏览器数据后，已保存工作还能保留吗？</button><div class="faq-answer"><p>不能。已保存标注和导入的文档副本使用浏览器站点数据。清除站点数据或迁移到其他浏览器、配置文件或设备前，请导出备份 JSON 和完成的审阅产物。</p></div></div>
-            <div class="faq-item"><button class="faq-question" type="button">我应该使用哪种导出？</button><div class="faq-answer"><p>HTML 给人阅读；审阅版 Markdown 给 Obsidian；备份 JSON 用于备份或重新导入标注数据；当你希望 AI 或编辑根据你的类型化判断执行操作时，使用工单 JSON。</p></div></div>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">我修改文件后，高亮位置变了。发生了什么？</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">wowMD 在源文件变化时会重新锚定标注。如果某段文字无法找到，可使用笔记面板的 Find 功能手动恢复。</p></div></div>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">有任何数据被上传吗？</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">没有。审阅工作流是本地优先的。文件和标注保留在你的浏览器中，除非你自己导出并分享它们。</p></div></div>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">清除浏览器数据后，已保存工作还能保留吗？</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">不能。已保存标注和导入的文档副本使用浏览器站点数据。清除站点数据或迁移到其他浏览器、配置文件或设备前，请导出备份 JSON 和完成的审阅产物。</p></div></div>
+            <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><button class="faq-question" type="button" itemprop="name">我应该使用哪种导出？</button><div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">HTML 给人阅读；审阅版 Markdown 给 Obsidian；备份 JSON 用于备份或重新导入标注数据；当你希望 AI 或编辑根据你的类型化判断执行操作时，使用工单 JSON。</p></div></div>
           </div>
         </section>
       </main>
