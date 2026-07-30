@@ -2,6 +2,13 @@
 
 wowMD is a local-first Markdown reading and review product.
 
+## Open Source
+
+The source code in this repository is licensed under [Apache License 2.0](LICENSE).
+See [NOTICE](NOTICE) for required attribution and [TRADEMARKS.md](TRADEMARKS.md)
+for the separate rules governing the wowMD name and visual identity. The license
+does not grant the right to present a fork as the official wowMD product.
+
 The repo contains the public website, the wowMD Pro web app, Cloudflare Pages
 Functions, and the generated `/app/` deployment output. The product is currently
 in beta and is free during the beta period.
@@ -181,6 +188,12 @@ Before shipping a change:
 4. Run `npm.cmd run verify` in `website/`.
 5. For UI changes, use Playwright or browser screenshots on desktop and mobile.
 6. Confirm localized pages, feedback links, and sitemap output are current.
+
+## Contributing and Security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development and contribution
+workflow. Security reports should follow [SECURITY.md](SECURITY.md); do not
+publish exploitable details in a public issue.
 
 ## Privacy And Safety Boundaries
 

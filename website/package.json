@@ -1,6 +1,7 @@
 {
   "name": "wowmd-website",
   "private": true,
+  "license": "Apache-2.0",
   "description": "wowMD marketing site. Cloudflare Pages build entry: regenerates localized HTML from templates + i18n JSON.",
   "engines": {
     "node": ">=18"

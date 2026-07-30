@@ -1,0 +1,10 @@
+wowMD
+Copyright 2026 wowMD contributors
+
+This product includes third-party components under their respective licenses.
+Notable runtime dependencies include React, DOMPurify, highlight.js, markdown-it,
+and fflate. Their complete license information is available in the dependency
+metadata installed from the lockfiles.
+
+The source code in this repository is licensed under the Apache License, Version
+2.0. See LICENSE for the complete terms.
