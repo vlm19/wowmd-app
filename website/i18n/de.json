@@ -1,4 +1,8 @@
 {
+  "openSourceNotice.label": "Open Source",
+  "openSourceNotice.body": "wowMD ist jetzt unter Apache-2.0 Open Source.",
+  "openSourceNotice.github": "Code auf GitHub ansehen",
+  "openSourceNotice.dismiss": "Open-Source-Hinweis schließen",
   "support.sidebarOpen": "Öffnen & Quelle schützen",
   "support.sidebarStorage": "Speicher & Wiederherstellung",
   "support.openTitle": "Markdown öffnen, ohne das Original zu ändern",

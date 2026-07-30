@@ -1,209 +1,234 @@
 # wowMD
 
-wowMD is a local-first Markdown reading and review product.
+[English](#english) · [简体中文](#简体中文)
 
-## Open Source
+## English
 
-The source code in this repository is licensed under [Apache License 2.0](LICENSE).
-See [NOTICE](NOTICE) for required attribution and [TRADEMARKS.md](TRADEMARKS.md)
-for the separate rules governing the wowMD name and visual identity. The license
-does not grant the right to present a fork as the official wowMD product.
+### What it is
 
-The repo contains the public website, the wowMD Pro web app, Cloudflare Pages
-Functions, and the generated `/app/` deployment output. The product is currently
-in beta and is free during the beta period.
+wowMD is a local-first Markdown reader and review workspace. This repository
+contains the public website, the wowMD Pro web app, Cloudflare Pages Functions,
+and the generated `/app/` deployment output. The product is in beta and is free
+during beta.
 
-## Current Status
+### Open source and trademarks
 
-- **Beta:** the website and web app show a small orange Beta label next to the
-  wowMD logo.
-- **Pricing:** wowMD Pro remains free during beta.
-- **Data boundary:** local Markdown documents are processed in the browser. The
-  app may store local reading copies, annotations, versions, settings, and
-  dismissals in browser storage, but it does not modify the user's original
-  Markdown files.
-- **Reader beta notice:** when a user opens a real local Markdown document or a
-  Markdown document handed off into the web app, the reader shows a dismissible
-  beta notice. It links to the localized feedback page and explains that the
-  original Markdown document is not affected even if the app crashes.
-- **Feedback:** website feedback is handled by Cloudflare Pages Functions and
-  Cloudflare D1 through `website/functions/api/feedback.js`.
-- **D1:** the `wowmd-feedback` D1 binding is configured in
-  `website/wrangler.toml`. A live API smoke test has succeeded, but direct D1
-  console queries still need authenticated Cloudflare access.
+The source code is licensed under [Apache License 2.0](LICENSE). See
+[NOTICE](NOTICE) for required attribution and [TRADEMARKS.md](TRADEMARKS.md)
+for the separate rules for the wowMD name and visual identity. The license does
+not grant permission to represent a fork as the official wowMD product.
 
-## Products
+### Current capabilities
 
-### wowMD Pro Web App (`app/`)
+#### wowMD Pro web app (`app/`)
 
-React + Vite + TypeScript SPA for reading and reviewing Markdown locally.
+- Open local `.md` and `.markdown` files by picker or drag-and-drop.
+- Import public GitHub Markdown only through an explicit, allowlisted
+  `https://raw.githubusercontent.com/...` route.
+- Read with an outline, in-document search, code highlighting and copy,
+  table scrolling, H2 folding, light/dark themes, and adjustable reader,
+  outline, and font settings.
+- Add typed review annotations (`clarify`, `dispute`, `important`, and
+  `confirmed`), notes, suggested replacements, and document context.
+- Persist browser-local document copies, annotations, settings, and version
+  lineage; re-anchor annotations when a document changes.
+- Inspect an overall review map and version relationships.
+- Export self-contained HTML, reviewed Markdown for an Obsidian-compatible
+  workflow, annotation backup JSON, and structured ticket JSON for an optional
+  external revision workflow.
+- Use English, Simplified Chinese, Japanese, Korean, German, or French.
 
-Core capabilities:
+License and trial helper code remains in the app, but the feature gate is
+currently disabled for beta (`LICENSE_FEATURE_ENABLED = false`). It does not
+currently restrict local-file opening or supported exports. EPUB export code is
+experimental and is not exposed as a supported UI path; HTML is the supported
+document export format.
 
-- Open `.md` and `.markdown` files by picker or drag-and-drop.
-- Open public GitHub Markdown from the extension handoff/import route.
-- Read with outline navigation, search, code highlighting, code copy, table
-  scrolling, section folding, light/dark themes, and adjustable reader sizes.
-- Annotate selected text with typed review marks, notes, suggested replacements,
-  document context, and re-anchoring metadata.
-- Persist annotations, local document snapshots, reviewed copies, versions, and
-  settings in browser storage.
-- Export self-contained HTML with structure, highlights, and notes.
-- Export structured review/ticket JSON for optional downstream AI or workflow
-  handoff.
-- Show an understanding map for review status and unresolved work.
-- Provide a localized feedback link from reader and export surfaces.
+#### Public website (`website/`)
 
-The app supports six UI locales:
+The static Cloudflare Pages site has generated localized pages for English,
+Simplified Chinese, Japanese, Korean, German, and French. It includes landing,
+Pro, extension, support/feedback, privacy, and terms pages. A small,
+dismissible open-source notice links to this repository on the landing, Pro,
+and support pages.
 
-- English (`en`)
-- Simplified Chinese (`zh`)
-- Japanese (`ja`)
-- Korean (`ko`)
-- German (`de`)
-- French (`fr`)
+The Chrome extension is maintained outside this repository. The website
+describes it as a public-GitHub-Markdown entry point that can hand a document
+off to the web app.
 
-All app locale dictionaries are expected to have complete key coverage.
+### Data and network boundaries
 
-### Public Website (`website/`)
+- Local Markdown is processed in the browser; the web app does not overwrite
+  the original file on disk.
+- Local reading copies, annotations, reviewed copies, versions, and settings
+  can be stored in browser storage.
+- GitHub content is fetched only after an explicit import request for an
+  allowlisted raw GitHub URL.
+- The public website uses Google Analytics and its feedback form submits to
+  Cloudflare Pages Functions backed by Cloudflare D1. See the published
+  [privacy policy](website/privacy.html) for the current disclosure.
 
-Static Cloudflare Pages site with generated localized HTML.
-
-Source templates:
-
-- `landing-template.html`
-- `template.html`
-- `pro-template.html`
-- `support-template.html`
-- `privacy-template.html`
-- `terms-template.html`
-- `feedback-template.html`
-
-Generated pages include English root pages plus localized directories for
-Chinese, Japanese, Korean, German, and French. The sitemap is generated by
-`website/scripts/build-i18n-pages.mjs`.
-
-Main pages:
-
-| Page | Path |
-| --- | --- |
-| Landing | `/` |
-| Pro | `/pro.html` |
-| Extension | `/extension.html` |
-| Support and feedback | `/support.html#feedback` |
-| Privacy | `/privacy.html` |
-| Terms | `/terms.html` |
-| Web app | `/app/` |
-
-### Chrome Extension
-
-The extension is maintained outside this repo. The website describes it as the
-free GitHub Markdown entry point for wowMD:
-
-- Better View on public GitHub Markdown pages.
-- Reader view with outline, folding, code highlighting, and table handling.
-- Continue in Pro to open the document in the full web app.
-
-## Repository Layout
+### Repository layout
 
 ```text
 wowmd-app/
-  app/                         React/Vite web app source
-    src/
-      App.tsx                  Main app shell and reader/license/export routing
-      App.css                  Web app styling
-      ExportWorkspace.tsx      Lazy-loaded export workspace
-      i18n.ts                  6-locale app translations
-      markdown.ts              Markdown rendering, TOC, fingerprinting
-      annotations.ts           Annotation model, storage, and re-anchoring
-      exportHtml.ts            Self-contained HTML export builder
-      importService.ts         GitHub Markdown import service
-      localDocuments.ts        IndexedDB local document storage
-      license.ts               Beta/license gate model
-      search.ts                In-document search highlighting
-      fold.ts                  Section folding
-  website/                     Cloudflare Pages root
-    app/                       Built web app output from app/vite.config.ts
-    functions/                 Cloudflare Pages Functions
-    i18n/                      Website locale JSON files
-    scripts/                   I18n page generation and guards
-    styles.css                 Website styling
-    sitemap.xml                Generated sitemap
-    wrangler.toml              Pages + D1 binding config
+  app/                         React, Vite, and TypeScript web-app source
+  website/                     Cloudflare Pages source and deployment root
+    app/                       Generated web-app build output
+    functions/                 Feedback API Pages Function
+    i18n/                      Website locale dictionaries
+    scripts/                   Localized-page generator and guards
   docs/                        Product notes and implementation plans
-  scripts/                     Playwright/helper scripts for local verification
+  scripts/                     Browser and local verification helpers
 ```
 
-## Build And Verification
+### Build and verification
 
 From `app/`:
 
 ```powershell
-npm.cmd run build
+npm.cmd install
 npm.cmd run lint
 npm.cmd run test
+npm.cmd run build
 ```
 
-`npm.cmd run build` compiles the app and writes production assets into
-`website/app/` using Vite's `base: "/app/"`.
+The app build writes production assets to `website/app/` with Vite's
+`base: "/app/"`.
 
 From `website/`:
 
 ```powershell
+npm.cmd install
 npm.cmd run verify
 ```
 
-This regenerates localized pages and runs the i18n guard.
-
-Useful local preview:
+`verify` regenerates localized HTML, the sitemap, and validates locale key
+coverage. For a local static preview:
 
 ```powershell
 python -m http.server 4174 --bind 127.0.0.1 --directory website
 ```
 
-Then open:
+Then open `http://127.0.0.1:4174/` or `http://127.0.0.1:4174/app/`.
+
+### Deployment
+
+- Cloudflare Pages root: `website/`.
+- Do not edit `website/app/` directly; build it from `app/`.
+- Localized website HTML and `sitemap.xml` are generated from templates and
+  `website/i18n/*.json`.
+- Feedback API route: `/api/feedback`; D1 binding: `DB`.
+
+### Contributing and security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow. Report
+security issues according to [SECURITY.md](SECURITY.md), rather than publishing
+exploitable details in a public issue.
+
+## 简体中文
+
+### 项目简介
+
+wowMD 是一款本地优先的 Markdown 阅读与审阅工作区。本仓库包含公开网站、wowMD
+Pro Web 应用、Cloudflare Pages Functions，以及用于部署的生成产物 `/app/`。产品目前
+处于 Beta 阶段，Beta 期间免费使用。
+
+### 开源许可与商标
+
+本仓库源码采用 [Apache License 2.0](LICENSE) 许可；必要的署名说明见
+[NOTICE](NOTICE)。wowMD 名称和视觉标识另受 [TRADEMARKS.md](TRADEMARKS.md) 约束；
+该许可证不授予将分支版本宣称为官方 wowMD 产品的权利。
+
+### 当前功能
+
+#### wowMD Pro Web 应用（`app/`）
+
+- 通过文件选择器或拖放打开本地 `.md`、`.markdown` 文件。
+- 仅通过明确触发且受白名单限制的
+  `https://raw.githubusercontent.com/...` 路径导入公开 GitHub Markdown。
+- 提供目录、文内搜索、代码高亮与复制、表格横向滚动、H2 折叠、明暗主题，以及阅读区、
+  目录和字号设置。
+- 对选中文本添加 `clarify`、`dispute`、`important`、`confirmed` 四类审阅标记、
+  附注、建议替换文本和文档上下文。
+- 在浏览器本地保存文档副本、标注、设置和版本关系；文档变更后可重新锚定标注。
+- 查看整体审阅地图和版本关系。
+- 导出独立 HTML、适用于 Obsidian 工作流的已审阅 Markdown、标注备份 JSON，以及可选的
+  外部修订工作流所需的结构化工单 JSON。
+- 支持英语、简体中文、日语、韩语、德语和法语界面。
+
+应用中仍保留授权与试用相关的辅助代码，但 Beta 阶段的功能开关当前为关闭状态
+（`LICENSE_FEATURE_ENABLED = false`），不会限制本地文件打开或已支持的导出功能。
+EPUB 导出代码属于实验性实现，当前不作为受支持的 UI 功能开放；稳定支持的文档导出格式
+为 HTML。
+
+#### 公开网站（`website/`）
+
+静态 Cloudflare Pages 网站会生成英语、简体中文、日语、韩语、德语和法语页面，包含首页、
+Pro、扩展、支持/反馈、隐私和条款页面。首页、Pro 与支持页会显示一条可关闭的开源公告，
+并链接到本仓库。
+
+Chrome 扩展不在此仓库维护。网站将其描述为公开 GitHub Markdown 的入口，可将文档交给
+Web 应用继续阅读和审阅。
+
+### 数据与网络边界
+
+- 本地 Markdown 在浏览器内处理；Web 应用不会改写磁盘上的原始文件。
+- 本地阅读副本、标注、已审阅副本、版本和设置可保存到浏览器存储中。
+- 仅当用户明确导入经过白名单校验的 GitHub 原始链接时，才会请求 GitHub 内容。
+- 公开网站使用 Google Analytics；反馈表单会提交到由 Cloudflare D1 支持的
+  Cloudflare Pages Functions。以已发布的[隐私政策](website/privacy.html)为准。
+
+### 仓库结构
 
 ```text
-http://127.0.0.1:4174/
-http://127.0.0.1:4174/app/
+wowmd-app/
+  app/                         React、Vite、TypeScript Web 应用源码
+  website/                     Cloudflare Pages 源码与部署根目录
+    app/                       生成的 Web 应用构建产物
+    functions/                 反馈 API Pages Function
+    i18n/                      网站多语言字典
+    scripts/                   多语言页面生成与校验脚本
+  docs/                        产品说明与实现计划
+  scripts/                     浏览器与本地验证工具
 ```
 
-## Deployment Notes
+### 构建与验证
 
-- Cloudflare Pages root is `website/`.
-- `website/app/` is generated output and should not be edited directly.
-- Website localized HTML and `sitemap.xml` are generated from templates and
-  `website/i18n/*.json`.
-- Feedback API route: `/api/feedback`.
-- D1 binding: `DB`.
-- D1 database name: `wowmd-feedback`.
+在 `app/` 中执行：
 
-## Release Checklist
+```powershell
+npm.cmd install
+npm.cmd run lint
+npm.cmd run test
+npm.cmd run build
+```
 
-Before shipping a change:
+应用构建会通过 Vite 的 `base: "/app/"` 写入生产资源到 `website/app/`。
 
-1. Update source files, not generated app assets directly.
-2. Run `npm.cmd run build` in `app/` when the web app changes.
-3. Run `npm.cmd run lint` and `npm.cmd run test` in `app/`.
-4. Run `npm.cmd run verify` in `website/`.
-5. For UI changes, use Playwright or browser screenshots on desktop and mobile.
-6. Confirm localized pages, feedback links, and sitemap output are current.
+在 `website/` 中执行：
 
-## Contributing and Security
+```powershell
+npm.cmd install
+npm.cmd run verify
+```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the development and contribution
-workflow. Security reports should follow [SECURITY.md](SECURITY.md); do not
-publish exploitable details in a public issue.
+`verify` 会重新生成多语言 HTML 和站点地图，并校验翻译键覆盖率。若需本地静态预览：
 
-## Privacy And Safety Boundaries
+```powershell
+python -m http.server 4174 --bind 127.0.0.1 --directory website
+```
 
-wowMD is designed around local-first reading and non-destructive review:
+然后打开 `http://127.0.0.1:4174/` 或 `http://127.0.0.1:4174/app/`。
 
-- Opening a local Markdown file creates a browser-side reading copy.
-- Annotations and local versions are saved in browser storage.
-- The original Markdown file on disk is not modified by the web app.
-- Exports are explicit user actions.
-- Website feedback is the main intentional network submission path.
+### 部署
 
-During beta, users should report anything that affects their experience through
-the feedback page so the product can be improved.
+- Cloudflare Pages 根目录：`website/`。
+- 不要直接编辑 `website/app/`；应从 `app/` 构建生成。
+- 多语言网站 HTML 与 `sitemap.xml` 由模板和 `website/i18n/*.json` 生成。
+- 反馈 API 路径：`/api/feedback`；D1 绑定名：`DB`。
+
+### 参与贡献与安全报告
+
+开发与贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题请按
+[SECURITY.md](SECURITY.md) 报告，不要在公开 issue 中披露可被利用的细节。

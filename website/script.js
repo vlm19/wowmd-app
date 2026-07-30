@@ -10,7 +10,30 @@ const feedbackModalConfirm = document.querySelector("[data-feedback-modal-confir
 const gatewayChoices = document.querySelectorAll(".gateway-choice");
 const zoomImages = document.querySelectorAll("[data-zoom-image]");
 const scenarioBoards = document.querySelectorAll("[data-scenario-board]");
+const openSourceNotice = document.querySelector("[data-open-source-notice]");
+const openSourceNoticeDismiss = document.querySelector("[data-open-source-notice-dismiss]");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const openSourceNoticeStorageKey = "wowmd.openSourceNotice.dismissed.v1";
+
+if (openSourceNotice) {
+  try {
+    openSourceNotice.hidden = window.localStorage.getItem(openSourceNoticeStorageKey) === "true";
+  } catch {
+    // Storage may be unavailable in strict privacy modes; keep the announcement visible.
+  }
+}
+
+openSourceNoticeDismiss?.addEventListener("click", () => {
+  if (!openSourceNotice) return;
+  openSourceNotice.hidden = true;
+
+  try {
+    window.localStorage.setItem(openSourceNoticeStorageKey, "true");
+  } catch {
+    // Hiding for this page view still works when storage is unavailable.
+  }
+});
 
 let headerIsScrolled = false;
 let ticking = false;

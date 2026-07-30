@@ -1,4 +1,8 @@
 {
+  "openSourceNotice.label": "现已开源",
+  "openSourceNotice.body": "wowMD 现已采用 Apache-2.0 开源。",
+  "openSourceNotice.github": "在 GitHub 查看代码",
+  "openSourceNotice.dismiss": "关闭开源公告",
   "support.sidebarOpen": "打开与原文保护",
   "support.sidebarStorage": "存储与恢复",
   "support.openTitle": "打开 Markdown，不改动原文",

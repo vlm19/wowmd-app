@@ -75,7 +75,7 @@
       }
     </script>
     <link rel="stylesheet" href="{{base}}assets/icons/tabler-icons.min.css">
-    <link rel="stylesheet" href="{{base}}styles.css?v=20260718-seo">
+    <link rel="stylesheet" href="{{base}}styles.css?v=20260730-open-source">
   </head>
   <body class="site-v2 landing-v2">
     <header class="site-header v2-header">
@@ -102,6 +102,17 @@
         </div>
       </div>
     </header>
+
+    <aside class="open-source-notice" data-open-source-notice role="status">
+      <div class="open-source-notice-copy">
+        <span class="open-source-notice-label" data-i18n="openSourceNotice.label">Open source</span>
+        <p><span data-i18n="openSourceNotice.body">wowMD is now open source under Apache-2.0.</span> <a href="https://github.com/bg4abs/wowmd-app" target="_blank" rel="noreferrer"><span data-i18n="openSourceNotice.github">View on GitHub</span><span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+      <button class="open-source-notice-dismiss" type="button" data-open-source-notice-dismiss>
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only" data-i18n="openSourceNotice.dismiss">Dismiss open-source announcement</span>
+      </button>
+    </aside>
 
     <main class="v2-wrap home-flow-page">
       <section class="home-hero home-flow-hero" aria-labelledby="landing-title">
@@ -241,7 +252,7 @@
         <a class="support-link" href="{{supportUrl}}" data-i18n="landing.footerSupport">Support</a>
       </nav>
     </footer>
-    <script src="{{base}}script.js?v=20260718-seo"></script>
+    <script src="{{base}}script.js?v=20260730-open-source"></script>
     <script>
       (function () {
         var stage = document.querySelector('.aflow');
