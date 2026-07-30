@@ -35,5 +35,20 @@ test-results/
 output/
 tmp/
 
+# Private product-development material retained only in the local checkout
+/ai_output_verification_business_plan_v2.md
+/ev1.md
+/phase0_prelaunch_plan.md
+/docs/
+/mockups/copy-state-verification.html
+/mockups/export-source-motion-verification.html
+/mockups/highlight-6-color-verification.html
+/mockups/selection-preview-verification.html
+/mockups/v03-import-reader-verification.png
+/mockups/v03-import-reader-verification-2.png
+/mockups/wowmd-loop-animation/renders/wowmd-loop-animation-draft.mp4
+/mockups/wowmd-loop-animation/renders/wowmd-loop-animation-draft-v2.mp4
+/website/screenshots/
+
 # Claude Code machine-local config (keep shared config like launch.json tracked)
 .claude/settings.local.json
