@@ -237,18 +237,6 @@ svg {
   white-space: nowrap;
 }
 
-.beta-badge {
-  position: absolute;
-  left: calc(var(--brand-logo-width) * 0.815 + 0.65em);
-  top: calc(var(--brand-logo-height) * 0.656 - 10px);
-  color: #ff7a1a;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1;
-  text-decoration: none;
-}
-
 .site-nav {
   display: flex;
   align-items: center;

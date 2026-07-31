@@ -578,7 +578,6 @@ function App() {
       <header className="topbar">
         <a className="brand" href="/" aria-label="wowMD home">
           <img src="assets/brand/logo-lockup-outlined.svg" alt="wowMD" />
-          <span className="app-beta-badge">Beta</span>
         </a>
         <div className="topbar-right">
           {document ? (
