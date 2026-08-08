@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found · wowMD</title>
+    <meta name="robots" content="noindex,follow">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="/assets/brand/logo-mark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+      .notfound {
+        max-width: 640px;
+        margin: 0 auto;
+        padding-top: 120px;
+        padding-bottom: 96px;
+        text-align: center;
+      }
+      .notfound-code {
+        margin-bottom: 8px;
+        font-family: var(--font-display);
+        font-size: 88px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--color-text-secondary);
+      }
+      .notfound h1 {
+        margin-bottom: 12px;
+      }
+      .notfound-copy {
+        margin: 0 auto 28px;
+        max-width: 420px;
+        color: var(--color-text-secondary);
+      }
+      .notfound-home {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="logo-link" href="/" aria-label="wowMD home">
+        <img src="/assets/brand/logo-lockup-outlined.svg" alt="wowMD" width="130" height="32">
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-pro" href="/app/">wowMD Pro App</a>
+        <a href="/extension">Extension</a>
+      </nav>
+      <div class="language-picker" data-language-picker>
+        <button class="language-trigger" type="button" id="language-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Language selector">
+          <img class="flag" data-current-flag src="/assets/flags/gb.svg" alt="">
+          <span class="language-arrow" aria-hidden="true"></span>
+        </button>
+        <div class="language-menu" role="listbox" aria-labelledby="language-trigger" hidden>
+          <a role="option" data-language-option="en" href="/" aria-selected="true"><img class="flag" src="/assets/flags/gb.svg" alt=""><span>English</span></a>
+          <a role="option" data-language-option="zh" href="/zh/"><img class="flag" src="/assets/flags/cn.svg" alt=""><span>Chinese</span></a>
+          <a role="option" data-language-option="ja" href="/ja/"><img class="flag" src="/assets/flags/jp.svg" alt=""><span>Japanese</span></a>
+          <a role="option" data-language-option="ko" href="/ko/"><img class="flag" src="/assets/flags/kr.svg" alt=""><span>Korean</span></a>
+          <a role="option" data-language-option="de" href="/de/"><img class="flag" src="/assets/flags/de.svg" alt=""><span>Deutsch</span></a>
+          <a role="option" data-language-option="fr" href="/fr/"><img class="flag" src="/assets/flags/fr.svg" alt=""><span>French</span></a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="notfound" aria-labelledby="notfound-title">
+        <p class="notfound-code" aria-hidden="true">404</p>
+        <h1 id="notfound-title">Page not found</h1>
+        <p class="notfound-copy">The page you are looking for doesn't exist or has moved. Head back to the wowMD home page to keep exploring.</p>
+        <a class="notfound-home" href="/">Back to wowMD home</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/assets/brand/logo-wordmark-outlined.svg" alt="wowMD" width="88" height="24">
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a class="support-link" href="/support">Support</a>
+      </nav>
+    </footer>
+    <script src="/script.js"></script>
+  </body>
+</html>
