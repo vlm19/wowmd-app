@@ -48,13 +48,18 @@ document export format.
 
 The static Cloudflare Pages site has generated localized pages for English,
 Simplified Chinese, Japanese, Korean, German, and French. It includes landing,
-Pro, extension, support/feedback, privacy, and terms pages. A small,
-dismissible open-source notice links to this repository on the landing, Pro,
-and support pages.
+Pro, extension, support/feedback, privacy, terms, and 404 pages, plus SEO
+assets (`robots.txt`, `sitemap.xml`, `llms.txt`). A small, dismissible
+open-source notice links to this repository on the landing, Pro, and support
+pages.
 
 The Chrome extension is maintained outside this repository. The website
 describes it as a public-GitHub-Markdown entry point that can hand a document
 off to the web app.
+
+The web app's SPA routes (`/import`, `/reader/*`) are served by Pages
+Functions that return the app shell with a `noindex` tag; legacy feedback URLs
+redirect to the support page.
 
 ### Data and network boundaries
 
@@ -75,9 +80,12 @@ wowmd-app/
   app/                         React, Vite, and TypeScript web-app source
   website/                     Cloudflare Pages source and deployment root
     app/                       Generated web-app build output
-    functions/                 Feedback API Pages Function
+    assets/                    Brand, screenshot, and product-demo assets
+    docs/                      Feedback-backend and upgrade notes
+    functions/                 Pages Functions: feedback API and SPA routes
     i18n/                      Website locale dictionaries
     scripts/                   Localized-page generator and guards
+    404.html, llms.txt, robots.txt, sitemap.xml, schema.sql, wrangler.toml
   docs/                        Product notes and implementation plans
   scripts/                     Browser and local verification helpers
 ```
@@ -118,7 +126,12 @@ Then open `http://127.0.0.1:4174/` or `http://127.0.0.1:4174/app/`.
 - Do not edit `website/app/` directly; build it from `app/`.
 - Localized website HTML and `sitemap.xml` are generated from templates and
   `website/i18n/*.json`.
-- Feedback API route: `/api/feedback`; D1 binding: `DB`.
+- `wrangler.toml` declares the Pages project and the D1 binding (`DB`);
+  `website/schema.sql` defines the feedback table schema.
+- Feedback API route: `/api/feedback`.
+- `_redirects` maps `/app/*`, `/import`, and `/reader/*` to the app shell and
+  redirects legacy feedback URLs to the support page; `_headers` applies the
+  CSP, HSTS, and other security headers.
 
 ### Contributing and security
 
@@ -165,11 +178,14 @@ EPUB 导出代码属于实验性实现，当前不作为受支持的 UI 功能�
 #### 公开网站（`website/`）
 
 静态 Cloudflare Pages 网站会生成英语、简体中文、日语、韩语、德语和法语页面，包含首页、
-Pro、扩展、支持/反馈、隐私和条款页面。首页、Pro 与支持页会显示一条可关闭的开源公告，
-并链接到本仓库。
+Pro、扩展、支持/反馈、隐私、条款和 404 页面，以及 `robots.txt`、`sitemap.xml`、
+`llms.txt` 等 SEO 资源。首页、Pro 与支持页会显示一条可关闭的开源公告，并链接到本仓库。
 
 Chrome 扩展不在此仓库维护。网站将其描述为公开 GitHub Markdown 的入口，可将文档交给
 Web 应用继续阅读和审阅。
+
+Web 应用的 SPA 路由（`/import`、`/reader/*`）由 Pages Functions 提供应用外壳并标记
+`noindex`；旧的反馈链接会重定向到支持页。
 
 ### 数据与网络边界
 
@@ -186,9 +202,12 @@ wowmd-app/
   app/                         React、Vite、TypeScript Web 应用源码
   website/                     Cloudflare Pages 源码与部署根目录
     app/                       生成的 Web 应用构建产物
-    functions/                 反馈 API Pages Function
+    assets/                    品牌、截图与产品演示资源
+    docs/                      反馈后端与升级说明
+    functions/                 Pages Functions：反馈 API 与 SPA 路由
     i18n/                      网站多语言字典
     scripts/                   多语言页面生成与校验脚本
+    404.html、llms.txt、robots.txt、sitemap.xml、schema.sql、wrangler.toml
   docs/                        产品说明与实现计划
   scripts/                     浏览器与本地验证工具
 ```
@@ -226,7 +245,11 @@ python -m http.server 4174 --bind 127.0.0.1 --directory website
 - Cloudflare Pages 根目录：`website/`。
 - 不要直接编辑 `website/app/`；应从 `app/` 构建生成。
 - 多语言网站 HTML 与 `sitemap.xml` 由模板和 `website/i18n/*.json` 生成。
-- 反馈 API 路径：`/api/feedback`；D1 绑定名：`DB`。
+- `wrangler.toml` 声明 Pages 项目与 D1 绑定（`DB`）；`website/schema.sql` 定义
+  反馈数据表结构。
+- 反馈 API 路径：`/api/feedback`。
+- `_redirects` 将 `/app/*`、`/import`、`/reader/*` 映射到应用外壳，并把旧的反馈
+  链接重定向到支持页；`_headers` 应用 CSP、HSTS 等安全响应头。
 
 ### 参与贡献与安全报告
 
